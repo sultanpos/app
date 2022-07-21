@@ -8,33 +8,69 @@ class LoginWidget extends StatefulWidget {
 }
 
 class _LoginWidgetState extends State<LoginWidget> {
+  final _formKey = GlobalKey<FormState>();
+  String _username = "";
+  String _password = "";
   bool _isProcess = false;
   @override
   Widget build(BuildContext context) {
     return Center(
-        child: Container(
-      width: 300,
-      height: 500,
-      child: Padding(
-        padding: const EdgeInsets.all(32.0),
-        child: Column(
-          children: [
-            const SizedBox(height: 200, width: 200, child: Image(image: AssetImage("resources/images/icon_1024.png"))),
-            TextFormField(decoration: const InputDecoration(hintText: "Username / email", labelText: "Username / email")),
-            TextFormField(decoration: const InputDecoration(hintText: "Password", labelText: "Password")),
-            const SizedBox(
-              height: 16,
-            ),
-            SizedBox(
+        child: Form(
+      key: _formKey,
+      child: Container(
+        width: 300,
+        child: Padding(
+          padding: const EdgeInsets.all(32.0),
+          child: Column(
+            children: [
+              const SizedBox(height: 200, width: 200, child: Image(image: AssetImage("resources/images/icon_1024.png"))),
+              TextFormField(
+                decoration: const InputDecoration(
+                  hintText: "Username / email",
+                  labelText: "Username / email",
+                ),
+                validator: (value) {
+                  if (value == null || value == "") return "Username is mandatory";
+                  return null;
+                },
+                onSaved: (value) => _username = value!,
+              ),
+              TextFormField(
+                decoration: const InputDecoration(
+                  hintText: "Password",
+                  labelText: "Password",
+                ),
+                validator: (value) {
+                  if (value == null || value == "") return "Password is mandatory";
+                  return null;
+                },
+                onSaved: (value) => _password = value!,
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              SizedBox(
                 height: 35,
                 width: double.infinity,
                 child: ElevatedButton(
-                    onPressed: () {
-                      _isProcess = !_isProcess;
-                      setState(() {});
-                    },
-                    child: Text(_isProcess ? "Loading..." : "Login"))),
-          ],
+                  onPressed: _isProcess
+                      ? null
+                      : () {
+                          if (!_formKey.currentState!.validate()) {
+                            return;
+                          }
+                          _formKey.currentState!.save();
+                          _isProcess = true;
+                          setState(() {});
+                          //do request
+                        },
+                  child: Text(
+                    _isProcess ? "Loading..." : "Login",
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     ));

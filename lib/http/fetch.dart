@@ -1,9 +1,12 @@
 import 'package:dio/dio.dart';
+import 'package:sultanpos/flavor.dart';
 import 'package:sultanpos/model/error.dart';
 
 class Fetch {
-  String basePath;
-  Dio dio;
+  final String basePath;
+  final Dio dio;
+
+  static Fetch? _def;
 
   Fetch(this.basePath, this.dio);
 
@@ -28,7 +31,8 @@ class Fetch {
     }
   }
 
-  post(String path, {required Map<String, dynamic> data}) async {
+  post(String? path, {required Map<String, dynamic> data}) async {
+    assert(path != null);
     try {
       final response = await dio.post('$basePath$path', data: data);
       return response;
@@ -37,7 +41,8 @@ class Fetch {
     }
   }
 
-  put(String path, {required Map<String, dynamic> data}) async {
+  put(String? path, {required Map<String, dynamic> data}) async {
+    assert(path != null);
     try {
       final response = await dio.put('$basePath$path', data: data);
       return response;
@@ -46,7 +51,8 @@ class Fetch {
     }
   }
 
-  get(String path, {Map<String, dynamic>? queryParameters}) async {
+  get(String? path, {Map<String, dynamic>? queryParameters}) async {
+    assert(path != null);
     try {
       final response = await dio.get('$basePath$path', queryParameters: queryParameters);
       return response;
@@ -55,12 +61,18 @@ class Fetch {
     }
   }
 
-  delete(String path, {Map<String, dynamic>? queryParameters}) async {
+  delete(String? path, {Map<String, dynamic>? queryParameters}) async {
+    assert(path != null);
     try {
       final response = await dio.delete('$basePath$path', queryParameters: queryParameters);
       return response;
     } on DioError catch (e) {
       _handleError(e);
     }
+  }
+
+  Fetch instance() {
+    _def ??= Fetch(Flavor.baseUrl!, Dio(BaseOptions(connectTimeout: 60000, receiveTimeout: 60000, sendTimeout: 60000)));
+    return _def!;
   }
 }

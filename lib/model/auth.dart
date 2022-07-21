@@ -20,6 +20,11 @@ class LoginUsernamePasswordRequest implements BaseModel {
   BaseModel? responseFromJson(Map<String, dynamic> json) {
     return LoginResponse.fromJson(json);
   }
+
+  @override
+  String path() {
+    return "/auth";
+  }
 }
 
 @JsonSerializable()
@@ -37,6 +42,11 @@ class LoginFirebaseTokenRequest implements BaseModel {
   @override
   BaseModel? responseFromJson(Map<String, dynamic> json) {
     return LoginResponse.fromJson(json);
+  }
+
+  @override
+  String? path() {
+    return "/auth/firebase";
   }
 }
 
@@ -56,6 +66,11 @@ class LoginResponse implements BaseModel {
 
   @override
   BaseModel? responseFromJson(Map<String, dynamic> json) {
+    return null;
+  }
+
+  @override
+  String? path() {
     return null;
   }
 }
