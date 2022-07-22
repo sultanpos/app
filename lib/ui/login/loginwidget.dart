@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:motion_toast/motion_toast.dart';
+import 'package:motion_toast/resources/arrays.dart';
+import 'package:sultanpos/model/auth.dart';
+import 'package:sultanpos/model/error.dart';
+import 'package:sultanpos/singleton.dart';
+import 'package:sultanpos/ui/home.dart';
 
 class LoginWidget extends StatefulWidget {
   const LoginWidget({Key? key}) : super(key: key);
@@ -55,14 +61,39 @@ class _LoginWidgetState extends State<LoginWidget> {
                 child: ElevatedButton(
                   onPressed: _isProcess
                       ? null
-                      : () {
+                      : () async {
                           if (!_formKey.currentState!.validate()) {
                             return;
                           }
                           _formKey.currentState!.save();
                           _isProcess = true;
                           setState(() {});
-                          //do request
+                          final data = LoginUsernamePasswordRequest(_username, _password);
+                          try {
+                            final result = await Singleton.instance().httpApi!.post<LoginResponse>(data, skipAuth: true);
+                            Singleton.instance().httpApi!.setLogin(result);
+                            _isProcess = false;
+                            setState(() {});
+                            if (!mounted) return;
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const HomeWidget(),
+                              ),
+                            );
+                          } on ErrorResponse catch (e) {
+                            _isProcess = false;
+                            setState(() {});
+                            if (!mounted) return;
+                            MotionToast.error(
+                              title: const Text('Login failed'),
+                              description: Text(e.message),
+                              position: MotionToastPosition.top,
+                              animationType: AnimationType.fromTop,
+                              animationCurve: Curves.ease,
+                              animationDuration: const Duration(milliseconds: 200),
+                            ).show(context);
+                          }
                         },
                   child: Text(
                     _isProcess ? "Loading..." : "Login",

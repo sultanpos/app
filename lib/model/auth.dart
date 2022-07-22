@@ -5,8 +5,8 @@ part 'auth.g.dart';
 
 @JsonSerializable()
 class LoginUsernamePasswordRequest implements BaseModel {
-  String username;
-  String password;
+  final String username;
+  final String password;
 
   LoginUsernamePasswordRequest(this.username, this.password);
 
@@ -23,13 +23,14 @@ class LoginUsernamePasswordRequest implements BaseModel {
 
   @override
   String path() {
-    return "/auth";
+    return "/auth/login";
   }
 }
 
 @JsonSerializable()
 class LoginFirebaseTokenRequest implements BaseModel {
-  String firebaseToken;
+  @JsonKey(name: 'firebase_token')
+  final String firebaseToken;
 
   LoginFirebaseTokenRequest(this.firebaseToken);
 
@@ -46,15 +47,42 @@ class LoginFirebaseTokenRequest implements BaseModel {
 
   @override
   String? path() {
-    return "/auth/firebase";
+    return "/auth/login/firebase";
+  }
+}
+
+@JsonSerializable()
+class LoginRefreshToken implements BaseModel {
+  @JsonKey(name: 'refresh_token')
+  final String refreshToken;
+
+  LoginRefreshToken(this.refreshToken);
+
+  @override
+  factory LoginRefreshToken.fromJson(Map<String, dynamic> json) => _$LoginRefreshTokenFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => _$LoginRefreshTokenToJson(this);
+
+  @override
+  BaseModel? responseFromJson(Map<String, dynamic> json) {
+    return LoginResponse.fromJson(json);
+  }
+
+  @override
+  String? path() {
+    return "/auth/login/refresh";
   }
 }
 
 @JsonSerializable()
 class LoginResponse implements BaseModel {
-  String accessToken;
-  String refreshToken;
-  int expiresIn;
+  @JsonKey(name: 'access_token')
+  final String accessToken;
+  @JsonKey(name: 'refresh_token')
+  final String refreshToken;
+  @JsonKey(name: 'expires_in')
+  final int expiresIn;
 
   LoginResponse(this.accessToken, this.refreshToken, this.expiresIn);
 

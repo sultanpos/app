@@ -23,25 +23,35 @@ Map<String, dynamic> _$LoginUsernamePasswordRequestToJson(
 LoginFirebaseTokenRequest _$LoginFirebaseTokenRequestFromJson(
         Map<String, dynamic> json) =>
     LoginFirebaseTokenRequest(
-      json['firebaseToken'] as String,
+      json['firebase_token'] as String,
     );
 
 Map<String, dynamic> _$LoginFirebaseTokenRequestToJson(
         LoginFirebaseTokenRequest instance) =>
     <String, dynamic>{
-      'firebaseToken': instance.firebaseToken,
+      'firebase_token': instance.firebaseToken,
+    };
+
+LoginRefreshToken _$LoginRefreshTokenFromJson(Map<String, dynamic> json) =>
+    LoginRefreshToken(
+      json['refresh_token'] as String,
+    );
+
+Map<String, dynamic> _$LoginRefreshTokenToJson(LoginRefreshToken instance) =>
+    <String, dynamic>{
+      'refresh_token': instance.refreshToken,
     };
 
 LoginResponse _$LoginResponseFromJson(Map<String, dynamic> json) =>
     LoginResponse(
-      json['accessToken'] as String,
-      json['refreshToken'] as String,
-      json['expiresIn'] as int,
+      json['access_token'] as String,
+      json['refresh_token'] as String,
+      json['expires_in'] as int,
     );
 
 Map<String, dynamic> _$LoginResponseToJson(LoginResponse instance) =>
     <String, dynamic>{
-      'accessToken': instance.accessToken,
-      'refreshToken': instance.refreshToken,
-      'expiresIn': instance.expiresIn,
+      'access_token': instance.accessToken,
+      'refresh_token': instance.refreshToken,
+      'expires_in': instance.expiresIn,
     };

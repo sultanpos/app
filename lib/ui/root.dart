@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sultanpos/state/auth.dart';
 import 'package:sultanpos/ui/login/loginwidget.dart';
+import 'package:sultanpos/ui/splashscreen.dart';
 
 class RootWidgetProvider extends StatelessWidget {
   const RootWidgetProvider({Key? key}) : super(key: key);
@@ -12,7 +13,11 @@ class RootWidgetProvider extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => StateAuth()),
       ],
-      child: const RootWidget(),
+      child: Navigator(
+        onGenerateRoute: (settings) {
+          return MaterialPageRoute(settings: settings, builder: (c) => const SplashScreen());
+        },
+      ),
     );
   }
 }

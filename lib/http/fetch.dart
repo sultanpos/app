@@ -31,40 +31,42 @@ class Fetch {
     }
   }
 
-  post(String? path, {required Map<String, dynamic> data}) async {
+  post(String? path, {required Map<String, dynamic> data, bool skipAuth = false}) async {
     assert(path != null);
     try {
-      final response = await dio.post('$basePath$path', data: data);
+      final response = await dio.post('$basePath$path', data: data, options: skipAuth ? Options(extra: {'skipAuth': true}) : null);
       return response;
     } on DioError catch (e) {
       _handleError(e);
     }
   }
 
-  put(String? path, {required Map<String, dynamic> data}) async {
+  put(String? path, {required Map<String, dynamic> data, bool skipAuth = false}) async {
     assert(path != null);
     try {
-      final response = await dio.put('$basePath$path', data: data);
+      final response = await dio.put('$basePath$path', data: data, options: skipAuth ? Options(extra: {'skipAuth': true}) : null);
       return response;
     } on DioError catch (e) {
       _handleError(e);
     }
   }
 
-  get(String? path, {Map<String, dynamic>? queryParameters}) async {
+  get(String? path, {Map<String, dynamic>? queryParameters, bool skipAuth = false}) async {
     assert(path != null);
     try {
-      final response = await dio.get('$basePath$path', queryParameters: queryParameters);
+      final response =
+          await dio.get('$basePath$path', queryParameters: queryParameters, options: skipAuth ? Options(extra: {'skipAuth': true}) : null);
       return response;
     } on DioError catch (e) {
       _handleError(e);
     }
   }
 
-  delete(String? path, {Map<String, dynamic>? queryParameters}) async {
+  delete(String? path, {Map<String, dynamic>? queryParameters, bool skipAuth = false}) async {
     assert(path != null);
     try {
-      final response = await dio.delete('$basePath$path', queryParameters: queryParameters);
+      final response =
+          await dio.delete('$basePath$path', queryParameters: queryParameters, options: skipAuth ? Options(extra: {'skipAuth': true}) : null);
       return response;
     } on DioError catch (e) {
       _handleError(e);
