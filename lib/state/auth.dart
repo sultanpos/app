@@ -1,24 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:reactive_forms/reactive_forms.dart';
+import 'package:sultanpos/http/httpapi.dart';
+import 'package:sultanpos/model/claim.dart';
+import 'package:sultanpos/state/base.dart';
 
-class StateAuth extends ChangeNotifier {
-  bool loggedIn = false;
-  String? accessToken;
-  String? refreshToken;
+class AuthState extends BaseState {
+  JWTClaim? claim;
 
-  void setLoggedIn(bool value) {
-    loggedIn = value;
+  AuthState(HttpAPI httpAPI) : super(httpAPI);
+
+  final loginForm = FormGroup({
+    'username': FormControl<String>(validators: [Validators.required]),
+    'password': FormControl<String>(validators: [Validators.required]),
+  });
+
+  login() async {
+    if (loginForm.valid) {}
+  }
+
+  setLoggedIn(JWTClaim? claim) {
+    claim = claim;
     notifyListeners();
   }
 
-  void setToken(String? accessToken, String? refreshToken) {
-    this.accessToken = accessToken;
-    this.refreshToken = refreshToken;
-  }
-
-  void reset() {
-    loggedIn = false;
-    accessToken = null;
-    refreshToken = null;
+  logout() {
+    claim = null;
     notifyListeners();
   }
 }

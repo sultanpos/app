@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sultanpos/singleton.dart';
-import 'package:sultanpos/ui/root.dart';
+import 'package:sultanpos/ui/login/loginpage.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -39,7 +39,7 @@ class _SplashScreenState extends State<SplashScreen> {
   next() {
     _step++;
     if (_step >= 2) {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (c) => const RootWidget()));
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (c) => const LoginPage()));
     }
   }
 

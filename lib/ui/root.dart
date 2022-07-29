@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sultanpos/state/auth.dart';
-import 'package:sultanpos/ui/login/loginwidget.dart';
 import 'package:sultanpos/ui/splashscreen.dart';
 
 class RootWidgetProvider extends StatelessWidget {
@@ -10,9 +8,7 @@ class RootWidgetProvider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => StateAuth()),
-      ],
+      providers: [],
       child: Navigator(
         onGenerateRoute: (settings) {
           return MaterialPageRoute(settings: settings, builder: (c) => const SplashScreen());
@@ -27,21 +23,15 @@ class RootWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final loggedIn = context.select((StateAuth s) => s.loggedIn);
     return Scaffold(
       body: Stack(
         children: [
-          if (!loggedIn) const LoginWidget(),
-          if (loggedIn)
-            Center(
-              child: TextButton(
-                onPressed: () {
-                  final auth = context.read<StateAuth>();
-                  auth.setLoggedIn(false);
-                },
-                child: const Text("Logout"),
-              ),
+          Center(
+            child: TextButton(
+              onPressed: () {},
+              child: const Text("Logout"),
             ),
+          ),
         ],
       ),
     );

@@ -23,7 +23,7 @@ class _LoginWidgetState extends State<LoginWidget> {
     return Center(
         child: Form(
       key: _formKey,
-      child: Container(
+      child: SizedBox(
         width: 300,
         child: Padding(
           padding: const EdgeInsets.all(32.0),

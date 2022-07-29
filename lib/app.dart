@@ -1,6 +1,6 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:sultanpos/ui/root.dart';
+import 'package:sultanpos/ui/splashscreen.dart';
 
 class App extends StatefulWidget {
   const App({Key? key}) : super(key: key);
@@ -23,7 +23,7 @@ class _AppState extends State<App> {
       ),
       initial: AdaptiveThemeMode.dark,
       builder: (theme, darkTheme) => MaterialApp(
-        home: const RootWidgetProvider(),
+        home: const SplashScreen(),
         theme: theme,
         darkTheme: darkTheme,
         title: "Sultan POS 2",
