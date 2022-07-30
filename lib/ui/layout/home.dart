@@ -5,8 +5,6 @@ class HomeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Text("HOME"),
-    );
+    return const Center(child: Text("Home"));
   }
 }

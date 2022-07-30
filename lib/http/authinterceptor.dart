@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:sultanpos/model/auth.dart';
@@ -24,7 +22,6 @@ class AuthInterceptor extends QueuedInterceptor {
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    debugPrint('${options.method} ${options.uri.toString()}');
     final skipAuth = options.extra.containsKey("skipAuth");
     if (!skipAuth) {
       final errorData = {"code": 401, "message": "unauthorize"};

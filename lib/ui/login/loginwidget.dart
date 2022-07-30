@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:motion_toast/motion_toast.dart';
 import 'package:motion_toast/resources/arrays.dart';
-import 'package:sultanpos/model/auth.dart';
+import 'package:reactive_forms/reactive_forms.dart';
 import 'package:sultanpos/model/error.dart';
-import 'package:sultanpos/singleton.dart';
-import 'package:sultanpos/ui/home.dart';
+import 'package:sultanpos/state/app.dart';
+import 'package:sultanpos/state/auth.dart';
+import 'package:provider/provider.dart';
+import 'package:sultanpos/ui/root.dart';
 
 class LoginWidget extends StatefulWidget {
   const LoginWidget({Key? key}) : super(key: key);
@@ -14,15 +16,12 @@ class LoginWidget extends StatefulWidget {
 }
 
 class _LoginWidgetState extends State<LoginWidget> {
-  final _formKey = GlobalKey<FormState>();
-  String _username = "";
-  String _password = "";
-  bool _isProcess = false;
   @override
   Widget build(BuildContext context) {
+    final isLoading = context.select<AuthState, bool>((value) => value.isLoading);
     return Center(
-        child: Form(
-      key: _formKey,
+        child: ReactiveForm(
+      formGroup: AppState().authState!.loginForm,
       child: SizedBox(
         width: 300,
         child: Padding(
@@ -30,27 +29,31 @@ class _LoginWidgetState extends State<LoginWidget> {
           child: Column(
             children: [
               const SizedBox(height: 200, width: 200, child: Image(image: AssetImage("resources/images/icon_1024.png"))),
-              TextFormField(
+              ReactiveTextField(
+                formControlName: 'username',
                 decoration: const InputDecoration(
                   hintText: "Username / email",
                   labelText: "Username / email",
                 ),
-                validator: (value) {
-                  if (value == null || value == "") return "Username is mandatory";
-                  return null;
-                },
-                onSaved: (value) => _username = value!,
               ),
-              TextFormField(
+              ReactiveTextField(
+                formControlName: 'password',
+                obscureText: true,
                 decoration: const InputDecoration(
                   hintText: "Password",
                   labelText: "Password",
                 ),
-                validator: (value) {
-                  if (value == null || value == "") return "Password is mandatory";
-                  return null;
-                },
-                onSaved: (value) => _password = value!,
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              Row(
+                children: [
+                  ReactiveCheckbox(
+                    formControlName: 'remember',
+                  ),
+                  const Text('Remember me')
+                ],
               ),
               const SizedBox(
                 height: 16,
@@ -59,31 +62,21 @@ class _LoginWidgetState extends State<LoginWidget> {
                 height: 35,
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: _isProcess
+                  onPressed: isLoading
                       ? null
                       : () async {
-                          if (!_formKey.currentState!.validate()) {
-                            return;
-                          }
-                          _formKey.currentState!.save();
-                          _isProcess = true;
-                          setState(() {});
-                          final data = LoginUsernamePasswordRequest(_username, _password);
+                          var auth = AppState().authState!;
                           try {
-                            final result = await Singleton.instance().httpApi!.post<LoginResponse>(data, skipAuth: true);
-                            Singleton.instance().httpApi!.setLogin(result);
-                            _isProcess = false;
-                            setState(() {});
+                            await auth.login();
                             if (!mounted) return;
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const HomeWidget(),
+                                builder: (context) => const RootWidget(),
                               ),
                             );
                           } on ErrorResponse catch (e) {
-                            _isProcess = false;
-                            setState(() {});
+                            auth.setLoading(false);
                             if (!mounted) return;
                             MotionToast.error(
                               title: const Text('Login failed'),
@@ -96,7 +89,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                           }
                         },
                   child: Text(
-                    _isProcess ? "Loading..." : "Login",
+                    isLoading ? "Loading..." : "Login",
                   ),
                 ),
               ),

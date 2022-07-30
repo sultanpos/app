@@ -1,4 +1,3 @@
-import 'package:json_annotation/json_annotation.dart';
 import 'package:sultanpos/model/base.dart';
 
 part 'auth.g.dart';
@@ -95,6 +94,11 @@ class LoginResponse implements BaseModel {
   @override
   BaseModel? responseFromJson(Map<String, dynamic> json) {
     return null;
+  }
+
+  normalizeDate() {
+    final value = (DateTime.now().millisecondsSinceEpoch ~/ 1000) + expiresIn;
+    return LoginResponse(accessToken, refreshToken, value);
   }
 
   @override

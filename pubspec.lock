@@ -291,6 +291,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "6.3.1"
+  jwt_decode:
+    dependency: "direct main"
+    description:
+      name: jwt_decode
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.3.1"
   lints:
     dependency: transitive
     description:
@@ -526,6 +533,13 @@ packages:
     dependency: transitive
     description:
       name: shelf_web_socket
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.2"
+  side_navigation:
+    dependency: "direct main"
+    description:
+      name: side_navigation
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.2"

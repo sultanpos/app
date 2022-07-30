@@ -1,19 +1,22 @@
 import 'package:dio/dio.dart';
 import 'package:sultanpos/http/authinterceptor.dart';
 import 'package:sultanpos/http/fetch.dart';
+import 'package:sultanpos/http/loginterceptor.dart' as myinterceptor;
 import 'package:sultanpos/model/auth.dart';
 import 'package:sultanpos/model/base.dart';
+import 'package:flutter/foundation.dart';
 
 class HttpAPI {
   final Fetch fetch;
   final AuthInterceptor interceptor;
-  HttpAPI({required this.fetch, required this.interceptor});
+  HttpAPI._internal({required this.fetch, required this.interceptor});
 
   factory HttpAPI.create(String basePath, AuthInterceptor interceptor) {
     final dio = Dio(BaseOptions(connectTimeout: 60000, receiveTimeout: 60000, sendTimeout: 60000));
+    if (kDebugMode) dio.interceptors.add(myinterceptor.LogInterceptor());
     dio.interceptors.add(interceptor);
     final fetch = Fetch(basePath, dio);
-    return HttpAPI(fetch: fetch, interceptor: interceptor);
+    return HttpAPI._internal(fetch: fetch, interceptor: interceptor);
   }
 
   setLogin(LoginResponse login) {
