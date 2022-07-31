@@ -1,6 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
-import 'package:hotkey_manager/hotkey_manager.dart';
 import 'package:sultanpos/flavor.dart';
 import 'package:sultanpos/http/authinterceptor.dart';
 import 'package:sultanpos/http/httpapi.dart';
