@@ -23,7 +23,7 @@ class AppState {
 
   init() async {
     await Preference().init();
-    final interceptor = AuthInterceptor(Dio(BaseOptions(baseUrl: Flavor.baseUrl!)), "/auth/refresh", storeAccessToken: _tokenRefreshed);
+    final interceptor = AuthInterceptor(Dio(BaseOptions(baseUrl: Flavor.baseUrl!)), "/auth/login/refresh", storeAccessToken: _tokenRefreshed);
     final httpAPI = HttpAPI.create(Flavor.baseUrl!, interceptor);
     authState = AuthState(httpAPI);
     navState = NavigationState();
