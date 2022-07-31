@@ -40,12 +40,8 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   initAll() async {
-    await Preference().init();
-    final interceptor = AuthInterceptor(Dio(BaseOptions(baseUrl: Flavor.baseUrl!)), "/auth/refresh");
-    final httpAPI = HttpAPI.create(Flavor.baseUrl!, interceptor);
-    AppState().init(httpAPI);
     try {
-      await AppState().authState!.loadLogin();
+      await AppState().init();
       _gotoHome = true;
       // ignore: empty_catches
     } catch (e) {}
@@ -61,8 +57,24 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(child: Text("Splash Screen")),
+    return Scaffold(
+      body: Center(
+        child: Column(
+          children: const [
+            Expanded(
+              child: SizedBox(),
+            ),
+            Text("Splash Screen"),
+            SizedBox(
+              height: 16,
+            ),
+            CircularProgressIndicator(),
+            Expanded(
+              child: SizedBox(),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

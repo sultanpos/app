@@ -97,7 +97,7 @@ class LoginResponse implements BaseModel {
   }
 
   normalizeDate() {
-    final value = (DateTime.now().millisecondsSinceEpoch ~/ 1000) + expiresIn;
+    final value = DateTime.now().millisecondsSinceEpoch + (expiresIn * 1000);
     return LoginResponse(accessToken, refreshToken, value);
   }
 

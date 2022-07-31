@@ -16,10 +16,12 @@ class _AppState extends State<App> {
       light: ThemeData(
         brightness: Brightness.light,
         primarySwatch: Colors.red,
+        fontFamily: 'Ubuntu_Mono',
       ),
       dark: ThemeData(
         brightness: Brightness.dark,
         primarySwatch: Colors.red,
+        fontFamily: 'Ubuntu_Mono',
       ),
       initial: AdaptiveThemeMode.dark,
       builder: (theme, darkTheme) => MaterialApp(

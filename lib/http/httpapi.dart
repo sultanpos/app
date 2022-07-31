@@ -20,7 +20,7 @@ class HttpAPI {
   }
 
   setLogin(LoginResponse login) {
-    interceptor.setAccessToken(login.accessToken, login.refreshToken, DateTime.now().add(Duration(seconds: login.expiresIn)));
+    interceptor.setAccessToken(login.accessToken, login.refreshToken, DateTime.fromMillisecondsSinceEpoch(login.expiresIn));
   }
 
   setLogout() {

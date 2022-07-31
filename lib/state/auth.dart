@@ -41,7 +41,11 @@ class AuthState extends BaseState {
     final result = (await httpAPI.post<LoginResponse>(LoginUsernamePasswordRequest.fromJson(loginForm.value), skipAuth: true)).normalizeDate();
     _loadAccessToken(result);
     isLoading = false;
-    if (loginForm.control('remember').value ?? false) Preference().storeAuth(result);
+    if (loginForm.control('remember').value ?? false) {
+      Preference().storeAuth(result);
+    } else {
+      Preference().resetLogin();
+    }
   }
 
   _loadAccessToken(LoginResponse token) async {

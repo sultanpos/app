@@ -1,6 +1,11 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:sultanpos/app.dart';
+import 'package:sultanpos/flavor.dart';
+import 'package:sultanpos/http/authinterceptor.dart';
 import 'package:sultanpos/http/httpapi.dart';
+import 'package:sultanpos/model/auth.dart';
+import 'package:sultanpos/preference.dart';
 import 'package:sultanpos/state/auth.dart';
 import 'package:sultanpos/state/navigation.dart';
 
@@ -16,8 +21,16 @@ class AppState {
   AuthState? authState;
   NavigationState? navState;
 
-  init(HttpAPI httpAPI) async {
+  init() async {
+    await Preference().init();
+    final interceptor = AuthInterceptor(Dio(BaseOptions(baseUrl: Flavor.baseUrl!)), "/auth/refresh", storeAccessToken: _tokenRefreshed);
+    final httpAPI = HttpAPI.create(Flavor.baseUrl!, interceptor);
     authState = AuthState(httpAPI);
     navState = NavigationState();
+    await AppState().authState!.loadLogin();
+  }
+
+  _tokenRefreshed(LoginResponse token) {
+    Preference().storeAuth(token.normalizeDate());
   }
 }
