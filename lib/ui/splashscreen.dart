@@ -1,10 +1,4 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:sultanpos/flavor.dart';
-import 'package:sultanpos/http/authinterceptor.dart';
-import 'package:sultanpos/http/fetch.dart';
-import 'package:sultanpos/http/httpapi.dart';
-import 'package:sultanpos/preference.dart';
 import 'package:sultanpos/state/app.dart';
 import 'package:sultanpos/ui/login/loginpage.dart';
 import 'package:sultanpos/ui/root.dart';

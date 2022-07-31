@@ -7,9 +7,9 @@ class MainLayoutWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(children: const [
+    return Row(children: [
       DrawerWidget(),
-      Expanded(child: NavigatorWidget()),
+      const Expanded(child: NavigatorWidget()),
     ]);
   }
 }

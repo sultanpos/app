@@ -61,6 +61,8 @@ class AuthState extends BaseState {
 
   logout() {
     claim = null;
+    user = null;
+    Preference().resetLogin();
     notifyListeners();
   }
 }
