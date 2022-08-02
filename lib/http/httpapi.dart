@@ -1,14 +1,18 @@
 import 'package:dio/dio.dart';
+import 'package:jwt_decode/jwt_decode.dart';
 import 'package:sultanpos/http/authinterceptor.dart';
 import 'package:sultanpos/http/fetch.dart';
 import 'package:sultanpos/http/loginterceptor.dart' as myinterceptor;
 import 'package:sultanpos/model/auth.dart';
 import 'package:sultanpos/model/base.dart';
 import 'package:flutter/foundation.dart';
+import 'package:sultanpos/model/claim.dart';
+import 'package:sultanpos/model/listresult.dart';
 
 class HttpAPI {
   final Fetch fetch;
   final AuthInterceptor interceptor;
+  String? companyId;
   HttpAPI._internal({required this.fetch, required this.interceptor});
 
   factory HttpAPI.create(String basePath, AuthInterceptor interceptor) {
@@ -21,28 +25,63 @@ class HttpAPI {
 
   setLogin(LoginResponse login) {
     interceptor.setAccessToken(login.accessToken, login.refreshToken, DateTime.fromMillisecondsSinceEpoch(login.expiresIn));
+    final claim = JWTClaim.fromJson(Jwt.parseJwt(login.accessToken));
+    companyId = claim.companyId;
   }
 
-  setLogout() {
+  Future<LoginResponse> loginWithUsernamePassword(LoginUsernamePasswordRequest req) async {
+    return post<LoginResponse>(req, "/auth/login", skipAuth: true, skipCompanyId: true);
+  }
+
+  Future logout(String refreshToken) async {
+    await delete('/auth/login/$refreshToken', skipCompanyId: true);
+    await delete('/auth/login', skipCompanyId: true);
     interceptor.setAccessToken(null, null, null);
+    companyId = null;
   }
 
-  Future post<T>(BaseModel data, {String? path, bool skipAuth = false}) async {
-    final ret = await fetch.post(path ?? data.path(), data: data.toJson(), skipAuth: skipAuth);
+  Future<T> insert<T>(BaseModel data, {String? path}) {
+    return post<T>(data, path ?? data.path() ?? "");
+  }
+
+  Future<T> getOne<T>(String path, {required T Function(Map<String, dynamic> json) fromJsonFunc}) {
+    return get<T>(path, fromJsonFunc: fromJsonFunc);
+  }
+
+  Future<T> post<T>(BaseModel data, String path, {bool skipAuth = false, bool skipCompanyId = false}) async {
+    final ret = await fetch.post(_generateUrl(path, skipCompanyId), data: data.toJson(), skipAuth: skipAuth);
     return data.responseFromJson(ret.data) as T;
   }
 
-  Future put<T>(String publicID, BaseModel data, {String? path, bool skipAuth = false}) async {
-    final ret = await fetch.put('${path ?? data.path()}/$publicID', data: data.toJson(), skipAuth: skipAuth);
+  Future<T> put<T>(String publicID, BaseModel data, {String? path, bool skipAuth = false, bool skipCompanyId = false}) async {
+    final ret = await fetch.put(_generateUrl('${path ?? data.path()}/$publicID', skipCompanyId), data: data.toJson(), skipAuth: skipAuth);
     return data.responseFromJson(ret.data) as T;
   }
 
-  Future delete(String publicID, {required String path, bool skipAuth = false}) {
-    return fetch.delete('$path/$publicID', skipAuth: skipAuth);
+  Future delete(String path, {bool skipAuth = false, bool skipCompanyId = false}) {
+    return fetch.delete(_generateUrl(path, skipCompanyId), skipAuth: skipAuth);
   }
 
-  Future get<T>(String publicID, {required T Function(Map<String, dynamic> json) fromJsonFunc, required String path, bool skipAuth = false}) async {
-    final ret = await fetch.get('$path/$publicID', skipAuth: skipAuth);
+  Future<T> get<T>(String path,
+      {required T Function(Map<String, dynamic> json) fromJsonFunc, bool skipAuth = false, bool skipCompanyId = false}) async {
+    final ret = await fetch.get(_generateUrl(path, skipCompanyId), skipAuth: skipAuth);
     return fromJsonFunc(ret.data);
+  }
+
+  Future<ListResult> query<T extends BaseModel>(
+    String path, {
+    required T Function(Map<String, dynamic> json) fromJsonFunc,
+    required limit,
+    required offset,
+    bool skipAuth = false,
+    bool skipCompanyId = false,
+    Map<String, dynamic>? queryParameters,
+  }) async {
+    final ret = await fetch.get(_generateUrl(path, skipCompanyId), skipAuth: skipAuth, queryParameters: queryParameters);
+    return ListResult.fromJson(ret.data, fromJsonFunc);
+  }
+
+  _generateUrl(String source, bool skipCompanyId) {
+    return skipCompanyId ? source : '/company/$companyId$source';
   }
 }

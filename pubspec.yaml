@@ -23,6 +23,7 @@ dependencies:
   drift: ^1.7.1
   flutter:
     sdk: flutter
+  flutter_hooks: ^0.18.5+1
   http_mock_adapter: ^0.3.3
   json_annotation: ^4.6.0
   jwt_decode: ^0.3.1

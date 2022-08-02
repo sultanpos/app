@@ -9,6 +9,7 @@ import 'package:sultanpos/state/base.dart';
 
 class AuthState extends BaseState {
   JWTClaim? claim;
+  String? refreshToken;
   User? user;
   bool isLoading = false;
 
@@ -38,7 +39,7 @@ class AuthState extends BaseState {
       throw "form is not valid";
     }
     setLoading(true);
-    final result = (await httpAPI.post<LoginResponse>(LoginUsernamePasswordRequest.fromJson(loginForm.value), skipAuth: true)).normalizeDate();
+    final result = (await httpAPI.loginWithUsernamePassword(LoginUsernamePasswordRequest.fromJson(loginForm.value))).normalizeDate();
     _loadAccessToken(result);
     isLoading = false;
     if (loginForm.control('remember').value ?? false) {
@@ -51,17 +52,19 @@ class AuthState extends BaseState {
   _loadAccessToken(LoginResponse token) async {
     httpAPI.setLogin(token);
     claim = JWTClaim.fromJson(Jwt.parseJwt(token.accessToken));
+    refreshToken = token.refreshToken;
     try {
-      final userResult = await httpAPI.get<User>(claim!.userPublicId, fromJsonFunc: User.fromJson, path: '/company/${claim!.companyId}/user');
+      final userResult = await httpAPI.getOne<User>('/user/${claim!.userPublicId}', fromJsonFunc: User.fromJson);
       user = userResult;
     } catch (e) {
       rethrow;
     }
   }
 
-  logout() {
+  logout() async {
     claim = null;
     user = null;
+    await httpAPI.logout(refreshToken!);
     Preference().resetLogin();
     notifyListeners();
   }

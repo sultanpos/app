@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:sultanpos/flavor.dart';
 import 'package:sultanpos/http/authinterceptor.dart';
 import 'package:sultanpos/http/httpapi.dart';
+import 'package:sultanpos/http/loginterceptor.dart' as myinterceptor;
 import 'package:sultanpos/model/auth.dart';
 import 'package:sultanpos/preference.dart';
 import 'package:sultanpos/state/auth.dart';
@@ -9,6 +10,7 @@ import 'package:sultanpos/state/cashier.dart';
 import 'package:sultanpos/state/master.dart';
 import 'package:sultanpos/state/navigation.dart';
 import 'package:sultanpos/state/product.dart';
+import 'package:sultanpos/state/unit.dart';
 
 class AppState {
   static final AppState _singleton = AppState._internal();
@@ -25,18 +27,22 @@ class AppState {
   ProductState? productState;
   MasterState? masterState;
   CashierState? cashierState;
+  UnitState? unitState;
 
   init() async {
     if (initted) return;
     initted = true;
     await Preference().init();
-    final interceptor = AuthInterceptor(Dio(BaseOptions(baseUrl: Flavor.baseUrl!)), "/auth/login/refresh", storeAccessToken: _tokenRefreshed);
+    final dioInterceptor = Dio(BaseOptions(baseUrl: Flavor.baseUrl!));
+    dioInterceptor.interceptors.add(myinterceptor.LogInterceptor());
+    final interceptor = AuthInterceptor(dioInterceptor, "/auth/login/refresh", storeAccessToken: _tokenRefreshed);
     final httpAPI = HttpAPI.create(Flavor.baseUrl!, interceptor);
     navState = NavigationState();
     authState = AuthState(httpAPI);
     productState = ProductState(httpAPI);
     masterState = MasterState(httpAPI);
     cashierState = CashierState(httpAPI);
+    unitState = UnitState(httpAPI);
     await AppState().authState!.loadLogin();
   }
 

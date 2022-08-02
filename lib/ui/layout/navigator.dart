@@ -23,7 +23,7 @@ class NavigatorWidget extends StatelessWidget {
           case "/cashier":
             return MaterialPageRoute(builder: (_) => const CashierWidget());
           case "/master":
-            return MaterialPageRoute(builder: (_) => const MasterRootWidget());
+            return MaterialPageRoute(builder: (_) => MasterRootWidget());
           default:
             return MaterialPageRoute(builder: (_) => const NoRouteWidget());
         }
