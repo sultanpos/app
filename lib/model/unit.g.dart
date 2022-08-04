@@ -25,3 +25,13 @@ Map<String, dynamic> _$UnitAddRequestToJson(UnitAddRequest instance) =>
     <String, dynamic>{
       'name': instance.name,
     };
+
+UnitUpdateRequest _$UnitUpdateRequestFromJson(Map<String, dynamic> json) =>
+    UnitUpdateRequest(
+      json['name'] as String,
+    );
+
+Map<String, dynamic> _$UnitUpdateRequestToJson(UnitUpdateRequest instance) =>
+    <String, dynamic>{
+      'name': instance.name,
+    };

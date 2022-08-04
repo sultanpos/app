@@ -9,6 +9,7 @@ class UnitState extends BaseState {
 
   ListState<Unit> listData;
   bool loading = false;
+  Unit? currentUnit;
   final form = FormGroup({
     'name': FormControl<String>(validators: [Validators.required], touched: true),
   });
@@ -18,18 +19,38 @@ class UnitState extends BaseState {
     form.markAllAsTouched();
   }
 
-  add() async {
+  editForm(Unit unit) {
+    form.control('name').updateValue(unit.name, emitEvent: false);
+    form.markAllAsTouched();
+    currentUnit = unit;
+  }
+
+  save() async {
     if (!form.valid) return;
     loading = true;
     notifyListeners();
+    final value = form.control('name').value;
     try {
-      await httpAPI.insert(UnitAddRequest(form.control('name').value));
+      if (currentUnit == null) {
+        await httpAPI.insert(UnitAddRequest(value));
+      } else {
+        await httpAPI.update(UnitUpdateRequest(value), currentUnit!.publicId);
+      }
       loading = false;
       notifyListeners();
       listData.load();
     } on ErrorResponse catch (e) {
       loading = false;
       notifyListeners();
+      throw e.message;
+    }
+  }
+
+  remove(String publicID) async {
+    try {
+      await httpAPI.delete('/unit/$publicID');
+      listData.load();
+    } on ErrorResponse catch (e) {
       throw e.message;
     }
   }

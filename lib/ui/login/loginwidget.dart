@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:motion_toast/motion_toast.dart';
-import 'package:motion_toast/resources/arrays.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:sultanpos/model/error.dart';
 import 'package:sultanpos/state/app.dart';
 import 'package:sultanpos/state/auth.dart';
 import 'package:provider/provider.dart';
 import 'package:sultanpos/ui/root.dart';
+import 'package:sultanpos/ui/widget/showerror.dart';
 
 class LoginWidget extends StatefulWidget {
   const LoginWidget({Key? key}) : super(key: key);
@@ -78,14 +77,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                           } on ErrorResponse catch (e) {
                             auth.setLoading(false);
                             if (!mounted) return;
-                            MotionToast.error(
-                              title: const Text('Login failed'),
-                              description: Text(e.message),
-                              position: MotionToastPosition.top,
-                              animationType: AnimationType.fromTop,
-                              animationCurve: Curves.ease,
-                              animationDuration: const Duration(milliseconds: 200),
-                            ).show(context);
+                            showError(context, title: 'Login gagal', message: e.message);
                             // ignore: empty_catches
                           } catch (e) {}
                         },

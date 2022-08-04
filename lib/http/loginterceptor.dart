@@ -11,7 +11,8 @@ class LogInterceptor extends Interceptor {
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
-    debugPrint('Response: ${_time()} [${response.statusCode}] url: ${response.realUri.toString()}; body: ${response.data.toString()}');
+    debugPrint(
+        'Response: ${_time()} [${response.requestOptions.method}:${response.statusCode}] url: ${response.realUri.toString()}; body: ${response.data.toString()}');
     handler.next(response);
   }
 

@@ -44,6 +44,10 @@ class HttpAPI {
     return post<T>(data, path ?? data.path() ?? "");
   }
 
+  Future<T> update<T>(BaseModel data, String publicId, {String? path}) {
+    return put<T>(data, '${path ?? data.path() ?? ""}/$publicId');
+  }
+
   Future<T> getOne<T>(String path, {required T Function(Map<String, dynamic> json) fromJsonFunc}) {
     return get<T>(path, fromJsonFunc: fromJsonFunc);
   }
@@ -53,8 +57,8 @@ class HttpAPI {
     return data.responseFromJson(ret.data) as T;
   }
 
-  Future<T> put<T>(String publicID, BaseModel data, {String? path, bool skipAuth = false, bool skipCompanyId = false}) async {
-    final ret = await fetch.put(_generateUrl('${path ?? data.path()}/$publicID', skipCompanyId), data: data.toJson(), skipAuth: skipAuth);
+  Future<T> put<T>(BaseModel data, String path, {bool skipAuth = false, bool skipCompanyId = false}) async {
+    final ret = await fetch.put(_generateUrl(path, skipCompanyId), data: data.toJson(), skipAuth: skipAuth);
     return data.responseFromJson(ret.data) as T;
   }
 

@@ -5,7 +5,9 @@ import 'package:sultanpos/model/unit.dart';
 import 'package:sultanpos/state/app.dart';
 import 'package:sultanpos/state/unit.dart';
 import 'package:sultanpos/ui/master/unit/add.dart';
+import 'package:sultanpos/ui/widget/confirmation.dart';
 import 'package:sultanpos/ui/widget/listwidget.dart';
+import 'package:sultanpos/ui/widget/showerror.dart';
 
 class UnitWidget extends HookWidget {
   const UnitWidget({Key? key}) : super(key: key);
@@ -35,11 +37,13 @@ class UnitWidget extends HookWidget {
                           context: ctx,
                           useRootNavigator: false,
                           builder: (c) {
-                            return const UnitAddWidget();
+                            return const UnitAddWidget(
+                              title: "Tambah Unit Baru",
+                            );
                           },
                         );
                       },
-                      child: const Text('Add'),
+                      child: const Text('Tambah Unit'),
                     ),
                   ],
                 ),
@@ -50,7 +54,29 @@ class UnitWidget extends HookWidget {
                     builder: (BuildContext ctx, Unit value) {
                       return ListTile(
                         title: Text(value.name),
-                        onTap: () {},
+                        onTap: () {
+                          AppState().unitState!.editForm(value);
+                          showDialog(
+                            context: ctx,
+                            useRootNavigator: false,
+                            builder: (c) {
+                              return const UnitAddWidget(title: "Edit Unit");
+                            },
+                          );
+                        },
+                        trailing: IconButton(
+                            onPressed: () async {
+                              final result = await showConfirmation(ctx, title: 'Yakin hapus', message: 'Yakin untuk menghapus "${value.name}"');
+                              if (result) {
+                                try {
+                                  await AppState().unitState!.remove(value.publicId);
+                                } catch (e) {
+                                  // ignore: use_build_context_synchronously
+                                  showError(ctx, title: 'Error menghapus', message: e.toString());
+                                }
+                              }
+                            },
+                            icon: const Icon(Icons.delete)),
                       );
                     },
                   ),

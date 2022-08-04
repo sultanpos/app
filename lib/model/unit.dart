@@ -45,3 +45,24 @@ class UnitAddRequest implements BaseModel {
   @override
   Map<String, dynamic> toJson() => _$UnitAddRequestToJson(this);
 }
+
+@JsonSerializable()
+class UnitUpdateRequest implements BaseModel {
+  final String name;
+
+  UnitUpdateRequest(this.name);
+
+  @override
+  String? path() {
+    return "/unit";
+  }
+
+  @override
+  factory UnitUpdateRequest.fromJson(Map<String, dynamic> json) => _$UnitUpdateRequestFromJson(json);
+
+  @override
+  BaseModel? responseFromJson(Map<String, dynamic> json) => null;
+
+  @override
+  Map<String, dynamic> toJson() => _$UnitUpdateRequestToJson(this);
+}
