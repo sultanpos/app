@@ -28,7 +28,10 @@ class UnitWidget extends HookWidget {
               children: [
                 Row(
                   children: [
-                    const Text('Daftar Unit'),
+                    Text(
+                      'Daftar Unit',
+                      style: Theme.of(context).textTheme.headlineSmall,
+                    ),
                     const Expanded(child: SizedBox()),
                     ElevatedButton(
                       onPressed: () {

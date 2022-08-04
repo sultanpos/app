@@ -30,6 +30,8 @@ class DrawerWidget extends StatelessWidget {
       child: Builder(
         builder: (ctx) {
           return SideNavigationBar(
+            expandable: false,
+            initiallyExpanded: false,
             selectedIndex: ctx.select<NavigationState, int>((value) => value.currentIndex),
             items: items.map((e) => SideNavigationBarItem(icon: e.icon, label: e.title)).toList(),
             onTap: (index) {

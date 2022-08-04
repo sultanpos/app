@@ -13,46 +13,45 @@ class MasterRootWidget extends StatelessWidget {
     () => const PriceGroupWidget(),
   ];
 
+  final tabs = ['Unit', 'Group Harga'];
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider.value(
       value: AppState().masterState!,
       child: Builder(
         builder: (ctx) {
-          return Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  children: [
-                    TextButton.icon(
-                      onPressed: () {
-                        AppState().masterState!.setCurrentIndex(0);
-                      },
-                      icon: const Icon(Icons.straighten),
-                      label: const Text('Unit'),
-                    ),
-                    TextButton.icon(
-                      onPressed: () {
-                        AppState().masterState!.setCurrentIndex(1);
-                      },
-                      icon: const Icon(Icons.sell),
-                      label: const Text('Group Harga'),
-                    ),
-                  ],
+          return DefaultTabController(
+            length: tabs.length,
+            child: Column(
+              children: [
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: TabBar(
+                    isScrollable: true,
+                    indicatorSize: TabBarIndicatorSize.label,
+                    tabs: tabs
+                        .map((e) => Tab(
+                              text: e,
+                            ))
+                        .toList(),
+                  ),
                 ),
-              ),
-              const Divider(),
-              Expanded(
-                child: AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 100),
-                  child: Builder(builder: (ctx) {
-                    final index = ctx.select<MasterState, int>((value) => value.currentIndex);
-                    return widgets[index]();
-                  }),
+                const SizedBox(
+                  height: 16,
                 ),
-              )
-            ],
+                const Expanded(child: TabBarView(children: [UnitWidget(), PriceGroupWidget()])),
+                /*Expanded(
+                  child: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 100),
+                    child: Builder(builder: (ctx) {
+                      final index = ctx.select<MasterState, int>((value) => value.currentIndex);
+                      return widgets[index]();
+                    }),
+                  ),
+                )*/
+              ],
+            ),
           );
         },
       ),

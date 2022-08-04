@@ -9,6 +9,7 @@ import 'package:sultanpos/state/auth.dart';
 import 'package:sultanpos/state/cashier.dart';
 import 'package:sultanpos/state/master.dart';
 import 'package:sultanpos/state/navigation.dart';
+import 'package:sultanpos/state/pricegroup.dart';
 import 'package:sultanpos/state/product.dart';
 import 'package:sultanpos/state/unit.dart';
 
@@ -28,6 +29,7 @@ class AppState {
   MasterState? masterState;
   CashierState? cashierState;
   UnitState? unitState;
+  PriceGroupState? priceGroupState;
 
   init() async {
     if (initted) return;
@@ -43,6 +45,7 @@ class AppState {
     masterState = MasterState(httpAPI);
     cashierState = CashierState(httpAPI);
     unitState = UnitState(httpAPI);
+    priceGroupState = PriceGroupState(httpAPI);
     await AppState().authState!.loadLogin();
   }
 
