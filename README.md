@@ -31,4 +31,6 @@ For front end, we are fully using Flutter. So please install any flutter develop
 
 ## Backend
 
-The backend can be downloaded from: 
+The backend still on development, it will be downloadable later for free. In the meanwhile the backend accessible from https://dev.sultanpos-api.lekapin.com/docs/. Default username and password for authenticate:
+- username: sultan
+- password: sultan
