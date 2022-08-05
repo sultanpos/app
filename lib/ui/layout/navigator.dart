@@ -17,17 +17,26 @@ class NavigatorWidget extends StatelessWidget {
       onGenerateRoute: (settings) {
         switch (settings.name) {
           case '/':
-            return MaterialPageRoute(builder: (_) => const HomeWidget());
+            return _pageBuilder(settings, () => const HomeWidget());
           case "/product":
-            return MaterialPageRoute(builder: (_) => const ProductRootWidget());
+            return _pageBuilder(settings, () => const ProductRootWidget());
           case "/cashier":
-            return MaterialPageRoute(builder: (_) => const CashierWidget());
+            return _pageBuilder(settings, () => const CashierWidget());
           case "/master":
-            return MaterialPageRoute(builder: (_) => MasterRootWidget());
+            return _pageBuilder(settings, () => MasterRootWidget());
           default:
-            return MaterialPageRoute(builder: (_) => const NoRouteWidget());
+            return _pageBuilder(settings, () => const NoRouteWidget());
         }
       },
+    );
+  }
+
+  _pageBuilder(RouteSettings settings, Function retWidget) {
+    return PageRouteBuilder(
+      settings: settings,
+      pageBuilder: (_, __, ___) => retWidget(),
+      transitionsBuilder: (_, a, __, c) => FadeTransition(opacity: a, child: c),
+      transitionDuration: const Duration(milliseconds: 100),
     );
   }
 }
