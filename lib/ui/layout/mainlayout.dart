@@ -7,8 +7,13 @@ class MainLayoutWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Row(children: [
       DrawerWidget(),
+      VerticalDivider(
+        width: 0,
+        color: isDark ? Colors.white : Colors.grey,
+      ),
       const Expanded(child: NavigatorWidget()),
     ]);
   }
