@@ -3,12 +3,12 @@ import 'package:sultanpos/model/base.dart';
 part 'unit.g.dart';
 
 @JsonSerializable()
-class Unit implements BaseModel {
+class UnitModel implements BaseModel {
   @JsonKey(name: 'public_id')
   final String publicId;
   final String name;
 
-  Unit(this.publicId, this.name);
+  UnitModel(this.publicId, this.name);
 
   @override
   String? path() {
@@ -16,7 +16,7 @@ class Unit implements BaseModel {
   }
 
   @override
-  factory Unit.fromJson(Map<String, dynamic> json) => _$UnitFromJson(json);
+  factory UnitModel.fromJson(Map<String, dynamic> json) => _$UnitFromJson(json);
 
   @override
   BaseModel? responseFromJson(Map<String, dynamic> json) => null;
@@ -26,10 +26,10 @@ class Unit implements BaseModel {
 }
 
 @JsonSerializable()
-class UnitAddRequest implements BaseModel {
+class UnitAddRequestModel implements BaseModel {
   final String name;
 
-  UnitAddRequest(this.name);
+  UnitAddRequestModel(this.name);
 
   @override
   String? path() {
@@ -37,20 +37,20 @@ class UnitAddRequest implements BaseModel {
   }
 
   @override
-  factory UnitAddRequest.fromJson(Map<String, dynamic> json) => _$UnitAddRequestFromJson(json);
+  factory UnitAddRequestModel.fromJson(Map<String, dynamic> json) => _$UnitAddRequestFromJson(json);
 
   @override
-  BaseModel? responseFromJson(Map<String, dynamic> json) => Unit.fromJson(json);
+  BaseModel? responseFromJson(Map<String, dynamic> json) => UnitModel.fromJson(json);
 
   @override
   Map<String, dynamic> toJson() => _$UnitAddRequestToJson(this);
 }
 
 @JsonSerializable()
-class UnitUpdateRequest implements BaseModel {
+class UnitUpdateRequestModel implements BaseModel {
   final String name;
 
-  UnitUpdateRequest(this.name);
+  UnitUpdateRequestModel(this.name);
 
   @override
   String? path() {
@@ -58,7 +58,7 @@ class UnitUpdateRequest implements BaseModel {
   }
 
   @override
-  factory UnitUpdateRequest.fromJson(Map<String, dynamic> json) => _$UnitUpdateRequestFromJson(json);
+  factory UnitUpdateRequestModel.fromJson(Map<String, dynamic> json) => _$UnitUpdateRequestFromJson(json);
 
   @override
   BaseModel? responseFromJson(Map<String, dynamic> json) => null;

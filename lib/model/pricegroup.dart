@@ -3,14 +3,14 @@ import 'package:sultanpos/model/base.dart';
 part 'pricegroup.g.dart';
 
 @JsonSerializable()
-class PriceGroup implements BaseModel {
+class PriceGroupModel implements BaseModel {
   @JsonKey(name: 'public_id')
   final String publicId;
   final String name;
   @JsonKey(name: 'is_default')
   final bool isDefault;
 
-  PriceGroup(this.publicId, this.name, this.isDefault);
+  PriceGroupModel(this.publicId, this.name, this.isDefault);
 
   @override
   String? path() {
@@ -18,7 +18,7 @@ class PriceGroup implements BaseModel {
   }
 
   @override
-  factory PriceGroup.fromJson(Map<String, dynamic> json) => _$PriceGroupFromJson(json);
+  factory PriceGroupModel.fromJson(Map<String, dynamic> json) => _$PriceGroupFromJson(json);
 
   @override
   BaseModel? responseFromJson(Map<String, dynamic> json) => null;
@@ -28,10 +28,10 @@ class PriceGroup implements BaseModel {
 }
 
 @JsonSerializable()
-class PriceGroupAddRequest implements BaseModel {
+class PriceGroupAddRequestModel implements BaseModel {
   final String name;
 
-  PriceGroupAddRequest(this.name);
+  PriceGroupAddRequestModel(this.name);
 
   @override
   String? path() {
@@ -39,20 +39,20 @@ class PriceGroupAddRequest implements BaseModel {
   }
 
   @override
-  factory PriceGroupAddRequest.fromJson(Map<String, dynamic> json) => _$PriceGroupAddRequestFromJson(json);
+  factory PriceGroupAddRequestModel.fromJson(Map<String, dynamic> json) => _$PriceGroupAddRequestFromJson(json);
 
   @override
-  BaseModel? responseFromJson(Map<String, dynamic> json) => PriceGroupAddRequest.fromJson(json);
+  BaseModel? responseFromJson(Map<String, dynamic> json) => PriceGroupAddRequestModel.fromJson(json);
 
   @override
   Map<String, dynamic> toJson() => _$PriceGroupAddRequestToJson(this);
 }
 
 @JsonSerializable()
-class PriceGroupUpdateRequest implements BaseModel {
+class PriceGroupUpdateRequestModel implements BaseModel {
   final String name;
 
-  PriceGroupUpdateRequest(this.name);
+  PriceGroupUpdateRequestModel(this.name);
 
   @override
   String? path() {
@@ -60,7 +60,7 @@ class PriceGroupUpdateRequest implements BaseModel {
   }
 
   @override
-  factory PriceGroupUpdateRequest.fromJson(Map<String, dynamic> json) => _$PriceGroupUpdateRequestFromJson(json);
+  factory PriceGroupUpdateRequestModel.fromJson(Map<String, dynamic> json) => _$PriceGroupUpdateRequestFromJson(json);
 
   @override
   BaseModel? responseFromJson(Map<String, dynamic> json) => null;

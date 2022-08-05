@@ -23,6 +23,7 @@ class MasterRootWidget extends StatelessWidget {
         builder: (ctx) {
           return DefaultTabController(
             length: tabs.length,
+            animationDuration: const Duration(milliseconds: 100),
             child: Column(
               children: [
                 Align(

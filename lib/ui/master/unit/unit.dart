@@ -52,9 +52,9 @@ class UnitWidget extends HookWidget {
                 ),
                 const Divider(),
                 Expanded(
-                  child: ListWidget<Unit>(
+                  child: ListWidget<UnitModel>(
                     AppState().unitState!.listData,
-                    builder: (BuildContext ctx, Unit value) {
+                    builder: (BuildContext ctx, UnitModel value) {
                       return ListTile(
                         title: Text(value.name),
                         onTap: () {

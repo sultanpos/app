@@ -10,7 +10,7 @@ import 'package:sultanpos/state/base.dart';
 class AuthState extends BaseState {
   JWTClaim? claim;
   String? refreshToken;
-  User? user;
+  UserModel? user;
   bool isLoading = false;
 
   AuthState(HttpAPI httpAPI) : super(httpAPI);
@@ -54,7 +54,7 @@ class AuthState extends BaseState {
     claim = JWTClaim.fromJson(Jwt.parseJwt(token.accessToken));
     refreshToken = token.refreshToken;
     try {
-      final userResult = await httpAPI.getOne<User>('/user/${claim!.userPublicId}', fromJsonFunc: User.fromJson);
+      final userResult = await httpAPI.getOne<UserModel>('/user/${claim!.userPublicId}', fromJsonFunc: UserModel.fromJson);
       user = userResult;
     } catch (e) {
       rethrow;

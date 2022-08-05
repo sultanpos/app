@@ -5,11 +5,11 @@ import 'package:sultanpos/state/base.dart';
 import 'package:sultanpos/state/list.dart';
 
 class PriceGroupState extends BaseState {
-  PriceGroupState(super.httpAPI) : listData = ListState<PriceGroup>(httpAPI, '/pricegroup', PriceGroup.fromJson);
+  PriceGroupState(super.httpAPI) : listData = ListState<PriceGroupModel>(httpAPI, '/pricegroup', PriceGroupModel.fromJson);
 
-  ListState<PriceGroup> listData;
+  ListState<PriceGroupModel> listData;
   bool loading = false;
-  PriceGroup? currentPriceGroup;
+  PriceGroupModel? currentPriceGroup;
   final form = FormGroup({
     'name': FormControl<String>(validators: [Validators.required], touched: true),
   });
@@ -19,7 +19,7 @@ class PriceGroupState extends BaseState {
     form.markAllAsTouched();
   }
 
-  editForm(PriceGroup unit) {
+  editForm(PriceGroupModel unit) {
     form.control('name').updateValue(unit.name, emitEvent: false);
     form.markAllAsTouched();
     currentPriceGroup = unit;
@@ -32,9 +32,9 @@ class PriceGroupState extends BaseState {
     final value = form.control('name').value;
     try {
       if (currentPriceGroup == null) {
-        await httpAPI.insert(PriceGroupAddRequest(value));
+        await httpAPI.insert(PriceGroupAddRequestModel(value));
       } else {
-        await httpAPI.update(PriceGroupUpdateRequest(value), currentPriceGroup!.publicId);
+        await httpAPI.update(PriceGroupUpdateRequestModel(value), currentPriceGroup!.publicId);
       }
       loading = false;
       notifyListeners();

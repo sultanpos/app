@@ -6,32 +6,28 @@ part of 'unit.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Unit _$UnitFromJson(Map<String, dynamic> json) => Unit(
+UnitModel _$UnitFromJson(Map<String, dynamic> json) => UnitModel(
       json['public_id'] as String,
       json['name'] as String,
     );
 
-Map<String, dynamic> _$UnitToJson(Unit instance) => <String, dynamic>{
+Map<String, dynamic> _$UnitToJson(UnitModel instance) => <String, dynamic>{
       'public_id': instance.publicId,
       'name': instance.name,
     };
 
-UnitAddRequest _$UnitAddRequestFromJson(Map<String, dynamic> json) =>
-    UnitAddRequest(
+UnitAddRequestModel _$UnitAddRequestFromJson(Map<String, dynamic> json) => UnitAddRequestModel(
       json['name'] as String,
     );
 
-Map<String, dynamic> _$UnitAddRequestToJson(UnitAddRequest instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$UnitAddRequestToJson(UnitAddRequestModel instance) => <String, dynamic>{
       'name': instance.name,
     };
 
-UnitUpdateRequest _$UnitUpdateRequestFromJson(Map<String, dynamic> json) =>
-    UnitUpdateRequest(
+UnitUpdateRequestModel _$UnitUpdateRequestFromJson(Map<String, dynamic> json) => UnitUpdateRequestModel(
       json['name'] as String,
     );
 
-Map<String, dynamic> _$UnitUpdateRequestToJson(UnitUpdateRequest instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$UnitUpdateRequestToJson(UnitUpdateRequestModel instance) => <String, dynamic>{
       'name': instance.name,
     };

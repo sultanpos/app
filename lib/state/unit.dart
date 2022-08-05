@@ -5,11 +5,11 @@ import 'package:sultanpos/state/base.dart';
 import 'package:sultanpos/state/list.dart';
 
 class UnitState extends BaseState {
-  UnitState(super.httpAPI) : listData = ListState<Unit>(httpAPI, '/unit', Unit.fromJson);
+  UnitState(super.httpAPI) : listData = ListState<UnitModel>(httpAPI, '/unit', UnitModel.fromJson);
 
-  ListState<Unit> listData;
+  ListState<UnitModel> listData;
   bool loading = false;
-  Unit? currentUnit;
+  UnitModel? currentUnit;
   final form = FormGroup({
     'name': FormControl<String>(validators: [Validators.required], touched: true),
   });
@@ -19,7 +19,7 @@ class UnitState extends BaseState {
     form.markAllAsTouched();
   }
 
-  editForm(Unit unit) {
+  editForm(UnitModel unit) {
     form.control('name').updateValue(unit.name, emitEvent: false);
     form.markAllAsTouched();
     currentUnit = unit;
@@ -32,9 +32,9 @@ class UnitState extends BaseState {
     final value = form.control('name').value;
     try {
       if (currentUnit == null) {
-        await httpAPI.insert(UnitAddRequest(value));
+        await httpAPI.insert(UnitAddRequestModel(value));
       } else {
-        await httpAPI.update(UnitUpdateRequest(value), currentUnit!.publicId);
+        await httpAPI.update(UnitUpdateRequestModel(value), currentUnit!.publicId);
       }
       loading = false;
       notifyListeners();

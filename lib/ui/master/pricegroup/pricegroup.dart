@@ -52,9 +52,9 @@ class PriceGroupWidget extends HookWidget {
                 ),
                 const Divider(),
                 Expanded(
-                  child: ListWidget<PriceGroup>(
+                  child: ListWidget<PriceGroupModel>(
                     AppState().priceGroupState!.listData,
-                    builder: (BuildContext ctx, PriceGroup value) {
+                    builder: (BuildContext ctx, PriceGroupModel value) {
                       return ListTile(
                         title: Text(value.name),
                         onTap: () {
