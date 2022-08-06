@@ -91,42 +91,9 @@ class DrawerWidget extends StatelessWidget {
                     }
                   },
                   itemBuilder: (ctx) => [
-                    PopupMenuItem<String>(
-                      value: "setting",
-                      child: Row(
-                        children: const [
-                          Icon(Icons.settings),
-                          SizedBox(
-                            width: 8,
-                          ),
-                          Text("Setting")
-                        ],
-                      ),
-                    ),
-                    PopupMenuItem<String>(
-                      value: "profile",
-                      child: Row(
-                        children: const [
-                          Icon(Icons.person),
-                          SizedBox(
-                            width: 8,
-                          ),
-                          Text("Profile")
-                        ],
-                      ),
-                    ),
-                    PopupMenuItem<String>(
-                      value: "logout",
-                      child: Row(
-                        children: const [
-                          Icon(Icons.exit_to_app),
-                          SizedBox(
-                            width: 8,
-                          ),
-                          Text("Keluar")
-                        ],
-                      ),
-                    ),
+                    _popupMenuItem("setting", "Setting", Icons.settings),
+                    _popupMenuItem("profile", "Profile", Icons.person),
+                    _popupMenuItem("logout", "Keluar", Icons.exit_to_app),
                   ],
                   icon: const Icon(Icons.person),
                 )
@@ -134,6 +101,21 @@ class DrawerWidget extends StatelessWidget {
             ),
           );
         },
+      ),
+    );
+  }
+
+  PopupMenuItem<String> _popupMenuItem(String value, String title, IconData icon) {
+    return PopupMenuItem<String>(
+      value: value,
+      child: Row(
+        children: [
+          Icon(icon),
+          const SizedBox(
+            width: 8,
+          ),
+          Text(title)
+        ],
       ),
     );
   }
