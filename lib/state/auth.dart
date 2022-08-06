@@ -21,6 +21,11 @@ class AuthState extends BaseState {
     'remember': FormControl<bool>(touched: true),
   });
 
+  resetForm() {
+    loginForm.reset();
+    loginForm.markAllAsTouched();
+  }
+
   loadLogin() async {
     final token = Preference().getToken();
     if (token == null) {

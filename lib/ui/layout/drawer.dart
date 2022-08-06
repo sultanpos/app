@@ -3,6 +3,7 @@ import 'package:sultanpos/state/app.dart';
 import 'package:provider/provider.dart';
 import 'package:sultanpos/state/navigation.dart';
 import 'package:sultanpos/ui/login/loginpage.dart';
+import 'package:sultanpos/ui/util/color.dart';
 
 class MenuItem {
   final int index;
@@ -39,9 +40,10 @@ class DrawerWidget extends StatelessWidget {
   final items = <MenuItem>[
     MenuItem(0, title: 'Dashboard', icon: Icons.dashboard, route: "/"),
     MenuItem(1, title: 'Barang', icon: Icons.inventory_2, route: "/product"),
-    MenuItem(2, title: 'Kasir', icon: Icons.desktop_windows, route: "/cashier"),
-    MenuItem(3, title: 'Master', icon: Icons.folder, route: "/master"),
-    MenuItem(4, title: 'Keluar', icon: Icons.exit_to_app, route: "/logout"),
+    MenuItem(2, title: 'Kasir', icon: Icons.point_of_sale, route: "/cashier"),
+    MenuItem(3, title: 'Pembelian', icon: Icons.shopping_cart, route: "/"),
+    MenuItem(4, title: 'Laporan', icon: Icons.assessment, route: "/"),
+    MenuItem(5, title: 'Master', icon: Icons.folder_open, route: "/master"),
   ];
 
   @override
@@ -51,31 +53,84 @@ class DrawerWidget extends StatelessWidget {
       child: Builder(
         builder: (ctx) {
           final curIndex = ctx.select<NavigationState, int>((value) => value.currentIndex);
-          return Padding(
+          final bgColor = Theme.of(context).scaffoldBackgroundColor;
+          return Container(
             padding: const EdgeInsets.all(4.0),
+            color: lighterOrDarkerColor(Theme.of(context), bgColor),
             child: Column(
-              children: items.map((e) {
-                return MainMenuItem(
-                  e.title,
-                  e.icon,
-                  curIndex == e.index,
-                  onClick: () {
-                    if (curIndex == e.index) return;
-                    if (items[e.index].route == '/logout') {
-                      AppState().authState!.logout();
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => const LoginPage(),
-                        ),
-                      );
-                      return;
+              children: [
+                ...items.map((e) {
+                  return MainMenuItem(
+                    e.title,
+                    e.icon,
+                    curIndex == e.index,
+                    onClick: () {
+                      if (curIndex == e.index) return;
+                      ctx.read<NavigationState>().setCurrentIndex(e.index);
+                      AppState().navigateTo(items[e.index].route);
+                    },
+                  );
+                }).toList(),
+                const Expanded(child: SizedBox()),
+                PopupMenuButton(
+                  offset: const Offset(30, 0),
+                  onSelected: (value) {
+                    switch (value) {
+                      case 'logout':
+                        {
+                          AppState().authState!.resetForm();
+                          AppState().authState!.logout();
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const LoginPage(),
+                            ),
+                          );
+                        }
+                        break;
                     }
-                    ctx.read<NavigationState>().setCurrentIndex(e.index);
-                    AppState().navigateTo(items[e.index].route);
                   },
-                );
-              }).toList(),
+                  itemBuilder: (ctx) => [
+                    PopupMenuItem<String>(
+                      value: "setting",
+                      child: Row(
+                        children: const [
+                          Icon(Icons.settings),
+                          SizedBox(
+                            width: 8,
+                          ),
+                          Text("Setting")
+                        ],
+                      ),
+                    ),
+                    PopupMenuItem<String>(
+                      value: "profile",
+                      child: Row(
+                        children: const [
+                          Icon(Icons.person),
+                          SizedBox(
+                            width: 8,
+                          ),
+                          Text("Profile")
+                        ],
+                      ),
+                    ),
+                    PopupMenuItem<String>(
+                      value: "logout",
+                      child: Row(
+                        children: const [
+                          Icon(Icons.exit_to_app),
+                          SizedBox(
+                            width: 8,
+                          ),
+                          Text("Keluar")
+                        ],
+                      ),
+                    ),
+                  ],
+                  icon: const Icon(Icons.person),
+                )
+              ],
             ),
           );
         },

@@ -11,7 +11,7 @@ class MainLayoutWidget extends StatelessWidget {
     return Row(children: [
       DrawerWidget(),
       VerticalDivider(
-        width: 0,
+        width: 4,
         color: isDark ? Colors.white : Colors.grey,
       ),
       const Expanded(child: NavigatorWidget()),
