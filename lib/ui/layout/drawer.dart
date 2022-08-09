@@ -13,7 +13,7 @@ class MenuItem {
   MenuItem(this.index, {required this.title, required this.icon, required this.route});
 }
 
-class MainMenuItem extends StatelessWidget {
+class MainMenuItem extends StatefulWidget {
   final String title;
   final IconData icon;
   final bool selected;
@@ -21,8 +21,28 @@ class MainMenuItem extends StatelessWidget {
   const MainMenuItem(this.title, this.icon, this.selected, {Key? key, this.onClick}) : super(key: key);
 
   @override
+  State<MainMenuItem> createState() => _MainMenuItemState();
+}
+
+class _MainMenuItemState extends State<MainMenuItem> {
+  bool _onHover = false;
+  @override
   Widget build(BuildContext context) {
-    return IconButton(
+    final bgColor = Theme.of(context).scaffoldBackgroundColor;
+    return InkWell(
+      onTap: widget.onClick,
+      onHover: (value) {
+        setState(() {
+          _onHover = value;
+        });
+      },
+      child: Container(
+        color: _onHover || widget.selected ? bgColor : lighterOrDarkerColor(Theme.of(context), bgColor),
+        padding: const EdgeInsets.all(16),
+        child: Column(children: [Icon(widget.icon), Text(widget.title)]),
+      ),
+    );
+    /*return IconButton(
       splashRadius: 24,
       onPressed: onClick,
       tooltip: title,
@@ -30,7 +50,7 @@ class MainMenuItem extends StatelessWidget {
         icon,
         color: selected ? Colors.blue[700]! : null,
       ),
-    );
+    );*/
   }
 }
 
@@ -55,9 +75,9 @@ class DrawerWidget extends StatelessWidget {
           final curIndex = ctx.select<NavigationState, int>((value) => value.currentIndex);
           final bgColor = Theme.of(context).scaffoldBackgroundColor;
           return Container(
-            padding: const EdgeInsets.all(4.0),
-            color: lighterOrDarkerColor(Theme.of(context), bgColor),
-            child: Column(
+            //padding: const EdgeInsets.symmetric(horizontal: 4),
+            //color: lighterOrDarkerColor(Theme.of(context), bgColor),
+            child: Row(
               children: [
                 ...items.map((e) {
                   return MainMenuItem(
@@ -71,8 +91,7 @@ class DrawerWidget extends StatelessWidget {
                     },
                   );
                 }).toList(),
-                const Expanded(child: SizedBox()),
-                PopupMenuButton(
+                /*PopupMenuButton(
                   offset: const Offset(30, 0),
                   onSelected: (value) {
                     switch (value) {
@@ -96,7 +115,7 @@ class DrawerWidget extends StatelessWidget {
                     _popupMenuItem("logout", "Keluar", Icons.exit_to_app),
                   ],
                   icon: const Icon(Icons.person),
-                )
+                )*/
               ],
             ),
           );
@@ -117,6 +136,20 @@ class DrawerWidget extends StatelessWidget {
           Text(title)
         ],
       ),
+    );
+  }
+}
+
+class MenuIconButton extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  const MenuIconButton({required this.icon, required this.title, Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.blue,
+      child: Column(children: [Icon(icon), Text(title)]),
     );
   }
 }

@@ -27,30 +27,18 @@ class MasterRootWidget extends StatelessWidget {
             animationDuration: const Duration(milliseconds: 100),
             child: Column(
               children: [
-                Container(
-                  color: lighterOrDarkerColor(Theme.of(context), bgColor),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: TabBar(
-                      isScrollable: true,
-                      indicatorSize: TabBarIndicatorSize.label,
-                      tabs: tabs.map((e) => Tab(text: e)).toList(),
-                    ),
-                  ),
-                ),
                 const SizedBox(
                   height: 16,
                 ),
                 const Expanded(child: TabBarView(children: [UnitWidget(), PriceGroupWidget()])),
-                /*Expanded(
-                  child: AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 100),
-                    child: Builder(builder: (ctx) {
-                      final index = ctx.select<MasterState, int>((value) => value.currentIndex);
-                      return widgets[index]();
-                    }),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: TabBar(
+                    isScrollable: true,
+                    indicatorSize: TabBarIndicatorSize.label,
+                    tabs: tabs.map((e) => Tab(text: e)).toList(),
                   ),
-                )*/
+                ),
               ],
             ),
           );

@@ -8,17 +8,13 @@ class RootWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          Focus(
-              canRequestFocus: false,
-              onKey: (node, event) {
-                if (event is RawKeyDownEvent) print('${event.data.isControlPressed} :: ${event.data.logicalKey.toString()} :: ${event.repeat}');
-                return KeyEventResult.ignored;
-              },
-              child: const MainLayoutWidget()),
-        ],
-      ),
+      body: Focus(
+          canRequestFocus: false,
+          onKey: (node, event) {
+            if (event is RawKeyDownEvent) print('${event.data.isControlPressed} :: ${event.data.logicalKey.toString()} :: ${event.repeat}');
+            return KeyEventResult.ignored;
+          },
+          child: const MainLayoutWidget()),
     );
   }
 }
