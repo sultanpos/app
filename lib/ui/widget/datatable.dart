@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:sultanpos/model/base.dart';
 import 'package:sultanpos/model/listresult.dart';
 import 'package:sultanpos/state/list.dart';
+import 'package:sultanpos/ui/util/color.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 class SDataSource<T extends BaseModel> extends DataGridSource {
@@ -16,9 +17,9 @@ class SDataSource<T extends BaseModel> extends DataGridSource {
       : data!.map((e) {
           return DataGridRow(
               cells: columns
-                  .map((col) => DataGridCell(
+                  .map((col) => DataGridCell<T>(
                         columnName: col.id,
-                        value: col.get != null ? col.get!(e) : 'no value',
+                        value: e,
                       ))
                   .toList());
         }).toList();
@@ -26,22 +27,15 @@ class SDataSource<T extends BaseModel> extends DataGridSource {
   @override
   DataGridRowAdapter? buildRow(DataGridRow row) {
     return DataGridRowAdapter(
-        cells: row
-            .getCells()
-            .asMap()
-            .map<int, Widget>((index, dataGridCell) {
-              final getWidget = columns.firstWhere((element) => element.id == dataGridCell.columnName);
-              if (getWidget.getWidget != null) return MapEntry(index, getWidget.getWidget!(data![index]));
-              return MapEntry(
-                  index,
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    padding: const EdgeInsets.all(4.0),
-                    child: Text(dataGridCell.value.toString()),
-                  ));
-            })
-            .values
-            .toList());
+        cells: row.getCells().map<Widget>((dataGridCell) {
+      final col = columns.firstWhere((element) => element.id == dataGridCell.columnName);
+      if (col.getWidget != null) return col.getWidget!(dataGridCell.value);
+      return Container(
+        alignment: Alignment.centerLeft,
+        padding: const EdgeInsets.all(4.0),
+        child: Text(col.get!(dataGridCell.value)),
+      );
+    }).toList());
   }
 
   loadNewData(List<T> data) {
@@ -70,11 +64,16 @@ class SDataTable<T extends BaseModel> extends StatefulWidget {
 }
 
 class _SDataTableState<T extends BaseModel> extends State<SDataTable<T>> {
+  late Map<String, double> columnSize;
   late SDataSource<T> source;
 
   @override
   void initState() {
     super.initState();
+    columnSize = {};
+    for (var element in widget.columns) {
+      columnSize[element.id] = element.width ?? 200;
+    }
     source = SDataSource<T>(widget.columns);
     Future.microtask(() {
       widget.state.addListener(stateListener);
@@ -126,15 +125,17 @@ class _SDataTableState<T extends BaseModel> extends State<SDataTable<T>> {
                       source: source,
                       columns: widget.columns
                           .map((e) => GridColumn(
-                                columnName: e.title,
-                                //width: e.width ?? double.nan,
-                                label: Center(
-                                  child: Text(e.title),
-                                ),
-                              ))
+                              columnName: e.id,
+                              columnWidthMode: e.width != null ? ColumnWidthMode.auto : ColumnWidthMode.none,
+                              width: columnSize[e.id]!,
+                              allowEditing: false,
+                              label: Container(
+                                color: lighterOrDarkerColor(Theme.of(context), Theme.of(context).scaffoldBackgroundColor),
+                                child: Center(child: Text(e.title)),
+                              )))
                           .toList(),
                       selectionMode: SelectionMode.single,
-                      onCellLongPress: (details) {
+                      onCellDoubleTap: (details) {
                         final index = details.rowColumnIndex.rowIndex - 1;
                         if (widget.onDoubleClicked != null && index >= 0) {
                           final data = (list as ListResult).data;
@@ -142,12 +143,18 @@ class _SDataTableState<T extends BaseModel> extends State<SDataTable<T>> {
                         }
                       },
                       navigationMode: GridNavigationMode.row,
-                      allowSorting: true,
+                      allowSorting: false,
                       isScrollbarAlwaysShown: true,
                       highlightRowOnHover: true,
                       gridLinesVisibility: GridLinesVisibility.both,
                       headerGridLinesVisibility: GridLinesVisibility.both,
                       allowColumnsResizing: true,
+                      columnResizeMode: ColumnResizeMode.onResizeEnd,
+                      onColumnResizeUpdate: (details) {
+                        columnSize[details.column.columnName] = details.width;
+                        setState(() {});
+                        return true;
+                      },
                     );
         },
       ),

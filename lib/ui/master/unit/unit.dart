@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:provider/provider.dart';
 import 'package:sultanpos/model/unit.dart';
 import 'package:sultanpos/state/app.dart';
@@ -7,7 +6,6 @@ import 'package:sultanpos/state/unit.dart';
 import 'package:sultanpos/ui/master/unit/add.dart';
 import 'package:sultanpos/ui/widget/confirmation.dart';
 import 'package:sultanpos/ui/widget/datatable.dart';
-import 'package:sultanpos/ui/widget/listwidget.dart';
 import 'package:sultanpos/ui/widget/showerror.dart';
 
 class UnitWidget extends StatelessWidget {
@@ -53,28 +51,57 @@ class UnitWidget extends StatelessWidget {
                   state: AppState().unitState!.listData,
                   columns: [
                     SDataColumn(
-                      width: 400,
+                      width: 100,
+                      id: 'action',
+                      title: 'Action',
+                      getWidget: (v) => Row(children: [
+                        IconButton(
+                          iconSize: 16,
+                          splashRadius: 16,
+                          onPressed: () {
+                            AppState().unitState!.editForm(v);
+                            showDialog(
+                              context: ctx,
+                              useRootNavigator: false,
+                              builder: (c) {
+                                return const UnitAddWidget(title: "Edit Unit");
+                              },
+                            );
+                          },
+                          icon: const Icon(Icons.edit),
+                        ),
+                        IconButton(
+                          iconSize: 16,
+                          splashRadius: 16,
+                          onPressed: () async {
+                            final result = await showConfirmation(ctx, title: 'Yakin hapus', message: 'Yakin untuk menghapus "${v.name}"');
+                            if (result) {
+                              try {
+                                await AppState().unitState!.remove(v.publicId);
+                              } catch (e) {
+                                // ignore: use_build_context_synchronously
+                                showError(ctx, title: 'Error menghapus', message: e.toString());
+                              }
+                            }
+                          },
+                          icon: const Icon(
+                            Icons.delete_forever,
+                            color: Colors.red,
+                          ),
+                        ),
+                      ]),
+                    ),
+                    SDataColumn(
                       id: 'publicId',
                       title: 'ID',
                       get: (v) => v.publicId,
                     ),
                     SDataColumn(
-                      width: 300,
                       id: 'name',
                       title: 'Nama',
                       get: (v) => v.name,
                     ),
                   ],
-                  onDoubleClicked: (value) {
-                    AppState().unitState!.editForm(value);
-                    showDialog(
-                      context: ctx,
-                      useRootNavigator: false,
-                      builder: (c) {
-                        return const UnitAddWidget(title: "Edit Unit");
-                      },
-                    );
-                  },
                 )),
                 /*Expanded(
                   child: ListWidget<UnitModel>(

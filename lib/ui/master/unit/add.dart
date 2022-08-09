@@ -31,11 +31,13 @@ class UnitAddWidget extends StatelessWidget {
                       const Divider(),
                       ReactiveTextField(
                         formControlName: 'name',
+                        autofocus: true,
                         inputFormatters: [UpperCaseTextFormatter()],
                         decoration: const InputDecoration(
                           hintText: "Masukkan nama unit",
                           labelText: "Nama",
                         ),
+                        onSubmitted: () => save(ctx),
                       ),
                       const Expanded(
                         child: SizedBox(),
@@ -57,13 +59,7 @@ class UnitAddWidget extends StatelessWidget {
                               onPressed: loading
                                   ? null
                                   : () async {
-                                      try {
-                                        final nav = Navigator.of(ctx);
-                                        await AppState().unitState!.save();
-                                        nav.pop();
-                                      } catch (e) {
-                                        showError(context, title: 'Error menyimpan', message: e.toString());
-                                      }
+                                      save(ctx);
                                     },
                               child: Text(loading ? "Menyimpan..." : "Simpan")),
                         ],
@@ -77,5 +73,15 @@ class UnitAddWidget extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  save(BuildContext context) async {
+    try {
+      final nav = Navigator.of(context);
+      await AppState().unitState!.save();
+      nav.pop();
+    } catch (e) {
+      showError(context, title: 'Error menyimpan', message: e.toString());
+    }
   }
 }
