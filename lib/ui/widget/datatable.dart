@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sultanpos/model/base.dart';
 import 'package:sultanpos/model/listresult.dart';
 import 'package:sultanpos/state/list.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-class SDataSource<T> extends DataGridSource {
+class SDataSource<T extends BaseModel> extends DataGridSource {
   List<SDataColumn<T>> columns;
   List<T>? data;
   SDataSource(this.columns);
@@ -49,7 +50,7 @@ class SDataSource<T> extends DataGridSource {
   }
 }
 
-class SDataColumn<T> {
+class SDataColumn<T extends BaseModel> {
   final String id;
   final String title;
   final String Function(T v)? get;
@@ -58,9 +59,9 @@ class SDataColumn<T> {
   SDataColumn({required this.id, required this.title, this.get, this.getWidget, this.width});
 }
 
-class SDataTable<T> extends StatefulWidget {
-  final ListState state;
-  final List<SDataColumn> columns;
+class SDataTable<T extends BaseModel> extends StatefulWidget {
+  final ListState<T> state;
+  final List<SDataColumn<T>> columns;
   final void Function(T value)? onDoubleClicked;
   const SDataTable({required this.state, required this.columns, this.onDoubleClicked, Key? key}) : super(key: key);
 
@@ -68,13 +69,13 @@ class SDataTable<T> extends StatefulWidget {
   State<SDataTable<T>> createState() => _SDataTableState<T>();
 }
 
-class _SDataTableState<T> extends State<SDataTable<T>> {
-  late SDataSource source;
+class _SDataTableState<T extends BaseModel> extends State<SDataTable<T>> {
+  late SDataSource<T> source;
 
   @override
   void initState() {
     super.initState();
-    source = SDataSource(widget.columns);
+    source = SDataSource<T>(widget.columns);
     Future.microtask(() {
       widget.state.addListener(stateListener);
       widget.state.load();
@@ -89,7 +90,8 @@ class _SDataTableState<T> extends State<SDataTable<T>> {
 
   stateListener() {
     if (widget.state.state is ListResult) {
-      source.loadNewData((widget.state.state as ListResult).data);
+      final data = (widget.state.state as ListResult<T>).data;
+      source.loadNewData(data);
     }
   }
 
@@ -125,7 +127,7 @@ class _SDataTableState<T> extends State<SDataTable<T>> {
                       columns: widget.columns
                           .map((e) => GridColumn(
                                 columnName: e.title,
-                                width: e.width ?? double.nan,
+                                //width: e.width ?? double.nan,
                                 label: Center(
                                   child: Text(e.title),
                                 ),
@@ -143,6 +145,9 @@ class _SDataTableState<T> extends State<SDataTable<T>> {
                       allowSorting: true,
                       isScrollbarAlwaysShown: true,
                       highlightRowOnHover: true,
+                      gridLinesVisibility: GridLinesVisibility.both,
+                      headerGridLinesVisibility: GridLinesVisibility.both,
+                      allowColumnsResizing: true,
                     );
         },
       ),

@@ -72,7 +72,7 @@ class HttpAPI {
     return fromJsonFunc(ret.data);
   }
 
-  Future<ListResult> query<T extends BaseModel>(
+  Future<ListResult<T>> query<T extends BaseModel>(
     String path, {
     required T Function(Map<String, dynamic> json) fromJsonFunc,
     required limit,

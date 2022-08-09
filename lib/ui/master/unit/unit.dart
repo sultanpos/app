@@ -49,7 +49,7 @@ class UnitWidget extends StatelessWidget {
                 ),
                 const Divider(),
                 Expanded(
-                    child: SDataTable(
+                    child: SDataTable<UnitModel>(
                   state: AppState().unitState!.listData,
                   columns: [
                     SDataColumn(
@@ -65,8 +65,7 @@ class UnitWidget extends StatelessWidget {
                       get: (v) => v.name,
                     ),
                   ],
-                  onDoubleClicked: (UnitModel value) {
-                    print(value.name);
+                  onDoubleClicked: (value) {
                     AppState().unitState!.editForm(value);
                     showDialog(
                       context: ctx,
