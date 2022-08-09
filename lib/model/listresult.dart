@@ -2,6 +2,8 @@ import 'package:sultanpos/model/base.dart';
 
 class ListBase {}
 
+class ListNone extends ListBase {}
+
 class ListLoading extends ListBase {}
 
 class ListError extends ListBase {

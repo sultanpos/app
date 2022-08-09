@@ -8,17 +8,19 @@ class ListState<T extends BaseModel> extends ChangeNotifier {
   final HttpAPI httpAPI;
   final String path;
   final T Function(Map<String, dynamic> json) creator;
-  int offset = 0;
-  int limit = 100;
-  ListBase state = ListLoading();
+  int page = 0;
+  int rowPerPage;
+  ListBase state = ListNone();
 
-  ListState(this.httpAPI, this.path, this.creator);
+  ListState(this.httpAPI, this.path, this.creator, {this.rowPerPage = 50});
 
-  load() async {
+  load({int page = -1}) async {
+    if (state is ListLoading) return;
+    if (page >= 0) this.page = page;
     state = ListLoading();
     notifyListeners();
     try {
-      state = await httpAPI.query(path, fromJsonFunc: creator, limit: limit, offset: offset);
+      state = await httpAPI.query(path, fromJsonFunc: creator, limit: rowPerPage, offset: page * rowPerPage);
     } on ErrorResponse catch (e) {
       debugPrint(e.toJson().toString());
       state = ListError(e.message);

@@ -6,18 +6,15 @@ import 'package:sultanpos/state/app.dart';
 import 'package:sultanpos/state/unit.dart';
 import 'package:sultanpos/ui/master/unit/add.dart';
 import 'package:sultanpos/ui/widget/confirmation.dart';
+import 'package:sultanpos/ui/widget/datatable.dart';
 import 'package:sultanpos/ui/widget/listwidget.dart';
 import 'package:sultanpos/ui/widget/showerror.dart';
 
-class UnitWidget extends HookWidget {
+class UnitWidget extends StatelessWidget {
   const UnitWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    useEffect(() {
-      AppState().unitState!.listData.load();
-      return null;
-    }, []);
     return ChangeNotifierProvider<UnitState>.value(
       value: AppState().unitState!,
       child: Builder(
@@ -52,6 +49,35 @@ class UnitWidget extends HookWidget {
                 ),
                 const Divider(),
                 Expanded(
+                    child: SDataTable(
+                  state: AppState().unitState!.listData,
+                  columns: [
+                    SDataColumn(
+                      width: 400,
+                      id: 'publicId',
+                      title: 'ID',
+                      get: (v) => v.publicId,
+                    ),
+                    SDataColumn(
+                      width: 300,
+                      id: 'name',
+                      title: 'Nama',
+                      get: (v) => v.name,
+                    ),
+                  ],
+                  onDoubleClicked: (UnitModel value) {
+                    print(value.name);
+                    AppState().unitState!.editForm(value);
+                    showDialog(
+                      context: ctx,
+                      useRootNavigator: false,
+                      builder: (c) {
+                        return const UnitAddWidget(title: "Edit Unit");
+                      },
+                    );
+                  },
+                )),
+                /*Expanded(
                   child: ListWidget<UnitModel>(
                     AppState().unitState!.listData,
                     builder: (BuildContext ctx, UnitModel value) {
@@ -83,7 +109,7 @@ class UnitWidget extends HookWidget {
                       );
                     },
                   ),
-                ),
+                ),*/
               ],
             ),
           );
