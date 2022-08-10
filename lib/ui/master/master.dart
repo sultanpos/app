@@ -27,9 +27,6 @@ class MasterRootWidget extends StatelessWidget {
             animationDuration: const Duration(milliseconds: 100),
             child: Column(
               children: [
-                const SizedBox(
-                  height: 16,
-                ),
                 const Expanded(child: TabBarView(children: [UnitWidget(), PriceGroupWidget()])),
                 Align(
                   alignment: Alignment.centerLeft,

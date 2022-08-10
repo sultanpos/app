@@ -7,8 +7,9 @@ class UnitModel implements BaseModel {
   @JsonKey(name: 'public_id')
   final String publicId;
   final String name;
+  final String description;
 
-  UnitModel(this.publicId, this.name);
+  UnitModel(this.publicId, this.name, this.description);
 
   @override
   String? path() {
@@ -16,20 +17,21 @@ class UnitModel implements BaseModel {
   }
 
   @override
-  factory UnitModel.fromJson(Map<String, dynamic> json) => _$UnitFromJson(json);
+  factory UnitModel.fromJson(Map<String, dynamic> json) => _$UnitModelFromJson(json);
 
   @override
   BaseModel? responseFromJson(Map<String, dynamic> json) => null;
 
   @override
-  Map<String, dynamic> toJson() => _$UnitToJson(this);
+  Map<String, dynamic> toJson() => _$UnitModelToJson(this);
 }
 
 @JsonSerializable()
 class UnitAddRequestModel implements BaseModel {
   final String name;
+  final String description;
 
-  UnitAddRequestModel(this.name);
+  UnitAddRequestModel(this.name, this.description);
 
   @override
   String? path() {
@@ -37,20 +39,21 @@ class UnitAddRequestModel implements BaseModel {
   }
 
   @override
-  factory UnitAddRequestModel.fromJson(Map<String, dynamic> json) => _$UnitAddRequestFromJson(json);
+  factory UnitAddRequestModel.fromJson(Map<String, dynamic> json) => _$UnitAddRequestModelFromJson(json);
 
   @override
   BaseModel? responseFromJson(Map<String, dynamic> json) => UnitModel.fromJson(json);
 
   @override
-  Map<String, dynamic> toJson() => _$UnitAddRequestToJson(this);
+  Map<String, dynamic> toJson() => _$UnitAddRequestModelToJson(this);
 }
 
 @JsonSerializable()
 class UnitUpdateRequestModel implements BaseModel {
   final String name;
+  final String description;
 
-  UnitUpdateRequestModel(this.name);
+  UnitUpdateRequestModel(this.name, this.description);
 
   @override
   String? path() {
@@ -58,11 +61,11 @@ class UnitUpdateRequestModel implements BaseModel {
   }
 
   @override
-  factory UnitUpdateRequestModel.fromJson(Map<String, dynamic> json) => _$UnitUpdateRequestFromJson(json);
+  factory UnitUpdateRequestModel.fromJson(Map<String, dynamic> json) => _$UnitUpdateRequestModelFromJson(json);
 
   @override
   BaseModel? responseFromJson(Map<String, dynamic> json) => null;
 
   @override
-  Map<String, dynamic> toJson() => _$UnitUpdateRequestToJson(this);
+  Map<String, dynamic> toJson() => _$UnitUpdateRequestModelToJson(this);
 }

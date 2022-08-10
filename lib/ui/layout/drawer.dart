@@ -30,15 +30,19 @@ class _MainMenuItemState extends State<MainMenuItem> {
   Widget build(BuildContext context) {
     final bgColor = Theme.of(context).scaffoldBackgroundColor;
     return InkWell(
-      onTap: widget.onClick,
+      onTapDown: (details) {
+        if (widget.onClick != null) widget.onClick!();
+      },
       onHover: (value) {
         setState(() {
           _onHover = value;
         });
       },
       child: Container(
-        color: _onHover || widget.selected ? bgColor : lighterOrDarkerColor(Theme.of(context), bgColor),
-        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+            color: _onHover || widget.selected ? bgColor : lighterOrDarkerColor(Theme.of(context), bgColor, amount: 0.1),
+            borderRadius: const BorderRadius.all(Radius.circular(4.0))),
+        padding: const EdgeInsets.all(8),
         child: Column(children: [Icon(widget.icon), Text(widget.title)]),
       ),
     );
@@ -74,13 +78,12 @@ class DrawerWidget extends StatelessWidget {
         builder: (ctx) {
           final curIndex = ctx.select<NavigationState, int>((value) => value.currentIndex);
           final bgColor = Theme.of(context).scaffoldBackgroundColor;
-          return Container(
-            //padding: const EdgeInsets.symmetric(horizontal: 4),
-            //color: lighterOrDarkerColor(Theme.of(context), bgColor),
-            child: Row(
-              children: [
-                ...items.map((e) {
-                  return MainMenuItem(
+          return Row(
+            children: [
+              ...items.map((e) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 2),
+                  child: MainMenuItem(
                     e.title,
                     e.icon,
                     curIndex == e.index,
@@ -89,9 +92,10 @@ class DrawerWidget extends StatelessWidget {
                       ctx.read<NavigationState>().setCurrentIndex(e.index);
                       AppState().navigateTo(items[e.index].route);
                     },
-                  );
-                }).toList(),
-                /*PopupMenuButton(
+                  ),
+                );
+              }).toList(),
+              /*PopupMenuButton(
                   offset: const Offset(30, 0),
                   onSelected: (value) {
                     switch (value) {
@@ -116,8 +120,7 @@ class DrawerWidget extends StatelessWidget {
                   ],
                   icon: const Icon(Icons.person),
                 )*/
-              ],
-            ),
+            ],
           );
         },
       ),

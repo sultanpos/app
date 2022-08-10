@@ -101,6 +101,11 @@ class UnitWidget extends StatelessWidget {
                       title: 'Nama',
                       get: (v) => v.name,
                     ),
+                    SDataColumn(
+                      id: 'description',
+                      title: 'Keterangan',
+                      get: (v) => v.description,
+                    ),
                   ],
                 )),
                 /*Expanded(

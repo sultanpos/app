@@ -6,30 +6,40 @@ part of 'pricegroup.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-PriceGroupModel _$PriceGroupFromJson(Map<String, dynamic> json) => PriceGroupModel(
+PriceGroupModel _$PriceGroupModelFromJson(Map<String, dynamic> json) =>
+    PriceGroupModel(
       json['public_id'] as String,
       json['name'] as String,
       json['is_default'] as bool,
     );
 
-Map<String, dynamic> _$PriceGroupToJson(PriceGroupModel instance) => <String, dynamic>{
+Map<String, dynamic> _$PriceGroupModelToJson(PriceGroupModel instance) =>
+    <String, dynamic>{
       'public_id': instance.publicId,
       'name': instance.name,
       'is_default': instance.isDefault,
     };
 
-PriceGroupAddRequestModel _$PriceGroupAddRequestFromJson(Map<String, dynamic> json) => PriceGroupAddRequestModel(
+PriceGroupAddRequestModel _$PriceGroupAddRequestModelFromJson(
+        Map<String, dynamic> json) =>
+    PriceGroupAddRequestModel(
       json['name'] as String,
     );
 
-Map<String, dynamic> _$PriceGroupAddRequestToJson(PriceGroupAddRequestModel instance) => <String, dynamic>{
+Map<String, dynamic> _$PriceGroupAddRequestModelToJson(
+        PriceGroupAddRequestModel instance) =>
+    <String, dynamic>{
       'name': instance.name,
     };
 
-PriceGroupUpdateRequestModel _$PriceGroupUpdateRequestFromJson(Map<String, dynamic> json) => PriceGroupUpdateRequestModel(
+PriceGroupUpdateRequestModel _$PriceGroupUpdateRequestModelFromJson(
+        Map<String, dynamic> json) =>
+    PriceGroupUpdateRequestModel(
       json['name'] as String,
     );
 
-Map<String, dynamic> _$PriceGroupUpdateRequestToJson(PriceGroupUpdateRequestModel instance) => <String, dynamic>{
+Map<String, dynamic> _$PriceGroupUpdateRequestModelToJson(
+        PriceGroupUpdateRequestModel instance) =>
+    <String, dynamic>{
       'name': instance.name,
     };

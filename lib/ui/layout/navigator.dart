@@ -36,7 +36,7 @@ class NavigatorWidget extends StatelessWidget {
       settings: settings,
       pageBuilder: (_, __, ___) => retWidget(),
       transitionsBuilder: (_, a, __, c) => FadeTransition(opacity: a, child: c),
-      transitionDuration: const Duration(milliseconds: 100),
+      transitionDuration: const Duration(milliseconds: 0),
     );
   }
 }

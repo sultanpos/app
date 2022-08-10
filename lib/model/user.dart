@@ -16,7 +16,7 @@ class UserModel implements BaseModel {
   UserModel(this.publicID, this.username, this.name, this.email, this.pin, this.address, this.phone, this.photo);
 
   @override
-  factory UserModel.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+  factory UserModel.fromJson(Map<String, dynamic> json) => _$UserModelFromJson(json);
 
   @override
   String? path() => "/user";
@@ -25,5 +25,5 @@ class UserModel implements BaseModel {
   BaseModel? responseFromJson(Map<String, dynamic> json) => null;
 
   @override
-  Map<String, dynamic> toJson() => _$UserToJson(this);
+  Map<String, dynamic> toJson() => _$UserModelToJson(this);
 }

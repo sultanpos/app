@@ -18,13 +18,13 @@ class PriceGroupModel implements BaseModel {
   }
 
   @override
-  factory PriceGroupModel.fromJson(Map<String, dynamic> json) => _$PriceGroupFromJson(json);
+  factory PriceGroupModel.fromJson(Map<String, dynamic> json) => _$PriceGroupModelFromJson(json);
 
   @override
   BaseModel? responseFromJson(Map<String, dynamic> json) => null;
 
   @override
-  Map<String, dynamic> toJson() => _$PriceGroupToJson(this);
+  Map<String, dynamic> toJson() => _$PriceGroupModelToJson(this);
 }
 
 @JsonSerializable()
@@ -39,13 +39,13 @@ class PriceGroupAddRequestModel implements BaseModel {
   }
 
   @override
-  factory PriceGroupAddRequestModel.fromJson(Map<String, dynamic> json) => _$PriceGroupAddRequestFromJson(json);
+  factory PriceGroupAddRequestModel.fromJson(Map<String, dynamic> json) => _$PriceGroupAddRequestModelFromJson(json);
 
   @override
   BaseModel? responseFromJson(Map<String, dynamic> json) => PriceGroupAddRequestModel.fromJson(json);
 
   @override
-  Map<String, dynamic> toJson() => _$PriceGroupAddRequestToJson(this);
+  Map<String, dynamic> toJson() => _$PriceGroupAddRequestModelToJson(this);
 }
 
 @JsonSerializable()
@@ -60,11 +60,11 @@ class PriceGroupUpdateRequestModel implements BaseModel {
   }
 
   @override
-  factory PriceGroupUpdateRequestModel.fromJson(Map<String, dynamic> json) => _$PriceGroupUpdateRequestFromJson(json);
+  factory PriceGroupUpdateRequestModel.fromJson(Map<String, dynamic> json) => _$PriceGroupUpdateRequestModelFromJson(json);
 
   @override
   BaseModel? responseFromJson(Map<String, dynamic> json) => null;
 
   @override
-  Map<String, dynamic> toJson() => _$PriceGroupUpdateRequestToJson(this);
+  Map<String, dynamic> toJson() => _$PriceGroupUpdateRequestModelToJson(this);
 }

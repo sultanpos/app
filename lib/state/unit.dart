@@ -12,6 +12,7 @@ class UnitState extends BaseState {
   UnitModel? currentUnit;
   final form = FormGroup({
     'name': FormControl<String>(validators: [Validators.required], touched: true),
+    'description': FormControl<String>(validators: [Validators.required], touched: true),
   });
 
   resetForm() {
@@ -21,6 +22,7 @@ class UnitState extends BaseState {
 
   editForm(UnitModel unit) {
     form.control('name').updateValue(unit.name, emitEvent: false);
+    form.control('description').updateValue(unit.description, emitEvent: false);
     form.markAllAsTouched();
     currentUnit = unit;
   }
@@ -30,11 +32,12 @@ class UnitState extends BaseState {
     loading = true;
     notifyListeners();
     final value = form.control('name').value;
+    final desc = form.control('description').value;
     try {
       if (currentUnit == null) {
-        await httpAPI.insert(UnitAddRequestModel(value));
+        await httpAPI.insert(UnitAddRequestModel(value, desc));
       } else {
-        await httpAPI.update(UnitUpdateRequestModel(value), currentUnit!.publicId);
+        await httpAPI.update(UnitUpdateRequestModel(value, desc), currentUnit!.publicId);
       }
       loading = false;
       notifyListeners();

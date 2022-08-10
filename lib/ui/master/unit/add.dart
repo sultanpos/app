@@ -19,8 +19,8 @@ class UnitAddWidget extends StatelessWidget {
           builder: (ctx) {
             final loading = ctx.select<UnitState, bool>((value) => value.loading);
             return SizedBox(
-              height: 200,
-              width: 300,
+              height: 300,
+              width: 350,
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: ReactiveForm(
@@ -37,7 +37,16 @@ class UnitAddWidget extends StatelessWidget {
                           hintText: "Masukkan nama unit",
                           labelText: "Nama",
                         ),
+                        textInputAction: TextInputAction.next,
+                      ),
+                      ReactiveTextField(
+                        formControlName: 'description',
+                        decoration: const InputDecoration(
+                          hintText: "Masukkan keterangan unit",
+                          labelText: "Keterangan",
+                        ),
                         onSubmitted: () => save(ctx),
+                        maxLines: 3,
                       ),
                       const Expanded(
                         child: SizedBox(),

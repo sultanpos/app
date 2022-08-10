@@ -59,14 +59,14 @@ class MainLayoutWidget extends StatelessWidget {
       width: 1,
       child: Column(children: [
         Container(
-          height: 80,
-          color: lighterOrDarkerColor(Theme.of(context), Theme.of(context).scaffoldBackgroundColor),
+          height: 64,
+          color: lighterOrDarkerColor(Theme.of(context), Theme.of(context).scaffoldBackgroundColor, amount: 0.1),
           child: MoveWindow(
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(top: 4.0),
+                  padding: const EdgeInsets.only(top: 4.0, bottom: 2.0),
                   child: DrawerWidget(),
                 ),
                 const Expanded(child: SizedBox()),
