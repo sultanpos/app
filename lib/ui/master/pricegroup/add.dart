@@ -19,8 +19,8 @@ class PriceGroupAddWidget extends StatelessWidget {
           builder: (ctx) {
             final loading = ctx.select<PriceGroupState, bool>((value) => value.loading);
             return SizedBox(
-              height: 200,
-              width: 300,
+              height: 300,
+              width: 350,
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: ReactiveForm(
@@ -31,11 +31,29 @@ class PriceGroupAddWidget extends StatelessWidget {
                       const Divider(),
                       ReactiveTextField(
                         formControlName: 'name',
+                        autofocus: true,
                         inputFormatters: [UpperCaseTextFormatter()],
                         decoration: const InputDecoration(
                           hintText: "Masukkan nama group harga",
                           labelText: "Nama Group Harga",
                         ),
+                        textInputAction: TextInputAction.next,
+                      ),
+                      ReactiveTextField(
+                        formControlName: 'description',
+                        decoration: const InputDecoration(
+                          hintText: "Masukkan keterangan",
+                          labelText: "Keterangan",
+                        ),
+                        textInputAction: TextInputAction.next,
+                      ),
+                      ReactiveTextField(
+                        formControlName: 'publicDescription',
+                        decoration: const InputDecoration(
+                          hintText: "Masukkan keterangan public",
+                          labelText: "Keterangan public",
+                        ),
+                        onSubmitted: () => save(ctx),
                       ),
                       const Expanded(
                         child: SizedBox(),
@@ -57,13 +75,7 @@ class PriceGroupAddWidget extends StatelessWidget {
                               onPressed: loading
                                   ? null
                                   : () async {
-                                      try {
-                                        final nav = Navigator.of(ctx);
-                                        await AppState().priceGroupState!.save();
-                                        nav.pop();
-                                      } catch (e) {
-                                        showError(context, title: 'Error menyimpan', message: e.toString());
-                                      }
+                                      save(ctx);
                                     },
                               child: Text(loading ? "Menyimpan..." : "Simpan")),
                         ],
@@ -77,5 +89,15 @@ class PriceGroupAddWidget extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  save(BuildContext ctx) async {
+    try {
+      final nav = Navigator.of(ctx);
+      await AppState().priceGroupState!.save();
+      nav.pop();
+    } catch (e) {
+      showError(ctx, title: 'Error menyimpan', message: e.toString());
+    }
   }
 }

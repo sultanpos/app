@@ -7,10 +7,13 @@ class PriceGroupModel implements BaseModel {
   @JsonKey(name: 'public_id')
   final String publicId;
   final String name;
+  final String description;
+  @JsonKey(name: 'public_description')
+  final String publicDescription;
   @JsonKey(name: 'is_default')
   final bool isDefault;
 
-  PriceGroupModel(this.publicId, this.name, this.isDefault);
+  PriceGroupModel(this.publicId, this.name, this.description, this.publicDescription, this.isDefault);
 
   @override
   String? path() {
@@ -30,8 +33,11 @@ class PriceGroupModel implements BaseModel {
 @JsonSerializable()
 class PriceGroupAddRequestModel implements BaseModel {
   final String name;
+  final String description;
+  @JsonKey(name: 'public_description')
+  final String publicDescription;
 
-  PriceGroupAddRequestModel(this.name);
+  PriceGroupAddRequestModel(this.name, this.description, this.publicDescription);
 
   @override
   String? path() {
@@ -51,8 +57,11 @@ class PriceGroupAddRequestModel implements BaseModel {
 @JsonSerializable()
 class PriceGroupUpdateRequestModel implements BaseModel {
   final String name;
+  final String description;
+  @JsonKey(name: 'public_description')
+  final String publicDescription;
 
-  PriceGroupUpdateRequestModel(this.name);
+  PriceGroupUpdateRequestModel(this.name, this.description, this.publicDescription);
 
   @override
   String? path() {

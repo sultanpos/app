@@ -12,7 +12,7 @@ class UnitState extends BaseState {
   UnitModel? currentUnit;
   final form = FormGroup({
     'name': FormControl<String>(validators: [Validators.required], touched: true),
-    'description': FormControl<String>(validators: [Validators.required], touched: true),
+    'description': FormControl<String>(),
   });
 
   resetForm() {

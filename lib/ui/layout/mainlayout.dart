@@ -78,6 +78,10 @@ class MainLayoutWidget extends StatelessWidget {
             ),
           ),
         ),
+        Container(
+          color: Colors.red,
+          height: 2,
+        ),
         const Expanded(child: NavigatorWidget()),
       ]),
     );

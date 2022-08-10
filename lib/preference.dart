@@ -32,4 +32,17 @@ class Preference {
   resetLogin() {
     sharedPreferences!.remove('token');
   }
+
+  Map<String, double> getTableWidth(String key) {
+    final value = sharedPreferences!.getString('table-$key');
+    if (value != null) {
+      return (jsonDecode(value) as Map<String, dynamic>).map((key, value) => MapEntry(key, (value as num).toDouble()));
+    }
+    return {};
+  }
+
+  saveTableWidth(String key, Map<String, double> data) {
+    final str = jsonEncode(data);
+    sharedPreferences!.setString('table-$key', str);
+  }
 }

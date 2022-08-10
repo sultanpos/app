@@ -45,9 +45,12 @@ class UnitWidget extends StatelessWidget {
                     ),
                   ],
                 ),
-                const Divider(),
+                const SizedBox(
+                  height: 16,
+                ),
                 Expanded(
                     child: SDataTable<UnitModel>(
+                  name: "unit",
                   state: AppState().unitState!.listData,
                   columns: [
                     SDataColumn(
@@ -108,39 +111,6 @@ class UnitWidget extends StatelessWidget {
                     ),
                   ],
                 )),
-                /*Expanded(
-                  child: ListWidget<UnitModel>(
-                    AppState().unitState!.listData,
-                    builder: (BuildContext ctx, UnitModel value) {
-                      return ListTile(
-                        title: Text(value.name),
-                        onTap: () {
-                          AppState().unitState!.editForm(value);
-                          showDialog(
-                            context: ctx,
-                            useRootNavigator: false,
-                            builder: (c) {
-                              return const UnitAddWidget(title: "Edit Unit");
-                            },
-                          );
-                        },
-                        trailing: IconButton(
-                            onPressed: () async {
-                              final result = await showConfirmation(ctx, title: 'Yakin hapus', message: 'Yakin untuk menghapus "${value.name}"');
-                              if (result) {
-                                try {
-                                  await AppState().unitState!.remove(value.publicId);
-                                } catch (e) {
-                                  // ignore: use_build_context_synchronously
-                                  showError(ctx, title: 'Error menghapus', message: e.toString());
-                                }
-                              }
-                            },
-                            icon: const Icon(Icons.delete)),
-                      );
-                    },
-                  ),
-                ),*/
               ],
             ),
           );

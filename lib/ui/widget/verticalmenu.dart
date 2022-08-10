@@ -15,7 +15,9 @@ class VerticalMenuItemWidget extends StatefulWidget {
   final IconData? icon;
   final bool selected;
   final VoidCallback? onClick;
-  const VerticalMenuItemWidget({required this.title, required this.id, this.icon, required this.selected, required this.onClick, Key? key})
+  final double? width;
+  const VerticalMenuItemWidget(
+      {required this.title, required this.id, this.icon, required this.selected, required this.onClick, this.width, Key? key})
       : super(key: key);
 
   @override
@@ -38,8 +40,9 @@ class _VerticalMenuItemWidgetState extends State<VerticalMenuItemWidget> {
       },
       child: Container(
         margin: const EdgeInsets.only(bottom: 4),
+        width: widget.width,
         decoration: BoxDecoration(
-            color: _onHover || widget.selected ? bgColor : lighterOrDarkerColor(Theme.of(context), bgColor, amount: 0.1),
+            color: _onHover || widget.selected ? bgColor : Colors.black,
             borderRadius: const BorderRadius.only(topLeft: Radius.circular(4.0), bottomLeft: Radius.circular(4.0))),
         padding: const EdgeInsets.all(8),
         child: Column(children: [Icon(widget.icon), Text(widget.title)]),
@@ -50,7 +53,8 @@ class _VerticalMenuItemWidgetState extends State<VerticalMenuItemWidget> {
 
 class VerticalMenu extends StatefulWidget {
   final List<VerticalMenuItem> menus;
-  const VerticalMenu({required this.menus, Key? key}) : super(key: key);
+  final double? width;
+  const VerticalMenu({required this.menus, this.width, Key? key}) : super(key: key);
 
   @override
   State<VerticalMenu> createState() => _VerticalMenuState();
@@ -74,7 +78,7 @@ class _VerticalMenuState extends State<VerticalMenu> {
       children: [
         Container(
           color: Colors.black,
-          width: 60,
+          width: widget.width ?? 60,
           child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: widget.menus
@@ -83,6 +87,7 @@ class _VerticalMenuState extends State<VerticalMenu> {
                         id: e.id,
                         selected: e.id == _currentId,
                         icon: e.icon,
+                        width: widget.width,
                         onClick: () {
                           _currentId = e.id;
                           setState(() {});

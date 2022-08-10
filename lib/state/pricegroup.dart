@@ -12,6 +12,8 @@ class PriceGroupState extends BaseState {
   PriceGroupModel? currentPriceGroup;
   final form = FormGroup({
     'name': FormControl<String>(validators: [Validators.required], touched: true),
+    'description': FormControl<String>(),
+    'publicDescription': FormControl<String>(),
   });
 
   resetForm() {
@@ -21,6 +23,8 @@ class PriceGroupState extends BaseState {
 
   editForm(PriceGroupModel unit) {
     form.control('name').updateValue(unit.name, emitEvent: false);
+    form.control('description').updateValue(unit.description, emitEvent: false);
+    form.control('publicDescription').updateValue(unit.publicDescription, emitEvent: false);
     form.markAllAsTouched();
     currentPriceGroup = unit;
   }
@@ -30,11 +34,13 @@ class PriceGroupState extends BaseState {
     loading = true;
     notifyListeners();
     final value = form.control('name').value;
+    final desc = form.control('description').value;
+    final pubDesc = form.control('publicDescription').value;
     try {
       if (currentPriceGroup == null) {
-        await httpAPI.insert(PriceGroupAddRequestModel(value));
+        await httpAPI.insert(PriceGroupAddRequestModel(value, desc, pubDesc));
       } else {
-        await httpAPI.update(PriceGroupUpdateRequestModel(value), currentPriceGroup!.publicId);
+        await httpAPI.update(PriceGroupUpdateRequestModel(value, desc, pubDesc), currentPriceGroup!.publicId);
       }
       loading = false;
       notifyListeners();
