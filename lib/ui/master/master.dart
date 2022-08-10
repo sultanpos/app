@@ -3,17 +3,10 @@ import 'package:provider/provider.dart';
 import 'package:sultanpos/state/app.dart';
 import 'package:sultanpos/ui/master/pricegroup/pricegroup.dart';
 import 'package:sultanpos/ui/master/unit/unit.dart';
-import 'package:sultanpos/ui/util/color.dart';
+import 'package:sultanpos/ui/widget/verticalmenu.dart';
 
 class MasterRootWidget extends StatelessWidget {
-  MasterRootWidget({Key? key}) : super(key: key);
-
-  final widgets = [
-    () => const UnitWidget(),
-    () => const PriceGroupWidget(),
-  ];
-
-  final tabs = ['Unit', 'Group Harga'];
+  const MasterRootWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,24 +14,10 @@ class MasterRootWidget extends StatelessWidget {
       value: AppState().masterState!,
       child: Builder(
         builder: (ctx) {
-          final bgColor = Theme.of(context).scaffoldBackgroundColor;
-          return DefaultTabController(
-            length: tabs.length,
-            animationDuration: const Duration(milliseconds: 100),
-            child: Column(
-              children: [
-                const Expanded(child: TabBarView(children: [UnitWidget(), PriceGroupWidget()])),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: TabBar(
-                    isScrollable: true,
-                    indicatorSize: TabBarIndicatorSize.label,
-                    tabs: tabs.map((e) => Tab(text: e)).toList(),
-                  ),
-                ),
-              ],
-            ),
-          );
+          return VerticalMenu(menus: [
+            VerticalMenuItem(title: 'Unit', id: 'unit', icon: Icons.straighten, widget: () => const UnitWidget()),
+            VerticalMenuItem(title: 'Harga', id: 'price', icon: Icons.attach_money, widget: () => const PriceGroupWidget()),
+          ]);
         },
       ),
     );

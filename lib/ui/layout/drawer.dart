@@ -39,9 +39,8 @@ class _MainMenuItemState extends State<MainMenuItem> {
         });
       },
       child: Container(
-        decoration: BoxDecoration(
-            color: _onHover || widget.selected ? bgColor : lighterOrDarkerColor(Theme.of(context), bgColor, amount: 0.1),
-            borderRadius: const BorderRadius.all(Radius.circular(4.0))),
+        decoration:
+            BoxDecoration(color: _onHover || widget.selected ? bgColor : Colors.black, borderRadius: const BorderRadius.all(Radius.circular(4.0))),
         padding: const EdgeInsets.all(8),
         child: Column(children: [Icon(widget.icon), Text(widget.title)]),
       ),

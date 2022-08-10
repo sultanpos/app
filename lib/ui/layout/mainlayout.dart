@@ -60,8 +60,8 @@ class MainLayoutWidget extends StatelessWidget {
       child: Column(children: [
         Container(
           height: 64,
-          color: lighterOrDarkerColor(Theme.of(context), Theme.of(context).scaffoldBackgroundColor, amount: 0.1),
-          child: MoveWindow(
+          color: Colors.black, // lighterOrDarkerColor(Theme.of(context), Theme.of(context).scaffoldBackgroundColor, amount: 0.1),
+          child: SizedBox(
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -69,7 +69,7 @@ class MainLayoutWidget extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 4.0, bottom: 2.0),
                   child: DrawerWidget(),
                 ),
-                const Expanded(child: SizedBox()),
+                Expanded(child: MoveWindow()),
                 const Padding(
                   padding: EdgeInsets.only(top: 4),
                   child: WindowButtons(),
