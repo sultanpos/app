@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:sultanpos/state/app.dart';
 import 'package:sultanpos/ui/layout/mainlayout.dart';
 
 class RootWidget extends StatelessWidget {
@@ -11,7 +12,11 @@ class RootWidget extends StatelessWidget {
       body: Focus(
           canRequestFocus: false,
           onKey: (node, event) {
-            if (event is RawKeyDownEvent) print('${event.data.isControlPressed} :: ${event.data.logicalKey.toString()} :: ${event.repeat}');
+            if (event is RawKeyDownEvent && !event.repeat) {
+              if (event.isControlPressed && event.isKeyPressed(LogicalKeyboardKey.keyD)) {
+                AppState().navigateTo('/cashier');
+              }
+            }
             return KeyEventResult.ignored;
           },
           child: const MainLayoutWidget()),

@@ -2,6 +2,7 @@ import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:sultanpos/ui/layout/navigator.dart';
 import 'package:sultanpos/ui/layout/drawer.dart';
+import 'package:sultanpos/ui/layout/profile.dart';
 import 'package:sultanpos/ui/util/color.dart';
 
 final buttonColors = WindowButtonColors(
@@ -70,6 +71,7 @@ class MainLayoutWidget extends StatelessWidget {
                   child: DrawerWidget(),
                 ),
                 Expanded(child: MoveWindow()),
+                const ProfileMenuWidget(),
                 const Padding(
                   padding: EdgeInsets.only(top: 4),
                   child: WindowButtons(),

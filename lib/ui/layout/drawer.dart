@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:sultanpos/state/app.dart';
 import 'package:provider/provider.dart';
 import 'package:sultanpos/state/navigation.dart';
-import 'package:sultanpos/ui/login/loginpage.dart';
-import 'package:sultanpos/ui/util/color.dart';
 
 class MenuItem {
   final int index;
@@ -45,15 +43,6 @@ class _MainMenuItemState extends State<MainMenuItem> {
         child: Column(children: [Icon(widget.icon), Text(widget.title)]),
       ),
     );
-    /*return IconButton(
-      splashRadius: 24,
-      onPressed: onClick,
-      tooltip: title,
-      icon: Icon(
-        icon,
-        color: selected ? Colors.blue[700]! : null,
-      ),
-    );*/
   }
 }
 
@@ -64,8 +53,8 @@ class DrawerWidget extends StatelessWidget {
     MenuItem(0, title: 'Dashboard', icon: Icons.dashboard, route: "/"),
     MenuItem(1, title: 'Barang', icon: Icons.inventory_2, route: "/product"),
     MenuItem(2, title: 'Kasir', icon: Icons.point_of_sale, route: "/cashier"),
-    MenuItem(3, title: 'Pembelian', icon: Icons.shopping_cart, route: "/"),
-    MenuItem(4, title: 'Laporan', icon: Icons.assessment, route: "/"),
+    MenuItem(3, title: 'Pembelian', icon: Icons.shopping_cart, route: "/purchase"),
+    MenuItem(4, title: 'Laporan', icon: Icons.assessment, route: "/report"),
     MenuItem(5, title: 'Master', icon: Icons.folder_open, route: "/master"),
   ];
 
@@ -75,8 +64,7 @@ class DrawerWidget extends StatelessWidget {
       value: AppState().navState!,
       child: Builder(
         builder: (ctx) {
-          final curIndex = ctx.select<NavigationState, int>((value) => value.currentIndex);
-          final bgColor = Theme.of(context).scaffoldBackgroundColor;
+          final curPath = ctx.select<NavigationState, String>((value) => value.currentPath);
           return Row(
             children: [
               ...items.map((e) {
@@ -85,73 +73,18 @@ class DrawerWidget extends StatelessWidget {
                   child: MainMenuItem(
                     e.title,
                     e.icon,
-                    curIndex == e.index,
+                    curPath == e.route,
                     onClick: () {
-                      if (curIndex == e.index) return;
-                      ctx.read<NavigationState>().setCurrentIndex(e.index);
+                      if (curPath == e.route) return;
                       AppState().navigateTo(items[e.index].route);
                     },
                   ),
                 );
               }).toList(),
-              /*PopupMenuButton(
-                  offset: const Offset(30, 0),
-                  onSelected: (value) {
-                    switch (value) {
-                      case 'logout':
-                        {
-                          AppState().authState!.resetForm();
-                          AppState().authState!.logout();
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => const LoginPage(),
-                            ),
-                          );
-                        }
-                        break;
-                    }
-                  },
-                  itemBuilder: (ctx) => [
-                    _popupMenuItem("setting", "Setting", Icons.settings),
-                    _popupMenuItem("profile", "Profile", Icons.person),
-                    _popupMenuItem("logout", "Keluar", Icons.exit_to_app),
-                  ],
-                  icon: const Icon(Icons.person),
-                )*/
             ],
           );
         },
       ),
-    );
-  }
-
-  PopupMenuItem<String> _popupMenuItem(String value, String title, IconData icon) {
-    return PopupMenuItem<String>(
-      value: value,
-      child: Row(
-        children: [
-          Icon(icon),
-          const SizedBox(
-            width: 8,
-          ),
-          Text(title)
-        ],
-      ),
-    );
-  }
-}
-
-class MenuIconButton extends StatelessWidget {
-  final IconData icon;
-  final String title;
-  const MenuIconButton({required this.icon, required this.title, Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.blue,
-      child: Column(children: [Icon(icon), Text(title)]),
     );
   }
 }

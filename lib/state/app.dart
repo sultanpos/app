@@ -54,6 +54,6 @@ class AppState {
   }
 
   navigateTo(String path) {
-    navState!.navigatorKey.currentState!.pushReplacementNamed(path);
+    navState!.navigateTo(path);
   }
 }

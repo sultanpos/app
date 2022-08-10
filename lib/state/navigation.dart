@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 
 class NavigationState extends ChangeNotifier {
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-  int currentIndex = 0;
+  String currentPath = "/";
 
-  setCurrentIndex(int index) {
-    currentIndex = index;
+  navigateTo(String path) {
+    navigatorKey.currentState!.pushReplacementNamed(path);
+    currentPath = path;
     notifyListeners();
   }
 }

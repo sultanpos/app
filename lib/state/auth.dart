@@ -61,6 +61,7 @@ class AuthState extends BaseState {
     try {
       final userResult = await httpAPI.getOne<UserModel>('/user/${claim!.userPublicId}', fromJsonFunc: UserModel.fromJson);
       user = userResult;
+      notifyListeners();
     } catch (e) {
       rethrow;
     }
