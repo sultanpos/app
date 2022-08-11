@@ -4,7 +4,7 @@ import 'package:sultanpos/ui/cashier/cashier.dart';
 import 'package:sultanpos/ui/layout/home.dart';
 import 'package:sultanpos/ui/layout/noroute.dart';
 import 'package:sultanpos/ui/master/master.dart';
-import 'package:sultanpos/ui/master/partner/partner.dart';
+import 'package:sultanpos/ui/partner/partner.dart';
 import 'package:sultanpos/ui/product/productroot.dart';
 import 'package:sultanpos/ui/profile/profile.dart';
 import 'package:sultanpos/ui/purchase/purchase.dart';
@@ -17,7 +17,7 @@ class NavigatorWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Navigator(
-      key: AppState().navState!.navigatorKey,
+      key: AppState().navState.navigatorKey,
       initialRoute: "/",
       onGenerateRoute: (settings) {
         switch (settings.name) {

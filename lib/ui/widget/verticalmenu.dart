@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sultanpos/ui/util/color.dart';
 
 class VerticalMenuItem {
   final String title;

@@ -13,7 +13,7 @@ class PriceGroupAddWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider.value(
-      value: AppState().priceGroupState!,
+      value: AppState().priceGroupState,
       child: Dialog(
         child: Builder(
           builder: (ctx) {
@@ -24,7 +24,7 @@ class PriceGroupAddWidget extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: ReactiveForm(
-                  formGroup: AppState().priceGroupState!.form,
+                  formGroup: AppState().priceGroupState.form,
                   child: Column(
                     children: [
                       Text(title),
@@ -94,7 +94,7 @@ class PriceGroupAddWidget extends StatelessWidget {
   save(BuildContext ctx) async {
     try {
       final nav = Navigator.of(ctx);
-      await AppState().priceGroupState!.save();
+      await AppState().priceGroupState.save();
       nav.pop();
     } catch (e) {
       showError(ctx, title: 'Error menyimpan', message: e.toString());

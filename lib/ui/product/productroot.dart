@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sultanpos/model/product.dart';
 import 'package:sultanpos/state/app.dart';
-import 'package:sultanpos/state/product.dart';
+import 'package:sultanpos/ui/widget/datatable.dart';
 
 class ProductRootWidget extends StatelessWidget {
   const ProductRootWidget({Key? key}) : super(key: key);
@@ -9,59 +10,35 @@ class ProductRootWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider.value(
-      value: AppState().productState!,
+      value: AppState().productState,
       child: Builder(builder: (ctx) {
-        return Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
+        return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              Row(
                 children: [
-                  TextButton.icon(
-                      onPressed: () {
-                        AppState().productState!.setCurrentIndex(0);
-                      },
-                      icon: const Icon(Icons.inventory),
-                      label: const Text('Barang')),
-                  TextButton.icon(
-                      onPressed: () {
-                        AppState().productState!.setCurrentIndex(1);
-                      },
-                      icon: const Icon(Icons.attach_money),
-                      label: const Text('Harga')),
-                  TextButton.icon(
-                      onPressed: () {
-                        AppState().productState!.setCurrentIndex(2);
-                      },
-                      icon: const Icon(Icons.sell),
-                      label: const Text('Group Harga')),
-                  TextButton.icon(
-                      onPressed: () {
-                        AppState().productState!.setCurrentIndex(3);
-                      },
-                      icon: const Icon(Icons.straighten),
-                      label: const Text('Unit')),
+                  Text(
+                    'Daftar Barang',
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  ),
+                  const Expanded(child: SizedBox()),
+                  ElevatedButton(
+                    onPressed: () {},
+                    child: const Text('Tambah Barang'),
+                  ),
                 ],
               ),
-            ),
-            const Divider(),
-            Expanded(
-              child: AnimatedSwitcher(
-                duration: const Duration(milliseconds: 100),
-                child: _getWidget(ctx),
+              const SizedBox(
+                height: 8,
               ),
-            )
-          ],
+              Expanded(
+                child: SDataTable<ProductModel>(columns: [], name: 'product', state: AppState().productState.listData),
+              ),
+            ],
+          ),
         );
       }),
-    );
-  }
-
-  Widget _getWidget(BuildContext context) {
-    final index = context.select<ProductState, int>((value) => value.currentIndex);
-    return Text(
-      'Widget $index',
-      key: ValueKey<int>(index),
     );
   }
 }

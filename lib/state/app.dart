@@ -9,6 +9,7 @@ import 'package:sultanpos/state/auth.dart';
 import 'package:sultanpos/state/cashier.dart';
 import 'package:sultanpos/state/master.dart';
 import 'package:sultanpos/state/navigation.dart';
+import 'package:sultanpos/state/partner.dart';
 import 'package:sultanpos/state/pricegroup.dart';
 import 'package:sultanpos/state/product.dart';
 import 'package:sultanpos/state/unit.dart';
@@ -23,13 +24,14 @@ class AppState {
   AppState._internal();
 
   bool initted = false;
-  AuthState? authState;
-  NavigationState? navState;
-  ProductState? productState;
-  MasterState? masterState;
-  CashierState? cashierState;
-  UnitState? unitState;
-  PriceGroupState? priceGroupState;
+  late AuthState authState;
+  late NavigationState navState;
+  late ProductState productState;
+  late MasterState masterState;
+  late CashierState cashierState;
+  late UnitState unitState;
+  late PriceGroupState priceGroupState;
+  late PartnerState partnerState;
 
   init() async {
     if (initted) return;
@@ -46,7 +48,8 @@ class AppState {
     cashierState = CashierState(httpAPI);
     unitState = UnitState(httpAPI);
     priceGroupState = PriceGroupState(httpAPI);
-    await AppState().authState!.loadLogin();
+    partnerState = PartnerState(httpAPI);
+    await AppState().authState.loadLogin();
   }
 
   _tokenRefreshed(LoginResponse token) {
@@ -54,6 +57,6 @@ class AppState {
   }
 
   navigateTo(String path) {
-    navState!.navigateTo(path);
+    navState.navigateTo(path);
   }
 }

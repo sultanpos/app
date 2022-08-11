@@ -7,7 +7,6 @@ import 'package:sultanpos/state/pricegroup.dart';
 import 'package:sultanpos/ui/master/pricegroup/add.dart';
 import 'package:sultanpos/ui/widget/confirmation.dart';
 import 'package:sultanpos/ui/widget/datatable.dart';
-import 'package:sultanpos/ui/widget/listwidget.dart';
 import 'package:sultanpos/ui/widget/showerror.dart';
 
 class PriceGroupWidget extends HookWidget {
@@ -16,11 +15,11 @@ class PriceGroupWidget extends HookWidget {
   @override
   Widget build(BuildContext context) {
     useEffect(() {
-      AppState().priceGroupState!.listData.load();
+      AppState().priceGroupState.listData.load();
       return null;
     }, []);
     return ChangeNotifierProvider<PriceGroupState>.value(
-      value: AppState().priceGroupState!,
+      value: AppState().priceGroupState,
       child: Builder(
         builder: (ctx) {
           return Padding(
@@ -36,7 +35,7 @@ class PriceGroupWidget extends HookWidget {
                     const Expanded(child: SizedBox()),
                     ElevatedButton(
                       onPressed: () {
-                        AppState().priceGroupState!.resetForm();
+                        AppState().priceGroupState.resetForm();
                         showDialog(
                           context: ctx,
                           useRootNavigator: false,
@@ -57,7 +56,7 @@ class PriceGroupWidget extends HookWidget {
                 Expanded(
                     child: SDataTable<PriceGroupModel>(
                   name: "pricegroup",
-                  state: AppState().priceGroupState!.listData,
+                  state: AppState().priceGroupState.listData,
                   columns: [
                     SDataColumn(
                       width: 100,
@@ -70,7 +69,7 @@ class PriceGroupWidget extends HookWidget {
                                 iconSize: 16,
                                 splashRadius: 16,
                                 onPressed: () {
-                                  AppState().priceGroupState!.editForm(v);
+                                  AppState().priceGroupState.editForm(v);
                                   showDialog(
                                     context: ctx,
                                     useRootNavigator: false,
@@ -88,7 +87,7 @@ class PriceGroupWidget extends HookWidget {
                                   final result = await showConfirmation(ctx, title: 'Yakin hapus', message: 'Yakin untuk menghapus "${v.name}"');
                                   if (result) {
                                     try {
-                                      await AppState().unitState!.remove(v.publicId);
+                                      await AppState().unitState.remove(v.publicId);
                                     } catch (e) {
                                       // ignore: use_build_context_synchronously
                                       showError(ctx, title: 'Error menghapus', message: e.toString());
@@ -119,41 +118,6 @@ class PriceGroupWidget extends HookWidget {
                     ),
                   ],
                 )),
-                /*Expanded(
-                  child: ListWidget<PriceGroupModel>(
-                    AppState().priceGroupState!.listData,
-                    builder: (BuildContext ctx, PriceGroupModel value) {
-                      return ListTile(
-                        title: Text(value.name),
-                        onTap: () {
-                          AppState().priceGroupState!.editForm(value);
-                          showDialog(
-                            context: ctx,
-                            useRootNavigator: false,
-                            builder: (c) {
-                              return const PriceGroupAddWidget(title: "Edit Group Harga");
-                            },
-                          );
-                        },
-                        trailing: value.isDefault
-                            ? null
-                            : IconButton(
-                                onPressed: () async {
-                                  final result = await showConfirmation(ctx, title: 'Yakin hapus', message: 'Yakin untuk menghapus "${value.name}"');
-                                  if (result) {
-                                    try {
-                                      await AppState().priceGroupState!.remove(value.publicId);
-                                    } catch (e) {
-                                      // ignore: use_build_context_synchronously
-                                      showError(ctx, title: 'Error menghapus', message: e.toString());
-                                    }
-                                  }
-                                },
-                                icon: const Icon(Icons.delete)),
-                      );
-                    },
-                  ),
-                ),*/
               ],
             ),
           );

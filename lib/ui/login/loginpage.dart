@@ -9,7 +9,7 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider.value(
-      value: AppState().authState!,
+      value: AppState().authState,
       child: const Scaffold(
         body: LoginWidget(),
       ),

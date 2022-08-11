@@ -10,7 +10,7 @@ class ProfileMenuWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider.value(
-      value: AppState().authState!,
+      value: AppState().authState,
       child: Builder(builder: (ctx) {
         return Align(
           alignment: Alignment.center,
@@ -30,8 +30,8 @@ class ProfileMenuWidget extends StatelessWidget {
                   break;
                 case 'logout':
                   {
-                    AppState().authState!.resetForm();
-                    AppState().authState!.logout();
+                    AppState().authState.resetForm();
+                    AppState().authState.logout();
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(

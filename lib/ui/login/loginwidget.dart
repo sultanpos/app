@@ -15,7 +15,7 @@ class LoginWidget extends StatelessWidget {
     final isLoading = context.select<AuthState, bool>((value) => value.isLoading);
     return Center(
       child: ReactiveForm(
-        formGroup: AppState().authState!.loginForm,
+        formGroup: AppState().authState.loginForm,
         child: SizedBox(
           width: 300,
           child: Padding(
@@ -74,7 +74,7 @@ class LoginWidget extends StatelessWidget {
   }
 
   _doLogin(BuildContext context) async {
-    var auth = AppState().authState!;
+    var auth = AppState().authState;
     try {
       await auth.login();
       // ignore: use_build_context_synchronously

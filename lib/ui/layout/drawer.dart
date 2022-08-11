@@ -66,7 +66,7 @@ class DrawerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider.value(
-      value: AppState().navState!,
+      value: AppState().navState,
       child: Builder(
         builder: (ctx) {
           final curPath = ctx.select<NavigationState, String>((value) => value.currentPath);

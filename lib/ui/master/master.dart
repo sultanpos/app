@@ -12,7 +12,7 @@ class MasterRootWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider.value(
-      value: AppState().masterState!,
+      value: AppState().masterState,
       child: Builder(
         builder: (ctx) {
           return VerticalMenu(width: 80, menus: [

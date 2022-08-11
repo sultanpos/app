@@ -14,7 +14,7 @@ class UnitWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<UnitState>.value(
-      value: AppState().unitState!,
+      value: AppState().unitState,
       child: Builder(
         builder: (ctx) {
           return Padding(
@@ -30,7 +30,7 @@ class UnitWidget extends StatelessWidget {
                     const Expanded(child: SizedBox()),
                     ElevatedButton(
                       onPressed: () {
-                        AppState().unitState!.resetForm();
+                        AppState().unitState.resetForm();
                         showDialog(
                           context: ctx,
                           useRootNavigator: false,
@@ -51,7 +51,7 @@ class UnitWidget extends StatelessWidget {
                 Expanded(
                     child: SDataTable<UnitModel>(
                   name: "unit",
-                  state: AppState().unitState!.listData,
+                  state: AppState().unitState.listData,
                   columns: [
                     SDataColumn(
                       width: 100,
@@ -62,7 +62,7 @@ class UnitWidget extends StatelessWidget {
                           iconSize: 16,
                           splashRadius: 16,
                           onPressed: () {
-                            AppState().unitState!.editForm(v);
+                            AppState().unitState.editForm(v);
                             showDialog(
                               context: ctx,
                               useRootNavigator: false,
@@ -80,7 +80,7 @@ class UnitWidget extends StatelessWidget {
                             final result = await showConfirmation(ctx, title: 'Yakin hapus', message: 'Yakin untuk menghapus "${v.name}"');
                             if (result) {
                               try {
-                                await AppState().unitState!.remove(v.publicId);
+                                await AppState().unitState.remove(v.publicId);
                               } catch (e) {
                                 // ignore: use_build_context_synchronously
                                 showError(ctx, title: 'Error menghapus', message: e.toString());

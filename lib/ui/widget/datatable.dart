@@ -118,7 +118,8 @@ class _SDataTableState<T extends BaseModel> extends State<SDataTable<T>> {
                   )
                 : list is ListError
                     ? Center(
-                        child: Row(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text('Error memuat data: ${list.error}'),
                             const SizedBox(

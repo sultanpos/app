@@ -13,7 +13,7 @@ class UnitAddWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider.value(
-      value: AppState().unitState!,
+      value: AppState().unitState,
       child: Dialog(
         child: Builder(
           builder: (ctx) {
@@ -24,7 +24,7 @@ class UnitAddWidget extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: ReactiveForm(
-                  formGroup: AppState().unitState!.form,
+                  formGroup: AppState().unitState.form,
                   child: Column(
                     children: [
                       Text(title),
@@ -87,7 +87,7 @@ class UnitAddWidget extends StatelessWidget {
   save(BuildContext context) async {
     try {
       final nav = Navigator.of(context);
-      await AppState().unitState!.save();
+      await AppState().unitState.save();
       nav.pop();
     } catch (e) {
       showError(context, title: 'Error menyimpan', message: e.toString());
