@@ -15,16 +15,17 @@ class _AppState extends State<App> {
     return AdaptiveTheme(
       light: ThemeData(
         brightness: Brightness.light,
-        primarySwatch: Colors.red,
+        primarySwatch: Colors.blue,
         fontFamily: 'Ubuntu_Mono',
       ),
       dark: ThemeData(
         brightness: Brightness.dark,
-        primarySwatch: Colors.red,
+        primarySwatch: Colors.blue,
         fontFamily: 'Ubuntu_Mono',
       ),
       initial: AdaptiveThemeMode.dark,
       builder: (theme, darkTheme) => MaterialApp(
+        debugShowCheckedModeBanner: false,
         home: const SplashScreen(),
         theme: theme,
         darkTheme: darkTheme,

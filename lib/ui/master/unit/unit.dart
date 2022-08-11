@@ -95,11 +95,6 @@ class UnitWidget extends StatelessWidget {
                       ]),
                     ),
                     SDataColumn(
-                      id: 'publicId',
-                      title: 'ID',
-                      get: (v) => v.publicId,
-                    ),
-                    SDataColumn(
                       id: 'name',
                       title: 'Nama',
                       get: (v) => v.name,

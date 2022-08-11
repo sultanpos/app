@@ -138,7 +138,8 @@ class _SDataTableState<T extends BaseModel> extends State<SDataTable<T>> {
                                 allowEditing: false,
                                 label: Container(
                                   color: lighterOrDarkerColor(Theme.of(context), Theme.of(context).scaffoldBackgroundColor),
-                                  child: Center(child: Text(e.title)),
+                                  alignment: Alignment.center,
+                                  child: Text(e.title),
                                 )))
                             .toList(),
                         selectionMode: SelectionMode.single,
@@ -162,6 +163,8 @@ class _SDataTableState<T extends BaseModel> extends State<SDataTable<T>> {
                           setState(() {});
                           return true;
                         },
+                        rowHeight: 40,
+                        headerRowHeight: 40,
                       );
           },
         ),

@@ -4,6 +4,7 @@ import 'package:sultanpos/ui/cashier/cashier.dart';
 import 'package:sultanpos/ui/layout/home.dart';
 import 'package:sultanpos/ui/layout/noroute.dart';
 import 'package:sultanpos/ui/master/master.dart';
+import 'package:sultanpos/ui/master/partner/partner.dart';
 import 'package:sultanpos/ui/product/productroot.dart';
 import 'package:sultanpos/ui/profile/profile.dart';
 import 'package:sultanpos/ui/purchase/purchase.dart';
@@ -36,6 +37,8 @@ class NavigatorWidget extends StatelessWidget {
             return _pageBuilder(settings, () => const PurchaseWidget());
           case "/report":
             return _pageBuilder(settings, () => const ReportWidget());
+          case "/partner":
+            return _pageBuilder(settings, () => const PartnerWidget());
           default:
             return _pageBuilder(settings, () => const NoRouteWidget());
         }
