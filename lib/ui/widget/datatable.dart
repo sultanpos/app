@@ -81,7 +81,11 @@ class _SDataTableState<T extends BaseModel> extends State<SDataTable<T>> {
     source = SDataSource<T>(widget.columns);
     Future.microtask(() {
       widget.state.addListener(stateListener);
-      widget.state.load();
+      if (widget.state.state is ListResult) {
+        stateListener();
+      } else {
+        widget.state.load();
+      }
     });
   }
 

@@ -14,11 +14,17 @@ class ListState<T extends BaseModel> extends ChangeNotifier {
 
   ListState(this.httpAPI, this.path, this.creator, {this.rowPerPage = 50});
 
-  load({int page = -1}) async {
+  load({int page = -1, bool refresh = false}) async {
     if (state is ListLoading) return;
+    if (!refresh && this.page == page) return;
+    if (!refresh && state is ListResult) return;
     if (page >= 0) this.page = page;
     state = ListLoading();
     notifyListeners();
+    _load();
+  }
+
+  _load() async {
     try {
       state = await httpAPI.query(path, fromJsonFunc: creator, limit: rowPerPage, offset: page * rowPerPage);
     } on ErrorResponse catch (e) {

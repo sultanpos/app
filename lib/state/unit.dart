@@ -41,7 +41,7 @@ class UnitState extends BaseState {
       }
       loading = false;
       notifyListeners();
-      listData.load();
+      listData.load(refresh: true);
     } on ErrorResponse catch (e) {
       loading = false;
       notifyListeners();
