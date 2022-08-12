@@ -60,7 +60,7 @@ class CategoryState extends BaseState {
   remove(String publicID) async {
     try {
       await httpAPI.delete('/category/$publicID');
-      listData.load();
+      listData.load(refresh: true);
     } on ErrorResponse catch (e) {
       throw e.message;
     }
