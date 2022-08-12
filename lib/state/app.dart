@@ -7,6 +7,7 @@ import 'package:sultanpos/model/auth.dart';
 import 'package:sultanpos/preference.dart';
 import 'package:sultanpos/state/auth.dart';
 import 'package:sultanpos/state/cashier.dart';
+import 'package:sultanpos/state/category.dart';
 import 'package:sultanpos/state/master.dart';
 import 'package:sultanpos/state/navigation.dart';
 import 'package:sultanpos/state/partner.dart';
@@ -24,6 +25,7 @@ class AppState {
   AppState._internal();
 
   bool initted = false;
+  late HttpAPI httpAPI;
   late AuthState authState;
   late NavigationState navState;
   late ProductState productState;
@@ -32,6 +34,7 @@ class AppState {
   late UnitState unitState;
   late PriceGroupState priceGroupState;
   late PartnerState partnerState;
+  late CategoryState categoryState;
 
   init() async {
     if (initted) return;
@@ -40,7 +43,7 @@ class AppState {
     final dioInterceptor = Dio(BaseOptions(baseUrl: Flavor.baseUrl!));
     dioInterceptor.interceptors.add(myinterceptor.LogInterceptor());
     final interceptor = AuthInterceptor(dioInterceptor, "/auth/login/refresh", storeAccessToken: _tokenRefreshed);
-    final httpAPI = HttpAPI.create(Flavor.baseUrl!, interceptor);
+    httpAPI = HttpAPI.create(Flavor.baseUrl!, interceptor);
     navState = NavigationState();
     authState = AuthState(httpAPI);
     productState = ProductState(httpAPI);
@@ -49,6 +52,7 @@ class AppState {
     unitState = UnitState(httpAPI);
     priceGroupState = PriceGroupState(httpAPI);
     partnerState = PartnerState(httpAPI);
+    categoryState = CategoryState(httpAPI);
     await AppState().authState.loadLogin();
   }
 

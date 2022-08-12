@@ -43,6 +43,14 @@ class UnitWidget extends StatelessWidget {
                       },
                       child: const Text('Tambah Unit'),
                     ),
+                    const SizedBox(
+                      width: 4,
+                    ),
+                    ElevatedButton(
+                        onPressed: () {
+                          AppState().unitState.listData.load(refresh: true);
+                        },
+                        child: const Icon(Icons.refresh)),
                   ],
                 ),
                 const SizedBox(

@@ -2,10 +2,10 @@ import 'package:sultanpos/state/base.dart';
 
 class MasterState extends BaseState {
   MasterState(super.httpAPI);
-  int currentIndex = 0;
+  String? currentId;
 
-  setCurrentIndex(int value) {
-    currentIndex = value;
+  setCurrentId(String value) {
+    currentId = value;
     notifyListeners();
   }
 }

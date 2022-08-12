@@ -29,7 +29,7 @@ class PriceGroupWidget extends HookWidget {
                 Row(
                   children: [
                     Text(
-                      'Daftar Group Harga',
+                      'Daftar Group',
                       style: Theme.of(context).textTheme.headlineSmall,
                     ),
                     const Expanded(child: SizedBox()),
@@ -46,8 +46,16 @@ class PriceGroupWidget extends HookWidget {
                           },
                         );
                       },
-                      child: const Text('Tambah Group Harga'),
+                      child: const Text('Tambah Group'),
                     ),
+                    const SizedBox(
+                      width: 4,
+                    ),
+                    ElevatedButton(
+                        onPressed: () {
+                          AppState().priceGroupState.listData.load(refresh: true);
+                        },
+                        child: const Icon(Icons.refresh)),
                   ],
                 ),
                 const SizedBox(

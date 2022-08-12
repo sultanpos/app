@@ -23,11 +23,10 @@ class InsertSuccessModel implements BaseModel {
 }
 
 class UpdateSuccessModel implements BaseModel {
-  final String publicId;
-  UpdateSuccessModel(this.publicId);
+  UpdateSuccessModel();
 
   factory UpdateSuccessModel.fromJson(Map<String, dynamic> json) {
-    return UpdateSuccessModel(json['public_id']);
+    return UpdateSuccessModel();
   }
 
   @override
@@ -38,8 +37,6 @@ class UpdateSuccessModel implements BaseModel {
 
   @override
   Map<String, dynamic> toJson() {
-    return {
-      "public_id": publicId,
-    };
+    return {};
   }
 }

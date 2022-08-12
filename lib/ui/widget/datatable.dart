@@ -78,6 +78,9 @@ class _SDataTableState<T extends BaseModel> extends State<SDataTable<T>> {
         columnSize[element.id] = element.width ?? 200;
       }
     }
+    for (var element in widget.columns) {
+      if (!columnSize.containsKey(element.id)) columnSize[element.id] = element.width ?? 200;
+    }
     source = SDataSource<T>(widget.columns);
     Future.microtask(() {
       widget.state.addListener(stateListener);

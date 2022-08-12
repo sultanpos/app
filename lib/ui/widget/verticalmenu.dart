@@ -50,46 +50,34 @@ class _VerticalMenuItemWidgetState extends State<VerticalMenuItemWidget> {
   }
 }
 
-class VerticalMenu extends StatefulWidget {
+class VerticalMenu extends StatelessWidget {
   final List<VerticalMenuItem> menus;
   final double? width;
-  const VerticalMenu({required this.menus, this.width, Key? key}) : super(key: key);
-
-  @override
-  State<VerticalMenu> createState() => _VerticalMenuState();
-}
-
-class _VerticalMenuState extends State<VerticalMenu> {
-  late String _currentId;
-
-  @override
-  void initState() {
-    super.initState();
-    _currentId = widget.menus[0].id;
-  }
+  final String currentId;
+  final Function(String) onChanged;
+  const VerticalMenu({required this.menus, this.width, required this.currentId, required this.onChanged, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final index = widget.menus.indexWhere(
-      (element) => element.id == _currentId,
+    final index = menus.indexWhere(
+      (element) => element.id == currentId,
     );
     return Row(
       children: [
         Container(
           color: Colors.black,
-          width: widget.width ?? 60,
+          width: width ?? 60,
           child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
-              children: widget.menus
+              children: menus
                   .map((e) => VerticalMenuItemWidget(
                         title: e.title,
                         id: e.id,
-                        selected: e.id == _currentId,
+                        selected: e.id == currentId,
                         icon: e.icon,
-                        width: widget.width,
+                        width: width,
                         onClick: () {
-                          _currentId = e.id;
-                          setState(() {});
+                          onChanged(e.id);
                         },
                       ))
                   .toList()),
@@ -97,7 +85,7 @@ class _VerticalMenuState extends State<VerticalMenu> {
         Expanded(
           child: AnimatedSwitcher(
             duration: const Duration(milliseconds: 100),
-            child: widget.menus[index].widget(),
+            child: menus[index].widget(),
           ),
         ),
       ],
