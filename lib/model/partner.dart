@@ -4,7 +4,7 @@ import 'package:sultanpos/model/request.dart';
 part 'partner.g.dart';
 
 @JsonSerializable()
-class PartnerModel implements BaseModel {
+class PartnerModel extends BaseModel {
   @JsonKey(name: 'public_id')
   final String publicId;
   @JsonKey(name: 'is_supplier')
@@ -19,9 +19,11 @@ class PartnerModel implements BaseModel {
   final String email;
   final int debt;
   final int credit;
+  @JsonKey(name: 'price_group_public_id')
+  final String priceGroupPublicId;
 
   PartnerModel(this.publicId, this.isSupplier, this.isCustomer, this.number, this.name, this.address, this.phone, this.npwp, this.email, this.debt,
-      this.credit);
+      this.credit, this.priceGroupPublicId);
 
   @override
   String? path() {
@@ -32,14 +34,14 @@ class PartnerModel implements BaseModel {
   factory PartnerModel.fromJson(Map<String, dynamic> json) => _$PartnerModelFromJson(json);
 
   @override
-  BaseModel? responseFromJson(Map<String, dynamic> json) => null;
+  Map<String, dynamic> toJson() => _$PartnerModelToJson(this);
 
   @override
-  Map<String, dynamic> toJson() => _$PartnerModelToJson(this);
+  String getPublicId() => publicId;
 }
 
 @JsonSerializable()
-class PartnerInsertModel implements BaseModel {
+class PartnerInsertModel extends BaseModel {
   @JsonKey(name: 'is_supplier')
   final bool isSupplier;
   @JsonKey(name: 'is_customer')
@@ -70,7 +72,7 @@ class PartnerInsertModel implements BaseModel {
 }
 
 @JsonSerializable()
-class PartnerUpdateModel implements BaseModel {
+class PartnerUpdateModel extends BaseModel {
   @JsonKey(name: 'is_supplier')
   final bool isSupplier;
   @JsonKey(name: 'is_customer')

@@ -4,7 +4,7 @@ import 'package:sultanpos/model/request.dart';
 part 'category.g.dart';
 
 @JsonSerializable()
-class CategoryModel implements BaseModel {
+class CategoryModel extends BaseModel {
   @JsonKey(name: 'public_id')
   final String publicId;
   final String name;
@@ -25,14 +25,14 @@ class CategoryModel implements BaseModel {
   factory CategoryModel.fromJson(Map<String, dynamic> json) => _$CategoryModelFromJson(json);
 
   @override
-  BaseModel? responseFromJson(Map<String, dynamic> json) => null;
+  Map<String, dynamic> toJson() => _$CategoryModelToJson(this);
 
   @override
-  Map<String, dynamic> toJson() => _$CategoryModelToJson(this);
+  String getPublicId() => publicId;
 }
 
 @JsonSerializable()
-class CategoryInsertModel implements BaseModel {
+class CategoryInsertModel extends BaseModel {
   final String name;
   final String code;
   final String description;
@@ -56,7 +56,7 @@ class CategoryInsertModel implements BaseModel {
 }
 
 @JsonSerializable()
-class CategoryUpdateModel implements BaseModel {
+class CategoryUpdateModel extends BaseModel {
   final String name;
   final String code;
   final String description;

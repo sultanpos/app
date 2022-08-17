@@ -3,7 +3,7 @@ import 'package:sultanpos/model/base.dart';
 part 'unit.g.dart';
 
 @JsonSerializable()
-class UnitModel implements BaseModel {
+class UnitModel extends BaseModel {
   @JsonKey(name: 'public_id')
   final String publicId;
   final String name;
@@ -20,14 +20,14 @@ class UnitModel implements BaseModel {
   factory UnitModel.fromJson(Map<String, dynamic> json) => _$UnitModelFromJson(json);
 
   @override
-  BaseModel? responseFromJson(Map<String, dynamic> json) => null;
+  Map<String, dynamic> toJson() => _$UnitModelToJson(this);
 
   @override
-  Map<String, dynamic> toJson() => _$UnitModelToJson(this);
+  String getPublicId() => publicId;
 }
 
 @JsonSerializable()
-class UnitAddRequestModel implements BaseModel {
+class UnitAddRequestModel extends BaseModel {
   final String name;
   final String description;
 
@@ -49,7 +49,7 @@ class UnitAddRequestModel implements BaseModel {
 }
 
 @JsonSerializable()
-class UnitUpdateRequestModel implements BaseModel {
+class UnitUpdateRequestModel extends BaseModel {
   final String name;
   final String description;
 
@@ -62,9 +62,6 @@ class UnitUpdateRequestModel implements BaseModel {
 
   @override
   factory UnitUpdateRequestModel.fromJson(Map<String, dynamic> json) => _$UnitUpdateRequestModelFromJson(json);
-
-  @override
-  BaseModel? responseFromJson(Map<String, dynamic> json) => null;
 
   @override
   Map<String, dynamic> toJson() => _$UnitUpdateRequestModelToJson(this);

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sultanpos/model/partner.dart';
 import 'package:sultanpos/state/app.dart';
+import 'package:sultanpos/ui/partner/add.dart';
 import 'package:sultanpos/ui/widget/datatable.dart';
 
 class PartnerWidget extends StatelessWidget {
@@ -10,7 +11,7 @@ class PartnerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider.value(
-      value: AppState().productState,
+      value: AppState().partnerState,
       child: Builder(
         builder: (ctx) {
           return Padding(
@@ -25,7 +26,18 @@ class PartnerWidget extends StatelessWidget {
                     ),
                     const Expanded(child: SizedBox()),
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        AppState().partnerState.resetForm();
+                        showDialog(
+                          context: ctx,
+                          useRootNavigator: false,
+                          builder: (c) {
+                            return const AddPartnerWidget(
+                              title: "Tambah Mitra Baru",
+                            );
+                          },
+                        );
+                      },
                       child: const Text('Tambah Mitra'),
                     ),
                   ],

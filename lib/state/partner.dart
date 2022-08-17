@@ -1,65 +1,45 @@
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:sultanpos/model/error.dart';
+import 'package:sultanpos/model/base.dart';
 import 'package:sultanpos/model/partner.dart';
-import 'package:sultanpos/state/base.dart';
-import 'package:sultanpos/state/list.dart';
+import 'package:sultanpos/state/crud.dart';
 
-class PartnerState extends BaseState {
-  PartnerState(super.httpAPI) : listData = ListState<PartnerModel>(httpAPI, '/partner', PartnerModel.fromJson);
-
-  ListState<PartnerModel> listData;
-  bool loading = false;
-  PartnerModel? currentUnit;
-
-  final form = FormGroup({
-    'name': FormControl<String>(validators: [Validators.required], touched: true),
-    'isCustomer': FormControl<bool>(),
-    'isSupplier': FormControl<bool>(),
-    'address': FormControl<String>(),
-    'phone': FormControl<String>(validators: [Validators.number]),
-    'email': FormControl<String>(validators: [Validators.email]),
-    'npwp': FormControl<String>(),
-    'priceGroupPublicId': FormControl<String>(validators: [Validators.email]),
-  });
-
-  resetForm() {
-    form.reset();
-    form.markAllAsTouched();
+class PartnerState extends CrudState<PartnerModel> {
+  PartnerState(super.httpAPI) : super(path: '/partner', creator: PartnerModel.fromJson) {
+    form = FormGroup({
+      'name': FormControl<String>(validators: [Validators.required], touched: true),
+      'isCustomer': FormControl<bool>(),
+      'isSupplier': FormControl<bool>(),
+      'address': FormControl<String>(),
+      'phone': FormControl<String>(validators: [Validators.number]),
+      'email': FormControl<String>(validators: [Validators.email]),
+      'npwp': FormControl<String>(),
+      'priceGroupPublicId': FormControl<String>(),
+    });
   }
 
-  editForm(PartnerModel unit) {
-    form.control('name').updateValue(unit.name, emitEvent: false);
-    form.markAllAsTouched();
-    currentUnit = unit;
+  @override
+  prepareEditForm(PartnerModel value) {
+    form.control('name').updateValue(value.name, emitEvent: false);
+    form.control('isCustomer').updateValue(value.isCustomer, emitEvent: false);
+    form.control('isSupplier').updateValue(value.isSupplier, emitEvent: false);
+    form.control('address').updateValue(value.address, emitEvent: false);
+    form.control('phone').updateValue(value.phone, emitEvent: false);
+    form.control('email').updateValue(value.email, emitEvent: false);
+    form.control('npwp').updateValue(value.npwp, emitEvent: false);
+    form.control('priceGroupPublicId').updateValue(value.priceGroupPublicId, emitEvent: false);
   }
 
-  save() async {
-    if (!form.valid) return;
-    loading = true;
-    notifyListeners();
-    final value = form.control('name').value;
-    try {
-      if (currentUnit == null) {
-        //await httpAPI.insert(PartnerInsertModel());
-      } else {
-        //await httpAPI.update(UnitUpdateRequestModel(value, desc), currentUnit!.publicId);
-      }
-      loading = false;
-      notifyListeners();
-      listData.load(refresh: true);
-    } on ErrorResponse catch (e) {
-      loading = false;
-      notifyListeners();
-      throw e.message;
-    }
+  @override
+  BaseModel prepareInsertModel() {
+    final values = form.value;
+    return PartnerInsertModel(values['isSupplier'] as bool, values['isCustomer'] as bool, values['name'] as String, values['address'] as String,
+        values['phone'] as String, values['npwp'] as String, values['email'] as String, values['priceGroupPublicId'] as String);
   }
 
-  remove(String publicID) async {
-    try {
-      await httpAPI.delete('/partner/$publicID');
-      listData.load();
-    } on ErrorResponse catch (e) {
-      throw e.message;
-    }
+  @override
+  BaseModel prepareUpdateModel() {
+    final values = form.value;
+    return PartnerUpdateModel(values['isSupplier'] as bool, values['isCustomer'] as bool, values['name'] as String, values['address'] as String,
+        values['phone'] as String, values['npwp'] as String, values['email'] as String, values['priceGroupPublicId'] as String);
   }
 }

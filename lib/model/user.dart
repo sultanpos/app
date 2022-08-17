@@ -3,7 +3,7 @@ import 'package:sultanpos/model/base.dart';
 part 'user.g.dart';
 
 @JsonSerializable()
-class UserModel implements BaseModel {
+class UserModel extends BaseModel {
   @JsonKey(name: 'public_id')
   final String publicID;
   final String username;
@@ -22,8 +22,8 @@ class UserModel implements BaseModel {
   String? path() => "/user";
 
   @override
-  BaseModel? responseFromJson(Map<String, dynamic> json) => null;
+  Map<String, dynamic> toJson() => _$UserModelToJson(this);
 
   @override
-  Map<String, dynamic> toJson() => _$UserModelToJson(this);
+  String getPublicId() => publicID;
 }

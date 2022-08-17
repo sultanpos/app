@@ -1,15 +1,12 @@
 import 'package:sultanpos/model/base.dart';
 
-class InsertSuccessModel implements BaseModel {
+class InsertSuccessModel extends BaseModel {
   final String publicId;
   InsertSuccessModel(this.publicId);
 
   factory InsertSuccessModel.fromJson(Map<String, dynamic> json) {
     return InsertSuccessModel(json['public_id']);
   }
-
-  @override
-  String? path() => null;
 
   @override
   BaseModel? responseFromJson(Map<String, dynamic> json) => null;
@@ -22,18 +19,12 @@ class InsertSuccessModel implements BaseModel {
   }
 }
 
-class UpdateSuccessModel implements BaseModel {
+class UpdateSuccessModel extends BaseModel {
   UpdateSuccessModel();
 
   factory UpdateSuccessModel.fromJson(Map<String, dynamic> json) {
     return UpdateSuccessModel();
   }
-
-  @override
-  String? path() => null;
-
-  @override
-  BaseModel? responseFromJson(Map<String, dynamic> json) => null;
 
   @override
   Map<String, dynamic> toJson() {

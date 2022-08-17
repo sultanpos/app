@@ -3,7 +3,7 @@ import 'package:sultanpos/model/base.dart';
 part 'auth.g.dart';
 
 @JsonSerializable()
-class LoginUsernamePasswordRequest implements BaseModel {
+class LoginUsernamePasswordRequest extends BaseModel {
   final String username;
   final String password;
 
@@ -27,7 +27,7 @@ class LoginUsernamePasswordRequest implements BaseModel {
 }
 
 @JsonSerializable()
-class LoginFirebaseTokenRequest implements BaseModel {
+class LoginFirebaseTokenRequest extends BaseModel {
   @JsonKey(name: 'firebase_token')
   final String firebaseToken;
 
@@ -51,7 +51,7 @@ class LoginFirebaseTokenRequest implements BaseModel {
 }
 
 @JsonSerializable()
-class LoginRefreshToken implements BaseModel {
+class LoginRefreshToken extends BaseModel {
   @JsonKey(name: 'refresh_token')
   final String refreshToken;
 
@@ -75,7 +75,7 @@ class LoginRefreshToken implements BaseModel {
 }
 
 @JsonSerializable()
-class LoginResponse implements BaseModel {
+class LoginResponse extends BaseModel {
   @JsonKey(name: 'access_token')
   final String accessToken;
   @JsonKey(name: 'refresh_token')
@@ -91,18 +91,8 @@ class LoginResponse implements BaseModel {
   @override
   Map<String, dynamic> toJson() => _$LoginResponseToJson(this);
 
-  @override
-  BaseModel? responseFromJson(Map<String, dynamic> json) {
-    return null;
-  }
-
   normalizeDate() {
     final value = DateTime.now().millisecondsSinceEpoch + (expiresIn * 1000);
     return LoginResponse(accessToken, refreshToken, value);
-  }
-
-  @override
-  String? path() {
-    return null;
   }
 }

@@ -3,7 +3,7 @@ import 'package:sultanpos/model/base.dart';
 part 'claim.g.dart';
 
 @JsonSerializable()
-class JWTClaim implements BaseModel {
+class JWTClaim extends BaseModel {
   @JsonKey(name: 'UserID')
   final int userId;
 
@@ -23,16 +23,6 @@ class JWTClaim implements BaseModel {
 
   @override
   factory JWTClaim.fromJson(Map<String, dynamic> json) => _$JWTClaimFromJson(json);
-
-  @override
-  String? path() {
-    return null;
-  }
-
-  @override
-  BaseModel? responseFromJson(Map<String, dynamic> json) {
-    return null;
-  }
 
   @override
   Map<String, dynamic> toJson() => _$JWTClaimToJson(this);

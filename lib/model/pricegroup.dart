@@ -3,7 +3,7 @@ import 'package:sultanpos/model/base.dart';
 part 'pricegroup.g.dart';
 
 @JsonSerializable()
-class PriceGroupModel implements BaseModel {
+class PriceGroupModel extends BaseModel {
   @JsonKey(name: 'public_id')
   final String publicId;
   final String name;
@@ -24,14 +24,14 @@ class PriceGroupModel implements BaseModel {
   factory PriceGroupModel.fromJson(Map<String, dynamic> json) => _$PriceGroupModelFromJson(json);
 
   @override
-  BaseModel? responseFromJson(Map<String, dynamic> json) => null;
+  Map<String, dynamic> toJson() => _$PriceGroupModelToJson(this);
 
   @override
-  Map<String, dynamic> toJson() => _$PriceGroupModelToJson(this);
+  String getPublicId() => publicId;
 }
 
 @JsonSerializable()
-class PriceGroupAddRequestModel implements BaseModel {
+class PriceGroupAddRequestModel extends BaseModel {
   final String name;
   final String description;
   @JsonKey(name: 'public_description')
@@ -55,7 +55,7 @@ class PriceGroupAddRequestModel implements BaseModel {
 }
 
 @JsonSerializable()
-class PriceGroupUpdateRequestModel implements BaseModel {
+class PriceGroupUpdateRequestModel extends BaseModel {
   final String name;
   final String description;
   @JsonKey(name: 'public_description')
@@ -70,9 +70,6 @@ class PriceGroupUpdateRequestModel implements BaseModel {
 
   @override
   factory PriceGroupUpdateRequestModel.fromJson(Map<String, dynamic> json) => _$PriceGroupUpdateRequestModelFromJson(json);
-
-  @override
-  BaseModel? responseFromJson(Map<String, dynamic> json) => null;
 
   @override
   Map<String, dynamic> toJson() => _$PriceGroupUpdateRequestModelToJson(this);
