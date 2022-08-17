@@ -18,6 +18,7 @@ abstract class CrudState<T extends BaseModel> extends BaseState {
   resetForm() {
     form.reset();
     form.markAllAsTouched();
+    current = null;
   }
 
   editForm(T value) {
@@ -32,7 +33,6 @@ abstract class CrudState<T extends BaseModel> extends BaseState {
     if (!form.valid) throw 'form tidak valid';
     loading = true;
     notifyListeners();
-    final value = form.control('name').value;
     try {
       if (current == null) {
         await httpAPI.insert(prepareInsertModel());
@@ -54,8 +54,8 @@ abstract class CrudState<T extends BaseModel> extends BaseState {
 
   remove(String publicID) async {
     try {
-      await httpAPI.delete('/$path/$publicID');
-      listData.load();
+      await httpAPI.delete('$path/$publicID');
+      listData.load(refresh: true);
     } on ErrorResponse catch (e) {
       throw e.message;
     }
