@@ -1,6 +1,7 @@
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:sultanpos/model/base.dart';
 import 'package:sultanpos/model/partner.dart';
+import 'package:sultanpos/state/app.dart';
 import 'package:sultanpos/state/crud.dart';
 import 'package:sultanpos/validator/phone.dart';
 
@@ -27,7 +28,13 @@ class PartnerState extends CrudState<PartnerModel> {
     form.control('phone').updateValue(value.phone, emitEvent: false);
     form.control('email').updateValue(value.email, emitEvent: false);
     form.control('npwp').updateValue(value.npwp, emitEvent: false);
-    form.control('priceGroupPublicId').updateValue(value.priceGroupPublicId, emitEvent: false);
+    form.control('priceGroupPublicId').updateValue(value.priceGroup.publicId, emitEvent: false);
+  }
+
+  @override
+  resetForm() {
+    super.resetForm();
+    form.control('priceGroupPublicId').updateValue(AppState().shareState.defaultPriceGroup?.publicId ?? "", emitEvent: false);
   }
 
   @override

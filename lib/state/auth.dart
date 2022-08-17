@@ -5,6 +5,7 @@ import 'package:sultanpos/model/auth.dart';
 import 'package:sultanpos/model/claim.dart';
 import 'package:sultanpos/model/user.dart';
 import 'package:sultanpos/preference.dart';
+import 'package:sultanpos/state/app.dart';
 import 'package:sultanpos/state/base.dart';
 
 class AuthState extends BaseState {
@@ -62,6 +63,7 @@ class AuthState extends BaseState {
       final userResult = await httpAPI.getOne<UserModel>('/user/${claim!.userPublicId}', fromJsonFunc: UserModel.fromJson);
       user = userResult;
       notifyListeners();
+      AppState().shareState.getDefaultPriceGroup();
     } catch (e) {
       rethrow;
     }

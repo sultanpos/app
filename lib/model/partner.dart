@@ -1,4 +1,5 @@
 import 'package:sultanpos/model/base.dart';
+import 'package:sultanpos/model/pricegroup.dart';
 import 'package:sultanpos/model/request.dart';
 
 part 'partner.g.dart';
@@ -19,11 +20,11 @@ class PartnerModel extends BaseModel {
   final String email;
   final int debt;
   final int credit;
-  @JsonKey(name: 'price_group_public_id')
-  final String priceGroupPublicId;
+  @JsonKey(name: 'price_group')
+  final PriceGroupModel priceGroup;
 
   PartnerModel(this.publicId, this.isSupplier, this.isCustomer, this.number, this.name, this.address, this.phone, this.npwp, this.email, this.debt,
-      this.credit, this.priceGroupPublicId);
+      this.credit, this.priceGroup);
 
   @override
   String? path() {

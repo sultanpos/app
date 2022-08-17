@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:reactive_forms/reactive_forms.dart';
+import 'package:sultanpos/model/partner.dart';
+import 'package:sultanpos/model/pricegroup.dart';
 import 'package:sultanpos/state/app.dart';
 import 'package:sultanpos/state/partner.dart';
 import 'package:sultanpos/ui/util/uppercaseformatter.dart';
 import 'package:sultanpos/ui/widget/basewindow.dart';
+import 'package:sultanpos/ui/widget/dropdown.dart';
 import 'package:sultanpos/ui/widget/showerror.dart';
 
 class AddPartnerWidget extends StatelessWidget {
@@ -14,7 +17,7 @@ class AddPartnerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BaseWindowWidget(
-      height: 450,
+      height: 500,
       width: 350,
       title: title,
       child: ChangeNotifierProvider.value(
@@ -98,6 +101,18 @@ class AddPartnerWidget extends StatelessWidget {
                             ),
                             onSubmitted: () => save(ctx),
                             maxLines: null,
+                          ),
+                          DropdownRepo<PriceGroupModel, String>(
+                            creator: PriceGroupModel.fromJson,
+                            path: "/pricegroup",
+                            formControlName: 'priceGroupPublicId',
+                            autoFocus: true,
+                            textFn: (value) => value.name,
+                            valueFn: (value) => value.publicId,
+                            decoration: const InputDecoration(
+                              hintText: "Pilih group harga",
+                              labelText: "Group Harga",
+                            ),
                           ),
                         ],
                       ),
