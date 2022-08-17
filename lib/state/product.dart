@@ -1,16 +1,26 @@
+import 'package:reactive_forms/reactive_forms.dart';
+import 'package:sultanpos/model/base.dart';
 import 'package:sultanpos/model/product.dart';
-import 'package:sultanpos/state/base.dart';
-import 'package:sultanpos/state/list.dart';
+import 'package:sultanpos/state/crud.dart';
 
-class ProductState extends BaseState {
-  ProductState(super.httpAPI) : listData = ListState<ProductModel>(httpAPI, '/product', ProductModel.fromJson);
+class ProductState extends CrudState<ProductModel> {
+  ProductState(super.httpAPI) : super(path: '/product', creator: ProductModel.fromJson) {
+    form = FormGroup({
+      'name': FormControl<String>(validators: [Validators.required], touched: true),
+      'description': FormControl<String>(),
+    });
+  }
 
-  ListState<ProductModel> listData;
+  @override
+  prepareEditForm(ProductModel value) {}
 
-  int currentIndex = 0;
+  @override
+  BaseModel prepareInsertModel() {
+    throw UnimplementedError();
+  }
 
-  setCurrentIndex(int value) {
-    currentIndex = value;
-    notifyListeners();
+  @override
+  BaseModel prepareUpdateModel() {
+    throw UnimplementedError();
   }
 }
