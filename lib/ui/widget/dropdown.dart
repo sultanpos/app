@@ -11,6 +11,7 @@ class DropdownRepo<T extends BaseModel, R> extends StatefulWidget {
   final T Function(Map<String, dynamic> json) creator;
   final String Function(T value) textFn;
   final R Function(T value) valueFn;
+  final InputDecoration decoration;
   const DropdownRepo({
     required this.formControlName,
     required this.path,
@@ -18,6 +19,7 @@ class DropdownRepo<T extends BaseModel, R> extends StatefulWidget {
     required this.creator,
     required this.valueFn,
     required this.textFn,
+    this.decoration = const InputDecoration(),
     Key? key,
   }) : super(key: key);
 
@@ -42,6 +44,7 @@ class _DropdownRepoState<T extends BaseModel, R> extends State<DropdownRepo<T, R
     return ReactiveDropdownField(
       autofocus: widget.autoFocus ?? false,
       formControlName: widget.formControlName,
+      decoration: widget.decoration,
       items: list == null
           ? []
           : list!.data

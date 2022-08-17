@@ -15,6 +15,11 @@ abstract class CrudState<T extends BaseModel> extends BaseState {
 
   CrudState(super.httpAPI, {required this.path, required this.creator}) : listData = ListState<T>(httpAPI, path, creator);
 
+  R fValue<R>(String key, R defValue) {
+    final val = form.control(key).value;
+    return val == null ? defValue : val as R;
+  }
+
   resetForm() {
     form.reset();
     form.markAllAsTouched();

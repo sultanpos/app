@@ -2,6 +2,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 import 'package:sultanpos/model/base.dart';
 import 'package:sultanpos/model/partner.dart';
 import 'package:sultanpos/state/crud.dart';
+import 'package:sultanpos/validator/phone.dart';
 
 class PartnerState extends CrudState<PartnerModel> {
   PartnerState(super.httpAPI) : super(path: '/partner', creator: PartnerModel.fromJson) {
@@ -10,7 +11,7 @@ class PartnerState extends CrudState<PartnerModel> {
       'isCustomer': FormControl<bool>(),
       'isSupplier': FormControl<bool>(),
       'address': FormControl<String>(),
-      'phone': FormControl<String>(validators: [Validators.number]),
+      'phone': FormControl<String>(validators: [PhoneValidator().validate]),
       'email': FormControl<String>(validators: [Validators.email]),
       'npwp': FormControl<String>(),
       'priceGroupPublicId': FormControl<String>(),
@@ -31,15 +32,29 @@ class PartnerState extends CrudState<PartnerModel> {
 
   @override
   BaseModel prepareInsertModel() {
-    final values = form.value;
-    return PartnerInsertModel(values['isSupplier'] as bool, values['isCustomer'] as bool, values['name'] as String, values['address'] as String,
-        values['phone'] as String, values['npwp'] as String, values['email'] as String, values['priceGroupPublicId'] as String);
+    return PartnerInsertModel(
+      fValue<bool>('isSupplier', false),
+      fValue<bool>('isCustomer', false),
+      fValue<String>('name', ''),
+      fValue<String>('address', ''),
+      fValue<String>('phone', ''),
+      fValue<String>('npwp', ''),
+      fValue<String>('email', ''),
+      fValue<String>('priceGroupPublicId', ''),
+    );
   }
 
   @override
   BaseModel prepareUpdateModel() {
-    final values = form.value;
-    return PartnerUpdateModel(values['isSupplier'] as bool, values['isCustomer'] as bool, values['name'] as String, values['address'] as String,
-        values['phone'] as String, values['npwp'] as String, values['email'] as String, values['priceGroupPublicId'] as String);
+    return PartnerUpdateModel(
+      fValue<bool>('isSupplier', false),
+      fValue<bool>('isCustomer', false),
+      fValue<String>('name', ''),
+      fValue<String>('address', ''),
+      fValue<String>('phone', ''),
+      fValue<String>('npwp', ''),
+      fValue<String>('email', ''),
+      fValue<String>('priceGroupPublicId', ''),
+    );
   }
 }

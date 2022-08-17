@@ -7,6 +7,7 @@ import 'package:sultanpos/state/pricegroup.dart';
 import 'package:sultanpos/ui/master/pricegroup/add.dart';
 import 'package:sultanpos/ui/widget/confirmation.dart';
 import 'package:sultanpos/ui/widget/datatable.dart';
+import 'package:sultanpos/ui/widget/dialogutil.dart';
 import 'package:sultanpos/ui/widget/showerror.dart';
 
 class PriceGroupWidget extends HookWidget {
@@ -36,9 +37,8 @@ class PriceGroupWidget extends HookWidget {
                     ElevatedButton(
                       onPressed: () {
                         AppState().priceGroupState.resetForm();
-                        showDialog(
+                        sShowDialog(
                           context: ctx,
-                          useRootNavigator: false,
                           builder: (c) {
                             return const PriceGroupAddWidget(
                               title: "Tambah Group Harga Baru",
@@ -78,9 +78,8 @@ class PriceGroupWidget extends HookWidget {
                                 splashRadius: 16,
                                 onPressed: () {
                                   AppState().priceGroupState.editForm(v);
-                                  showDialog(
+                                  sShowDialog(
                                     context: ctx,
-                                    useRootNavigator: false,
                                     builder: (c) {
                                       return const PriceGroupAddWidget(title: "Edit group harga");
                                     },

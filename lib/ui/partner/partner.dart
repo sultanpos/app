@@ -4,6 +4,7 @@ import 'package:sultanpos/model/partner.dart';
 import 'package:sultanpos/state/app.dart';
 import 'package:sultanpos/ui/partner/add.dart';
 import 'package:sultanpos/ui/widget/datatable.dart';
+import 'package:sultanpos/ui/widget/dialogutil.dart';
 
 class PartnerWidget extends StatelessWidget {
   const PartnerWidget({Key? key}) : super(key: key);
@@ -28,9 +29,8 @@ class PartnerWidget extends StatelessWidget {
                     ElevatedButton(
                       onPressed: () {
                         AppState().partnerState.resetForm();
-                        showDialog(
+                        sShowDialog(
                           context: ctx,
-                          useRootNavigator: false,
                           builder: (c) {
                             return const AddPartnerWidget(
                               title: "Tambah Mitra Baru",

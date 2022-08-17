@@ -6,6 +6,7 @@ import 'package:sultanpos/state/unit.dart';
 import 'package:sultanpos/ui/master/unit/add.dart';
 import 'package:sultanpos/ui/widget/confirmation.dart';
 import 'package:sultanpos/ui/widget/datatable.dart';
+import 'package:sultanpos/ui/widget/dialogutil.dart';
 import 'package:sultanpos/ui/widget/showerror.dart';
 
 class UnitWidget extends StatelessWidget {
@@ -31,9 +32,8 @@ class UnitWidget extends StatelessWidget {
                     ElevatedButton(
                       onPressed: () {
                         AppState().unitState.resetForm();
-                        showDialog(
+                        sShowDialog(
                           context: ctx,
-                          useRootNavigator: false,
                           builder: (c) {
                             return const UnitAddWidget(
                               title: "Tambah Unit Baru",
@@ -71,9 +71,8 @@ class UnitWidget extends StatelessWidget {
                           splashRadius: 16,
                           onPressed: () {
                             AppState().unitState.editForm(v);
-                            showDialog(
+                            sShowDialog(
                               context: ctx,
-                              useRootNavigator: false,
                               builder: (c) {
                                 return const UnitAddWidget(title: "Edit Unit");
                               },
