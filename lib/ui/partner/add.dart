@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:sultanpos/model/partner.dart';
 import 'package:sultanpos/model/pricegroup.dart';
 import 'package:sultanpos/state/app.dart';
 import 'package:sultanpos/state/partner.dart';

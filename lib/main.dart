@@ -2,11 +2,13 @@ import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:sultanpos/app.dart';
 import 'package:sultanpos/flavor.dart';
+import 'package:sultanpos/ui/theme.dart';
 
 Future<void> main() async {
   Flavor.appFlavor = FlavorType.development;
   Flavor.baseUrl = "https://dev.sultanpos-api.lekapin.com";
   WidgetsFlutterBinding.ensureInitialized();
+  STheme().init();
   runApp(const App());
   doWhenWindowReady(() {
     const initialSize = Size(1280, 720);

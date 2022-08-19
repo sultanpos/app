@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sultanpos/model/product.dart';
 import 'package:sultanpos/state/app.dart';
+import 'package:sultanpos/ui/product/add.dart';
 import 'package:sultanpos/ui/widget/datatable.dart';
+import 'package:sultanpos/ui/widget/dialogutil.dart';
 
 class ProductRootWidget extends StatelessWidget {
   const ProductRootWidget({Key? key}) : super(key: key);
@@ -24,7 +26,17 @@ class ProductRootWidget extends StatelessWidget {
                   ),
                   const Expanded(child: SizedBox()),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      AppState().partnerState.resetForm();
+                      sShowDialog(
+                        context: ctx,
+                        builder: (c) {
+                          return const AddProductWidget(
+                            title: "Tambah Barang Baru",
+                          );
+                        },
+                      );
+                    },
                     child: const Text('Tambah Barang'),
                   ),
                 ],
