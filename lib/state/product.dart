@@ -6,13 +6,18 @@ import 'package:sultanpos/state/crud.dart';
 class ProductState extends CrudState<ProductModel> {
   ProductState(super.httpAPI) : super(path: '/product', creator: ProductModel.fromJson) {
     form = FormGroup({
-      'product_type': FormControl<String>(validators: [Validators.required], touched: true),
+      'productType': FormControl<String>(validators: [Validators.required], touched: true),
       'barcode': FormControl<String>(validators: [Validators.required], touched: true),
       'name': FormControl<String>(validators: [Validators.required], touched: true),
       'description': FormControl<String>(),
-      'unit_public_id': FormControl<String>(validators: [Validators.required], touched: true),
-      'category_public_id': FormControl<String>(validators: [Validators.required], touched: true),
-      'buy_price': FormControl<int>(validators: [Validators.min<int>(0)], touched: true),
+      'unitPublicId': FormControl<String>(validators: [Validators.required], touched: true),
+      'categoryPublicId': FormControl<String>(validators: [Validators.required], touched: true),
+      'partnerPublicId': FormControl<String>(validators: [Validators.required], touched: true),
+      'buyPrice': FormControl<int>(),
+      'calculateStock': FormControl<bool>(),
+      'sellable': FormControl<bool>(),
+      'buyable': FormControl<bool>(),
+      'editablePrice': FormControl<bool>(),
     });
   }
 
@@ -21,7 +26,26 @@ class ProductState extends CrudState<ProductModel> {
 
   @override
   BaseModel prepareInsertModel() {
-    throw UnimplementedError();
+    return ProductInsertModel(
+      fValue<String>('barcode', ''),
+      fValue<String>('name', ''),
+      fValue<String>('description', ''),
+      true, //fValue<bool>('allBranch', true),
+      '', //fValue<String>('mainImage', ''),
+      fValue<bool>('calculateStock', true),
+      fValue<String>('productType', ''),
+      fValue<bool>('sellable', true),
+      fValue<bool>('buyable', true),
+      fValue<bool>('editablePrice', false),
+      false, //fValue<bool>('useSn', false),
+      fValue<String>('unitPublicId', ''),
+      fValue<String>('partnerPublicId', ''),
+      fValue<String>('categoryPublicId', ''),
+      [],
+      fValue<int>('buyPrice', 0),
+      [],
+      ProductPriceInsertModel(0, 1, '', 0, 0, 0, '', 0, 0, 0, '', 0, 0, 0, '', 0, 0, 0, '', 0),
+    );
   }
 
   @override

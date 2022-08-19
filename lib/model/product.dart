@@ -1,5 +1,6 @@
 import 'package:sultanpos/model/base.dart';
 import 'package:sultanpos/model/category.dart';
+import 'package:sultanpos/model/partner.dart';
 import 'package:sultanpos/model/unit.dart';
 
 part 'product.g.dart';
@@ -21,11 +22,18 @@ class ProductModel extends BaseModel {
   final bool calculateStock;
   @JsonKey(name: 'product_type')
   final String productType;
+  final bool sellable;
+  final bool buyable;
+  @JsonKey(name: 'editable_price')
+  final bool editablePrice;
+  @JsonKey(name: 'use_sn')
+  final bool useSn;
   final UnitModel unit;
   final CategoryModel category;
+  final PartnerModel partner;
 
   ProductModel(this.parentPublicId, this.publicId, this.barcode, this.name, this.description, this.allBranch, this.mainImage, this.calculateStock,
-      this.productType, this.unit, this.category);
+      this.productType, this.sellable, this.buyable, this.editablePrice, this.useSn, this.unit, this.category, this.partner);
 
   @override
   factory ProductModel.fromJson(Map<String, dynamic> json) => _$ProductModelFromJson(json);
@@ -52,14 +60,41 @@ class ProductInsertModel extends BaseModel {
   final String productType;
   @JsonKey(name: 'unit_public_id')
   final String unitPublicId;
+  @JsonKey(name: 'category_public_id')
+  final String categoryPublicId;
+  @JsonKey(name: 'partner_public_id')
+  final String partnerPublicId;
   final List<String> branches;
   @JsonKey(name: 'buy_price')
   final int buyPrice;
+  final bool sellable;
+  final bool buyable;
+  @JsonKey(name: 'editable_price')
+  final bool editablePrice;
+  @JsonKey(name: 'use_sn')
+  final bool useSn;
   final List<ProductStockInsertModel> stocks;
   final ProductPriceInsertModel price;
 
-  ProductInsertModel(this.barcode, this.name, this.description, this.allBranch, this.mainImage, this.calculateStock, this.productType,
-      this.unitPublicId, this.branches, this.buyPrice, this.stocks, this.price);
+  ProductInsertModel(
+      this.barcode,
+      this.name,
+      this.description,
+      this.allBranch,
+      this.mainImage,
+      this.calculateStock,
+      this.productType,
+      this.sellable,
+      this.buyable,
+      this.editablePrice,
+      this.useSn,
+      this.unitPublicId,
+      this.partnerPublicId,
+      this.categoryPublicId,
+      this.branches,
+      this.buyPrice,
+      this.stocks,
+      this.price);
 
   @override
   factory ProductInsertModel.fromJson(Map<String, dynamic> json) => _$ProductInsertModelFromJson(json);
@@ -158,9 +193,36 @@ class ProductUpdateModel extends BaseModel {
   final String productType;
   @JsonKey(name: 'unit_public_id')
   final String unitPublicId;
+  @JsonKey(name: 'category_public_id')
+  final String categoryPublicId;
+  @JsonKey(name: 'partner_public_id')
+  final String partnerPublicId;
+  @JsonKey(name: 'buy_price')
+  final int buyPrice;
+  final bool sellable;
+  final bool buyable;
+  @JsonKey(name: 'editable_price')
+  final bool editablePrice;
+  @JsonKey(name: 'use_sn')
+  final bool useSn;
 
   ProductUpdateModel(
-      this.barcode, this.name, this.description, this.allBranch, this.mainImage, this.calculateStock, this.productType, this.unitPublicId);
+    this.barcode,
+    this.name,
+    this.description,
+    this.allBranch,
+    this.mainImage,
+    this.calculateStock,
+    this.productType,
+    this.unitPublicId,
+    this.partnerPublicId,
+    this.categoryPublicId,
+    this.buyPrice,
+    this.sellable,
+    this.buyable,
+    this.editablePrice,
+    this.useSn,
+  );
 
   @override
   factory ProductUpdateModel.fromJson(Map<String, dynamic> json) => _$ProductUpdateModelFromJson(json);

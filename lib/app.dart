@@ -22,6 +22,14 @@ class _AppState extends State<App> {
         brightness: Brightness.dark,
         primarySwatch: Colors.blue,
         fontFamily: 'Ubuntu_Mono',
+        inputDecorationTheme: const InputDecorationTheme(
+          isDense: true,
+          filled: true,
+          border: OutlineInputBorder(),
+          contentPadding: EdgeInsets.all(8),
+          errorStyle: TextStyle(height: 0.3),
+        ),
+        textTheme: const TextTheme(subtitle1: TextStyle(fontSize: 14, height: 1.5)),
       ),
       initial: AdaptiveThemeMode.dark,
       builder: (theme, darkTheme) => MaterialApp(

@@ -6,6 +6,7 @@ import 'package:sultanpos/state/product.dart';
 import 'package:sultanpos/ui/theme.dart';
 import 'package:sultanpos/ui/util/uppercaseformatter.dart';
 import 'package:sultanpos/ui/widget/basewindow.dart';
+import 'package:sultanpos/ui/widget/dropdown.dart';
 import 'package:sultanpos/ui/widget/showerror.dart';
 
 class AddProductWidget extends StatelessWidget {
@@ -31,28 +32,90 @@ class AddProductWidget extends StatelessWidget {
                       child: Row(
                     children: [
                       Expanded(
+                        child: SingleChildScrollView(
                           child: Column(
-                        children: [
-                          ReactiveTextField(
-                            formControlName: 'barcode',
-                            autofocus: true,
-                            inputFormatters: [UpperCaseTextFormatter()],
-                            decoration: STheme().defInputDecoration.copyWith(labelText: "Barcode", hintText: "Masukkan barcode"),
-                            textInputAction: TextInputAction.next,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              ReactiveTextField(
+                                formControlName: 'barcode',
+                                autofocus: true,
+                                inputFormatters: [UpperCaseTextFormatter()],
+                                decoration: const InputDecoration(labelText: "Barcode", hintText: "Masukkan barcode"),
+                                textInputAction: TextInputAction.next,
+                              ),
+                              const SizedBox(height: 8),
+                              ReactiveTextField(
+                                formControlName: 'name',
+                                inputFormatters: [UpperCaseTextFormatter()],
+                                decoration: const InputDecoration(labelText: "Nama", hintText: "Masukkan name"),
+                                textInputAction: TextInputAction.next,
+                              ),
+                              const SizedBox(height: 8),
+                              const DropdownProductType(
+                                formControlName: 'productType',
+                                inputDecoration: InputDecoration(labelText: 'Tipe'),
+                              ),
+                              const SizedBox(height: 8),
+                              DropdownRepoUnit(
+                                formControlName: 'unitPublicId',
+                                decoration: const InputDecoration(labelText: "Unit", hintText: "Pilih unit"),
+                              ),
+                              const SizedBox(height: 8),
+                              DropdownRepoCategory(
+                                formControlName: 'categoryPublicId',
+                                decoration: const InputDecoration(labelText: "Kategori", hintText: "Pilih kategori"),
+                              ),
+                              const SizedBox(height: 8),
+                              DropdownRepoPartnerSupplier(
+                                formControlName: 'partnerPublicId',
+                                decoration: const InputDecoration(labelText: "Supplier", hintText: "Pilih supplier utama"),
+                              ),
+                              const SizedBox(height: 8),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: Row(
+                                      children: [
+                                        ReactiveCheckbox(
+                                          formControlName: 'sellable',
+                                        ),
+                                        const Text('Dijual'),
+                                      ],
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Row(
+                                      children: [
+                                        ReactiveCheckbox(
+                                          formControlName: 'buyable',
+                                        ),
+                                        const Text('Dibeli'),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  ReactiveCheckbox(
+                                    formControlName: 'calculateStock',
+                                  ),
+                                  const Text('Hitung stock'),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  ReactiveCheckbox(
+                                    formControlName: 'editablePrice',
+                                  ),
+                                  const Text('Harga bisa diedit di kasir'),
+                                ],
+                              ),
+                            ],
                           ),
-                          const SizedBox(
-                            height: 8,
-                          ),
-                          ReactiveTextField(
-                            formControlName: 'name',
-                            autofocus: true,
-                            inputFormatters: [UpperCaseTextFormatter()],
-                            decoration: STheme().defInputDecoration.copyWith(labelText: "Nama", hintText: "Masukkan name"),
-                            textInputAction: TextInputAction.next,
-                          ),
-                        ],
-                      )),
-                      SizedBox(width: 16),
+                        ),
+                      ),
+                      const VerticalDivider(),
                       Expanded(child: Text('DUA')),
                     ],
                   )),
@@ -93,7 +156,7 @@ class AddProductWidget extends StatelessWidget {
   save(BuildContext context) async {
     try {
       final nav = Navigator.of(context);
-      await AppState().partnerState.save();
+      await AppState().productState.save();
       nav.pop();
     } catch (e) {
       showError(context, title: 'Error menyimpan', message: e.toString());

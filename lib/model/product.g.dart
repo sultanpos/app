@@ -16,8 +16,13 @@ ProductModel _$ProductModelFromJson(Map<String, dynamic> json) => ProductModel(
       json['main_image'] as String,
       json['calculate_stock'] as bool,
       json['product_type'] as String,
+      json['sellable'] as bool,
+      json['buyable'] as bool,
+      json['editable_price'] as bool,
+      json['use_sn'] as bool,
       UnitModel.fromJson(json['unit'] as Map<String, dynamic>),
       CategoryModel.fromJson(json['category'] as Map<String, dynamic>),
+      PartnerModel.fromJson(json['partner'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$ProductModelToJson(ProductModel instance) =>
@@ -31,8 +36,13 @@ Map<String, dynamic> _$ProductModelToJson(ProductModel instance) =>
       'main_image': instance.mainImage,
       'calculate_stock': instance.calculateStock,
       'product_type': instance.productType,
+      'sellable': instance.sellable,
+      'buyable': instance.buyable,
+      'editable_price': instance.editablePrice,
+      'use_sn': instance.useSn,
       'unit': instance.unit,
       'category': instance.category,
+      'partner': instance.partner,
     };
 
 ProductInsertModel _$ProductInsertModelFromJson(Map<String, dynamic> json) =>
@@ -44,7 +54,13 @@ ProductInsertModel _$ProductInsertModelFromJson(Map<String, dynamic> json) =>
       json['main_image'] as String,
       json['calculate_stock'] as bool,
       json['product_type'] as String,
+      json['sellable'] as bool,
+      json['buyable'] as bool,
+      json['editable_price'] as bool,
+      json['use_sn'] as bool,
       json['unit_public_id'] as String,
+      json['partner_public_id'] as String,
+      json['category_public_id'] as String,
       (json['branches'] as List<dynamic>).map((e) => e as String).toList(),
       json['buy_price'] as int,
       (json['stocks'] as List<dynamic>)
@@ -64,8 +80,14 @@ Map<String, dynamic> _$ProductInsertModelToJson(ProductInsertModel instance) =>
       'calculate_stock': instance.calculateStock,
       'product_type': instance.productType,
       'unit_public_id': instance.unitPublicId,
+      'category_public_id': instance.categoryPublicId,
+      'partner_public_id': instance.partnerPublicId,
       'branches': instance.branches,
       'buy_price': instance.buyPrice,
+      'sellable': instance.sellable,
+      'buyable': instance.buyable,
+      'editable_price': instance.editablePrice,
+      'use_sn': instance.useSn,
       'stocks': instance.stocks,
       'price': instance.price,
     };
@@ -144,6 +166,13 @@ ProductUpdateModel _$ProductUpdateModelFromJson(Map<String, dynamic> json) =>
       json['calculate_stock'] as bool,
       json['product_type'] as String,
       json['unit_public_id'] as String,
+      json['partner_public_id'] as String,
+      json['category_public_id'] as String,
+      json['buy_price'] as int,
+      json['sellable'] as bool,
+      json['buyable'] as bool,
+      json['editable_price'] as bool,
+      json['use_sn'] as bool,
     );
 
 Map<String, dynamic> _$ProductUpdateModelToJson(ProductUpdateModel instance) =>
@@ -156,4 +185,11 @@ Map<String, dynamic> _$ProductUpdateModelToJson(ProductUpdateModel instance) =>
       'calculate_stock': instance.calculateStock,
       'product_type': instance.productType,
       'unit_public_id': instance.unitPublicId,
+      'category_public_id': instance.categoryPublicId,
+      'partner_public_id': instance.partnerPublicId,
+      'buy_price': instance.buyPrice,
+      'sellable': instance.sellable,
+      'buyable': instance.buyable,
+      'editable_price': instance.editablePrice,
+      'use_sn': instance.useSn,
     };

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:sultanpos/model/base.dart';
+import 'package:sultanpos/model/category.dart';
 import 'package:sultanpos/model/listresult.dart';
+import 'package:sultanpos/model/partner.dart';
+import 'package:sultanpos/model/unit.dart';
 import 'package:sultanpos/state/app.dart';
 
 class DropdownRepo<T extends BaseModel, R> extends StatefulWidget {
@@ -55,6 +58,72 @@ class _DropdownRepoState<T extends BaseModel, R> extends State<DropdownRepo<T, R
                 ),
               )
               .toList(),
+    );
+  }
+}
+
+class DropdownRepoCategory extends DropdownRepo<CategoryModel, String> {
+  DropdownRepoCategory({super.key, required super.formControlName, super.decoration})
+      : super(
+          path: '/category',
+          creator: CategoryModel.fromJson,
+          valueFn: (data) => data.publicId,
+          textFn: (data) => data.name,
+        );
+}
+
+class DropdownRepoUnit extends DropdownRepo<UnitModel, String> {
+  DropdownRepoUnit({super.key, required super.formControlName, super.decoration})
+      : super(
+          path: '/unit',
+          creator: UnitModel.fromJson,
+          valueFn: (data) => data.publicId,
+          textFn: (data) => data.name,
+        );
+}
+
+class DropdownRepoPartnerCustomer extends DropdownRepo<PartnerModel, String> {
+  DropdownRepoPartnerCustomer({super.key, required super.formControlName, super.decoration})
+      : super(
+          path: '/partner?is_customer=true',
+          creator: PartnerModel.fromJson,
+          valueFn: (data) => data.publicId,
+          textFn: (data) => data.name,
+        );
+}
+
+class DropdownRepoPartnerSupplier extends DropdownRepo<PartnerModel, String> {
+  DropdownRepoPartnerSupplier({super.key, required super.formControlName, super.decoration})
+      : super(
+          path: '/partner?is_supplier=true',
+          creator: PartnerModel.fromJson,
+          valueFn: (data) => data.publicId,
+          textFn: (data) => data.name,
+        );
+}
+
+class DropdownProductType extends StatelessWidget {
+  final bool? autoFocus;
+  final String formControlName;
+  final InputDecoration? inputDecoration;
+  const DropdownProductType({required this.formControlName, this.autoFocus, this.inputDecoration, Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ReactiveDropdownField<String>(
+      autofocus: autoFocus ?? false,
+      formControlName: formControlName,
+      decoration: inputDecoration ?? const InputDecoration(),
+      items: const [
+        DropdownMenuItem(
+          value: 'product',
+          child: Text('Barang'),
+        ),
+        DropdownMenuItem(
+          value: 'service',
+          child: Text('Jasa'),
+        )
+      ],
     );
   }
 }
