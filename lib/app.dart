@@ -27,7 +27,7 @@ class _AppState extends State<App> {
           filled: true,
           border: OutlineInputBorder(),
           contentPadding: EdgeInsets.all(8),
-          errorStyle: TextStyle(height: 0.3),
+          errorStyle: TextStyle(height: 0.1),
         ),
         textTheme: const TextTheme(subtitle1: TextStyle(fontSize: 14, height: 1.5)),
       ),

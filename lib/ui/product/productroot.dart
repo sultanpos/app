@@ -27,7 +27,7 @@ class ProductRootWidget extends StatelessWidget {
                   const Expanded(child: SizedBox()),
                   ElevatedButton(
                     onPressed: () {
-                      AppState().partnerState.resetForm();
+                      AppState().productState.resetForm();
                       sShowDialog(
                         context: ctx,
                         builder: (c) {
@@ -45,7 +45,28 @@ class ProductRootWidget extends StatelessWidget {
                 height: 8,
               ),
               Expanded(
-                child: SDataTable<ProductModel>(columns: [], name: 'product', state: AppState().productState.listData),
+                child: SDataTable<ProductModel>(columns: [
+                  SDataColumn(
+                    id: 'barcode',
+                    title: 'Barcode',
+                    get: (v) => v.barcode,
+                  ),
+                  SDataColumn(
+                    id: 'name',
+                    title: 'Nama',
+                    get: (v) => v.name,
+                  ),
+                  SDataColumn(
+                    id: 'unit',
+                    title: 'Unit',
+                    get: (v) => v.unit.name,
+                  ),
+                  SDataColumn(
+                    id: 'category',
+                    title: 'Kategori',
+                    get: (v) => v.category.name,
+                  ),
+                ], name: 'product', state: AppState().productState.listData),
               ),
             ],
           ),

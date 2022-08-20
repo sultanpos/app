@@ -4,7 +4,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 import 'package:sultanpos/model/pricegroup.dart';
 import 'package:sultanpos/state/app.dart';
 import 'package:sultanpos/state/partner.dart';
-import 'package:sultanpos/ui/util/uppercaseformatter.dart';
+import 'package:sultanpos/ui/util/textformatter.dart';
 import 'package:sultanpos/ui/widget/basewindow.dart';
 import 'package:sultanpos/ui/widget/dropdown.dart';
 import 'package:sultanpos/ui/widget/showerror.dart';
@@ -90,7 +90,6 @@ class AddPartnerWidget extends StatelessWidget {
                               hintText: "Masukkan nomor NPWP",
                               labelText: "Nomor NPWP",
                             ),
-                            onSubmitted: () => save(ctx),
                           ),
                           ReactiveTextField(
                             formControlName: 'address',
@@ -98,7 +97,7 @@ class AddPartnerWidget extends StatelessWidget {
                               hintText: "Masukkan alamat mitra",
                               labelText: "Alamat",
                             ),
-                            onSubmitted: () => save(ctx),
+                            onSubmitted: (c) => save(ctx),
                             maxLines: null,
                           ),
                           DropdownRepo<PriceGroupModel, String>(

@@ -21,7 +21,7 @@ class PartnerModel extends BaseModel {
   final int debt;
   final int credit;
   @JsonKey(name: 'price_group')
-  final PriceGroupModel priceGroup;
+  final PriceGroupModel? priceGroup;
 
   PartnerModel(this.publicId, this.isSupplier, this.isCustomer, this.number, this.name, this.address, this.phone, this.npwp, this.email, this.debt,
       this.credit, this.priceGroup);

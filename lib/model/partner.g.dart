@@ -18,7 +18,10 @@ PartnerModel _$PartnerModelFromJson(Map<String, dynamic> json) => PartnerModel(
       json['email'] as String,
       json['debt'] as int,
       json['credit'] as int,
-      PriceGroupModel.fromJson(json['price_group'] as Map<String, dynamic>),
+      json['price_group'] == null
+          ? null
+          : PriceGroupModel.fromJson(
+              json['price_group'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$PartnerModelToJson(PartnerModel instance) =>

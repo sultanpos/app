@@ -39,7 +39,7 @@ class LoginWidget extends StatelessWidget {
                     labelText: "Password",
                   ),
                   textInputAction: TextInputAction.go,
-                  onSubmitted: () => _doLogin(context),
+                  onSubmitted: (c) => _doLogin(context),
                 ),
                 const SizedBox(
                   height: 16,

@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:sultanpos/state/app.dart';
 import 'package:sultanpos/state/pricegroup.dart';
-import 'package:sultanpos/ui/util/uppercaseformatter.dart';
+import 'package:sultanpos/ui/util/textformatter.dart';
 import 'package:sultanpos/ui/widget/basewindow.dart';
 import 'package:sultanpos/ui/widget/showerror.dart';
 
@@ -50,7 +50,7 @@ class PriceGroupAddWidget extends StatelessWidget {
                       hintText: "Masukkan keterangan public",
                       labelText: "Keterangan public",
                     ),
-                    onSubmitted: () => save(ctx),
+                    onSubmitted: (c) => save(ctx),
                   ),
                   const Expanded(
                     child: SizedBox(),

@@ -4,7 +4,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 import 'package:sultanpos/model/category.dart';
 import 'package:sultanpos/state/app.dart';
 import 'package:sultanpos/state/category.dart';
-import 'package:sultanpos/ui/util/uppercaseformatter.dart';
+import 'package:sultanpos/ui/util/textformatter.dart';
 import 'package:sultanpos/ui/widget/basewindow.dart';
 import 'package:sultanpos/ui/widget/dropdown.dart';
 import 'package:sultanpos/ui/widget/showerror.dart';
@@ -64,7 +64,7 @@ class CategoryAddWidget extends StatelessWidget {
                       hintText: "Masukkan keterangan",
                       labelText: "Keterangan",
                     ),
-                    onSubmitted: () => save(ctx),
+                    onSubmitted: (c) => save(ctx),
                   ),
                   const Expanded(
                     child: SizedBox(),

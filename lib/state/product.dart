@@ -22,6 +22,15 @@ class ProductState extends CrudState<ProductModel> {
   }
 
   @override
+  resetForm() {
+    //super.resetForm();
+    //form.updateValue({'sellable': true, 'buyable': true, 'calculateStock': true, 'barcode': 'BACODE'});
+    form.reset(value: {'sellable': true, 'buyable': true, 'calculateStock': true});
+    form.markAllAsTouched();
+    current = null;
+  }
+
+  @override
   prepareEditForm(ProductModel value) {}
 
   @override
@@ -51,5 +60,11 @@ class ProductState extends CrudState<ProductModel> {
   @override
   BaseModel prepareUpdateModel() {
     throw UnimplementedError();
+  }
+
+  resetAddAgain() {
+    form.control('name').updateValue('');
+    form.control('barcode').updateValue('');
+    form.control('barcode').focus();
   }
 }

@@ -28,7 +28,7 @@ class PartnerState extends CrudState<PartnerModel> {
     form.control('phone').updateValue(value.phone, emitEvent: false);
     form.control('email').updateValue(value.email, emitEvent: false);
     form.control('npwp').updateValue(value.npwp, emitEvent: false);
-    form.control('priceGroupPublicId').updateValue(value.priceGroup.publicId, emitEvent: false);
+    form.control('priceGroupPublicId').updateValue(value.priceGroup?.publicId, emitEvent: false);
   }
 
   @override

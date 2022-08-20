@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:sultanpos/state/app.dart';
 import 'package:sultanpos/state/product.dart';
 import 'package:sultanpos/ui/theme.dart';
-import 'package:sultanpos/ui/util/uppercaseformatter.dart';
+import 'package:sultanpos/ui/util/textformatter.dart';
 import 'package:sultanpos/ui/widget/basewindow.dart';
 import 'package:sultanpos/ui/widget/dropdown.dart';
 import 'package:sultanpos/ui/widget/showerror.dart';
@@ -29,96 +30,119 @@ class AddProductWidget extends StatelessWidget {
               child: Column(
                 children: [
                   Expanded(
-                      child: Row(
-                    children: [
-                      Expanded(
-                        child: SingleChildScrollView(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              ReactiveTextField(
-                                formControlName: 'barcode',
-                                autofocus: true,
-                                inputFormatters: [UpperCaseTextFormatter()],
-                                decoration: const InputDecoration(labelText: "Barcode", hintText: "Masukkan barcode"),
-                                textInputAction: TextInputAction.next,
-                              ),
-                              const SizedBox(height: 8),
-                              ReactiveTextField(
-                                formControlName: 'name',
-                                inputFormatters: [UpperCaseTextFormatter()],
-                                decoration: const InputDecoration(labelText: "Nama", hintText: "Masukkan name"),
-                                textInputAction: TextInputAction.next,
-                              ),
-                              const SizedBox(height: 8),
-                              const DropdownProductType(
-                                formControlName: 'productType',
-                                inputDecoration: InputDecoration(labelText: 'Tipe'),
-                              ),
-                              const SizedBox(height: 8),
-                              DropdownRepoUnit(
-                                formControlName: 'unitPublicId',
-                                decoration: const InputDecoration(labelText: "Unit", hintText: "Pilih unit"),
-                              ),
-                              const SizedBox(height: 8),
-                              DropdownRepoCategory(
-                                formControlName: 'categoryPublicId',
-                                decoration: const InputDecoration(labelText: "Kategori", hintText: "Pilih kategori"),
-                              ),
-                              const SizedBox(height: 8),
-                              DropdownRepoPartnerSupplier(
-                                formControlName: 'partnerPublicId',
-                                decoration: const InputDecoration(labelText: "Supplier", hintText: "Pilih supplier utama"),
-                              ),
-                              const SizedBox(height: 8),
-                              Row(
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: SizedBox(
+                            height: double.infinity,
+                            child: SingleChildScrollView(
+                              child: Column(
                                 children: [
-                                  Expanded(
-                                    child: Row(
-                                      children: [
-                                        ReactiveCheckbox(
-                                          formControlName: 'sellable',
+                                  ReactiveTextField(
+                                    formControlName: 'barcode',
+                                    autofocus: true,
+                                    inputFormatters: [UpperCaseTextFormatter()],
+                                    decoration: const InputDecoration(labelText: "Barcode", hintText: "Masukkan barcode"),
+                                    textInputAction: TextInputAction.next,
+                                  ),
+                                  const SizedBox(height: 8),
+                                  ReactiveTextField(
+                                    formControlName: 'name',
+                                    inputFormatters: [UpperCaseTextFormatter()],
+                                    decoration: const InputDecoration(labelText: "Nama", hintText: "Masukkan name"),
+                                    textInputAction: TextInputAction.next,
+                                  ),
+                                  const SizedBox(height: 8),
+                                  const DropdownProductType(
+                                    formControlName: 'productType',
+                                    inputDecoration: InputDecoration(labelText: 'Tipe'),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  DropdownRepoUnit(
+                                    formControlName: 'unitPublicId',
+                                    decoration: const InputDecoration(labelText: "Unit", hintText: "Pilih unit"),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  DropdownRepoCategory(
+                                    formControlName: 'categoryPublicId',
+                                    decoration: const InputDecoration(labelText: "Kategori", hintText: "Pilih kategori"),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  DropdownRepoPartnerSupplier(
+                                    formControlName: 'partnerPublicId',
+                                    decoration: const InputDecoration(labelText: "Supplier", hintText: "Pilih supplier utama"),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: Row(
+                                          children: [
+                                            ReactiveCheckbox(
+                                              formControlName: 'sellable',
+                                            ),
+                                            const Text('Dijual'),
+                                          ],
                                         ),
-                                        const Text('Dijual'),
-                                      ],
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Row(
-                                      children: [
-                                        ReactiveCheckbox(
-                                          formControlName: 'buyable',
+                                      ),
+                                      Expanded(
+                                        child: Row(
+                                          children: [
+                                            ReactiveCheckbox(
+                                              formControlName: 'buyable',
+                                            ),
+                                            const Text('Dibeli'),
+                                          ],
                                         ),
-                                        const Text('Dibeli'),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      ReactiveCheckbox(
+                                        formControlName: 'calculateStock',
+                                      ),
+                                      const Text('Hitung stock'),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      ReactiveCheckbox(
+                                        formControlName: 'editablePrice',
+                                      ),
+                                      const Text('Harga bisa diedit di kasir'),
+                                    ],
                                   ),
                                 ],
                               ),
-                              Row(
-                                children: [
-                                  ReactiveCheckbox(
-                                    formControlName: 'calculateStock',
-                                  ),
-                                  const Text('Hitung stock'),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  ReactiveCheckbox(
-                                    formControlName: 'editablePrice',
-                                  ),
-                                  const Text('Harga bisa diedit di kasir'),
-                                ],
-                              ),
-                            ],
+                            ),
                           ),
                         ),
-                      ),
-                      const VerticalDivider(),
-                      Expanded(child: Text('DUA')),
-                    ],
-                  )),
+                        const VerticalDivider(),
+                        Expanded(
+                          child: SizedBox(
+                            height: double.infinity,
+                            child: SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  ReactiveTextField(
+                                    keyboardType: TextInputType.number,
+                                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                                    formControlName: 'buyPrice',
+                                    decoration: const InputDecoration(labelText: "Harga Beli", hintText: "Masukkan harga beli"),
+                                    textInputAction: TextInputAction.next,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 8,
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -136,12 +160,24 @@ class AddProductWidget extends StatelessWidget {
                         width: 8,
                       ),
                       ElevatedButton(
-                          onPressed: loading
-                              ? null
-                              : () async {
-                                  save(ctx);
-                                },
-                          child: Text(loading ? "Menyimpan..." : "Simpan")),
+                        onPressed: loading
+                            ? null
+                            : () async {
+                                save(ctx);
+                              },
+                        child: Text(loading ? "Menyimpan..." : "Simpan"),
+                      ),
+                      const SizedBox(
+                        width: 8,
+                      ),
+                      ElevatedButton(
+                        onPressed: loading
+                            ? null
+                            : () async {
+                                save(ctx, again: true);
+                              },
+                        child: Text(loading ? "Menyimpan..." : "Simpan & Lagi"),
+                      ),
                     ],
                   )
                 ],
@@ -153,11 +189,15 @@ class AddProductWidget extends StatelessWidget {
     );
   }
 
-  save(BuildContext context) async {
+  save(BuildContext context, {bool again = false}) async {
     try {
       final nav = Navigator.of(context);
       await AppState().productState.save();
-      nav.pop();
+      if (again) {
+        AppState().productState.resetAddAgain();
+      } else {
+        nav.pop();
+      }
     } catch (e) {
       showError(context, title: 'Error menyimpan', message: e.toString());
     }

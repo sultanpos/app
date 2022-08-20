@@ -3,7 +3,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 import 'package:sultanpos/state/app.dart';
 import 'package:provider/provider.dart';
 import 'package:sultanpos/state/unit.dart';
-import 'package:sultanpos/ui/util/uppercaseformatter.dart';
+import 'package:sultanpos/ui/util/textformatter.dart';
 import 'package:sultanpos/ui/widget/basewindow.dart';
 import 'package:sultanpos/ui/widget/showerror.dart';
 
@@ -42,7 +42,7 @@ class UnitAddWidget extends StatelessWidget {
                       hintText: "Masukkan keterangan unit",
                       labelText: "Keterangan",
                     ),
-                    onSubmitted: () => save(ctx),
+                    onSubmitted: (c) => save(ctx),
                     maxLines: 3,
                   ),
                   const Expanded(
