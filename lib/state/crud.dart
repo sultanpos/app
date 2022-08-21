@@ -20,6 +20,15 @@ abstract class CrudState<T extends BaseModel> extends BaseState {
     return val == null ? defValue : val as R;
   }
 
+  int fMoney(String key, int defValue) {
+    final val = form.control(key).value;
+    if (val != null) {
+      final normalize = (val as String).replaceAll('.', '').replaceAll(',', '.');
+      return int.parse(normalize);
+    }
+    return defValue;
+  }
+
   resetForm() {
     form.reset();
     form.markAllAsTouched();

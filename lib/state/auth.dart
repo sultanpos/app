@@ -63,7 +63,7 @@ class AuthState extends BaseState {
       final userResult = await httpAPI.getOne<UserModel>('/user/${claim!.userPublicId}', fromJsonFunc: UserModel.fromJson);
       user = userResult;
       notifyListeners();
-      AppState().shareState.getDefaultPriceGroup();
+      AppState().shareState.initAll();
     } catch (e) {
       rethrow;
     }

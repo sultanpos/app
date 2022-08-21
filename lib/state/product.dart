@@ -13,7 +13,7 @@ class ProductState extends CrudState<ProductModel> {
       'unitPublicId': FormControl<String>(validators: [Validators.required], touched: true),
       'categoryPublicId': FormControl<String>(validators: [Validators.required], touched: true),
       'partnerPublicId': FormControl<String>(validators: [Validators.required], touched: true),
-      'buyPrice': FormControl<int>(),
+      'buyPrice': FormControl<String>(),
       'calculateStock': FormControl<bool>(),
       'sellable': FormControl<bool>(),
       'buyable': FormControl<bool>(),
@@ -51,7 +51,7 @@ class ProductState extends CrudState<ProductModel> {
       fValue<String>('partnerPublicId', ''),
       fValue<String>('categoryPublicId', ''),
       [],
-      fValue<int>('buyPrice', 0),
+      fMoney('buyPrice', 0),
       [],
       ProductPriceInsertModel(0, 1, '', 0, 0, 0, '', 0, 0, 0, '', 0, 0, 0, '', 0, 0, 0, '', 0),
     );

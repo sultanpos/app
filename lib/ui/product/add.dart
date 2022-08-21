@@ -127,7 +127,7 @@ class AddProductWidget extends StatelessWidget {
                                 children: [
                                   ReactiveTextField(
                                     keyboardType: TextInputType.number,
-                                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                                    inputFormatters: [MoneyTextFormatter()],
                                     formControlName: 'buyPrice',
                                     decoration: const InputDecoration(labelText: "Harga Beli", hintText: "Masukkan harga beli"),
                                     textInputAction: TextInputAction.next,
