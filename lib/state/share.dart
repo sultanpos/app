@@ -30,4 +30,8 @@ class ShareState extends BaseState {
       defaultPriceGroup = list.data[0];
     }
   }
+
+  BranchModel? defaultBranch() {
+    return branches?.firstWhere((element) => element.isDefault);
+  }
 }

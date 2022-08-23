@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sultanpos/format.dart';
 import 'package:sultanpos/state/app.dart';
 import 'package:sultanpos/ui/login/loginpage.dart';
 import 'package:sultanpos/ui/root.dart';
@@ -35,6 +36,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   initAll() async {
     try {
+      Format().setup(locale: "id");
       await AppState().init();
       _gotoHome = true;
       // ignore: empty_catches

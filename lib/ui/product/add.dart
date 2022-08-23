@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:reactive_forms/reactive_forms.dart';
+import 'package:sultanpos/format.dart';
 import 'package:sultanpos/state/app.dart';
 import 'package:sultanpos/state/product.dart';
-import 'package:sultanpos/ui/theme.dart';
 import 'package:sultanpos/ui/util/textformatter.dart';
 import 'package:sultanpos/ui/widget/basewindow.dart';
+import 'package:sultanpos/ui/widget/chip.dart';
 import 'package:sultanpos/ui/widget/dropdown.dart';
 import 'package:sultanpos/ui/widget/showerror.dart';
 
@@ -18,13 +18,15 @@ class AddProductWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BaseWindowWidget(
       height: 500,
-      width: 600,
+      width: 650,
       title: title,
       child: ChangeNotifierProvider.value(
         value: AppState().productState,
         child: Builder(
           builder: (ctx) {
             final loading = ctx.select<ProductState, bool>((value) => value.loading);
+            final count = ctx.select<ProductState, int>((value) => value.priceCounter);
+            final discMargin = ctx.select<ProductState, List<DiscountMargin>>((value) => value.discountMargins);
             return ReactiveForm(
               formGroup: AppState().productState.form,
               child: Column(
@@ -32,10 +34,11 @@ class AddProductWidget extends StatelessWidget {
                   Expanded(
                     child: Row(
                       children: [
-                        Expanded(
+                        SizedBox(
+                          width: 280,
                           child: SizedBox(
                             height: double.infinity,
-                            child: SingleChildScrollView(
+                            child: SizedBox(
                               child: Column(
                                 children: [
                                   ReactiveTextField(
@@ -118,19 +121,126 @@ class AddProductWidget extends StatelessWidget {
                             ),
                           ),
                         ),
-                        const VerticalDivider(),
+                        const VerticalDivider(
+                          color: Colors.white,
+                        ),
                         Expanded(
                           child: SizedBox(
                             height: double.infinity,
                             child: SingleChildScrollView(
                               child: Column(
                                 children: [
-                                  ReactiveTextField(
-                                    keyboardType: TextInputType.number,
-                                    inputFormatters: [MoneyTextFormatter()],
-                                    formControlName: 'buyPrice',
-                                    decoration: const InputDecoration(labelText: "Harga Beli", hintText: "Masukkan harga beli"),
-                                    textInputAction: TextInputAction.next,
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: ReactiveTextField(
+                                          keyboardType: TextInputType.number,
+                                          inputFormatters: [MoneyTextFormatter()],
+                                          formControlName: 'stock',
+                                          decoration: const InputDecoration(labelText: "Stock Awal", hintText: "Masukkan stock"),
+                                          textInputAction: TextInputAction.next,
+                                          textAlign: TextAlign.right,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 8),
+                                      Expanded(
+                                        child: ReactiveTextField(
+                                          keyboardType: TextInputType.number,
+                                          inputFormatters: [MoneyTextFormatter()],
+                                          formControlName: 'buyPrice',
+                                          decoration: const InputDecoration(labelText: "Harga Beli", hintText: "Masukkan harga beli"),
+                                          textInputAction: TextInputAction.next,
+                                          textAlign: TextAlign.right,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  for (int i = 0; i < count; i++) ...[
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(vertical: 8),
+                                      child: Container(
+                                        height: 1,
+                                        width: double.infinity,
+                                        color: Colors.white70,
+                                      ),
+                                    ),
+                                    Row(
+                                      children: [
+                                        Expanded(child: Text('Harga ${i + 1}')),
+                                        const SizedBox(width: 8),
+                                        Expanded(
+                                          child: ReactiveTextField(
+                                            keyboardType: TextInputType.number,
+                                            inputFormatters: [MoneyTextFormatter()],
+                                            formControlName: 'count${i + 1}',
+                                            decoration: const InputDecoration(labelText: "Min Pembelian", hintText: "Masukkan min pembelian"),
+                                            textInputAction: TextInputAction.next,
+                                            textAlign: TextAlign.right,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(
+                                      height: 8,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: ReactiveTextField(
+                                            keyboardType: TextInputType.number,
+                                            inputFormatters: [MoneyTextFormatter()],
+                                            formControlName: 'sell${i + 1}',
+                                            decoration: const InputDecoration(labelText: "Harga Jual", hintText: "Masukkan harga"),
+                                            textInputAction: TextInputAction.next,
+                                            textAlign: TextAlign.right,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 8),
+                                        Expanded(
+                                          child: ReactiveTextField(
+                                            formControlName: 'disc${i + 1}',
+                                            decoration: const InputDecoration(labelText: "Discount Formula", hintText: "Masukkan discount formula"),
+                                            textInputAction: TextInputAction.next,
+                                            textAlign: TextAlign.right,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(
+                                      height: 8,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text("Diskon: ${Format().formatMoney(discMargin[0].discount)}"),
+                                        const Expanded(child: SizedBox()),
+                                        SChip(color: discMargin[i].margin > 0 ? Colors.green : Colors.blue, label: '${discMargin[i].marginStr} %')
+                                      ],
+                                    ),
+                                  ],
+                                  const SizedBox(
+                                    height: 16,
+                                  ),
+                                  Row(
+                                    children: [
+                                      if (count > 1)
+                                        TextButton(
+                                          child: const Text(
+                                            "Hapus harga",
+                                            style: TextStyle(color: Colors.red),
+                                          ),
+                                          onPressed: () {
+                                            ctx.read<ProductState>().removePrice();
+                                          },
+                                        ),
+                                      const Expanded(child: SizedBox()),
+                                      if (count < 5)
+                                        TextButton(
+                                          child: const Text("Tambah harga"),
+                                          onPressed: () {
+                                            ctx.read<ProductState>().addPrice();
+                                          },
+                                        ),
+                                    ],
                                   ),
                                 ],
                               ),
