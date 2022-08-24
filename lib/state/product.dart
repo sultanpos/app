@@ -7,19 +7,19 @@ import 'package:sultanpos/ui/util/calculate.dart';
 
 class DiscountMargin {
   int discount;
-  int margin;
-  String marginStr;
-  DiscountMargin(this.discount, this.margin, this.marginStr);
+  int finalPrice;
+  double margin;
+  DiscountMargin(this.discount, this.finalPrice, this.margin);
 }
 
 class ProductState extends CrudState<ProductModel> {
   int priceCounter = 1;
   List<DiscountMargin> discountMargins = [
-    DiscountMargin(0, 0, "0"),
-    DiscountMargin(0, 0, "0"),
-    DiscountMargin(0, 0, "0"),
-    DiscountMargin(0, 0, "0"),
-    DiscountMargin(0, 0, "0"),
+    DiscountMargin(0, 0, 0),
+    DiscountMargin(0, 0, 0),
+    DiscountMargin(0, 0, 0),
+    DiscountMargin(0, 0, 0),
+    DiscountMargin(0, 0, 0),
   ];
 
   ProductState(super.httpAPI) : super(path: '/product', creator: ProductModel.fromJson) {
@@ -37,7 +37,10 @@ class ProductState extends CrudState<ProductModel> {
       'buyable': FormControl<bool>(),
       'editablePrice': FormControl<bool>(),
       'stock': FormControl<String>(),
-      'count1': FormControl<int>(disabled: true, value: 1),
+      'count0': FormControl<int>(disabled: true, value: 1),
+      'sell0': FormControl<String>(),
+      'disc0': FormControl<String>(),
+      'count1': FormControl<int>(),
       'sell1': FormControl<String>(),
       'disc1': FormControl<String>(),
       'count2': FormControl<int>(),
@@ -49,18 +52,15 @@ class ProductState extends CrudState<ProductModel> {
       'count4': FormControl<int>(),
       'sell4': FormControl<String>(),
       'disc4': FormControl<String>(),
-      'count5': FormControl<int>(),
-      'sell5': FormControl<String>(),
-      'disc5': FormControl<String>(),
     });
     form.control('buyPrice').valueChanges.listen((event) {
       calculateDisc();
     });
     for (int i = 0; i < 5; i++) {
-      form.control('sell${i + 1}').valueChanges.listen((event) {
+      form.control('sell$i').valueChanges.listen((event) {
         calculateDisc();
       });
-      form.control('disc${i + 1}').valueChanges.listen((event) {
+      form.control('disc$i').valueChanges.listen((event) {
         calculateDisc();
       });
     }
@@ -69,13 +69,12 @@ class ProductState extends CrudState<ProductModel> {
   calculateDisc() {
     final buy = fMoney('buyPrice', 0);
     for (int i = 0; i < 5; i++) {
-      final sell = fMoney('sell${i + 1}', 0);
-      final discFormula = fValue<String>('disc${i + 1}', '');
-      discountMargins[i] =
-          DiscountMargin(calculateDiscount(sell, discFormula), calculateMargin(buy, sell).toInt(), calculateMargin(buy, sell).toStringAsFixed(0));
-      /*discountMargins[i].discount = calculateDiscount(sell, discFormula);
-      discountMargins[i].margin = calculateMargin(buy, sell).toInt();
-      discountMargins[i].marginStr = calculateMargin(buy, sell).toStringAsFixed(0);*/
+      final sell = fMoney('sell$i', 0);
+      final discFormula = fValue<String>('disc$i', '');
+      final disc = calculateDiscount(sell, discFormula);
+      discountMargins[i].finalPrice = sell - disc;
+      discountMargins[i].discount = calculateDiscount(sell, discFormula);
+      discountMargins[i].margin = calculateMargin(buy, sell - disc);
     }
     notifyListeners();
   }
@@ -92,8 +91,14 @@ class ProductState extends CrudState<ProductModel> {
 
   @override
   BaseModel prepareInsertModel() {
-    final stock = fMoney('stock', 0);
     final defaultBranch = AppState().shareState.defaultBranch();
+    final priceMap = <String, dynamic>{};
+    for (int i = 0; i < 5; i++) {
+      priceMap['count$i'] = i < priceCounter ? fMoney('count$i', 0) : 0;
+      priceMap['price$i'] = i < priceCounter ? fMoney('sell$i', 0) : 0;
+      priceMap['discount_formula$i'] = i < priceCounter ? fValue<String>('disc$i', '') : '';
+      priceMap['discount$i'] = i < priceCounter ? discountMargins[i].discount : 0;
+    }
     return ProductInsertModel(
       fValue<String>('barcode', ''),
       fValue<String>('name', ''),
@@ -111,8 +116,8 @@ class ProductState extends CrudState<ProductModel> {
       fValue<String>('categoryPublicId', ''),
       [],
       fMoney('buyPrice', 0),
-      [ProductStockInsertModel(defaultBranch!.publicId, stock)],
-      ProductPriceInsertModel(0, 1, '', 0, 0, 0, '', 0, 0, 0, '', 0, 0, 0, '', 0, 0, 0, '', 0),
+      [ProductStockInsertModel(defaultBranch!.publicId, fMoney('stock', 0))],
+      ProductPriceInsertModel.fromJson(priceMap),
     );
   }
 

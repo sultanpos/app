@@ -10,5 +10,6 @@ showError(BuildContext ctx, {required String title, required String message}) as
     animationType: AnimationType.fromTop,
     animationCurve: Curves.ease,
     animationDuration: const Duration(milliseconds: 200),
+    toastDuration: const Duration(seconds: 1),
   ).show(ctx);
 }

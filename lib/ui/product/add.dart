@@ -24,9 +24,10 @@ class AddProductWidget extends StatelessWidget {
         value: AppState().productState,
         child: Builder(
           builder: (ctx) {
-            final loading = ctx.select<ProductState, bool>((value) => value.loading);
-            final count = ctx.select<ProductState, int>((value) => value.priceCounter);
-            final discMargin = ctx.select<ProductState, List<DiscountMargin>>((value) => value.discountMargins);
+            final state = ctx.watch<ProductState>();
+            final loading = state.loading;
+            final count = state.priceCounter;
+            final discMargin = state.discountMargins;
             return ReactiveForm(
               formGroup: AppState().productState.form,
               child: Column(
@@ -189,7 +190,7 @@ class AddProductWidget extends StatelessWidget {
                                           child: ReactiveTextField(
                                             keyboardType: TextInputType.number,
                                             inputFormatters: [MoneyTextFormatter()],
-                                            formControlName: 'sell${i + 1}',
+                                            formControlName: 'sell$i',
                                             decoration: const InputDecoration(labelText: "Harga Jual", hintText: "Masukkan harga"),
                                             textInputAction: TextInputAction.next,
                                             textAlign: TextAlign.right,
@@ -198,7 +199,7 @@ class AddProductWidget extends StatelessWidget {
                                         const SizedBox(width: 8),
                                         Expanded(
                                           child: ReactiveTextField(
-                                            formControlName: 'disc${i + 1}',
+                                            formControlName: 'disc$i',
                                             decoration: const InputDecoration(labelText: "Discount Formula", hintText: "Masukkan discount formula"),
                                             textInputAction: TextInputAction.next,
                                             textAlign: TextAlign.right,
@@ -211,9 +212,14 @@ class AddProductWidget extends StatelessWidget {
                                     ),
                                     Row(
                                       children: [
-                                        Text("Diskon: ${Format().formatMoney(discMargin[0].discount)}"),
                                         const Expanded(child: SizedBox()),
-                                        SChip(color: discMargin[i].margin > 0 ? Colors.green : Colors.blue, label: '${discMargin[i].marginStr} %')
+                                        SChip(color: Colors.brown, label: 'dis: ${Format().formatMoney(discMargin[i].discount)}'),
+                                        const SizedBox(width: 4),
+                                        SChip(color: Colors.blue, label: 'akhir: ${Format().formatMoney(discMargin[i].finalPrice)}'),
+                                        const SizedBox(width: 4),
+                                        SChip(
+                                            color: discMargin[i].margin > 0 ? Colors.green : Colors.red,
+                                            label: 'mar: ${Format().formatPerc(discMargin[i].margin)}%')
                                       ],
                                     ),
                                   ],
@@ -273,7 +279,7 @@ class AddProductWidget extends StatelessWidget {
                         onPressed: loading
                             ? null
                             : () async {
-                                save(ctx);
+                                save(context);
                               },
                         child: Text(loading ? "Menyimpan..." : "Simpan"),
                       ),
@@ -284,7 +290,7 @@ class AddProductWidget extends StatelessWidget {
                         onPressed: loading
                             ? null
                             : () async {
-                                save(ctx, again: true);
+                                save(context, again: true);
                               },
                         child: Text(loading ? "Menyimpan..." : "Simpan & Lagi"),
                       ),
@@ -310,6 +316,7 @@ class AddProductWidget extends StatelessWidget {
       }
     } catch (e) {
       showError(context, title: 'Error menyimpan', message: e.toString());
+      print('PISAN HARUSE');
     }
   }
 }

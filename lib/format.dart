@@ -10,18 +10,20 @@ class Format {
   Format._internal();
 
   late String locale;
-  late NumberFormat stockFormat;
-  late NumberFormat moneyFormat;
+  late NumberFormat _stockFormat;
+  late NumberFormat _moneyFormat;
+  late NumberFormat _percFormat;
 
   setup({required String locale}) {
     this.locale = locale;
-    stockFormat = NumberFormat.simpleCurrency(locale: locale, decimalDigits: 3, name: "");
-    moneyFormat = NumberFormat.decimalPattern(locale);
+    _stockFormat = NumberFormat.simpleCurrency(locale: locale, decimalDigits: 3, name: "");
+    _percFormat = NumberFormat.simpleCurrency(locale: locale, decimalDigits: 2, name: "");
+    _moneyFormat = NumberFormat.decimalPattern(locale);
   }
 
   String formatStock(int stock) {
     final doubleValue = stock.toDouble() / 1000.0;
-    var res = stockFormat.format(doubleValue);
+    var res = _stockFormat.format(doubleValue);
     for (int i = 0; i < 3; i++) {
       if (res.endsWith("0")) {
         res = res.substring(0, i == 2 ? res.length - 2 : res.length - 1);
@@ -31,6 +33,10 @@ class Format {
   }
 
   String formatMoney(int value) {
-    return moneyFormat.format(value);
+    return _moneyFormat.format(value);
+  }
+
+  String formatPerc(double value) {
+    return _percFormat.format(value);
   }
 }

@@ -60,6 +60,10 @@ abstract class CrudState<T extends BaseModel> extends BaseState {
       loading = false;
       notifyListeners();
       throw e.message;
+    } catch (e) {
+      loading = false;
+      notifyListeners();
+      throw e.toString();
     }
   }
 
