@@ -25,7 +25,7 @@ class _AppState extends State<App> {
         inputDecorationTheme: const InputDecorationTheme(
           isDense: true,
           filled: true,
-          border: OutlineInputBorder(),
+          border: OutlineInputBorder(gapPadding: 0, borderSide: BorderSide(width: 0)),
           contentPadding: EdgeInsets.all(8),
           errorStyle: TextStyle(height: 0.1),
         ),

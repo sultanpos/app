@@ -3,6 +3,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 import 'package:sultanpos/state/app.dart';
 import 'package:provider/provider.dart';
 import 'package:sultanpos/state/unit.dart';
+import 'package:sultanpos/ui/theme.dart';
 import 'package:sultanpos/ui/util/textformatter.dart';
 import 'package:sultanpos/ui/widget/basewindow.dart';
 import 'package:sultanpos/ui/widget/showerror.dart';
@@ -35,6 +36,9 @@ class UnitAddWidget extends StatelessWidget {
                       labelText: "Nama",
                     ),
                     textInputAction: TextInputAction.next,
+                  ),
+                  SizedBox(
+                    height: STheme().widgetSpace,
                   ),
                   ReactiveTextField(
                     formControlName: 'description',

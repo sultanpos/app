@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:sultanpos/state/app.dart';
 import 'package:sultanpos/state/pricegroup.dart';
+import 'package:sultanpos/ui/theme.dart';
 import 'package:sultanpos/ui/util/textformatter.dart';
 import 'package:sultanpos/ui/widget/basewindow.dart';
 import 'package:sultanpos/ui/widget/showerror.dart';
@@ -36,6 +37,9 @@ class PriceGroupAddWidget extends StatelessWidget {
                     ),
                     textInputAction: TextInputAction.next,
                   ),
+                  SizedBox(
+                    height: STheme().widgetSpace,
+                  ),
                   ReactiveTextField(
                     formControlName: 'description',
                     decoration: const InputDecoration(
@@ -43,6 +47,9 @@ class PriceGroupAddWidget extends StatelessWidget {
                       labelText: "Keterangan",
                     ),
                     textInputAction: TextInputAction.next,
+                  ),
+                  SizedBox(
+                    height: STheme().widgetSpace,
                   ),
                   ReactiveTextField(
                     formControlName: 'publicDescription',

@@ -171,8 +171,8 @@ class _SDataTableState<T extends BaseModel> extends State<SDataTable<T>> {
                           setState(() {});
                           return true;
                         },
-                        rowHeight: 40,
-                        headerRowHeight: 40,
+                        rowHeight: 30,
+                        headerRowHeight: 30,
                       );
           },
         ),

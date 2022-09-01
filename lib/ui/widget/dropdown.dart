@@ -38,7 +38,7 @@ class _DropdownRepoState<T extends BaseModel, R> extends State<DropdownRepo<T, R
     super.initState();
     AppState().httpAPI.query<T>(widget.path, fromJsonFunc: widget.creator, limit: 1000, offset: 0).then((value) {
       list = value;
-      setState(() {});
+      if (mounted) setState(() {});
     });
   }
 

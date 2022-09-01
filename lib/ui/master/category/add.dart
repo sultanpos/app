@@ -4,6 +4,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 import 'package:sultanpos/model/category.dart';
 import 'package:sultanpos/state/app.dart';
 import 'package:sultanpos/state/category.dart';
+import 'package:sultanpos/ui/theme.dart';
 import 'package:sultanpos/ui/util/textformatter.dart';
 import 'package:sultanpos/ui/widget/basewindow.dart';
 import 'package:sultanpos/ui/widget/dropdown.dart';
@@ -40,6 +41,9 @@ class CategoryAddWidget extends StatelessWidget {
                       labelText: "Parent Kategori",
                     ),
                   ),
+                  SizedBox(
+                    height: STheme().widgetSpace,
+                  ),
                   ReactiveTextField(
                     formControlName: 'name',
                     inputFormatters: [UpperCaseTextFormatter()],
@@ -49,6 +53,9 @@ class CategoryAddWidget extends StatelessWidget {
                     ),
                     textInputAction: TextInputAction.next,
                   ),
+                  SizedBox(
+                    height: STheme().widgetSpace,
+                  ),
                   ReactiveTextField(
                     formControlName: 'code',
                     inputFormatters: [UpperCaseTextFormatter()],
@@ -57,6 +64,9 @@ class CategoryAddWidget extends StatelessWidget {
                       labelText: "Code",
                     ),
                     textInputAction: TextInputAction.next,
+                  ),
+                  SizedBox(
+                    height: STheme().widgetSpace,
                   ),
                   ReactiveTextField(
                     formControlName: 'description',

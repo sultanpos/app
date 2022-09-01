@@ -43,6 +43,22 @@ class PartnerWidget extends StatelessWidget {
                       },
                       child: const Text('Tambah Mitra'),
                     ),
+                    const SizedBox(
+                      width: 4,
+                    ),
+                    SizedBox(
+                      width: 30,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          AppState().partnerState.listData.load(refresh: true);
+                        },
+                        style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(0)),
+                        child: const Icon(
+                          Icons.refresh,
+                          size: 20,
+                        ),
+                      ),
+                    ),
                   ],
                 ),
                 const SizedBox(
@@ -55,41 +71,46 @@ class PartnerWidget extends StatelessWidget {
                         width: 100,
                         id: 'action',
                         title: 'Action',
-                        getWidget: (v) => Row(children: [
-                          IconButton(
-                            iconSize: 16,
-                            splashRadius: 16,
-                            onPressed: () {
-                              AppState().partnerState.editForm(v);
-                              sShowDialog(
-                                context: ctx,
-                                builder: (c) {
-                                  return const AddPartnerWidget(title: "Edit mitra");
-                                },
-                              );
-                            },
-                            icon: const Icon(Icons.edit),
-                          ),
-                          IconButton(
-                            iconSize: 16,
-                            splashRadius: 16,
-                            onPressed: () async {
-                              final result = await showConfirmation(ctx, title: 'Yakin hapus', message: 'Yakin untuk menghapus "${v.name}"');
-                              if (result) {
-                                try {
-                                  await AppState().partnerState.remove(v.publicId);
-                                } catch (e) {
-                                  // ignore: use_build_context_synchronously
-                                  showError(ctx, title: 'Error menghapus', message: e.toString());
-                                }
-                              }
-                            },
-                            icon: const Icon(
-                              Icons.delete_forever,
-                              color: Colors.red,
+                        getWidget: (v) => Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            IconButton(
+                              iconSize: 16,
+                              splashRadius: 12,
+                              padding: const EdgeInsets.all(0),
+                              onPressed: () {
+                                AppState().partnerState.editForm(v);
+                                sShowDialog(
+                                  context: ctx,
+                                  builder: (c) {
+                                    return const AddPartnerWidget(title: "Edit mitra");
+                                  },
+                                );
+                              },
+                              icon: const Icon(Icons.edit),
                             ),
-                          ),
-                        ]),
+                            IconButton(
+                              iconSize: 16,
+                              splashRadius: 12,
+                              padding: const EdgeInsets.all(0),
+                              onPressed: () async {
+                                final result = await showConfirmation(ctx, title: 'Yakin hapus', message: 'Yakin untuk menghapus "${v.name}"');
+                                if (result) {
+                                  try {
+                                    await AppState().partnerState.remove(v.publicId);
+                                  } catch (e) {
+                                    // ignore: use_build_context_synchronously
+                                    showError(ctx, title: 'Error menghapus', message: e.toString());
+                                  }
+                                }
+                              },
+                              icon: const Icon(
+                                Icons.delete_forever,
+                                color: Colors.red,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                       SDataColumn(
                         id: 'isCustomer',

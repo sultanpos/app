@@ -4,6 +4,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 import 'package:sultanpos/model/pricegroup.dart';
 import 'package:sultanpos/state/app.dart';
 import 'package:sultanpos/state/partner.dart';
+import 'package:sultanpos/ui/theme.dart';
 import 'package:sultanpos/ui/util/textformatter.dart';
 import 'package:sultanpos/ui/widget/basewindow.dart';
 import 'package:sultanpos/ui/widget/dropdown.dart';
@@ -56,6 +57,9 @@ class AddPartnerWidget extends StatelessWidget {
                               ),
                             ],
                           ),
+                          SizedBox(
+                            height: STheme().widgetSpace,
+                          ),
                           ReactiveTextField(
                             formControlName: 'name',
                             autofocus: true,
@@ -66,6 +70,9 @@ class AddPartnerWidget extends StatelessWidget {
                             ),
                             textInputAction: TextInputAction.next,
                           ),
+                          SizedBox(
+                            height: STheme().widgetSpace,
+                          ),
                           ReactiveTextField(
                             formControlName: 'phone',
                             autofocus: true,
@@ -74,6 +81,9 @@ class AddPartnerWidget extends StatelessWidget {
                               labelText: "Telepon",
                             ),
                             textInputAction: TextInputAction.next,
+                          ),
+                          SizedBox(
+                            height: STheme().widgetSpace,
                           ),
                           ReactiveTextField(
                             formControlName: 'email',
@@ -84,12 +94,18 @@ class AddPartnerWidget extends StatelessWidget {
                             ),
                             textInputAction: TextInputAction.next,
                           ),
+                          SizedBox(
+                            height: STheme().widgetSpace,
+                          ),
                           ReactiveTextField(
                             formControlName: 'npwp',
                             decoration: const InputDecoration(
                               hintText: "Masukkan nomor NPWP",
                               labelText: "Nomor NPWP",
                             ),
+                          ),
+                          SizedBox(
+                            height: STheme().widgetSpace,
                           ),
                           ReactiveTextField(
                             formControlName: 'address',
@@ -99,6 +115,9 @@ class AddPartnerWidget extends StatelessWidget {
                             ),
                             onSubmitted: (c) => save(ctx),
                             maxLines: null,
+                          ),
+                          SizedBox(
+                            height: STheme().widgetSpace,
                           ),
                           DropdownRepo<PriceGroupModel, String>(
                             creator: PriceGroupModel.fromJson,
