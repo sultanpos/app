@@ -72,7 +72,7 @@ class PriceGroupWidget extends HookWidget {
                       title: 'Action',
                       getWidget: (v) => v.isDefault
                           ? const SizedBox.shrink()
-                          : Row(children: [
+                          : Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                               IconButton(
                                 iconSize: 16,
                                 splashRadius: 16,

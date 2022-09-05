@@ -6,7 +6,7 @@ class PurchaseWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Text('PEMBAYARAN PAGE'),
+      child: RotatedBox(quarterTurns: 3, child: Text('PEMBELIAN PAGE')),
     );
   }
 }

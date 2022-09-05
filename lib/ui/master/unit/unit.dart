@@ -65,7 +65,7 @@ class UnitWidget extends StatelessWidget {
                       width: 100,
                       id: 'action',
                       title: 'Action',
-                      getWidget: (v) => Row(children: [
+                      getWidget: (v) => Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                         IconButton(
                           iconSize: 16,
                           splashRadius: 16,

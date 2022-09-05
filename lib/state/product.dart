@@ -87,7 +87,21 @@ class ProductState extends CrudState<ProductModel> {
   }
 
   @override
-  prepareEditForm(ProductModel value) {}
+  prepareEditForm(ProductModel value) {
+    form.updateValue({
+      'name': value.name,
+      'barcode': value.barcode,
+      'productType': value.productType,
+      'unitPublicId': value.unit.publicId,
+      'categoryPublicId': value.category.publicId,
+      'partnerPublicId': value.partner.publicId,
+      'sellable': value.sellable,
+      'buyable': value.buyable,
+      'calculateStock': value.calculateStock,
+      'editablePrice': value.editablePrice,
+    });
+    priceCounter = 2;
+  }
 
   @override
   BaseModel prepareInsertModel() {
