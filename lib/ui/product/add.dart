@@ -173,7 +173,7 @@ class AddProductWidget extends StatelessWidget {
                                           child: ReactiveTextField(
                                             keyboardType: TextInputType.number,
                                             inputFormatters: [MoneyTextFormatter()],
-                                            formControlName: 'count${i + 1}',
+                                            formControlName: 'count$i',
                                             decoration: const InputDecoration(labelText: "Min Pembelian", hintText: "Masukkan min pembelian"),
                                             textInputAction: TextInputAction.next,
                                             textAlign: TextAlign.right,
@@ -316,7 +316,6 @@ class AddProductWidget extends StatelessWidget {
       }
     } catch (e) {
       showError(context, title: 'Error menyimpan', message: e.toString());
-      print('PISAN HARUSE');
     }
   }
 }

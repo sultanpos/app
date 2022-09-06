@@ -23,6 +23,12 @@ ProductModel _$ProductModelFromJson(Map<String, dynamic> json) => ProductModel(
       UnitModel.fromJson(json['unit'] as Map<String, dynamic>),
       CategoryModel.fromJson(json['category'] as Map<String, dynamic>),
       PartnerModel.fromJson(json['partner'] as Map<String, dynamic>),
+      (json['prices'] as List<dynamic>)
+          .map((e) => PriceModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      (json['buy_prices'] as List<dynamic>)
+          .map((e) => BuyPriceModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$ProductModelToJson(ProductModel instance) =>
@@ -43,6 +49,8 @@ Map<String, dynamic> _$ProductModelToJson(ProductModel instance) =>
       'unit': instance.unit,
       'category': instance.category,
       'partner': instance.partner,
+      'prices': instance.prices,
+      'buy_prices': instance.buyPrices,
     };
 
 ProductInsertModel _$ProductInsertModelFromJson(Map<String, dynamic> json) =>

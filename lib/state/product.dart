@@ -37,19 +37,19 @@ class ProductState extends CrudState<ProductModel> {
       'buyable': FormControl<bool>(),
       'editablePrice': FormControl<bool>(),
       'stock': FormControl<String>(),
-      'count0': FormControl<int>(disabled: true, value: 1),
+      'count0': FormControl<String>(disabled: true, value: "1"),
       'sell0': FormControl<String>(),
       'disc0': FormControl<String>(),
-      'count1': FormControl<int>(),
+      'count1': FormControl<String>(),
       'sell1': FormControl<String>(),
       'disc1': FormControl<String>(),
-      'count2': FormControl<int>(),
+      'count2': FormControl<String>(),
       'sell2': FormControl<String>(),
       'disc2': FormControl<String>(),
-      'count3': FormControl<int>(),
+      'count3': FormControl<String>(),
       'sell3': FormControl<String>(),
       'disc3': FormControl<String>(),
-      'count4': FormControl<int>(),
+      'count4': FormControl<String>(),
       'sell4': FormControl<String>(),
       'disc4': FormControl<String>(),
     });
@@ -81,14 +81,16 @@ class ProductState extends CrudState<ProductModel> {
 
   @override
   resetForm() {
-    form.reset(value: {'sellable': true, 'buyable': true, 'calculateStock': true, 'count1': 1});
+    form.control("stock").markAsEnabled(emitEvent: false);
+    form.control("buyPrice").markAsEnabled(emitEvent: false);
+    form.reset(value: {'sellable': true, 'buyable': true, 'calculateStock': true, 'count0': "1"});
     form.markAllAsTouched();
     current = null;
   }
 
   @override
   prepareEditForm(ProductModel value) {
-    form.updateValue({
+    final valueMap = {
       'name': value.name,
       'barcode': value.barcode,
       'productType': value.productType,
@@ -99,8 +101,26 @@ class ProductState extends CrudState<ProductModel> {
       'buyable': value.buyable,
       'calculateStock': value.calculateStock,
       'editablePrice': value.editablePrice,
-    });
-    priceCounter = 2;
+    };
+    form.control("stock").markAsDisabled(emitEvent: false);
+    form.control("buyPrice").markAsDisabled(emitEvent: false);
+    final defPrice = value.prices.firstWhere(
+      (element) => element.priceGroup.isDefault,
+    );
+    priceCounter = 0;
+    final priceMap = defPrice.toJson();
+    for (int i = 0; i < 5; i++) {
+      if (priceMap['count$i'] > 0) {
+        priceCounter++;
+        valueMap['count$i'] = '${priceMap['count$i']}';
+        valueMap['sell$i'] = '${priceMap['price$i']}';
+        valueMap['disc$i'] = priceMap['discount_formula$i'];
+      }
+    }
+    final buyPrice = value.buyPrices.firstWhere((element) => element.branch.isDefault);
+    valueMap['buyPrice'] = '${buyPrice.buyPrice}';
+    form.updateValue(valueMap, updateParent: false, emitEvent: false);
+    calculateDisc();
   }
 
   @override
@@ -113,6 +133,7 @@ class ProductState extends CrudState<ProductModel> {
       priceMap['discount_formula$i'] = i < priceCounter ? fValue<String>('disc$i', '') : '';
       priceMap['discount$i'] = i < priceCounter ? discountMargins[i].discount : 0;
     }
+    print(form.control('count0').value);
     return ProductInsertModel(
       fValue<String>('barcode', ''),
       fValue<String>('name', ''),
