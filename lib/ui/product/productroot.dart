@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:sultanpos/model/product.dart';
 import 'package:sultanpos/state/app.dart';
 import 'package:sultanpos/ui/product/add.dart';
+import 'package:sultanpos/ui/util/textformatter.dart';
 import 'package:sultanpos/ui/widget/confirmation.dart';
 import 'package:sultanpos/ui/widget/datatable.dart';
 import 'package:sultanpos/ui/widget/dialogutil.dart';
@@ -144,6 +145,32 @@ class ProductRootWidget extends StatelessWidget {
                     id: 'name',
                     title: 'Nama',
                     get: (v) => v.name,
+                  ),
+                  SDataColumn(
+                    id: 'buyPrice',
+                    title: 'Harga beli',
+                    align: Alignment.centerRight,
+                    get: (v) {
+                      final value = v.buyPrices.firstWhere((element) => element.branch.isDefault);
+                      return formatMoney(value.buyPrice);
+                    },
+                  ),
+                  SDataColumn(
+                    id: 'sellPrice',
+                    title: 'Harga Jual',
+                    align: Alignment.centerRight,
+                    get: (v) {
+                      final value = v.prices.firstWhere((element) => element.priceGroup.isDefault);
+                      return formatMoney(value.price0);
+                    },
+                  ),
+                  SDataColumn(
+                    id: 'stock',
+                    title: 'Persediaan',
+                    align: Alignment.centerRight,
+                    get: (v) {
+                      return "0";
+                    },
                   ),
                   SDataColumn(
                     id: 'unit',

@@ -32,7 +32,7 @@ class SDataSource<T extends BaseModel> extends DataGridSource {
       final col = columns.firstWhere((element) => element.id == dataGridCell.columnName);
       if (col.getWidget != null) return col.getWidget!(dataGridCell.value);
       return Container(
-        alignment: Alignment.centerLeft,
+        alignment: col.align,
         padding: const EdgeInsets.all(4.0),
         child: Text(col.get!(dataGridCell.value)),
       );
@@ -51,7 +51,8 @@ class SDataColumn<T extends BaseModel> {
   final String Function(T v)? get;
   final Widget Function(T v)? getWidget;
   final double? width;
-  SDataColumn({required this.id, required this.title, this.get, this.getWidget, this.width});
+  final Alignment align;
+  SDataColumn({required this.id, required this.title, this.get, this.getWidget, this.width, this.align = Alignment.centerLeft});
 }
 
 class SDataTable<T extends BaseModel> extends StatefulWidget {
