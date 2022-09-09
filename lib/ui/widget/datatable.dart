@@ -10,7 +10,8 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 class SDataSource<T extends BaseModel> extends DataGridSource {
   List<SDataColumn<T>> columns;
   List<T>? data;
-  SDataSource(this.columns);
+  BuildContext context;
+  SDataSource(this.columns, this.context);
 
   @override
   List<DataGridRow> get rows => data == null
@@ -34,7 +35,10 @@ class SDataSource<T extends BaseModel> extends DataGridSource {
       return Container(
         alignment: col.align,
         padding: const EdgeInsets.all(4.0),
-        child: Text(col.get!(dataGridCell.value)),
+        child: Text(
+          col.get!(dataGridCell.value),
+          style: Theme.of(context).textTheme.bodyText1?.copyWith(fontSize: 12),
+        ),
       );
     }).toList());
   }
@@ -82,7 +86,7 @@ class _SDataTableState<T extends BaseModel> extends State<SDataTable<T>> {
     for (var element in widget.columns) {
       if (!columnSize.containsKey(element.id)) columnSize[element.id] = element.width ?? 200;
     }
-    source = SDataSource<T>(widget.columns);
+    source = SDataSource<T>(widget.columns, context);
     Future.microtask(() {
       widget.state.addListener(stateListener);
       if (widget.state.state is ListResult) {
@@ -140,7 +144,8 @@ class _SDataTableState<T extends BaseModel> extends State<SDataTable<T>> {
                     : SfDataGrid(
                         source: source,
                         columns: widget.columns
-                            .map((e) => GridColumn(
+                            .map(
+                              (e) => GridColumn(
                                 columnName: e.id,
                                 columnWidthMode: e.width != null ? ColumnWidthMode.auto : ColumnWidthMode.none,
                                 width: columnSize[e.id]!,
@@ -148,8 +153,13 @@ class _SDataTableState<T extends BaseModel> extends State<SDataTable<T>> {
                                 label: Container(
                                   color: lighterOrDarkerColor(Theme.of(context), Theme.of(context).scaffoldBackgroundColor),
                                   alignment: Alignment.center,
-                                  child: Text(e.title),
-                                )))
+                                  child: Text(
+                                    e.title,
+                                    style: Theme.of(context).textTheme.bodyText1?.copyWith(fontSize: 12),
+                                  ),
+                                ),
+                              ),
+                            )
                             .toList(),
                         selectionMode: SelectionMode.single,
                         onCellDoubleTap: (details) {

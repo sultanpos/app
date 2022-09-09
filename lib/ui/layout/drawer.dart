@@ -43,12 +43,11 @@ class _MainMenuItemState extends State<MainMenuItem> {
               topLeft: Radius.circular(4.0),
               topRight: Radius.circular(4.0),
             )),
-        padding: const EdgeInsets.all(8),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         child: Column(children: [
           Icon(widget.icon),
           Text(
             widget.title,
-            style: TextStyle(fontSize: 10),
           )
         ]),
       ),

@@ -31,6 +31,9 @@ class _AppState extends State<App> {
         ),
         textTheme: const TextTheme(
           subtitle1: TextStyle(fontSize: 12, height: 1.5),
+          button: TextStyle(fontSize: 12),
+          bodyText1: TextStyle(fontSize: 12),
+          bodyText2: TextStyle(fontSize: 12),
         ),
       ),
       initial: AdaptiveThemeMode.dark,

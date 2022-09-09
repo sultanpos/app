@@ -47,7 +47,7 @@ class ProfileMenuWidget extends StatelessWidget {
                 borderRadius: const BorderRadius.all(Radius.circular(4.0)),
                 color: Theme.of(ctx).scaffoldBackgroundColor,
               ),
-              padding: const EdgeInsets.all(8),
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               child: Row(
                 children: [
                   Text(ctx.select<AuthState, String>((value) => value.user?.name ?? '')),

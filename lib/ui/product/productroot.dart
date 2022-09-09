@@ -126,11 +126,9 @@ class ProductRootWidget extends StatelessWidget {
                               ),
                             ),
                           ],
-                          child: const Text(
+                          child: Text(
                             "aksi",
-                            style: TextStyle(
-                              color: Colors.blue,
-                            ),
+                            style: Theme.of(context).textTheme.bodyText1?.copyWith(color: Colors.blue, fontSize: 12),
                           ),
                         )
                       ],

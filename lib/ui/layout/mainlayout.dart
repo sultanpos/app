@@ -59,7 +59,7 @@ class MainLayoutWidget extends StatelessWidget {
       width: 1,
       child: Column(children: [
         Container(
-          height: 60,
+          height: 50,
           color: Colors.black, // lighterOrDarkerColor(Theme.of(context), Theme.of(context).scaffoldBackgroundColor, amount: 0.1),
           child: SizedBox(
             child: Row(
@@ -72,15 +72,30 @@ class MainLayoutWidget extends StatelessWidget {
                   child: const Center(child: Image(image: AssetImage("resources/images/icon_1024.png"))),
                 ),*/
                 Padding(
-                  padding: const EdgeInsets.only(top: 4.0),
+                  padding: const EdgeInsets.only(top: 2.0),
                   child: DrawerWidget(),
                 ),
                 Expanded(child: MoveWindow()),
+                Align(
+                  alignment: Alignment.center,
+                  child: Container(
+                    decoration: const BoxDecoration(color: Colors.red, borderRadius: BorderRadius.all(Radius.circular(8))),
+                    padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 8),
+                    child: const Text(
+                      'OFFLINE',
+                      style: TextStyle(fontSize: 10),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  width: 8,
+                ),
                 const ProfileMenuWidget(),
                 const SizedBox(
                   width: 8,
                 ),
-                Padding(
+                const WindowButtons(),
+                /*Padding(
                   padding: const EdgeInsets.only(top: 4, right: 4),
                   child: Column(
                     children: [
@@ -93,12 +108,12 @@ class MainLayoutWidget extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 8),
                         child: const Text(
                           'ONLINE',
-                          style: TextStyle(fontSize: 12),
+                          style: TextStyle(fontSize: 10),
                         ),
                       ),
                     ],
                   ),
-                ),
+                ),*/
               ],
             ),
           ),
