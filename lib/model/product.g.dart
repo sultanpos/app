@@ -29,6 +29,9 @@ ProductModel _$ProductModelFromJson(Map<String, dynamic> json) => ProductModel(
       (json['buy_prices'] as List<dynamic>)
           .map((e) => BuyPriceModel.fromJson(e as Map<String, dynamic>))
           .toList(),
+      (json['stocks'] as List<dynamic>?)
+          ?.map((e) => StockModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$ProductModelToJson(ProductModel instance) =>
@@ -51,6 +54,7 @@ Map<String, dynamic> _$ProductModelToJson(ProductModel instance) =>
       'partner': instance.partner,
       'prices': instance.prices,
       'buy_prices': instance.buyPrices,
+      'stocks': instance.stocks,
     };
 
 ProductInsertModel _$ProductInsertModelFromJson(Map<String, dynamic> json) =>

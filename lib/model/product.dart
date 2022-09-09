@@ -3,6 +3,7 @@ import 'package:sultanpos/model/buyprice.dart';
 import 'package:sultanpos/model/category.dart';
 import 'package:sultanpos/model/partner.dart';
 import 'package:sultanpos/model/price.dart';
+import 'package:sultanpos/model/stock.dart';
 import 'package:sultanpos/model/unit.dart';
 
 part 'product.g.dart';
@@ -36,26 +37,30 @@ class ProductModel extends BaseModel {
   final List<PriceModel> prices;
   @JsonKey(name: 'buy_prices')
   final List<BuyPriceModel> buyPrices;
+  @JsonKey(nullable: true)
+  final List<StockModel>? stocks;
 
   ProductModel(
-      this.parentPublicId,
-      this.publicId,
-      this.barcode,
-      this.name,
-      this.description,
-      this.allBranch,
-      this.mainImage,
-      this.calculateStock,
-      this.productType,
-      this.sellable,
-      this.buyable,
-      this.editablePrice,
-      this.useSn,
-      this.unit,
-      this.category,
-      this.partner,
-      this.prices,
-      this.buyPrices);
+    this.parentPublicId,
+    this.publicId,
+    this.barcode,
+    this.name,
+    this.description,
+    this.allBranch,
+    this.mainImage,
+    this.calculateStock,
+    this.productType,
+    this.sellable,
+    this.buyable,
+    this.editablePrice,
+    this.useSn,
+    this.unit,
+    this.category,
+    this.partner,
+    this.prices,
+    this.buyPrices,
+    this.stocks,
+  );
 
   @override
   factory ProductModel.fromJson(Map<String, dynamic> json) => _$ProductModelFromJson(json);

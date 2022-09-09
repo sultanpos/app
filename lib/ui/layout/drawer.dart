@@ -44,7 +44,13 @@ class _MainMenuItemState extends State<MainMenuItem> {
               topRight: Radius.circular(4.0),
             )),
         padding: const EdgeInsets.all(8),
-        child: Column(children: [Icon(widget.icon), Text(widget.title)]),
+        child: Column(children: [
+          Icon(widget.icon),
+          Text(
+            widget.title,
+            style: TextStyle(fontSize: 10),
+          )
+        ]),
       ),
     );
   }

@@ -16,12 +16,12 @@ class _AppState extends State<App> {
       light: ThemeData(
         brightness: Brightness.light,
         primarySwatch: Colors.blue,
-        fontFamily: 'Ubuntu_Mono',
+        fontFamily: 'Oxanium',
       ),
       dark: ThemeData(
         brightness: Brightness.dark,
         primarySwatch: Colors.blue,
-        fontFamily: 'Ubuntu_Mono',
+        fontFamily: 'Oxanium',
         inputDecorationTheme: const InputDecorationTheme(
           isDense: true,
           filled: true,
@@ -29,7 +29,9 @@ class _AppState extends State<App> {
           contentPadding: EdgeInsets.all(8),
           errorStyle: TextStyle(height: 0.1),
         ),
-        textTheme: const TextTheme(subtitle1: TextStyle(fontSize: 14, height: 1.5)),
+        textTheme: const TextTheme(
+          subtitle1: TextStyle(fontSize: 12, height: 1.5),
+        ),
       ),
       initial: AdaptiveThemeMode.dark,
       builder: (theme, darkTheme) => MaterialApp(

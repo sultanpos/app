@@ -169,6 +169,10 @@ class ProductRootWidget extends StatelessWidget {
                     title: 'Persediaan',
                     align: Alignment.centerRight,
                     get: (v) {
+                      if (v.stocks != null) {
+                        final total = v.stocks!.fold<int>(0, (previousValue, element) => previousValue + element.stock);
+                        return formatMoneyDouble(total.toDouble() / 1000.0);
+                      }
                       return "0";
                     },
                   ),

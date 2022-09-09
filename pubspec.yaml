@@ -71,6 +71,15 @@ flutter:
         - asset: resources/fonts/Jetbrain_Mono/JetBrainsMono-SemiBoldItalic.ttf
         - asset: resources/fonts/Jetbrain_Mono/JetBrainsMono-Thin.ttf
         - asset: resources/fonts/Jetbrain_Mono/JetBrainsMono-ThinItalic.ttf
+    - family: Oxanium
+      fonts:
+        - asset: resources/fonts/Oxanium/Oxanium-Bold.ttf
+        - asset: resources/fonts/Oxanium/Oxanium-ExtraBold.ttf
+        - asset: resources/fonts/Oxanium/Oxanium-ExtraLight.ttf
+        - asset: resources/fonts/Oxanium/Oxanium-Light.ttf
+        - asset: resources/fonts/Oxanium/Oxanium-Medium.ttf
+        - asset: resources/fonts/Oxanium/Oxanium-Regular.ttf
+        - asset: resources/fonts/Oxanium/Oxanium-SemiBold.ttf
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
