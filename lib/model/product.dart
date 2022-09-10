@@ -8,7 +8,7 @@ import 'package:sultanpos/model/unit.dart';
 
 part 'product.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class ProductModel extends BaseModel {
   @JsonKey(name: 'parent_public_id')
   final String parentPublicId;
@@ -37,7 +37,6 @@ class ProductModel extends BaseModel {
   final List<PriceModel> prices;
   @JsonKey(name: 'buy_prices')
   final List<BuyPriceModel> buyPrices;
-  @JsonKey(nullable: true)
   final List<StockModel>? stocks;
 
   ProductModel(
@@ -70,9 +69,12 @@ class ProductModel extends BaseModel {
 
   @override
   Map<String, dynamic> toJson() => _$ProductModelToJson(this);
+
+  @override
+  String getPublicId() => publicId;
 }
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class ProductInsertModel extends BaseModel {
   final String barcode;
   final String name;
@@ -205,7 +207,7 @@ class ProductPriceInsertModel extends BaseModel {
   Map<String, dynamic> toJson() => _$ProductPriceInsertModelToJson(this);
 }
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class ProductUpdateModel extends BaseModel {
   final String barcode;
   final String name;
@@ -224,14 +226,13 @@ class ProductUpdateModel extends BaseModel {
   final String categoryPublicId;
   @JsonKey(name: 'partner_public_id')
   final String partnerPublicId;
-  @JsonKey(name: 'buy_price')
-  final int buyPrice;
   final bool sellable;
   final bool buyable;
   @JsonKey(name: 'editable_price')
   final bool editablePrice;
   @JsonKey(name: 'use_sn')
   final bool useSn;
+  final ProductPriceInsertModel price;
 
   ProductUpdateModel(
     this.barcode,
@@ -244,11 +245,11 @@ class ProductUpdateModel extends BaseModel {
     this.unitPublicId,
     this.partnerPublicId,
     this.categoryPublicId,
-    this.buyPrice,
     this.sellable,
     this.buyable,
     this.editablePrice,
     this.useSn,
+    this.price,
   );
 
   @override

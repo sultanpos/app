@@ -133,7 +133,6 @@ class ProductState extends CrudState<ProductModel> {
       priceMap['discount_formula$i'] = i < priceCounter ? fValue<String>('disc$i', '') : '';
       priceMap['discount$i'] = i < priceCounter ? discountMargins[i].discount : 0;
     }
-    print(form.control('count0').value);
     return ProductInsertModel(
       fValue<String>('barcode', ''),
       fValue<String>('name', ''),
@@ -151,14 +150,37 @@ class ProductState extends CrudState<ProductModel> {
       fValue<String>('categoryPublicId', ''),
       [],
       fMoney('buyPrice', 0),
-      [ProductStockInsertModel(defaultBranch!.publicId, fMoney('stock', 0))],
+      [ProductStockInsertModel(defaultBranch!.publicId, fStock('stock', 0))],
       ProductPriceInsertModel.fromJson(priceMap),
     );
   }
 
   @override
   BaseModel prepareUpdateModel() {
-    throw UnimplementedError();
+    final priceMap = <String, dynamic>{};
+    for (int i = 0; i < 5; i++) {
+      priceMap['count$i'] = i < priceCounter ? fMoney('count$i', 0) : 0;
+      priceMap['price$i'] = i < priceCounter ? fMoney('sell$i', 0) : 0;
+      priceMap['discount_formula$i'] = i < priceCounter ? fValue<String>('disc$i', '') : '';
+      priceMap['discount$i'] = i < priceCounter ? discountMargins[i].discount : 0;
+    }
+    return ProductUpdateModel(
+      fValue<String>('barcode', ''),
+      fValue<String>('name', ''),
+      fValue<String>('description', ''),
+      true, //fValue<bool>('allBranch', true),
+      '', //fValue<String>('mainImage', ''),
+      fValue<bool>('calculateStock', true),
+      fValue<String>('productType', ''),
+      fValue<String>('unitPublicId', ''),
+      fValue<String>('partnerPublicId', ''),
+      fValue<String>('categoryPublicId', ''),
+      fValue<bool>('sellable', true),
+      fValue<bool>('buyable', true),
+      fValue<bool>('editablePrice', false),
+      false, //fValue<bool>('useSn', false),
+      ProductPriceInsertModel.fromJson(priceMap),
+    );
   }
 
   resetAddAgain() {

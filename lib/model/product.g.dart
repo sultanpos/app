@@ -49,12 +49,12 @@ Map<String, dynamic> _$ProductModelToJson(ProductModel instance) =>
       'buyable': instance.buyable,
       'editable_price': instance.editablePrice,
       'use_sn': instance.useSn,
-      'unit': instance.unit,
-      'category': instance.category,
-      'partner': instance.partner,
-      'prices': instance.prices,
-      'buy_prices': instance.buyPrices,
-      'stocks': instance.stocks,
+      'unit': instance.unit.toJson(),
+      'category': instance.category.toJson(),
+      'partner': instance.partner.toJson(),
+      'prices': instance.prices.map((e) => e.toJson()).toList(),
+      'buy_prices': instance.buyPrices.map((e) => e.toJson()).toList(),
+      'stocks': instance.stocks?.map((e) => e.toJson()).toList(),
     };
 
 ProductInsertModel _$ProductInsertModelFromJson(Map<String, dynamic> json) =>
@@ -100,8 +100,8 @@ Map<String, dynamic> _$ProductInsertModelToJson(ProductInsertModel instance) =>
       'buyable': instance.buyable,
       'editable_price': instance.editablePrice,
       'use_sn': instance.useSn,
-      'stocks': instance.stocks,
-      'price': instance.price,
+      'stocks': instance.stocks.map((e) => e.toJson()).toList(),
+      'price': instance.price.toJson(),
     };
 
 ProductStockInsertModel _$ProductStockInsertModelFromJson(
@@ -180,11 +180,11 @@ ProductUpdateModel _$ProductUpdateModelFromJson(Map<String, dynamic> json) =>
       json['unit_public_id'] as String,
       json['partner_public_id'] as String,
       json['category_public_id'] as String,
-      json['buy_price'] as int,
       json['sellable'] as bool,
       json['buyable'] as bool,
       json['editable_price'] as bool,
       json['use_sn'] as bool,
+      ProductPriceInsertModel.fromJson(json['price'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$ProductUpdateModelToJson(ProductUpdateModel instance) =>
@@ -199,9 +199,9 @@ Map<String, dynamic> _$ProductUpdateModelToJson(ProductUpdateModel instance) =>
       'unit_public_id': instance.unitPublicId,
       'category_public_id': instance.categoryPublicId,
       'partner_public_id': instance.partnerPublicId,
-      'buy_price': instance.buyPrice,
       'sellable': instance.sellable,
       'buyable': instance.buyable,
       'editable_price': instance.editablePrice,
       'use_sn': instance.useSn,
+      'price': instance.price.toJson(),
     };

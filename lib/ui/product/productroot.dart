@@ -184,6 +184,11 @@ class ProductRootWidget extends StatelessWidget {
                     title: 'Kategori',
                     get: (v) => v.category.name,
                   ),
+                  SDataColumn(
+                    id: 'partner',
+                    title: 'Suplier',
+                    get: (v) => v.partner.name,
+                  ),
                 ], name: 'product', state: AppState().productState.listData),
               ),
             ],

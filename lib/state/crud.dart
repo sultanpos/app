@@ -29,6 +29,18 @@ abstract class CrudState<T extends BaseModel> extends BaseState {
     return defValue;
   }
 
+  int fStock(String key, int defValue) {
+    final val = form.control(key).value;
+    if (val != null) {
+      final normalize = (val as String).replaceAll('.', '').replaceAll(',', '.');
+      final doubleVal = double.tryParse(normalize);
+      if (doubleVal != null) {
+        return (doubleVal * 1000.0).toInt();
+      }
+    }
+    return defValue;
+  }
+
   resetForm() {
     form.reset();
     form.markAllAsTouched();

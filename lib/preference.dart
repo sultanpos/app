@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sultanpos/model/auth.dart';
 
@@ -16,6 +18,8 @@ class Preference {
 
   init() async {
     sharedPreferences = await SharedPreferences.getInstance();
+    final folderPath = await getApplicationSupportDirectory();
+    debugPrint("shared preference location: ${folderPath.path}");
   }
 
   storeAuth(LoginResponse token) {

@@ -40,84 +40,87 @@ class AddProductWidget extends StatelessWidget {
                           child: SizedBox(
                             height: double.infinity,
                             child: SizedBox(
-                              child: Column(
-                                children: [
-                                  ReactiveTextField(
-                                    formControlName: 'barcode',
-                                    autofocus: true,
-                                    inputFormatters: [UpperCaseTextFormatter()],
-                                    decoration: const InputDecoration(labelText: "Barcode", hintText: "Masukkan barcode"),
-                                    textInputAction: TextInputAction.next,
-                                  ),
-                                  const SizedBox(height: 8),
-                                  ReactiveTextField(
-                                    formControlName: 'name',
-                                    inputFormatters: [UpperCaseTextFormatter()],
-                                    decoration: const InputDecoration(labelText: "Nama", hintText: "Masukkan name"),
-                                    textInputAction: TextInputAction.next,
-                                  ),
-                                  const SizedBox(height: 8),
-                                  const DropdownProductType(
-                                    formControlName: 'productType',
-                                    inputDecoration: InputDecoration(labelText: 'Tipe'),
-                                  ),
-                                  const SizedBox(height: 8),
-                                  DropdownRepoUnit(
-                                    formControlName: 'unitPublicId',
-                                    decoration: const InputDecoration(labelText: "Unit", hintText: "Pilih unit"),
-                                  ),
-                                  const SizedBox(height: 8),
-                                  DropdownRepoCategory(
-                                    formControlName: 'categoryPublicId',
-                                    decoration: const InputDecoration(labelText: "Kategori", hintText: "Pilih kategori"),
-                                  ),
-                                  const SizedBox(height: 8),
-                                  DropdownRepoPartnerSupplier(
-                                    formControlName: 'partnerPublicId',
-                                    decoration: const InputDecoration(labelText: "Supplier", hintText: "Pilih supplier utama"),
-                                  ),
-                                  const SizedBox(height: 8),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        child: Row(
-                                          children: [
-                                            ReactiveCheckbox(
-                                              formControlName: 'sellable',
-                                            ),
-                                            const Text('Dijual'),
-                                          ],
+                              child: FocusTraversalGroup(
+                                policy: OrderedTraversalPolicy(),
+                                child: Column(
+                                  children: [
+                                    ReactiveTextField(
+                                      formControlName: 'barcode',
+                                      autofocus: true,
+                                      inputFormatters: [UpperCaseTextFormatter()],
+                                      decoration: const InputDecoration(labelText: "Barcode", hintText: "Masukkan barcode"),
+                                      textInputAction: TextInputAction.next,
+                                    ),
+                                    const SizedBox(height: 8),
+                                    ReactiveTextField(
+                                      formControlName: 'name',
+                                      inputFormatters: [UpperCaseTextFormatter()],
+                                      decoration: const InputDecoration(labelText: "Nama", hintText: "Masukkan name"),
+                                      textInputAction: TextInputAction.next,
+                                    ),
+                                    const SizedBox(height: 8),
+                                    const DropdownProductType(
+                                      formControlName: 'productType',
+                                      inputDecoration: InputDecoration(labelText: 'Tipe'),
+                                    ),
+                                    const SizedBox(height: 8),
+                                    DropdownRepoUnit(
+                                      formControlName: 'unitPublicId',
+                                      decoration: const InputDecoration(labelText: "Unit", hintText: "Pilih unit"),
+                                    ),
+                                    const SizedBox(height: 8),
+                                    DropdownRepoCategory(
+                                      formControlName: 'categoryPublicId',
+                                      decoration: const InputDecoration(labelText: "Kategori", hintText: "Pilih kategori"),
+                                    ),
+                                    const SizedBox(height: 8),
+                                    DropdownRepoPartnerSupplier(
+                                      formControlName: 'partnerPublicId',
+                                      decoration: const InputDecoration(labelText: "Supplier", hintText: "Pilih supplier utama"),
+                                    ),
+                                    const SizedBox(height: 8),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: Row(
+                                            children: [
+                                              ReactiveCheckbox(
+                                                formControlName: 'sellable',
+                                              ),
+                                              const Text('Dijual'),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                      Expanded(
-                                        child: Row(
-                                          children: [
-                                            ReactiveCheckbox(
-                                              formControlName: 'buyable',
-                                            ),
-                                            const Text('Dibeli'),
-                                          ],
+                                        Expanded(
+                                          child: Row(
+                                            children: [
+                                              ReactiveCheckbox(
+                                                formControlName: 'buyable',
+                                              ),
+                                              const Text('Dibeli'),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    children: [
-                                      ReactiveCheckbox(
-                                        formControlName: 'calculateStock',
-                                      ),
-                                      const Text('Hitung stock'),
-                                    ],
-                                  ),
-                                  Row(
-                                    children: [
-                                      ReactiveCheckbox(
-                                        formControlName: 'editablePrice',
-                                      ),
-                                      const Text('Harga bisa diedit di kasir'),
-                                    ],
-                                  ),
-                                ],
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        ReactiveCheckbox(
+                                          formControlName: 'calculateStock',
+                                        ),
+                                        const Text('Hitung stock'),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        ReactiveCheckbox(
+                                          formControlName: 'editablePrice',
+                                        ),
+                                        const Text('Harga bisa diedit di kasir'),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
@@ -136,7 +139,7 @@ class AddProductWidget extends StatelessWidget {
                                       Expanded(
                                         child: ReactiveTextField(
                                           keyboardType: TextInputType.number,
-                                          inputFormatters: [MoneyTextFormatter()],
+                                          inputFormatters: [StockTextFormatter()],
                                           formControlName: 'stock',
                                           decoration: const InputDecoration(labelText: "Stock Awal", hintText: "Masukkan stock"),
                                           textInputAction: TextInputAction.next,

@@ -31,6 +31,9 @@ class LoginWidget extends StatelessWidget {
                   ),
                   textInputAction: TextInputAction.next,
                 ),
+                const SizedBox(
+                  height: 16,
+                ),
                 ReactiveTextField(
                   formControlName: 'password',
                   obscureText: true,
