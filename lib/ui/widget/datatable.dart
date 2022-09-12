@@ -101,7 +101,6 @@ class _SDataTableState<T extends BaseModel> extends State<SDataTable<T>> {
   void dispose() {
     super.dispose();
     widget.state.removeListener(stateListener);
-    Preference().saveTableWidth(widget.name, columnSize);
   }
 
   stateListener() {
@@ -179,6 +178,7 @@ class _SDataTableState<T extends BaseModel> extends State<SDataTable<T>> {
                         columnResizeMode: ColumnResizeMode.onResizeEnd,
                         onColumnResizeUpdate: (details) {
                           columnSize[details.column.columnName] = details.width;
+                          Preference().saveTableWidth(widget.name, columnSize);
                           setState(() {});
                           return true;
                         },
