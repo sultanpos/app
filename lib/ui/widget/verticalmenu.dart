@@ -5,19 +5,26 @@ class VerticalMenuItem {
   final String id;
   final IconData? icon;
   final Widget Function() widget;
-  VerticalMenuItem({required this.title, required this.id, this.icon, required this.widget});
+  final bool closable;
+  final bool vertical;
+  final VoidCallback? onCloseClicked;
+  VerticalMenuItem({
+    required this.title,
+    required this.id,
+    this.icon,
+    required this.widget,
+    this.closable = false,
+    this.vertical = false,
+    this.onCloseClicked,
+  });
 }
 
 class VerticalMenuItemWidget extends StatefulWidget {
-  final String title;
-  final String id;
-  final IconData? icon;
+  final VerticalMenuItem item;
   final bool selected;
   final VoidCallback? onClick;
   final double? width;
-  const VerticalMenuItemWidget(
-      {required this.title, required this.id, this.icon, required this.selected, required this.onClick, this.width, Key? key})
-      : super(key: key);
+  const VerticalMenuItemWidget(this.item, {required this.selected, required this.onClick, this.width, Key? key}) : super(key: key);
 
   @override
   State<VerticalMenuItemWidget> createState() => _VerticalMenuItemWidgetState();
@@ -39,12 +46,33 @@ class _VerticalMenuItemWidgetState extends State<VerticalMenuItemWidget> {
       },
       child: Container(
         margin: const EdgeInsets.only(bottom: 4),
-        width: widget.width,
+        width: widget.item.vertical ? 60 : widget.width,
         decoration: BoxDecoration(
             color: _onHover || widget.selected ? bgColor : Colors.black,
             borderRadius: const BorderRadius.only(topLeft: Radius.circular(4.0), bottomLeft: Radius.circular(4.0))),
         padding: const EdgeInsets.all(8),
-        child: Column(children: [Icon(widget.icon), Text(widget.title)]),
+        child: widget.item.vertical ? verticalText(context) : Column(children: [Icon(widget.item.icon), Text(widget.item.title)]),
+      ),
+    );
+  }
+
+  Widget verticalText(BuildContext context) {
+    return RotatedBox(
+      quarterTurns: 3,
+      child: Column(
+        children: [
+          Text(widget.item.title),
+          SizedBox(
+            width: 40,
+            child: TextButton(
+              onPressed: widget.item.onCloseClicked,
+              child: const Icon(
+                Icons.close,
+                color: Colors.red,
+              ),
+            ),
+          )
+        ],
       ),
     );
   }
@@ -67,14 +95,12 @@ class VerticalMenu extends StatelessWidget {
         Container(
           color: Colors.black,
           width: width ?? 60,
-          child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
+          child: ListView(
+              //crossAxisAlignment: CrossAxisAlignment.end,
               children: menus
                   .map((e) => VerticalMenuItemWidget(
-                        title: e.title,
-                        id: e.id,
+                        e,
                         selected: e.id == currentId,
-                        icon: e.icon,
                         width: width,
                         onClick: () {
                           onChanged(e.id);

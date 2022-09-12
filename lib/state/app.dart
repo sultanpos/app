@@ -13,6 +13,7 @@ import 'package:sultanpos/state/navigation.dart';
 import 'package:sultanpos/state/partner.dart';
 import 'package:sultanpos/state/pricegroup.dart';
 import 'package:sultanpos/state/product.dart';
+import 'package:sultanpos/state/purchase.dart';
 import 'package:sultanpos/state/share.dart';
 import 'package:sultanpos/state/unit.dart';
 
@@ -37,6 +38,7 @@ class AppState {
   late PriceGroupState priceGroupState;
   late PartnerState partnerState;
   late CategoryState categoryState;
+  late PurchaseState purchaseState;
 
   init() async {
     if (initted) return;
@@ -56,6 +58,7 @@ class AppState {
     priceGroupState = PriceGroupState(httpAPI);
     partnerState = PartnerState(httpAPI);
     categoryState = CategoryState(httpAPI);
+    purchaseState = PurchaseState(httpAPI);
     await AppState().authState.loadLogin();
   }
 
