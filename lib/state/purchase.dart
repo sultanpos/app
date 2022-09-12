@@ -26,9 +26,12 @@ class PurchaseState extends BaseState {
 
   closeTab(String id) {
     final index = tabs.indexWhere((element) => element.id == id);
-    final nextIndex = index - 1;
     tabs.removeAt(index);
-    currentId = nextIndex < 0 ? null : tabs[nextIndex].id;
+    currentId = tabs.isEmpty
+        ? null
+        : index >= tabs.length
+            ? tabs[index - 1].id
+            : tabs[index].id;
     notifyListeners();
   }
 }
