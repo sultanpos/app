@@ -5,7 +5,7 @@ import 'package:sultanpos/ui/layout/home.dart';
 import 'package:sultanpos/ui/layout/noroute.dart';
 import 'package:sultanpos/ui/master/master.dart';
 import 'package:sultanpos/ui/partner/partner.dart';
-import 'package:sultanpos/ui/product/productroot.dart';
+import 'package:sultanpos/ui/product/product.dart';
 import 'package:sultanpos/ui/profile/profile.dart';
 import 'package:sultanpos/ui/purchase/purchase.dart';
 import 'package:sultanpos/ui/report/report.dart';
