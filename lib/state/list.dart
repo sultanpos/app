@@ -33,4 +33,23 @@ class ListState<T extends BaseModel> extends ChangeNotifier {
     }
     notifyListeners();
   }
+
+  setRowPerPage(int value) {
+    rowPerPage = value;
+    load(page: 0, refresh: true);
+  }
+
+  int totalPage() {
+    if (state is ListResult<T>) {
+      final total = (state as ListResult<T>).total ~/ rowPerPage;
+      return total + 1;
+    }
+    return 1;
+  }
+
+  bool enableNext() {
+    int total = totalPage();
+    if (total == 1) return false;
+    return page < total - 1;
+  }
 }

@@ -81,7 +81,10 @@ class HttpAPI {
     bool skipCompanyId = false,
     Map<String, dynamic>? queryParameters,
   }) async {
-    final ret = await fetch.get(_generateUrl(path, skipCompanyId), skipAuth: skipAuth, queryParameters: queryParameters);
+    final params = queryParameters ?? {};
+    params["limit"] = limit;
+    params["offset"] = offset;
+    final ret = await fetch.get(_generateUrl(path, skipCompanyId), skipAuth: skipAuth, queryParameters: params);
     return ListResult.fromJson(ret.data, fromJsonFunc);
   }
 

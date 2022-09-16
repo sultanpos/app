@@ -1,3 +1,4 @@
+import 'package:blurrycontainer/blurrycontainer.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sultanpos/model/base.dart';
@@ -112,82 +113,157 @@ class _SDataTableState<T extends BaseModel> extends State<SDataTable<T>> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(border: Border.all(color: Theme.of(context).dividerColor)),
-      child: ChangeNotifierProvider<ListState>.value(
-        value: widget.state,
-        child: Builder(
-          builder: (ctx) {
-            final list = ctx.select<ListState, ListBase>((value) => value.state);
-            return list is ListLoading
-                ? const Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : list is ListError
-                    ? Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text('Error memuat data: ${list.error}'),
-                            const SizedBox(
-                              height: 16,
-                            ),
-                            IconButton(
-                                onPressed: () {
-                                  widget.state.load();
-                                },
-                                icon: const Icon(Icons.refresh))
-                          ],
-                        ),
-                      )
-                    : SfDataGrid(
-                        source: source,
-                        columns: widget.columns
-                            .map(
-                              (e) => GridColumn(
-                                columnName: e.id,
-                                columnWidthMode: e.width != null ? ColumnWidthMode.auto : ColumnWidthMode.none,
-                                width: columnSize[e.id]!,
-                                allowEditing: false,
-                                label: Container(
-                                  color: lighterOrDarkerColor(Theme.of(context), Theme.of(context).scaffoldBackgroundColor),
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    e.title,
-                                    style: Theme.of(context).textTheme.bodyText1?.copyWith(fontSize: 12),
-                                  ),
+    return ChangeNotifierProvider<ListState>.value(
+      value: widget.state,
+      child: Builder(builder: (ctx) {
+        final state = ctx.watch<ListState>();
+        final list = state.state;
+        return Column(
+          children: [
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(border: Border.all(color: Theme.of(context).dividerColor)),
+                child: Stack(
+                  children: [
+                    SfDataGrid(
+                      source: source,
+                      columns: widget.columns
+                          .map(
+                            (e) => GridColumn(
+                              columnName: e.id,
+                              columnWidthMode: e.width != null ? ColumnWidthMode.auto : ColumnWidthMode.none,
+                              width: columnSize[e.id]!,
+                              allowEditing: false,
+                              label: Container(
+                                color: lighterOrDarkerColor(Theme.of(context), Theme.of(context).scaffoldBackgroundColor),
+                                alignment: Alignment.center,
+                                child: Text(
+                                  e.title,
+                                  style: Theme.of(context).textTheme.bodyText1?.copyWith(fontSize: 12),
                                 ),
                               ),
-                            )
-                            .toList(),
-                        selectionMode: SelectionMode.single,
-                        onCellDoubleTap: (details) {
-                          final index = details.rowColumnIndex.rowIndex - 1;
-                          if (widget.onDoubleClicked != null && index >= 0) {
-                            final data = (list as ListResult).data;
-                            widget.onDoubleClicked!(data[index] as T);
-                          }
-                        },
-                        navigationMode: GridNavigationMode.row,
-                        allowSorting: false,
-                        isScrollbarAlwaysShown: true,
-                        highlightRowOnHover: true,
-                        gridLinesVisibility: GridLinesVisibility.both,
-                        headerGridLinesVisibility: GridLinesVisibility.both,
-                        allowColumnsResizing: true,
-                        columnResizeMode: ColumnResizeMode.onResizeEnd,
-                        onColumnResizeUpdate: (details) {
-                          columnSize[details.column.columnName] = details.width;
-                          Preference().saveTableWidth(widget.name, columnSize);
-                          setState(() {});
-                          return true;
-                        },
-                        rowHeight: 30,
-                        headerRowHeight: 30,
-                      );
-          },
-        ),
-      ),
+                            ),
+                          )
+                          .toList(),
+                      selectionMode: SelectionMode.single,
+                      onCellDoubleTap: (details) {
+                        final index = details.rowColumnIndex.rowIndex - 1;
+                        if (widget.onDoubleClicked != null && index >= 0) {
+                          final data = (list as ListResult).data;
+                          widget.onDoubleClicked!(data[index] as T);
+                        }
+                      },
+                      navigationMode: GridNavigationMode.row,
+                      allowSorting: false,
+                      isScrollbarAlwaysShown: true,
+                      highlightRowOnHover: true,
+                      gridLinesVisibility: GridLinesVisibility.both,
+                      headerGridLinesVisibility: GridLinesVisibility.both,
+                      allowColumnsResizing: true,
+                      columnResizeMode: ColumnResizeMode.onResizeEnd,
+                      onColumnResizeUpdate: (details) {
+                        columnSize[details.column.columnName] = details.width;
+                        Preference().saveTableWidth(widget.name, columnSize);
+                        setState(() {});
+                        return true;
+                      },
+                      rowHeight: 30,
+                      headerRowHeight: 30,
+                    ),
+                    if (list is ListLoading)
+                      const BlurryContainer(
+                        child: SizedBox.expand(
+                          child: Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        ),
+                      ),
+                    if (list is ListError)
+                      BlurryContainer(
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text('Error memuat data: ${list.error}'),
+                              const SizedBox(
+                                height: 16,
+                              ),
+                              ElevatedButton(
+                                  onPressed: () {
+                                    widget.state.load();
+                                  },
+                                  child: const Text('Muat Ulang'))
+                            ],
+                          ),
+                        ),
+                      )
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 8,
+            ),
+            Row(
+              children: [
+                const Expanded(child: SizedBox()),
+                DropdownButton<int>(
+                  value: state.rowPerPage,
+                  items: const [
+                    DropdownMenuItem(
+                      value: 25,
+                      child: Text("25 per halaman"),
+                    ),
+                    DropdownMenuItem(
+                      value: 50,
+                      child: Text("50 per halaman"),
+                    ),
+                    DropdownMenuItem(
+                      value: 100,
+                      child: Text("100 per halaman"),
+                    ),
+                  ],
+                  onChanged: (val) {
+                    state.setRowPerPage(val!);
+                  },
+                ),
+                const SizedBox(
+                  width: 8,
+                ),
+                SizedBox(
+                  width: 30,
+                  child: ElevatedButton(
+                    onPressed: list is ListResult && state.page > 0 ? () {} : null,
+                    style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(0)),
+                    child: const Icon(
+                      Icons.navigate_before,
+                      size: 20,
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  width: 8,
+                ),
+                Text("${state.page + 1} / ${state.totalPage()}"),
+                const SizedBox(
+                  width: 8,
+                ),
+                SizedBox(
+                  width: 30,
+                  child: ElevatedButton(
+                    onPressed: list is ListResult && state.enableNext() ? () {} : null,
+                    style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(0)),
+                    child: const Icon(
+                      Icons.navigate_next,
+                      size: 20,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        );
+      }),
     );
   }
 }
