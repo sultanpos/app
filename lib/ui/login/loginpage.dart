@@ -1,6 +1,8 @@
+import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sultanpos/state/app.dart';
+import 'package:sultanpos/ui/layout/mainlayout.dart';
 import 'package:sultanpos/ui/login/loginwidget.dart';
 
 class LoginPage extends StatelessWidget {
@@ -10,8 +12,19 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider.value(
       value: AppState().authState,
-      child: const Scaffold(
-        body: LoginWidget(),
+      child: Scaffold(
+        body: Column(
+          children: [
+            SizedBox(
+              height: 30,
+              child: Row(children: [
+                Expanded(child: MoveWindow()),
+                const WindowButtons(),
+              ]),
+            ),
+            const LoginWidget(),
+          ],
+        ),
       ),
     );
   }
