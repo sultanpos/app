@@ -4,6 +4,7 @@ import 'package:sultanpos/model/category.dart';
 import 'package:sultanpos/state/app.dart';
 import 'package:sultanpos/state/category.dart';
 import 'package:sultanpos/ui/master/category/add.dart';
+import 'package:sultanpos/ui/widget/columnaction.dart';
 import 'package:sultanpos/ui/widget/confirmation.dart';
 import 'package:sultanpos/ui/widget/datatable.dart';
 import 'package:sultanpos/ui/widget/showerror.dart';
@@ -46,11 +47,19 @@ class CategoryWidget extends StatelessWidget {
                     const SizedBox(
                       width: 4,
                     ),
-                    ElevatedButton(
+                    SizedBox(
+                      width: 30,
+                      child: ElevatedButton(
                         onPressed: () {
                           AppState().categoryState.listData.load(refresh: true);
                         },
-                        child: const Icon(Icons.refresh)),
+                        style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(0)),
+                        child: const Icon(
+                          Icons.refresh,
+                          size: 20,
+                        ),
+                      ),
+                    ),
                   ],
                 ),
                 const SizedBox(
@@ -67,11 +76,9 @@ class CategoryWidget extends StatelessWidget {
                       title: 'Action',
                       getWidget: (v) => v.isDefault
                           ? const SizedBox.shrink()
-                          : Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                              IconButton(
-                                iconSize: 16,
-                                splashRadius: 16,
-                                onPressed: () {
+                          : SColumnAction(
+                              [
+                                SColumActionItem('edit', Icons.edit, () {
                                   AppState().categoryState.editForm(v);
                                   showDialog(
                                     context: ctx,
@@ -80,13 +87,8 @@ class CategoryWidget extends StatelessWidget {
                                       return const CategoryAddWidget(title: "Edit Kategori");
                                     },
                                   );
-                                },
-                                icon: const Icon(Icons.edit),
-                              ),
-                              IconButton(
-                                iconSize: 16,
-                                splashRadius: 16,
-                                onPressed: () async {
+                                }),
+                                SColumActionItem('hapus', Icons.delete_forever, () async {
                                   final result = await showConfirmation(ctx, title: 'Yakin hapus', message: 'Yakin untuk menghapus "${v.name}"');
                                   if (result) {
                                     try {
@@ -96,13 +98,9 @@ class CategoryWidget extends StatelessWidget {
                                       showError(ctx, title: 'Error menghapus', message: e.toString());
                                     }
                                   }
-                                },
-                                icon: const Icon(
-                                  Icons.delete_forever,
-                                  color: Colors.red,
-                                ),
-                              ),
-                            ]),
+                                }, iconColor: Colors.red),
+                              ],
+                            ),
                     ),
                     SDataColumn(
                       id: 'name',

@@ -4,6 +4,7 @@ import 'package:sultanpos/model/unit.dart';
 import 'package:sultanpos/state/app.dart';
 import 'package:sultanpos/state/unit.dart';
 import 'package:sultanpos/ui/master/unit/add.dart';
+import 'package:sultanpos/ui/widget/columnaction.dart';
 import 'package:sultanpos/ui/widget/confirmation.dart';
 import 'package:sultanpos/ui/widget/datatable.dart';
 import 'package:sultanpos/ui/widget/dialogutil.dart';
@@ -46,11 +47,19 @@ class UnitWidget extends StatelessWidget {
                     const SizedBox(
                       width: 4,
                     ),
-                    ElevatedButton(
+                    SizedBox(
+                      width: 30,
+                      child: ElevatedButton(
                         onPressed: () {
                           AppState().unitState.listData.load(refresh: true);
                         },
-                        child: const Icon(Icons.refresh)),
+                        style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(0)),
+                        child: const Icon(
+                          Icons.refresh,
+                          size: 20,
+                        ),
+                      ),
+                    ),
                   ],
                 ),
                 const SizedBox(
@@ -65,11 +74,9 @@ class UnitWidget extends StatelessWidget {
                       width: 100,
                       id: 'action',
                       title: 'Action',
-                      getWidget: (v) => Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                        IconButton(
-                          iconSize: 16,
-                          splashRadius: 16,
-                          onPressed: () {
+                      getWidget: (v) => SColumnAction(
+                        [
+                          SColumActionItem('edit', Icons.edit, () {
                             AppState().unitState.editForm(v);
                             sShowDialog(
                               context: ctx,
@@ -77,13 +84,8 @@ class UnitWidget extends StatelessWidget {
                                 return const UnitAddWidget(title: "Edit Unit");
                               },
                             );
-                          },
-                          icon: const Icon(Icons.edit),
-                        ),
-                        IconButton(
-                          iconSize: 16,
-                          splashRadius: 16,
-                          onPressed: () async {
+                          }),
+                          SColumActionItem('hapus', Icons.delete_forever, () async {
                             final result = await showConfirmation(ctx, title: 'Yakin hapus', message: 'Yakin untuk menghapus "${v.name}"');
                             if (result) {
                               try {
@@ -93,13 +95,9 @@ class UnitWidget extends StatelessWidget {
                                 showError(ctx, title: 'Error menghapus', message: e.toString());
                               }
                             }
-                          },
-                          icon: const Icon(
-                            Icons.delete_forever,
-                            color: Colors.red,
-                          ),
-                        ),
-                      ]),
+                          }, iconColor: Colors.red),
+                        ],
+                      ),
                     ),
                     SDataColumn(
                       id: 'name',

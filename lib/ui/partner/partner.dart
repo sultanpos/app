@@ -4,6 +4,7 @@ import 'package:sultanpos/model/partner.dart';
 import 'package:sultanpos/state/app.dart';
 import 'package:sultanpos/ui/partner/add.dart';
 import 'package:sultanpos/ui/widget/chip.dart';
+import 'package:sultanpos/ui/widget/columnaction.dart';
 import 'package:sultanpos/ui/widget/confirmation.dart';
 import 'package:sultanpos/ui/widget/datatable.dart';
 import 'package:sultanpos/ui/widget/dialogutil.dart';
@@ -71,44 +72,28 @@ class PartnerWidget extends StatelessWidget {
                         width: 100,
                         id: 'action',
                         title: 'Action',
-                        getWidget: (v) => Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            IconButton(
-                              iconSize: 16,
-                              splashRadius: 12,
-                              padding: const EdgeInsets.all(0),
-                              onPressed: () {
-                                AppState().partnerState.editForm(v);
-                                sShowDialog(
-                                  context: ctx,
-                                  builder: (c) {
-                                    return const AddPartnerWidget(title: "Edit mitra");
-                                  },
-                                );
-                              },
-                              icon: const Icon(Icons.edit),
-                            ),
-                            IconButton(
-                              iconSize: 16,
-                              splashRadius: 12,
-                              padding: const EdgeInsets.all(0),
-                              onPressed: () async {
-                                final result = await showConfirmation(ctx, title: 'Yakin hapus', message: 'Yakin untuk menghapus "${v.name}"');
-                                if (result) {
-                                  try {
-                                    await AppState().partnerState.remove(v.publicId);
-                                  } catch (e) {
-                                    // ignore: use_build_context_synchronously
-                                    showError(ctx, title: 'Error menghapus', message: e.toString());
-                                  }
+                        getWidget: (v) => SColumnAction(
+                          [
+                            SColumActionItem('edit', Icons.edit, () {
+                              AppState().partnerState.editForm(v);
+                              sShowDialog(
+                                context: ctx,
+                                builder: (c) {
+                                  return const AddPartnerWidget(title: "Edit mitra");
+                                },
+                              );
+                            }),
+                            SColumActionItem('hapus', Icons.delete_forever, () async {
+                              final result = await showConfirmation(ctx, title: 'Yakin hapus', message: 'Yakin untuk menghapus "${v.name}"');
+                              if (result) {
+                                try {
+                                  await AppState().partnerState.remove(v.publicId);
+                                } catch (e) {
+                                  // ignore: use_build_context_synchronously
+                                  showError(ctx, title: 'Error menghapus', message: e.toString());
                                 }
-                              },
-                              icon: const Icon(
-                                Icons.delete_forever,
-                                color: Colors.red,
-                              ),
-                            ),
+                              }
+                            }, iconColor: Colors.red),
                           ],
                         ),
                       ),

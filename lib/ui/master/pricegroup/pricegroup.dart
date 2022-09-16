@@ -5,6 +5,7 @@ import 'package:sultanpos/model/pricegroup.dart';
 import 'package:sultanpos/state/app.dart';
 import 'package:sultanpos/state/pricegroup.dart';
 import 'package:sultanpos/ui/master/pricegroup/add.dart';
+import 'package:sultanpos/ui/widget/columnaction.dart';
 import 'package:sultanpos/ui/widget/confirmation.dart';
 import 'package:sultanpos/ui/widget/datatable.dart';
 import 'package:sultanpos/ui/widget/dialogutil.dart';
@@ -51,11 +52,19 @@ class PriceGroupWidget extends HookWidget {
                     const SizedBox(
                       width: 4,
                     ),
-                    ElevatedButton(
+                    SizedBox(
+                      width: 30,
+                      child: ElevatedButton(
                         onPressed: () {
                           AppState().priceGroupState.listData.load(refresh: true);
                         },
-                        child: const Icon(Icons.refresh)),
+                        style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(0)),
+                        child: const Icon(
+                          Icons.refresh,
+                          size: 20,
+                        ),
+                      ),
+                    ),
                   ],
                 ),
                 const SizedBox(
@@ -72,11 +81,9 @@ class PriceGroupWidget extends HookWidget {
                       title: 'Action',
                       getWidget: (v) => v.isDefault
                           ? const SizedBox.shrink()
-                          : Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                              IconButton(
-                                iconSize: 16,
-                                splashRadius: 16,
-                                onPressed: () {
+                          : SColumnAction(
+                              [
+                                SColumActionItem('edit', Icons.edit, () {
                                   AppState().priceGroupState.editForm(v);
                                   sShowDialog(
                                     context: ctx,
@@ -84,13 +91,8 @@ class PriceGroupWidget extends HookWidget {
                                       return const PriceGroupAddWidget(title: "Edit group harga");
                                     },
                                   );
-                                },
-                                icon: const Icon(Icons.edit),
-                              ),
-                              IconButton(
-                                iconSize: 16,
-                                splashRadius: 16,
-                                onPressed: () async {
+                                }),
+                                SColumActionItem('hapus', Icons.delete_forever, () async {
                                   final result = await showConfirmation(ctx, title: 'Yakin hapus', message: 'Yakin untuk menghapus "${v.name}"');
                                   if (result) {
                                     try {
@@ -100,13 +102,9 @@ class PriceGroupWidget extends HookWidget {
                                       showError(ctx, title: 'Error menghapus', message: e.toString());
                                     }
                                   }
-                                },
-                                icon: const Icon(
-                                  Icons.delete_forever,
-                                  color: Colors.red,
-                                ),
-                              ),
-                            ]),
+                                }, iconColor: Colors.red),
+                              ],
+                            ),
                     ),
                     SDataColumn(
                       id: 'name',

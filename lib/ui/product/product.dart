@@ -4,6 +4,7 @@ import 'package:sultanpos/model/product.dart';
 import 'package:sultanpos/state/app.dart';
 import 'package:sultanpos/ui/product/add.dart';
 import 'package:sultanpos/ui/util/textformatter.dart';
+import 'package:sultanpos/ui/widget/columnaction.dart';
 import 'package:sultanpos/ui/widget/confirmation.dart';
 import 'package:sultanpos/ui/widget/datatable.dart';
 import 'package:sultanpos/ui/widget/dialogutil.dart';
@@ -69,68 +70,30 @@ class ProductRootWidget extends StatelessWidget {
                     width: 100,
                     id: 'action',
                     title: 'Action',
-                    getWidget: (v) => Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        PopupMenuButton(
-                          itemBuilder: (context) => [
-                            PopupMenuItem(
-                              height: 30,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: const [
-                                  Icon(Icons.edit),
-                                  SizedBox(
-                                    width: 4,
-                                  ),
-                                  Text("edit"),
-                                ],
-                              ),
-                              onTap: () {
-                                AppState().productState.editForm(v);
-                                sShowDialog(
-                                  context: ctx,
-                                  builder: (c) {
-                                    return const AddProductWidget(
-                                      title: "Edit Barang",
-                                    );
-                                  },
-                                );
-                              },
-                            ),
-                            PopupMenuItem(
-                              height: 30,
-                              onTap: () async {
-                                final result = await showConfirmation(ctx, title: 'Yakin hapus', message: 'Yakin untuk menghapus "${v.name}"');
-                                if (result) {
-                                  try {
-                                    await AppState().productState.remove(v.publicId);
-                                  } catch (e) {
-                                    // ignore: use_build_context_synchronously
-                                    showError(ctx, title: 'Error menghapus', message: e.toString());
-                                  }
-                                }
-                              },
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: const [
-                                  Icon(
-                                    Icons.delete_forever,
-                                    color: Colors.red,
-                                  ),
-                                  SizedBox(
-                                    width: 4,
-                                  ),
-                                  Text("hapus"),
-                                ],
-                              ),
-                            ),
-                          ],
-                          child: Text(
-                            "aksi",
-                            style: Theme.of(context).textTheme.bodyText1?.copyWith(color: Colors.blue, fontSize: 12),
-                          ),
-                        )
+                    getWidget: (v) => SColumnAction(
+                      [
+                        SColumActionItem('edit', Icons.edit, () {
+                          AppState().productState.editForm(v);
+                          sShowDialog(
+                            context: ctx,
+                            builder: (c) {
+                              return const AddProductWidget(
+                                title: "Edit Barang",
+                              );
+                            },
+                          );
+                        }),
+                        SColumActionItem('hapus', Icons.delete_forever, () async {
+                          final result = await showConfirmation(ctx, title: 'Yakin hapus', message: 'Yakin untuk menghapus "${v.name}"');
+                          if (result) {
+                            try {
+                              await AppState().productState.remove(v.publicId);
+                            } catch (e) {
+                              // ignore: use_build_context_synchronously
+                              showError(ctx, title: 'Error menghapus', message: e.toString());
+                            }
+                          }
+                        }, iconColor: Colors.red),
                       ],
                     ),
                   ),
