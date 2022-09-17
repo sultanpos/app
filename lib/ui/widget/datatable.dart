@@ -211,6 +211,10 @@ class _SDataTableState<T extends BaseModel> extends State<SDataTable<T>> {
                   value: state.rowPerPage,
                   items: const [
                     DropdownMenuItem(
+                      value: 5,
+                      child: Text("5 per halaman"),
+                    ),
+                    DropdownMenuItem(
                       value: 25,
                       child: Text("25 per halaman"),
                     ),
@@ -233,7 +237,11 @@ class _SDataTableState<T extends BaseModel> extends State<SDataTable<T>> {
                 SizedBox(
                   width: 30,
                   child: ElevatedButton(
-                    onPressed: list is ListResult && state.page > 0 ? () {} : null,
+                    onPressed: state.page > 0
+                        ? () {
+                            if (list is ListResult) state.prevPage();
+                          }
+                        : null,
                     style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(0)),
                     child: const Icon(
                       Icons.navigate_before,
@@ -251,7 +259,11 @@ class _SDataTableState<T extends BaseModel> extends State<SDataTable<T>> {
                 SizedBox(
                   width: 30,
                   child: ElevatedButton(
-                    onPressed: list is ListResult && state.enableNext() ? () {} : null,
+                    onPressed: state.enableNext()
+                        ? () {
+                            if (list is ListResult) state.nextPage();
+                          }
+                        : null,
                     style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(0)),
                     child: const Icon(
                       Icons.navigate_next,

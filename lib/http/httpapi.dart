@@ -83,7 +83,7 @@ class HttpAPI {
   }) async {
     final params = queryParameters ?? {};
     params["limit"] = limit;
-    params["offset"] = offset;
+    params["start"] = offset;
     final ret = await fetch.get(_generateUrl(path, skipCompanyId), skipAuth: skipAuth, queryParameters: params);
     return ListResult.fromJson(ret.data, fromJsonFunc);
   }

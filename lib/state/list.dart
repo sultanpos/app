@@ -11,6 +11,7 @@ class ListState<T extends BaseModel> extends ChangeNotifier {
   int page = 0;
   int rowPerPage;
   ListBase state = ListNone();
+  int _cachedTotalPage = 0;
 
   ListState(this.httpAPI, this.path, this.creator, {this.rowPerPage = 50});
 
@@ -42,14 +43,25 @@ class ListState<T extends BaseModel> extends ChangeNotifier {
   int totalPage() {
     if (state is ListResult<T>) {
       final total = (state as ListResult<T>).total ~/ rowPerPage;
-      return total + 1;
+      final mod = (state as ListResult<T>).total % rowPerPage;
+      _cachedTotalPage = mod > 0 ? total + 1 : total;
     }
-    return 1;
+    return _cachedTotalPage;
   }
 
   bool enableNext() {
     int total = totalPage();
     if (total == 1) return false;
     return page < total - 1;
+  }
+
+  void prevPage() {
+    page--;
+    load(refresh: true);
+  }
+
+  void nextPage() {
+    page++;
+    load(refresh: true);
   }
 }
