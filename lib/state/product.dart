@@ -3,7 +3,7 @@ import 'package:sultanpos/model/base.dart';
 import 'package:sultanpos/model/product.dart';
 import 'package:sultanpos/state/app.dart';
 import 'package:sultanpos/state/crud.dart';
-import 'package:sultanpos/ui/util/calculate.dart';
+import 'package:sultanpos/util/calculate.dart';
 
 class DiscountMargin {
   int discount;

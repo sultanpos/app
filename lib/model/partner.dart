@@ -4,7 +4,7 @@ import 'package:sultanpos/model/request.dart';
 
 part 'partner.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class PartnerModel extends BaseModel {
   @JsonKey(name: 'public_id')
   final String publicId;

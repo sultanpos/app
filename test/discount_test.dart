@@ -1,4 +1,4 @@
-import 'package:sultanpos/ui/util/calculate.dart';
+import 'package:sultanpos/util/calculate.dart';
 import 'package:test/test.dart';
 
 class Value {

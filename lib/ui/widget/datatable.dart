@@ -5,7 +5,7 @@ import 'package:sultanpos/model/base.dart';
 import 'package:sultanpos/model/listresult.dart';
 import 'package:sultanpos/preference.dart';
 import 'package:sultanpos/state/list.dart';
-import 'package:sultanpos/ui/util/color.dart';
+import 'package:sultanpos/util/color.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 class SDataSource<T extends BaseModel> extends DataGridSource {

@@ -49,11 +49,3 @@ class StockTextFormatter extends TextInputFormatter {
     );
   }
 }
-
-String formatMoney(int value) {
-  return NumberFormat.decimalPattern('id').format(value);
-}
-
-String formatMoneyDouble(double value) {
-  return NumberFormat.decimalPattern('id').format(value);
-}

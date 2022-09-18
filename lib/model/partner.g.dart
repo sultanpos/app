@@ -37,7 +37,7 @@ Map<String, dynamic> _$PartnerModelToJson(PartnerModel instance) =>
       'email': instance.email,
       'debt': instance.debt,
       'credit': instance.credit,
-      'price_group': instance.priceGroup,
+      'price_group': instance.priceGroup?.toJson(),
     };
 
 PartnerInsertModel _$PartnerInsertModelFromJson(Map<String, dynamic> json) =>

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sultanpos/state/app.dart';
 import 'package:sultanpos/state/purchase.dart';
+import 'package:sultanpos/ui/purchase/purchaselist.dart';
 import 'package:sultanpos/ui/widget/verticalmenu.dart';
 import 'dart:math';
 import 'dart:convert';
@@ -31,14 +32,7 @@ class PurchaseWidget extends StatelessWidget {
                 title: 'Daftar',
                 id: 'list',
                 icon: Icons.list_alt,
-                widget: () => Center(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      state.addNewTab(PurchaseTabItem(getRandString(10), 'Title'));
-                    },
-                    child: const Text("add"),
-                  ),
-                ),
+                widget: () => const PurchaseListWidget(),
               ),
               ...state.tabs
                   .map(

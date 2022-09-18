@@ -1,4 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:sultanpos/flavor.dart';
 import 'package:sultanpos/http/authinterceptor.dart';
 import 'package:sultanpos/http/httpapi.dart';
@@ -43,6 +45,7 @@ class AppState {
   init() async {
     if (initted) return;
     initted = true;
+    initializeDateFormatting("id_ID", null);
     await Preference().init();
     final dioInterceptor = Dio(BaseOptions(baseUrl: Flavor.baseUrl!));
     dioInterceptor.interceptors.add(myinterceptor.LogInterceptor());
