@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:sultanpos/model/purchase.dart';
 import 'package:sultanpos/state/app.dart';
-import 'package:sultanpos/ui/purchase/add.dart';
 import 'package:sultanpos/ui/widget/columnaction.dart';
 import 'package:sultanpos/ui/widget/confirmation.dart';
 import 'package:sultanpos/ui/widget/datatable.dart';
-import 'package:sultanpos/ui/widget/dialogutil.dart';
 import 'package:sultanpos/ui/widget/showerror.dart';
 import 'package:sultanpos/util/format.dart';
+import 'package:uuid/uuid.dart';
 
 class PurchaseListWidget extends StatelessWidget {
   const PurchaseListWidget({super.key});
@@ -27,15 +26,7 @@ class PurchaseListWidget extends StatelessWidget {
               const Expanded(child: SizedBox()),
               ElevatedButton(
                 onPressed: () {
-                  AppState().purchaseState.resetForm();
-                  sShowDialog(
-                    context: context,
-                    builder: (c) {
-                      return const AddPurchaseWidget(
-                        title: "Tambah Pembelian Baru",
-                      );
-                    },
-                  );
+                  AppState().purchaseState.addNewTab(const Uuid().v1(), 'Baru', true);
                 },
                 child: const Text('Tambah Pembelian'),
               ),
@@ -69,20 +60,12 @@ class PurchaseListWidget extends StatelessWidget {
                   title: 'Action',
                   getWidget: (v) => SColumnAction(
                     [
-                      SColumActionItem('edit', Icons.edit, () {
-                        AppState().purchaseState.editForm(v);
-                        /*sShowDialog(
-                          context: context,
-                          builder: (c) {
-                            return const AddPartnerWidget(title: "Edit mitra");
-                          },
-                        );*/
-                      }),
+                      SColumActionItem('edit', Icons.edit, () {}),
                       SColumActionItem('hapus', Icons.delete_forever, () async {
                         final result = await showConfirmation(context, title: 'Yakin hapus', message: 'Yakin untuk menghapus "${v.number}"');
                         if (result) {
                           try {
-                            await AppState().purchaseState.remove(v.publicId);
+                            //await AppState().purchaseState.remove(v.publicId);
                           } catch (e) {
                             // ignore: use_build_context_synchronously
                             showError(context, title: 'Error menghapus', message: e.toString());
@@ -100,7 +83,7 @@ class PurchaseListWidget extends StatelessWidget {
                 SDataColumn(
                   id: 'partner',
                   title: 'Supplier',
-                  get: (v) => v.partner.name,
+                  get: (v) => v.partner?.name ?? "-",
                 ),
                 SDataColumn(
                   id: 'total',

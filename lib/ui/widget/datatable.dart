@@ -62,7 +62,7 @@ class SDataColumn<T extends BaseModel> {
 
 class SDataTable<T extends BaseModel> extends StatefulWidget {
   final String name;
-  final ListState<T> state;
+  final ListHttpState<T> state;
   final List<SDataColumn<T>> columns;
   final void Function(T value)? onDoubleClicked;
   const SDataTable({required this.name, required this.state, required this.columns, this.onDoubleClicked, Key? key}) : super(key: key);
@@ -113,10 +113,10 @@ class _SDataTableState<T extends BaseModel> extends State<SDataTable<T>> {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<ListState>.value(
+    return ChangeNotifierProvider<ListHttpState>.value(
       value: widget.state,
       child: Builder(builder: (ctx) {
-        final state = ctx.watch<ListState>();
+        final state = ctx.watch<ListHttpState>();
         final list = state.state;
         return Column(
           children: [

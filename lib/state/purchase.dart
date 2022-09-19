@@ -1,4 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
+import 'package:sultanpos/localdb/db.dart';
 import 'package:sultanpos/model/base.dart';
 import 'package:sultanpos/model/purchase.dart';
 import 'package:sultanpos/state/app.dart';
@@ -11,8 +13,15 @@ class PurchaseTabItem {
   PurchaseTabItem(this.id, this.title);
 }
 
-class PurchaseState extends CrudState<PurchaseModel> {
-  PurchaseState(super.httpAPI) : super(path: '/purchase', creator: PurchaseModel.fromJson) {
+class PurchaseEditState extends ChangeNotifier {
+  final String id;
+  String title;
+  PurchaseModel? purchase;
+  late bool local;
+  bool loading = true;
+  late FormGroup form;
+
+  PurchaseEditState(this.id, {this.purchase, required this.title}) {
     form = FormGroup({
       'number': FormControl<String>(validators: [Validators.required], touched: true),
       //'branchPublicId': FormControl<String>(validators: [Validators.required], touched: true),
@@ -22,54 +31,85 @@ class PurchaseState extends CrudState<PurchaseModel> {
     });
   }
 
+  factory PurchaseEditState.fromLocal(PurchaseModel data) {
+    final state = PurchaseEditState(data.publicId, purchase: data, title: 'Baru');
+    state.loading = false;
+    state.local = true;
+    return state;
+  }
+
+  init(bool newRecord) async {
+    if (newRecord) {
+      local = true;
+      purchase = PurchaseModel(id, '', 'direct', 'draft', 0, '', 0, 0, 0, 0);
+      await LocalDb().purchase.save(purchase!);
+    }
+  }
+
+  remove() {
+    if (local) {
+      LocalDb().purchase.delete(purchase!.id);
+    }
+  }
+}
+
+class PurchaseState extends CrudState<PurchaseModel> {
+  PurchaseState(super.httpAPI) : super(path: '/purchase', creator: PurchaseModel.fromJson) {
+    form = FormGroup({});
+  }
+
   String? currentId;
-  List<PurchaseTabItem> tabs = [];
+  List<PurchaseEditState> items = [];
+
+  init() async {
+    final pending = await LocalDb().purchase.getAll();
+    for (int i = 0; i < pending.length; i++) {
+      final purchaseState = PurchaseEditState.fromLocal(pending[i]);
+      items.add(purchaseState);
+    }
+  }
 
   setCurrentId(String curId) {
     currentId = curId;
     notifyListeners();
   }
 
-  addNewTab(PurchaseTabItem item) {
-    final index = tabs.indexWhere((element) => element.id == item.id);
-    if (index < 0) tabs.add(item);
-    currentId = item.id;
+  addNewTab(String id, String title, bool newRecord) {
+    final index = items.indexWhere((element) => element.id == id);
+    final purchase = PurchaseEditState(id, title: title);
+    if (index < 0) items.add(purchase);
+    currentId = id;
     notifyListeners();
+    purchase.init(newRecord);
   }
 
   closeTab(String id) {
-    final index = tabs.indexWhere((element) => element.id == id);
-    tabs.removeAt(index);
-    currentId = tabs.isEmpty
+    final index = items.indexWhere((element) => element.id == id);
+    final purchaseState = items[index];
+    items.removeAt(index);
+    currentId = items.isEmpty
         ? null
-        : index >= tabs.length
-            ? tabs[index - 1].id
-            : tabs[index].id;
+        : index >= items.length
+            ? items[index - 1].id
+            : items[index].id;
+    purchaseState.remove();
     notifyListeners();
   }
 
+  PurchaseEditState getPurchaseEditState(String id) {
+    return items.firstWhere((element) => element.id == id);
+  }
+
   @override
-  prepareEditForm(PurchaseModel value) {
-    // TODO: implement prepareEditForm
+  prepareEditForm(PurchaseModel value) {}
+
+  @override
+  BaseModel prepareInsertModel() {
     throw UnimplementedError();
   }
 
   @override
-  BaseModel prepareInsertModel() {
-    return PurchaseInsertModel(
-      fValue<String>('number', ''),
-      fValue<String>('type', ''),
-      'draft',
-      AppState().shareState.defaultBranch()!.publicId, //fValue<String>('branchPublicId', ''),
-      fValue<String>('partnerPublicId', ''),
-      AppState().authState.user!.publicID,
-      fValue<DateTime?>('deadline', null),
-    );
-  }
-
-  @override
   BaseModel prepareUpdateModel() {
-    // TODO: implement prepareUpdateModel
     throw UnimplementedError();
   }
 }

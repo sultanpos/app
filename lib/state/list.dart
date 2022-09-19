@@ -4,16 +4,14 @@ import 'package:sultanpos/model/base.dart';
 import 'package:sultanpos/model/error.dart';
 import 'package:sultanpos/model/listresult.dart';
 
-class ListState<T extends BaseModel> extends ChangeNotifier {
-  final HttpAPI httpAPI;
-  final String path;
+abstract class ListBaseState<T extends BaseModel> extends ChangeNotifier {
   final T Function(Map<String, dynamic> json) creator;
   int page = 0;
   int rowPerPage;
   ListBase state = ListNone();
   int _cachedTotalPage = 0;
 
-  ListState(this.httpAPI, this.path, this.creator, {this.rowPerPage = 50});
+  ListBaseState(this.creator, {this.rowPerPage = 50});
 
   load({int page = -1, bool refresh = false}) async {
     if (state is ListLoading) return;
@@ -22,17 +20,7 @@ class ListState<T extends BaseModel> extends ChangeNotifier {
     if (page >= 0) this.page = page;
     state = ListLoading();
     notifyListeners();
-    _load();
-  }
-
-  _load() async {
-    try {
-      state = await httpAPI.query(path, fromJsonFunc: creator, limit: rowPerPage, offset: page * rowPerPage);
-    } on ErrorResponse catch (e) {
-      debugPrint(e.toJson().toString());
-      state = ListError(e.message);
-    }
-    notifyListeners();
+    doLoad();
   }
 
   setRowPerPage(int value) {
@@ -44,7 +32,7 @@ class ListState<T extends BaseModel> extends ChangeNotifier {
     if (state is ListResult<T>) {
       final total = (state as ListResult<T>).total ~/ rowPerPage;
       final mod = (state as ListResult<T>).total % rowPerPage;
-      _cachedTotalPage = mod > 0 ? total + 1 : total;
+      _cachedTotalPage = mod > 0 || total == 0 ? total + 1 : total;
     }
     return _cachedTotalPage;
   }
@@ -63,5 +51,34 @@ class ListState<T extends BaseModel> extends ChangeNotifier {
   void nextPage() {
     page++;
     load(refresh: true);
+  }
+
+  void doLoad();
+}
+
+class ListHttpState<T extends BaseModel> extends ListBaseState<T> {
+  final HttpAPI httpAPI;
+  final String path;
+
+  ListHttpState(this.httpAPI, this.path, super.creator, {super.rowPerPage = 50});
+
+  @override
+  doLoad() async {
+    try {
+      state = await httpAPI.query(path, fromJsonFunc: creator, limit: rowPerPage, offset: page * rowPerPage);
+    } on ErrorResponse catch (e) {
+      debugPrint(e.toJson().toString());
+      state = ListError(e.message);
+    }
+    notifyListeners();
+  }
+}
+
+class ListIsarState<T extends BaseModel> extends ListBaseState<T> {
+  ListIsarState(super.creator, {super.rowPerPage = 50});
+
+  @override
+  doLoad() async {
+    notifyListeners();
   }
 }

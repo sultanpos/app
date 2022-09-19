@@ -5,6 +5,7 @@ import 'package:sultanpos/flavor.dart';
 import 'package:sultanpos/http/authinterceptor.dart';
 import 'package:sultanpos/http/httpapi.dart';
 import 'package:sultanpos/http/loginterceptor.dart' as myinterceptor;
+import 'package:sultanpos/localdb/db.dart';
 import 'package:sultanpos/model/auth.dart';
 import 'package:sultanpos/preference.dart';
 import 'package:sultanpos/state/auth.dart';
@@ -47,6 +48,7 @@ class AppState {
     initted = true;
     initializeDateFormatting("id_ID", null);
     await Preference().init();
+    await LocalDb().init();
     final dioInterceptor = Dio(BaseOptions(baseUrl: Flavor.baseUrl!));
     dioInterceptor.interceptors.add(myinterceptor.LogInterceptor());
     final interceptor = AuthInterceptor(dioInterceptor, "/auth/login/refresh", storeAccessToken: _tokenRefreshed);
@@ -62,6 +64,7 @@ class AppState {
     partnerState = PartnerState(httpAPI);
     categoryState = CategoryState(httpAPI);
     purchaseState = PurchaseState(httpAPI);
+    await purchaseState.init();
     await AppState().authState.loadLogin();
   }
 

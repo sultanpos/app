@@ -8,12 +8,12 @@ abstract class CrudState<T extends BaseModel> extends BaseState {
   final String path;
   final T Function(Map<String, dynamic> json) creator;
 
-  ListState<T> listData;
+  ListHttpState<T> listData;
   bool loading = false;
   T? current;
   late FormGroup form;
 
-  CrudState(super.httpAPI, {required this.path, required this.creator}) : listData = ListState<T>(httpAPI, path, creator);
+  CrudState(super.httpAPI, {required this.path, required this.creator}) : listData = ListHttpState<T>(httpAPI, path, creator);
 
   R fValue<R>(String key, R defValue) {
     final val = form.control(key).value;

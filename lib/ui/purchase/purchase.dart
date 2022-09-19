@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sultanpos/state/app.dart';
 import 'package:sultanpos/state/purchase.dart';
+import 'package:sultanpos/ui/purchase/purchaseedit.dart';
 import 'package:sultanpos/ui/purchase/purchaselist.dart';
 import 'package:sultanpos/ui/widget/verticalmenu.dart';
 import 'dart:math';
@@ -34,12 +35,15 @@ class PurchaseWidget extends StatelessWidget {
                 icon: Icons.list_alt,
                 widget: () => const PurchaseListWidget(),
               ),
-              ...state.tabs
+              ...state.items
                   .map(
                     (e) => VerticalMenuItem(
                         title: e.title,
                         id: e.id,
-                        widget: () => const Text("asd"),
+                        widget: () => ChangeNotifierProvider.value(
+                              value: state.getPurchaseEditState(e.id),
+                              child: const PurchaseEditWidget(),
+                            ),
                         vertical: true,
                         closable: true,
                         onCloseClicked: () {

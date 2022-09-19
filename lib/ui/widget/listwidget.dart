@@ -5,17 +5,17 @@ import 'package:sultanpos/model/listresult.dart';
 import 'package:sultanpos/state/list.dart';
 
 class ListWidget<T extends BaseModel> extends StatelessWidget {
-  final ListState<T> listState;
+  final ListHttpState<T> listState;
   final Widget Function(BuildContext context, T value) builder;
   const ListWidget(this.listState, {required this.builder, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<ListState>.value(
+    return ChangeNotifierProvider<ListHttpState>.value(
       value: listState,
       child: Builder(
         builder: (ctx) {
-          final state = ctx.select<ListState, ListBase>((value) => value.state);
+          final state = ctx.select<ListHttpState, ListBase>((value) => value.state);
           if (state is ListLoading) {
             return const Center(
               child: CircularProgressIndicator(),

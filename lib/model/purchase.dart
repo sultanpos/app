@@ -1,11 +1,16 @@
+import 'package:isar/isar.dart';
 import 'package:sultanpos/model/base.dart';
 import 'package:sultanpos/model/branch.dart';
 import 'package:sultanpos/model/partner.dart';
 
 part 'purchase.g.dart';
 
+@Collection()
 @JsonSerializable(explicitToJson: true)
+@Name('Purchase')
 class PurchaseModel extends BaseModel {
+  @JsonKey(ignore: true)
+  Id id = Isar.autoIncrement;
   @JsonKey(name: 'public_id')
   final String publicId;
   final String number;
@@ -21,8 +26,10 @@ class PurchaseModel extends BaseModel {
   @JsonKey(name: 'payment_residual')
   final int paymentResidual;
   final int total;
-  final BranchModel branch;
-  final PartnerModel partner;
+  @Ignore()
+  final BranchModel? branch;
+  @Ignore()
+  final PartnerModel? partner;
 
   PurchaseModel(
     this.publicId,
@@ -34,10 +41,10 @@ class PurchaseModel extends BaseModel {
     this.discount,
     this.paymentPaid,
     this.paymentResidual,
-    this.total,
+    this.total, {
     this.branch,
     this.partner,
-  );
+  });
 
   @override
   String? path() {
