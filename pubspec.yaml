@@ -24,7 +24,6 @@ dependencies:
   dio: ^4.0.6
   flutter:
     sdk: flutter
-  flutter_hooks: ^0.18.5+1
   http_mock_adapter: ^0.3.3
   intl: ^0.17.0
   isar: ^3.0.0-dev.14

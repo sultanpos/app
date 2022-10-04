@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:provider/provider.dart';
 import 'package:sultanpos/model/pricegroup.dart';
 import 'package:sultanpos/state/app.dart';
@@ -11,15 +10,11 @@ import 'package:sultanpos/ui/widget/datatable.dart';
 import 'package:sultanpos/ui/widget/dialogutil.dart';
 import 'package:sultanpos/ui/widget/showerror.dart';
 
-class PriceGroupWidget extends HookWidget {
+class PriceGroupWidget extends StatelessWidget {
   const PriceGroupWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    useEffect(() {
-      AppState().priceGroupState.listData.load();
-      return null;
-    }, []);
     return ChangeNotifierProvider<PriceGroupState>.value(
       value: AppState().priceGroupState,
       child: Builder(
