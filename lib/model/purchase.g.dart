@@ -7,7 +7,7 @@ part of 'purchase.dart';
 // **************************************************************************
 
 // coverage:ignore-file
-// ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, avoid_js_rounded_ints, prefer_final_locals
+// ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters
 
 extension GetPurchaseModelCollection on Isar {
   IsarCollection<PurchaseModel> get purchaseModels => this.collection();
@@ -69,12 +69,9 @@ const PurchaseModelSchema = CollectionSchema(
     )
   },
   estimateSize: _purchaseModelEstimateSize,
-  serializeNative: _purchaseModelSerializeNative,
-  deserializeNative: _purchaseModelDeserializeNative,
-  deserializePropNative: _purchaseModelDeserializePropNative,
-  serializeWeb: _purchaseModelSerializeWeb,
-  deserializeWeb: _purchaseModelDeserializeWeb,
-  deserializePropWeb: _purchaseModelDeserializePropWeb,
+  serialize: _purchaseModelSerialize,
+  deserialize: _purchaseModelDeserialize,
+  deserializeProp: _purchaseModelDeserializeProp,
   idName: r'id',
   indexes: {},
   links: {},
@@ -82,7 +79,7 @@ const PurchaseModelSchema = CollectionSchema(
   getId: _purchaseModelGetId,
   getLinks: _purchaseModelGetLinks,
   attach: _purchaseModelAttach,
-  version: '3.0.0-dev.14',
+  version: '3.0.2',
 );
 
 int _purchaseModelEstimateSize(
@@ -99,9 +96,9 @@ int _purchaseModelEstimateSize(
   return bytesCount;
 }
 
-int _purchaseModelSerializeNative(
+void _purchaseModelSerialize(
   PurchaseModel object,
-  IsarBinaryWriter writer,
+  IsarWriter writer,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
@@ -115,12 +112,11 @@ int _purchaseModelSerializeNative(
   writer.writeLong(offsets[7], object.subTotal);
   writer.writeLong(offsets[8], object.total);
   writer.writeString(offsets[9], object.type);
-  return writer.usedBytes;
 }
 
-PurchaseModel _purchaseModelDeserializeNative(
+PurchaseModel _purchaseModelDeserialize(
   Id id,
-  IsarBinaryReader reader,
+  IsarReader reader,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
@@ -140,8 +136,8 @@ PurchaseModel _purchaseModelDeserializeNative(
   return object;
 }
 
-P _purchaseModelDeserializePropNative<P>(
-  IsarBinaryReader reader,
+P _purchaseModelDeserializeProp<P>(
+  IsarReader reader,
   int propertyId,
   int offset,
   Map<Type, List<int>> allOffsets,
@@ -172,25 +168,6 @@ P _purchaseModelDeserializePropNative<P>(
   }
 }
 
-Object _purchaseModelSerializeWeb(
-    IsarCollection<PurchaseModel> collection, PurchaseModel object) {
-  /*final jsObj = IsarNative.newJsObject();*/ throw UnimplementedError();
-}
-
-PurchaseModel _purchaseModelDeserializeWeb(
-    IsarCollection<PurchaseModel> collection, Object jsObj) {
-  /*final object = PurchaseModel(IsarNative.jsObjectGet(jsObj, r'publicId') ?? '',IsarNative.jsObjectGet(jsObj, r'number') ?? '',IsarNative.jsObjectGet(jsObj, r'type') ?? '',IsarNative.jsObjectGet(jsObj, r'status') ?? '',IsarNative.jsObjectGet(jsObj, r'subTotal') ?? (double.negativeInfinity as int),IsarNative.jsObjectGet(jsObj, r'discountFormula') ?? '',IsarNative.jsObjectGet(jsObj, r'discount') ?? (double.negativeInfinity as int),IsarNative.jsObjectGet(jsObj, r'paymentPaid') ?? (double.negativeInfinity as int),IsarNative.jsObjectGet(jsObj, r'paymentResidual') ?? (double.negativeInfinity as int),IsarNative.jsObjectGet(jsObj, r'total') ?? (double.negativeInfinity as int),);object.id = IsarNative.jsObjectGet(jsObj, r'id') ?? (double.negativeInfinity as int);*/
-  //return object;
-  throw UnimplementedError();
-}
-
-P _purchaseModelDeserializePropWeb<P>(Object jsObj, String propertyName) {
-  switch (propertyName) {
-    default:
-      throw IsarError('Illegal propertyName');
-  }
-}
-
 Id _purchaseModelGetId(PurchaseModel object) {
   return object.id;
 }
@@ -216,7 +193,7 @@ extension PurchaseModelQueryWhereSort
 extension PurchaseModelQueryWhere
     on QueryBuilder<PurchaseModel, PurchaseModel, QWhereClause> {
   QueryBuilder<PurchaseModel, PurchaseModel, QAfterWhereClause> idEqualTo(
-      int id) {
+      Id id) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IdWhereClause.between(
         lower: id,
@@ -226,7 +203,7 @@ extension PurchaseModelQueryWhere
   }
 
   QueryBuilder<PurchaseModel, PurchaseModel, QAfterWhereClause> idNotEqualTo(
-      int id) {
+      Id id) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
@@ -249,7 +226,7 @@ extension PurchaseModelQueryWhere
   }
 
   QueryBuilder<PurchaseModel, PurchaseModel, QAfterWhereClause> idGreaterThan(
-      int id,
+      Id id,
       {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
@@ -259,7 +236,7 @@ extension PurchaseModelQueryWhere
   }
 
   QueryBuilder<PurchaseModel, PurchaseModel, QAfterWhereClause> idLessThan(
-      int id,
+      Id id,
       {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
@@ -269,8 +246,8 @@ extension PurchaseModelQueryWhere
   }
 
   QueryBuilder<PurchaseModel, PurchaseModel, QAfterWhereClause> idBetween(
-    int lowerId,
-    int upperId, {
+    Id lowerId,
+    Id upperId, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
@@ -480,7 +457,7 @@ extension PurchaseModelQueryFilter
   }
 
   QueryBuilder<PurchaseModel, PurchaseModel, QAfterFilterCondition> idEqualTo(
-      int value) {
+      Id value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'id',
@@ -491,7 +468,7 @@ extension PurchaseModelQueryFilter
 
   QueryBuilder<PurchaseModel, PurchaseModel, QAfterFilterCondition>
       idGreaterThan(
-    int value, {
+    Id value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -504,7 +481,7 @@ extension PurchaseModelQueryFilter
   }
 
   QueryBuilder<PurchaseModel, PurchaseModel, QAfterFilterCondition> idLessThan(
-    int value, {
+    Id value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -517,8 +494,8 @@ extension PurchaseModelQueryFilter
   }
 
   QueryBuilder<PurchaseModel, PurchaseModel, QAfterFilterCondition> idBetween(
-    int lower,
-    int upper, {
+    Id lower,
+    Id upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
