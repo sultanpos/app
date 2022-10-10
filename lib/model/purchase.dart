@@ -1,16 +1,13 @@
-import 'package:isar/isar.dart';
 import 'package:sultanpos/model/base.dart';
 import 'package:sultanpos/model/branch.dart';
 import 'package:sultanpos/model/partner.dart';
+import 'package:sultanpos/model/product.dart';
+import 'package:sultanpos/model/stock.dart';
 
 part 'purchase.g.dart';
 
-@Collection()
 @JsonSerializable(explicitToJson: true)
-@Name('Purchase')
 class PurchaseModel extends BaseModel {
-  @JsonKey(ignore: true)
-  Id id = Isar.autoIncrement;
   @JsonKey(name: 'public_id')
   final String publicId;
   final String number;
@@ -26,10 +23,9 @@ class PurchaseModel extends BaseModel {
   @JsonKey(name: 'payment_residual')
   final int paymentResidual;
   final int total;
-  @Ignore()
   final BranchModel? branch;
-  @Ignore()
   final PartnerModel? partner;
+  final List<PurchaseItemModel>? purchaseItems;
 
   PurchaseModel(
     this.publicId,
@@ -41,10 +37,11 @@ class PurchaseModel extends BaseModel {
     this.discount,
     this.paymentPaid,
     this.paymentResidual,
-    this.total, {
+    this.total,
     this.branch,
     this.partner,
-  });
+    this.purchaseItems,
+  );
 
   @override
   String? path() {
@@ -74,6 +71,8 @@ class PurchaseInsertModel extends BaseModel {
   final String userPublicId;
   @JsonKey(includeIfNull: true)
   final DateTime? deadline;
+  @JsonKey(name: 'purchase_items')
+  final List<PurchaseItemModel>? purchaseItems;
 
   PurchaseInsertModel(
     this.number,
@@ -83,6 +82,7 @@ class PurchaseInsertModel extends BaseModel {
     this.partnerPublicId,
     this.userPublicId,
     this.deadline,
+    this.purchaseItems,
   );
 
   @override
@@ -95,4 +95,48 @@ class PurchaseInsertModel extends BaseModel {
 
   @override
   Map<String, dynamic> toJson() => _$PurchaseInsertModelToJson(this);
+}
+
+@JsonSerializable()
+class PurchaseItemModel extends BaseModel {
+  @JsonKey(name: 'public_id')
+  final String publicId;
+  final ProductModel product;
+  final int amount;
+  @JsonKey(name: 'buy_price')
+  final int buyPrice;
+  final int price;
+  final int subtotal;
+  @JsonKey(name: 'discount_formula')
+  final String discountFormula;
+  final int discount;
+  final int total;
+  final String note;
+  @JsonKey(name: 'serial_stock')
+  final SerialStockModel? serialStock;
+
+  PurchaseItemModel(
+    this.publicId,
+    this.product,
+    this.amount,
+    this.buyPrice,
+    this.price,
+    this.subtotal,
+    this.discountFormula,
+    this.discount,
+    this.total,
+    this.note,
+    this.serialStock,
+  );
+
+  @override
+  String? path() {
+    return "/purchaseitem";
+  }
+
+  @override
+  factory PurchaseItemModel.fromJson(Map<String, dynamic> json) => _$PurchaseItemModelFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => _$PurchaseItemModelToJson(this);
 }

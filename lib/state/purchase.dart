@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:sultanpos/localdb/db.dart';
+import 'package:sultanpos/localfiledb/db.dart';
 import 'package:sultanpos/model/base.dart';
 import 'package:sultanpos/model/purchase.dart';
 import 'package:sultanpos/state/app.dart';
@@ -41,14 +41,14 @@ class PurchaseEditState extends ChangeNotifier {
   init(bool newRecord) async {
     if (newRecord) {
       local = true;
-      purchase = PurchaseModel(id, '', 'direct', 'draft', 0, '', 0, 0, 0, 0);
-      await LocalDb().purchase.save(purchase!);
+      purchase = PurchaseModel(id, '', 'direct', 'draft', 0, '', 0, 0, 0, 0, null, null, null);
+      await LocalFileDb().purchase.save(purchase!);
     }
   }
 
   remove() {
     if (local) {
-      LocalDb().purchase.delete(purchase!.id);
+      LocalFileDb().purchase.deleteById(purchase!.getPublicId());
     }
   }
 }
@@ -62,7 +62,7 @@ class PurchaseState extends CrudState<PurchaseModel> {
   List<PurchaseEditState> items = [];
 
   init() async {
-    final pending = await LocalDb().purchase.getAll();
+    final pending = await LocalFileDb().purchase.getAll();
     for (int i = 0; i < pending.length; i++) {
       final purchaseState = PurchaseEditState.fromLocal(pending[i]);
       items.add(purchaseState);
