@@ -13,17 +13,19 @@ class LoginPage extends StatelessWidget {
     return ChangeNotifierProvider.value(
       value: AppState().authState,
       child: Scaffold(
-        body: Column(
-          children: [
-            SizedBox(
-              height: 30,
-              child: Row(children: [
-                Expanded(child: MoveWindow()),
-                const WindowButtons(),
-              ]),
-            ),
-            const LoginWidget(),
-          ],
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(
+                height: 30,
+                child: Row(children: [
+                  Expanded(child: MoveWindow()),
+                  const WindowButtons(),
+                ]),
+              ),
+              const LoginWidget(),
+            ],
+          ),
         ),
       ),
     );

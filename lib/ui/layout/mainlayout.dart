@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:sultanpos/ui/layout/navigator.dart';
 import 'package:sultanpos/ui/layout/drawer.dart';
 import 'package:sultanpos/ui/layout/profile.dart';
+import 'dart:io' show Platform;
 
 final buttonColors = WindowButtonColors(
     iconNormal: const Color(0xFF805306),
@@ -12,7 +13,10 @@ final buttonColors = WindowButtonColors(
     iconMouseDown: const Color(0xFFFFD500));
 
 final closeButtonColors = WindowButtonColors(
-    mouseOver: const Color(0xFFD32F2F), mouseDown: const Color(0xFFB71C1C), iconNormal: const Color(0xFF805306), iconMouseOver: Colors.white);
+    mouseOver: const Color(0xFFD32F2F),
+    mouseDown: const Color(0xFFB71C1C),
+    iconNormal: const Color(0xFF805306),
+    iconMouseOver: Colors.white);
 
 class WindowButtons extends StatefulWidget {
   const WindowButtons({Key? key}) : super(key: key);
@@ -30,21 +34,23 @@ class _WindowButtonsState extends State<WindowButtons> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        MinimizeWindowButton(colors: buttonColors),
-        appWindow.isMaximized
-            ? RestoreWindowButton(
-                colors: buttonColors,
-                onPressed: maximizeOrRestore,
-              )
-            : MaximizeWindowButton(
-                colors: buttonColors,
-                onPressed: maximizeOrRestore,
-              ),
-        CloseWindowButton(colors: closeButtonColors),
-      ],
-    );
+    return Platform.isWindows
+        ? Row(
+            children: [
+              MinimizeWindowButton(colors: buttonColors),
+              appWindow.isMaximized
+                  ? RestoreWindowButton(
+                      colors: buttonColors,
+                      onPressed: maximizeOrRestore,
+                    )
+                  : MaximizeWindowButton(
+                      colors: buttonColors,
+                      onPressed: maximizeOrRestore,
+                    ),
+              CloseWindowButton(colors: closeButtonColors),
+            ],
+          )
+        : const SizedBox.shrink();
   }
 }
 
@@ -60,7 +66,8 @@ class MainLayoutWidget extends StatelessWidget {
       child: Column(children: [
         Container(
           height: 50,
-          color: Colors.black, // lighterOrDarkerColor(Theme.of(context), Theme.of(context).scaffoldBackgroundColor, amount: 0.1),
+          color: Colors
+              .black, // lighterOrDarkerColor(Theme.of(context), Theme.of(context).scaffoldBackgroundColor, amount: 0.1),
           child: SizedBox(
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -79,8 +86,11 @@ class MainLayoutWidget extends StatelessWidget {
                 Align(
                   alignment: Alignment.center,
                   child: Container(
-                    decoration: const BoxDecoration(color: Colors.red, borderRadius: BorderRadius.all(Radius.circular(8))),
-                    padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 8),
+                    decoration: const BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.all(Radius.circular(8))),
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 2, horizontal: 8),
                     child: const Text(
                       'OFFLINE',
                       style: TextStyle(fontSize: 10),
