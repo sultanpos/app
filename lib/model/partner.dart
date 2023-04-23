@@ -6,8 +6,7 @@ part 'partner.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class PartnerModel extends BaseModel {
-  @JsonKey(name: 'public_id')
-  final String publicId;
+  final int id;
   @JsonKey(name: 'is_supplier')
   final bool isSupplier;
   @JsonKey(name: 'is_customer')
@@ -23,8 +22,8 @@ class PartnerModel extends BaseModel {
   @JsonKey(name: 'price_group')
   final PriceGroupModel? priceGroup;
 
-  PartnerModel(this.publicId, this.isSupplier, this.isCustomer, this.number, this.name, this.address, this.phone, this.npwp, this.email, this.debt,
-      this.credit, this.priceGroup);
+  PartnerModel(this.id, this.isSupplier, this.isCustomer, this.number, this.name, this.address, this.phone, this.npwp,
+      this.email, this.debt, this.credit, this.priceGroup);
 
   @override
   String? path() {
@@ -38,7 +37,7 @@ class PartnerModel extends BaseModel {
   Map<String, dynamic> toJson() => _$PartnerModelToJson(this);
 
   @override
-  String getPublicId() => publicId;
+  int getId() => id;
 }
 
 @JsonSerializable()
@@ -52,10 +51,11 @@ class PartnerInsertModel extends BaseModel {
   final String phone;
   final String npwp;
   final String email;
-  @JsonKey(name: 'price_group_public_id')
-  final String priceGroupPublicId;
+  @JsonKey(name: 'price_group_id')
+  final int priceGroupId;
 
-  PartnerInsertModel(this.isSupplier, this.isCustomer, this.name, this.address, this.phone, this.npwp, this.email, this.priceGroupPublicId);
+  PartnerInsertModel(
+      this.isSupplier, this.isCustomer, this.name, this.address, this.phone, this.npwp, this.email, this.priceGroupId);
 
   @override
   String? path() {
@@ -83,10 +83,11 @@ class PartnerUpdateModel extends BaseModel {
   final String phone;
   final String npwp;
   final String email;
-  @JsonKey(name: 'price_group_public_id')
-  final String priceGroupPublicId;
+  @JsonKey(name: 'price_group_id')
+  final int priceGroupId;
 
-  PartnerUpdateModel(this.isSupplier, this.isCustomer, this.name, this.address, this.phone, this.npwp, this.email, this.priceGroupPublicId);
+  PartnerUpdateModel(
+      this.isSupplier, this.isCustomer, this.name, this.address, this.phone, this.npwp, this.email, this.priceGroupId);
 
   @override
   String? path() {

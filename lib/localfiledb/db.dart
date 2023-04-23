@@ -46,11 +46,11 @@ class LocalFileDbSimpleOperation<T extends BaseModel?> {
   }
 
   Future<void> save(T model) {
-    allDatas[model!.getPublicId()] = model;
+    allDatas['${model!.getId()}'] = model;
     return _storeToFile();
   }
 
-  Future<void> deleteById(String id) async {
+  Future<void> deleteById(int id) async {
     if (allDatas.containsKey(id)) {
       allDatas.remove(id);
       await _storeToFile();

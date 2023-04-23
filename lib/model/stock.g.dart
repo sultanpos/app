@@ -7,7 +7,7 @@ part of 'stock.dart';
 // **************************************************************************
 
 StockModel _$StockModelFromJson(Map<String, dynamic> json) => StockModel(
-      json['public_id'] as String,
+      json['id'] as int,
       json['stock'] as int,
       BranchModel.fromJson(json['branch'] as Map<String, dynamic>),
       json['product'] == null
@@ -17,7 +17,7 @@ StockModel _$StockModelFromJson(Map<String, dynamic> json) => StockModel(
 
 Map<String, dynamic> _$StockModelToJson(StockModel instance) =>
     <String, dynamic>{
-      'public_id': instance.publicId,
+      'id': instance.id,
       'stock': instance.stock,
       'branch': instance.branch,
       'product': instance.product,
@@ -25,7 +25,7 @@ Map<String, dynamic> _$StockModelToJson(StockModel instance) =>
 
 SerialStockModel _$SerialStockModelFromJson(Map<String, dynamic> json) =>
     SerialStockModel(
-      json['public_id'] as String,
+      json['id'] as int,
       BranchModel.fromJson(json['branch'] as Map<String, dynamic>),
       json['product'] == null
           ? null
@@ -38,7 +38,7 @@ SerialStockModel _$SerialStockModelFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$SerialStockModelToJson(SerialStockModel instance) =>
     <String, dynamic>{
-      'public_id': instance.publicId,
+      'id': instance.id,
       'branch': instance.branch,
       'product': instance.product,
       'serial_number': instance.serialNumber,

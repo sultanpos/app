@@ -119,13 +119,13 @@ class AddPartnerWidget extends StatelessWidget {
                           SizedBox(
                             height: STheme().widgetSpace,
                           ),
-                          DropdownRepo<PriceGroupModel, String>(
+                          DropdownRepo<PriceGroupModel, int>(
                             creator: PriceGroupModel.fromJson,
                             path: "/pricegroup",
-                            formControlName: 'priceGroupPublicId',
+                            formControlName: 'priceGroupId',
                             autoFocus: true,
                             textFn: (value) => value.name,
-                            valueFn: (value) => value.publicId,
+                            valueFn: (value) => value.id,
                             decoration: const InputDecoration(
                               hintText: "Pilih group harga",
                               labelText: "Group Harga",

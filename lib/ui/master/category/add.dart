@@ -29,13 +29,13 @@ class CategoryAddWidget extends StatelessWidget {
               formGroup: AppState().categoryState.form,
               child: Column(
                 children: [
-                  DropdownRepo<CategoryModel, String>(
+                  DropdownRepo<CategoryModel, int>(
                     creator: CategoryModel.fromJson,
                     path: "/category",
-                    formControlName: 'parent_public_id',
+                    formControlName: 'parent_id',
                     autoFocus: true,
                     textFn: (value) => value.name,
-                    valueFn: (value) => value.publicId,
+                    valueFn: (value) => value.id,
                     decoration: const InputDecoration(
                       hintText: "Pilih parent",
                       labelText: "Parent Kategori",

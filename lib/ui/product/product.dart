@@ -84,10 +84,11 @@ class ProductRootWidget extends StatelessWidget {
                           );
                         }),
                         SColumActionItem('hapus', Icons.delete_forever, () async {
-                          final result = await showConfirmation(ctx, title: 'Yakin hapus', message: 'Yakin untuk menghapus "${v.name}"');
+                          final result = await showConfirmation(ctx,
+                              title: 'Yakin hapus', message: 'Yakin untuk menghapus "${v.name}"');
                           if (result) {
                             try {
-                              await AppState().productState.remove(v.publicId);
+                              await AppState().productState.remove(v.id);
                             } catch (e) {
                               // ignore: use_build_context_synchronously
                               showError(ctx, title: 'Error menghapus', message: e.toString());

@@ -48,7 +48,8 @@ class AddProductWidget extends StatelessWidget {
                                       formControlName: 'barcode',
                                       autofocus: true,
                                       inputFormatters: [UpperCaseTextFormatter()],
-                                      decoration: const InputDecoration(labelText: "Barcode", hintText: "Masukkan barcode"),
+                                      decoration:
+                                          const InputDecoration(labelText: "Barcode", hintText: "Masukkan barcode"),
                                       textInputAction: TextInputAction.next,
                                     ),
                                     const SizedBox(height: 8),
@@ -65,18 +66,20 @@ class AddProductWidget extends StatelessWidget {
                                     ),
                                     const SizedBox(height: 8),
                                     DropdownRepoUnit(
-                                      formControlName: 'unitPublicId',
+                                      formControlName: 'unitId',
                                       decoration: const InputDecoration(labelText: "Unit", hintText: "Pilih unit"),
                                     ),
                                     const SizedBox(height: 8),
                                     DropdownRepoCategory(
-                                      formControlName: 'categoryPublicId',
-                                      decoration: const InputDecoration(labelText: "Kategori", hintText: "Pilih kategori"),
+                                      formControlName: 'categoryId',
+                                      decoration:
+                                          const InputDecoration(labelText: "Kategori", hintText: "Pilih kategori"),
                                     ),
                                     const SizedBox(height: 8),
                                     DropdownRepoPartnerSupplier(
-                                      formControlName: 'partnerPublicId',
-                                      decoration: const InputDecoration(labelText: "Supplier", hintText: "Pilih supplier utama"),
+                                      formControlName: 'partnerId',
+                                      decoration: const InputDecoration(
+                                          labelText: "Supplier", hintText: "Pilih supplier utama"),
                                     ),
                                     const SizedBox(height: 8),
                                     Row(
@@ -141,7 +144,8 @@ class AddProductWidget extends StatelessWidget {
                                           keyboardType: TextInputType.number,
                                           inputFormatters: [StockTextFormatter()],
                                           formControlName: 'stock',
-                                          decoration: const InputDecoration(labelText: "Stock Awal", hintText: "Masukkan stock"),
+                                          decoration: const InputDecoration(
+                                              labelText: "Stock Awal", hintText: "Masukkan stock"),
                                           textInputAction: TextInputAction.next,
                                           textAlign: TextAlign.right,
                                         ),
@@ -152,7 +156,8 @@ class AddProductWidget extends StatelessWidget {
                                           keyboardType: TextInputType.number,
                                           inputFormatters: [MoneyTextFormatter()],
                                           formControlName: 'buyPrice',
-                                          decoration: const InputDecoration(labelText: "Harga Beli", hintText: "Masukkan harga beli"),
+                                          decoration: const InputDecoration(
+                                              labelText: "Harga Beli", hintText: "Masukkan harga beli"),
                                           textInputAction: TextInputAction.next,
                                           textAlign: TextAlign.right,
                                         ),
@@ -177,7 +182,8 @@ class AddProductWidget extends StatelessWidget {
                                             keyboardType: TextInputType.number,
                                             inputFormatters: [MoneyTextFormatter()],
                                             formControlName: 'count$i',
-                                            decoration: const InputDecoration(labelText: "Min Pembelian", hintText: "Masukkan min pembelian"),
+                                            decoration: const InputDecoration(
+                                                labelText: "Min Pembelian", hintText: "Masukkan min pembelian"),
                                             textInputAction: TextInputAction.next,
                                             textAlign: TextAlign.right,
                                           ),
@@ -194,7 +200,8 @@ class AddProductWidget extends StatelessWidget {
                                             keyboardType: TextInputType.number,
                                             inputFormatters: [MoneyTextFormatter()],
                                             formControlName: 'sell$i',
-                                            decoration: const InputDecoration(labelText: "Harga Jual", hintText: "Masukkan harga"),
+                                            decoration: const InputDecoration(
+                                                labelText: "Harga Jual", hintText: "Masukkan harga"),
                                             textInputAction: TextInputAction.next,
                                             textAlign: TextAlign.right,
                                           ),
@@ -203,7 +210,8 @@ class AddProductWidget extends StatelessWidget {
                                         Expanded(
                                           child: ReactiveTextField(
                                             formControlName: 'disc$i',
-                                            decoration: const InputDecoration(labelText: "Discount Formula", hintText: "Masukkan discount formula"),
+                                            decoration: const InputDecoration(
+                                                labelText: "Discount Formula", hintText: "Masukkan discount formula"),
                                             textInputAction: TextInputAction.next,
                                             textAlign: TextAlign.right,
                                           ),
@@ -216,9 +224,13 @@ class AddProductWidget extends StatelessWidget {
                                     Row(
                                       children: [
                                         const Expanded(child: SizedBox()),
-                                        SChip(color: Colors.brown, label: 'dis: ${Format().formatMoney(discMargin[i].discount)}'),
+                                        SChip(
+                                            color: Colors.brown,
+                                            label: 'dis: ${Format().formatMoney(discMargin[i].discount)}'),
                                         const SizedBox(width: 4),
-                                        SChip(color: Colors.blue, label: 'akhir: ${Format().formatMoney(discMargin[i].finalPrice)}'),
+                                        SChip(
+                                            color: Colors.blue,
+                                            label: 'akhir: ${Format().formatMoney(discMargin[i].finalPrice)}'),
                                         const SizedBox(width: 4),
                                         SChip(
                                             color: discMargin[i].margin > 0 ? Colors.green : Colors.red,

@@ -10,10 +10,9 @@ part 'product.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class ProductModel extends BaseModel {
-  @JsonKey(name: 'parent_public_id')
-  final String parentPublicId;
-  @JsonKey(name: 'public_id')
-  final String publicId;
+  final int id;
+  @JsonKey(name: 'parent_id')
+  final int parentId;
   final String barcode;
   final String name;
   final String description;
@@ -40,8 +39,8 @@ class ProductModel extends BaseModel {
   final List<StockModel>? stocks;
 
   ProductModel(
-    this.parentPublicId,
-    this.publicId,
+    this.id,
+    this.parentId,
     this.barcode,
     this.name,
     this.description,
@@ -71,7 +70,7 @@ class ProductModel extends BaseModel {
   Map<String, dynamic> toJson() => _$ProductModelToJson(this);
 
   @override
-  String getPublicId() => publicId;
+  int getId() => id;
 }
 
 @JsonSerializable(explicitToJson: true)
@@ -87,12 +86,12 @@ class ProductInsertModel extends BaseModel {
   final bool calculateStock;
   @JsonKey(name: 'product_type')
   final String productType;
-  @JsonKey(name: 'unit_public_id')
-  final String unitPublicId;
-  @JsonKey(name: 'category_public_id')
-  final String categoryPublicId;
-  @JsonKey(name: 'partner_public_id')
-  final String partnerPublicId;
+  @JsonKey(name: 'unit_id')
+  final int unitId;
+  @JsonKey(name: 'category_id')
+  final int categoryId;
+  @JsonKey(name: 'partner_id')
+  final int partnerId;
   final List<String> branches;
   @JsonKey(name: 'buy_price')
   final int buyPrice;
@@ -117,9 +116,9 @@ class ProductInsertModel extends BaseModel {
       this.buyable,
       this.editablePrice,
       this.useSn,
-      this.unitPublicId,
-      this.partnerPublicId,
-      this.categoryPublicId,
+      this.unitId,
+      this.partnerId,
+      this.categoryId,
       this.branches,
       this.buyPrice,
       this.stocks,
@@ -137,11 +136,11 @@ class ProductInsertModel extends BaseModel {
 
 @JsonSerializable()
 class ProductStockInsertModel extends BaseModel {
-  @JsonKey(name: 'branch_public_id')
-  final String branchPublicID;
+  @JsonKey(name: 'branch_id')
+  final int branchID;
   final int stock;
 
-  ProductStockInsertModel(this.branchPublicID, this.stock);
+  ProductStockInsertModel(this.branchID, this.stock);
 
   @override
   factory ProductStockInsertModel.fromJson(Map<String, dynamic> json) => _$ProductStockInsertModelFromJson(json);
@@ -220,12 +219,12 @@ class ProductUpdateModel extends BaseModel {
   final bool calculateStock;
   @JsonKey(name: 'product_type')
   final String productType;
-  @JsonKey(name: 'unit_public_id')
-  final String unitPublicId;
-  @JsonKey(name: 'category_public_id')
-  final String categoryPublicId;
-  @JsonKey(name: 'partner_public_id')
-  final String partnerPublicId;
+  @JsonKey(name: 'unit_id')
+  final int unitId;
+  @JsonKey(name: 'category_id')
+  final int categoryId;
+  @JsonKey(name: 'partner_id')
+  final int partnerId;
   final bool sellable;
   final bool buyable;
   @JsonKey(name: 'editable_price')
@@ -242,9 +241,9 @@ class ProductUpdateModel extends BaseModel {
     this.mainImage,
     this.calculateStock,
     this.productType,
-    this.unitPublicId,
-    this.partnerPublicId,
-    this.categoryPublicId,
+    this.unitId,
+    this.partnerId,
+    this.categoryId,
     this.sellable,
     this.buyable,
     this.editablePrice,

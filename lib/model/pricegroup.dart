@@ -4,8 +4,7 @@ part 'pricegroup.g.dart';
 
 @JsonSerializable()
 class PriceGroupModel extends BaseModel {
-  @JsonKey(name: 'public_id')
-  final String publicId;
+  final int id;
   final String name;
   final String description;
   @JsonKey(name: 'public_description')
@@ -13,7 +12,7 @@ class PriceGroupModel extends BaseModel {
   @JsonKey(name: 'is_default')
   final bool isDefault;
 
-  PriceGroupModel(this.publicId, this.name, this.description, this.publicDescription, this.isDefault);
+  PriceGroupModel(this.id, this.name, this.description, this.publicDescription, this.isDefault);
 
   @override
   String? path() {
@@ -27,7 +26,7 @@ class PriceGroupModel extends BaseModel {
   Map<String, dynamic> toJson() => _$PriceGroupModelToJson(this);
 
   @override
-  String getPublicId() => publicId;
+  int getId() => id;
 }
 
 @JsonSerializable()
@@ -69,7 +68,8 @@ class PriceGroupUpdateRequestModel extends BaseModel {
   }
 
   @override
-  factory PriceGroupUpdateRequestModel.fromJson(Map<String, dynamic> json) => _$PriceGroupUpdateRequestModelFromJson(json);
+  factory PriceGroupUpdateRequestModel.fromJson(Map<String, dynamic> json) =>
+      _$PriceGroupUpdateRequestModelFromJson(json);
 
   @override
   Map<String, dynamic> toJson() => _$PriceGroupUpdateRequestModelToJson(this);

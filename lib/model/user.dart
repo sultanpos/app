@@ -4,8 +4,7 @@ part 'user.g.dart';
 
 @JsonSerializable()
 class UserModel extends BaseModel {
-  @JsonKey(name: 'public_id')
-  final String publicID;
+  final int id;
   final String username;
   final String name;
   final String email;
@@ -13,7 +12,7 @@ class UserModel extends BaseModel {
   final String address;
   final String phone;
   final String photo;
-  UserModel(this.publicID, this.username, this.name, this.email, this.pin, this.address, this.phone, this.photo);
+  UserModel(this.id, this.username, this.name, this.email, this.pin, this.address, this.phone, this.photo);
 
   @override
   factory UserModel.fromJson(Map<String, dynamic> json) => _$UserModelFromJson(json);
@@ -25,5 +24,5 @@ class UserModel extends BaseModel {
   Map<String, dynamic> toJson() => _$UserModelToJson(this);
 
   @override
-  String getPublicId() => publicID;
+  int getId() => id;
 }

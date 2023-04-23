@@ -118,7 +118,7 @@ class PurchaseEditWidget extends StatelessWidget {
                           height: STheme().widgetSpace,
                         ),
                         DropdownRepoPartnerSupplier(
-                          formControlName: 'partnerPublicId',
+                          formControlName: 'partnerId',
                           decoration: const InputDecoration(labelText: "Supplier", hintText: "Pilih supplier"),
                         ),
                       ],

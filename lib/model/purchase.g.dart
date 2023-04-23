@@ -8,7 +8,7 @@ part of 'purchase.dart';
 
 PurchaseModel _$PurchaseModelFromJson(Map<String, dynamic> json) =>
     PurchaseModel(
-      json['public_id'] as String,
+      json['id'] as int,
       json['number'] as String,
       json['type'] as String,
       json['status'] as String,
@@ -31,7 +31,7 @@ PurchaseModel _$PurchaseModelFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$PurchaseModelToJson(PurchaseModel instance) =>
     <String, dynamic>{
-      'public_id': instance.publicId,
+      'id': instance.id,
       'number': instance.number,
       'type': instance.type,
       'status': instance.status,
@@ -51,9 +51,9 @@ PurchaseInsertModel _$PurchaseInsertModelFromJson(Map<String, dynamic> json) =>
       json['number'] as String,
       json['type'] as String,
       json['status'] as String,
-      json['branch_public_id'] as String,
-      json['partner_public_id'] as String,
-      json['user_public_id'] as String,
+      json['branch_id'] as int,
+      json['partner_id'] as int,
+      json['user_id'] as int,
       json['deadline'] == null
           ? null
           : DateTime.parse(json['deadline'] as String),
@@ -68,9 +68,9 @@ Map<String, dynamic> _$PurchaseInsertModelToJson(
       'number': instance.number,
       'type': instance.type,
       'status': instance.status,
-      'branch_public_id': instance.branchPublicId,
-      'partner_public_id': instance.partnerPublicId,
-      'user_public_id': instance.userPublicId,
+      'branch_id': instance.branchId,
+      'partner_id': instance.partnerId,
+      'user_id': instance.userId,
       'deadline': instance.deadline?.toIso8601String(),
       'purchase_items': instance.purchaseItems,
     };

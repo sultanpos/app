@@ -62,10 +62,11 @@ class PurchaseListWidget extends StatelessWidget {
                     [
                       SColumActionItem('edit', Icons.edit, () {}),
                       SColumActionItem('hapus', Icons.delete_forever, () async {
-                        final result = await showConfirmation(context, title: 'Yakin hapus', message: 'Yakin untuk menghapus "${v.number}"');
+                        final result = await showConfirmation(context,
+                            title: 'Yakin hapus', message: 'Yakin untuk menghapus "${v.number}"');
                         if (result) {
                           try {
-                            await AppState().purchaseState.remove(v.publicId);
+                            await AppState().purchaseState.remove(v.id);
                           } catch (e) {
                             // ignore: use_build_context_synchronously
                             showError(context, title: 'Error menghapus', message: e.toString());

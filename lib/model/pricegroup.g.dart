@@ -8,7 +8,7 @@ part of 'pricegroup.dart';
 
 PriceGroupModel _$PriceGroupModelFromJson(Map<String, dynamic> json) =>
     PriceGroupModel(
-      json['public_id'] as String,
+      json['id'] as int,
       json['name'] as String,
       json['description'] as String,
       json['public_description'] as String,
@@ -17,7 +17,7 @@ PriceGroupModel _$PriceGroupModelFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$PriceGroupModelToJson(PriceGroupModel instance) =>
     <String, dynamic>{
-      'public_id': instance.publicId,
+      'id': instance.id,
       'name': instance.name,
       'description': instance.description,
       'public_description': instance.publicDescription,

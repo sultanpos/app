@@ -3,8 +3,6 @@ import 'package:reactive_forms/reactive_forms.dart';
 import 'package:sultanpos/localfiledb/db.dart';
 import 'package:sultanpos/model/base.dart';
 import 'package:sultanpos/model/purchase.dart';
-import 'package:sultanpos/state/app.dart';
-
 import 'package:sultanpos/state/crud.dart';
 
 class PurchaseTabItem {
@@ -25,14 +23,14 @@ class PurchaseEditState extends ChangeNotifier {
     form = FormGroup({
       'number': FormControl<String>(validators: [Validators.required], touched: true),
       //'branchPublicId': FormControl<String>(validators: [Validators.required], touched: true),
-      'partnerPublicId': FormControl<String>(validators: [Validators.required], touched: true),
+      'partnerId': FormControl<int>(validators: [Validators.required], touched: true),
       'type': FormControl<String>(value: 'direct', validators: [Validators.required], touched: true),
       'deadline': FormControl<DateTime>()
     });
   }
 
   factory PurchaseEditState.fromLocal(PurchaseModel data) {
-    final state = PurchaseEditState(data.publicId, purchase: data, title: 'Baru');
+    final state = PurchaseEditState('${data.id}', purchase: data, title: 'Baru');
     state.loading = false;
     state.local = true;
     return state;
@@ -41,14 +39,14 @@ class PurchaseEditState extends ChangeNotifier {
   init(bool newRecord) async {
     if (newRecord) {
       local = true;
-      purchase = PurchaseModel(id, '', 'direct', 'draft', 0, '', 0, 0, 0, 0, null, null, null);
+      purchase = PurchaseModel(int.parse(id), '', 'direct', 'draft', 0, '', 0, 0, 0, 0, null, null, null);
       await LocalFileDb().purchase.save(purchase!);
     }
   }
 
   remove() {
     if (local) {
-      LocalFileDb().purchase.deleteById(purchase!.getPublicId());
+      LocalFileDb().purchase.deleteById(purchase!.getId());
     }
   }
 }

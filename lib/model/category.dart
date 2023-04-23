@@ -5,16 +5,15 @@ part 'category.g.dart';
 
 @JsonSerializable()
 class CategoryModel extends BaseModel {
-  @JsonKey(name: 'public_id')
-  final String publicId;
+  final int id;
   final String name;
   final String code;
   final String description;
-  @JsonKey(name: 'parent_public_id')
-  final String parentPublicId;
+  @JsonKey(name: 'parent_id')
+  final int? parentId;
   @JsonKey(name: 'is_default')
   final bool isDefault;
-  CategoryModel(this.publicId, this.name, this.code, this.description, this.parentPublicId, this.isDefault);
+  CategoryModel(this.id, this.name, this.code, this.description, this.parentId, this.isDefault);
 
   @override
   String? path() {
@@ -28,7 +27,7 @@ class CategoryModel extends BaseModel {
   Map<String, dynamic> toJson() => _$CategoryModelToJson(this);
 
   @override
-  String getPublicId() => publicId;
+  int getId() => id;
 }
 
 @JsonSerializable()

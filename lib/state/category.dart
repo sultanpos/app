@@ -9,7 +9,7 @@ class CategoryState extends CrudState<CategoryModel> {
       'name': FormControl<String>(validators: [Validators.required], touched: true),
       'code': FormControl<String>(),
       'description': FormControl<String>(),
-      'parent_public_id': FormControl<String>(),
+      'parent_id': FormControl<int>(),
     });
   }
 
@@ -18,20 +18,20 @@ class CategoryState extends CrudState<CategoryModel> {
     form.control('name').updateValue(value.name, emitEvent: false);
     form.control('description').updateValue(value.description, emitEvent: false);
     form.control('code').updateValue(value.code, emitEvent: false);
-    form.control('parent_public_id').updateValue(value.parentPublicId, emitEvent: false);
+    form.control('parent_id').updateValue(value.parentId, emitEvent: false);
   }
 
   @override
   BaseModel prepareInsertModel() {
     final values = form.value;
-    return CategoryInsertModel(
-        values['name'] as String, values['code'] as String, values['description'] as String, values['parent_public_id'] as String);
+    return CategoryInsertModel(values['name'] as String, values['code'] as String, values['description'] as String,
+        values['parent_id'] as String);
   }
 
   @override
   BaseModel prepareUpdateModel() {
     final values = form.value;
-    return CategoryUpdateModel(
-        values['name'] as String, values['code'] as String, values['description'] as String, values['parent_public_id'] as String);
+    return CategoryUpdateModel(values['name'] as String, values['code'] as String, values['description'] as String,
+        values['parent_id'] as String);
   }
 }

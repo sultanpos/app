@@ -15,7 +15,7 @@ class PartnerState extends CrudState<PartnerModel> {
       'phone': FormControl<String>(validators: [PhoneValidator().validate]),
       'email': FormControl<String>(validators: [Validators.email]),
       'npwp': FormControl<String>(),
-      'priceGroupPublicId': FormControl<String>(),
+      'priceGroupId': FormControl<int>(),
     });
   }
 
@@ -28,13 +28,13 @@ class PartnerState extends CrudState<PartnerModel> {
     form.control('phone').updateValue(value.phone, emitEvent: false);
     form.control('email').updateValue(value.email, emitEvent: false);
     form.control('npwp').updateValue(value.npwp, emitEvent: false);
-    form.control('priceGroupPublicId').updateValue(value.priceGroup?.publicId, emitEvent: false);
+    form.control('priceGroupId').updateValue(value.priceGroup?.id, emitEvent: false);
   }
 
   @override
   resetForm() {
     super.resetForm();
-    form.control('priceGroupPublicId').updateValue(AppState().shareState.defaultPriceGroup?.publicId ?? "", emitEvent: false);
+    form.control('priceGroupId').updateValue("${AppState().shareState.defaultPriceGroup?.id ?? ''}", emitEvent: false);
   }
 
   @override
@@ -47,7 +47,7 @@ class PartnerState extends CrudState<PartnerModel> {
       fValue<String>('phone', ''),
       fValue<String>('npwp', ''),
       fValue<String>('email', ''),
-      fValue<String>('priceGroupPublicId', ''),
+      fValue<String>('priceGroupId', ''),
     );
   }
 
@@ -61,7 +61,7 @@ class PartnerState extends CrudState<PartnerModel> {
       fValue<String>('phone', ''),
       fValue<String>('npwp', ''),
       fValue<String>('email', ''),
-      fValue<String>('priceGroupPublicId', ''),
+      fValue<int>('priceId', 0),
     );
   }
 }

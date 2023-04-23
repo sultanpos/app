@@ -8,21 +8,21 @@ part of 'category.dart';
 
 CategoryModel _$CategoryModelFromJson(Map<String, dynamic> json) =>
     CategoryModel(
-      json['public_id'] as String,
+      json['id'] as int,
       json['name'] as String,
       json['code'] as String,
       json['description'] as String,
-      json['parent_public_id'] as String,
+      json['parent_id'] as int?,
       json['is_default'] as bool,
     );
 
 Map<String, dynamic> _$CategoryModelToJson(CategoryModel instance) =>
     <String, dynamic>{
-      'public_id': instance.publicId,
+      'id': instance.id,
       'name': instance.name,
       'code': instance.code,
       'description': instance.description,
-      'parent_public_id': instance.parentPublicId,
+      'parent_id': instance.parentId,
       'is_default': instance.isDefault,
     };
 

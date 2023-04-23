@@ -7,7 +7,7 @@ part of 'partner.dart';
 // **************************************************************************
 
 PartnerModel _$PartnerModelFromJson(Map<String, dynamic> json) => PartnerModel(
-      json['public_id'] as String,
+      json['id'] as int,
       json['is_supplier'] as bool,
       json['is_customer'] as bool,
       json['number'] as String,
@@ -26,7 +26,7 @@ PartnerModel _$PartnerModelFromJson(Map<String, dynamic> json) => PartnerModel(
 
 Map<String, dynamic> _$PartnerModelToJson(PartnerModel instance) =>
     <String, dynamic>{
-      'public_id': instance.publicId,
+      'id': instance.id,
       'is_supplier': instance.isSupplier,
       'is_customer': instance.isCustomer,
       'number': instance.number,
@@ -49,7 +49,7 @@ PartnerInsertModel _$PartnerInsertModelFromJson(Map<String, dynamic> json) =>
       json['phone'] as String,
       json['npwp'] as String,
       json['email'] as String,
-      json['price_group_public_id'] as String,
+      json['price_group_id'] as int,
     );
 
 Map<String, dynamic> _$PartnerInsertModelToJson(PartnerInsertModel instance) =>
@@ -61,7 +61,7 @@ Map<String, dynamic> _$PartnerInsertModelToJson(PartnerInsertModel instance) =>
       'phone': instance.phone,
       'npwp': instance.npwp,
       'email': instance.email,
-      'price_group_public_id': instance.priceGroupPublicId,
+      'price_group_id': instance.priceGroupId,
     };
 
 PartnerUpdateModel _$PartnerUpdateModelFromJson(Map<String, dynamic> json) =>
@@ -73,7 +73,7 @@ PartnerUpdateModel _$PartnerUpdateModelFromJson(Map<String, dynamic> json) =>
       json['phone'] as String,
       json['npwp'] as String,
       json['email'] as String,
-      json['price_group_public_id'] as String,
+      json['price_group_id'] as int,
     );
 
 Map<String, dynamic> _$PartnerUpdateModelToJson(PartnerUpdateModel instance) =>
@@ -85,5 +85,5 @@ Map<String, dynamic> _$PartnerUpdateModelToJson(PartnerUpdateModel instance) =>
       'phone': instance.phone,
       'npwp': instance.npwp,
       'email': instance.email,
-      'price_group_public_id': instance.priceGroupPublicId,
+      'price_group_id': instance.priceGroupId,
     };

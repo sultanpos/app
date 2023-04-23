@@ -7,19 +7,16 @@ class JWTClaim extends BaseModel {
   @JsonKey(name: 'UserID')
   final int userId;
 
-  @JsonKey(name: 'UserPublicID')
-  final String userPublicId;
-
   @JsonKey(name: 'CompanyID')
-  final String companyId;
+  final int companyId;
 
   @JsonKey(name: 'BranchIDs')
-  final List<String> branchIds;
+  final List<int> branchIds;
 
   @JsonKey(name: 'Permission')
   final Map<int, int> permission;
 
-  JWTClaim(this.userId, this.userPublicId, this.companyId, this.branchIds, this.permission);
+  JWTClaim(this.userId, this.companyId, this.branchIds, this.permission);
 
   @override
   factory JWTClaim.fromJson(Map<String, dynamic> json) => _$JWTClaimFromJson(json);

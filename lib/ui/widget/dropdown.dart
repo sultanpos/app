@@ -62,42 +62,42 @@ class _DropdownRepoState<T extends BaseModel, R> extends State<DropdownRepo<T, R
   }
 }
 
-class DropdownRepoCategory extends DropdownRepo<CategoryModel, String> {
+class DropdownRepoCategory extends DropdownRepo<CategoryModel, int> {
   DropdownRepoCategory({super.key, required super.formControlName, super.decoration})
       : super(
           path: '/category',
           creator: CategoryModel.fromJson,
-          valueFn: (data) => data.publicId,
+          valueFn: (data) => data.id,
           textFn: (data) => data.name,
         );
 }
 
-class DropdownRepoUnit extends DropdownRepo<UnitModel, String> {
+class DropdownRepoUnit extends DropdownRepo<UnitModel, int> {
   DropdownRepoUnit({super.key, required super.formControlName, super.decoration})
       : super(
           path: '/unit',
           creator: UnitModel.fromJson,
-          valueFn: (data) => data.publicId,
+          valueFn: (data) => data.id,
           textFn: (data) => data.name,
         );
 }
 
-class DropdownRepoPartnerCustomer extends DropdownRepo<PartnerModel, String> {
+class DropdownRepoPartnerCustomer extends DropdownRepo<PartnerModel, int> {
   DropdownRepoPartnerCustomer({super.key, required super.formControlName, super.decoration})
       : super(
           path: '/partner?is_customer=true',
           creator: PartnerModel.fromJson,
-          valueFn: (data) => data.publicId,
+          valueFn: (data) => data.id,
           textFn: (data) => data.name,
         );
 }
 
-class DropdownRepoPartnerSupplier extends DropdownRepo<PartnerModel, String> {
+class DropdownRepoPartnerSupplier extends DropdownRepo<PartnerModel, int> {
   DropdownRepoPartnerSupplier({super.key, required super.formControlName, super.decoration})
       : super(
           path: '/partner?is_supplier=true',
           creator: PartnerModel.fromJson,
-          valueFn: (data) => data.publicId,
+          valueFn: (data) => data.id,
           textFn: (data) => data.name,
         );
 }
@@ -106,7 +106,8 @@ class DropdownProductType extends StatelessWidget {
   final bool? autoFocus;
   final String formControlName;
   final InputDecoration? inputDecoration;
-  const DropdownProductType({required this.formControlName, this.autoFocus, this.inputDecoration, Key? key}) : super(key: key);
+  const DropdownProductType({required this.formControlName, this.autoFocus, this.inputDecoration, Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

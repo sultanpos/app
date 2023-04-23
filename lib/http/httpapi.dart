@@ -12,7 +12,7 @@ import 'package:sultanpos/model/listresult.dart';
 class HttpAPI {
   final Fetch fetch;
   final AuthInterceptor interceptor;
-  String? companyId;
+  int? companyId;
   HttpAPI._internal({required this.fetch, required this.interceptor});
 
   factory HttpAPI.create(String basePath, AuthInterceptor interceptor) {
@@ -24,7 +24,8 @@ class HttpAPI {
   }
 
   setLogin(LoginResponse login) {
-    interceptor.setAccessToken(login.accessToken, login.refreshToken, DateTime.fromMillisecondsSinceEpoch(login.expiresIn));
+    interceptor.setAccessToken(
+        login.accessToken, login.refreshToken, DateTime.fromMillisecondsSinceEpoch(login.expiresIn));
     final claim = JWTClaim.fromJson(Jwt.parseJwt(login.accessToken));
     companyId = claim.companyId;
   }
@@ -44,8 +45,8 @@ class HttpAPI {
     return post<T>(data, path ?? data.path() ?? "");
   }
 
-  Future<T> update<T>(BaseModel data, String publicId, {String? path}) {
-    return put<T>(data, '${path ?? data.path() ?? ""}/$publicId');
+  Future<T> update<T>(BaseModel data, int id, {String? path}) {
+    return put<T>(data, '${path ?? data.path() ?? ""}/$id');
   }
 
   Future<T> getOne<T>(String path, {required T Function(Map<String, dynamic> json) fromJsonFunc}) {
@@ -67,7 +68,9 @@ class HttpAPI {
   }
 
   Future<T> get<T>(String path,
-      {required T Function(Map<String, dynamic> json) fromJsonFunc, bool skipAuth = false, bool skipCompanyId = false}) async {
+      {required T Function(Map<String, dynamic> json) fromJsonFunc,
+      bool skipAuth = false,
+      bool skipCompanyId = false}) async {
     final ret = await fetch.get(_generateUrl(path, skipCompanyId), skipAuth: skipAuth);
     return fromJsonFunc(ret.data);
   }

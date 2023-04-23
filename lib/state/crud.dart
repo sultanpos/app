@@ -13,7 +13,8 @@ abstract class CrudState<T extends BaseModel> extends BaseState {
   T? current;
   late FormGroup form;
 
-  CrudState(super.httpAPI, {required this.path, required this.creator}) : listData = ListHttpState<T>(httpAPI, path, creator);
+  CrudState(super.httpAPI, {required this.path, required this.creator})
+      : listData = ListHttpState<T>(httpAPI, path, creator);
 
   R fValue<R>(String key, R defValue) {
     final val = form.control(key).value;
@@ -63,7 +64,7 @@ abstract class CrudState<T extends BaseModel> extends BaseState {
       if (current == null) {
         await httpAPI.insert(prepareInsertModel());
       } else {
-        await httpAPI.update(prepareUpdateModel(), (current as BaseModel).getPublicId());
+        await httpAPI.update(prepareUpdateModel(), (current as BaseModel).getId());
       }
       loading = false;
       notifyListeners();
@@ -82,9 +83,9 @@ abstract class CrudState<T extends BaseModel> extends BaseState {
   BaseModel prepareInsertModel();
   BaseModel prepareUpdateModel();
 
-  remove(String publicID) async {
+  remove(int id) async {
     try {
-      await httpAPI.delete('$path/$publicID');
+      await httpAPI.delete('$path/$id');
       listData.load(refresh: true);
     } on ErrorResponse catch (e) {
       throw e.message;

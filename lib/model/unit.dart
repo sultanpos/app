@@ -4,12 +4,11 @@ part 'unit.g.dart';
 
 @JsonSerializable()
 class UnitModel extends BaseModel {
-  @JsonKey(name: 'public_id')
-  final String publicId;
+  final int id;
   final String name;
   final String description;
 
-  UnitModel(this.publicId, this.name, this.description);
+  UnitModel(this.id, this.name, this.description);
 
   @override
   String? path() {
@@ -23,7 +22,7 @@ class UnitModel extends BaseModel {
   Map<String, dynamic> toJson() => _$UnitModelToJson(this);
 
   @override
-  String getPublicId() => publicId;
+  int getId() => id;
 }
 
 @JsonSerializable()

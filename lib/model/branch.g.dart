@@ -7,7 +7,7 @@ part of 'branch.dart';
 // **************************************************************************
 
 BranchModel _$BranchModelFromJson(Map<String, dynamic> json) => BranchModel(
-      json['public_id'] as String,
+      json['id'] as int,
       json['name'] as String,
       json['code'] as String,
       json['fullname'] as String,
@@ -20,7 +20,7 @@ BranchModel _$BranchModelFromJson(Map<String, dynamic> json) => BranchModel(
 
 Map<String, dynamic> _$BranchModelToJson(BranchModel instance) =>
     <String, dynamic>{
-      'public_id': instance.publicId,
+      'id': instance.id,
       'name': instance.name,
       'code': instance.code,
       'fullname': instance.fullname,

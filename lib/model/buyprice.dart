@@ -5,14 +5,13 @@ part 'buyprice.g.dart';
 
 @JsonSerializable()
 class BuyPriceModel extends BaseModel {
-  @JsonKey(name: 'public_id')
-  final String publicId;
+  final int id;
   @JsonKey(name: 'buy_price')
   final int buyPrice;
   @JsonKey(name: 'last_buy_price')
   final int lastBuyPrice;
   final BranchModel branch;
-  BuyPriceModel(this.publicId, this.buyPrice, this.lastBuyPrice, this.branch);
+  BuyPriceModel(this.id, this.buyPrice, this.lastBuyPrice, this.branch);
 
   @override
   factory BuyPriceModel.fromJson(Map<String, dynamic> json) => _$BuyPriceModelFromJson(json);
@@ -26,5 +25,5 @@ class BuyPriceModel extends BaseModel {
   }
 
   @override
-  String getPublicId() => publicId;
+  int getId() => id;
 }

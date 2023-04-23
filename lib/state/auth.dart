@@ -45,7 +45,8 @@ class AuthState extends BaseState {
       throw "form is not valid";
     }
     setLoading(true);
-    final result = (await httpAPI.loginWithUsernamePassword(LoginUsernamePasswordRequest.fromJson(loginForm.value))).normalizeDate();
+    final result = (await httpAPI.loginWithUsernamePassword(LoginUsernamePasswordRequest.fromJson(loginForm.value)))
+        .normalizeDate();
     _loadAccessToken(result);
     isLoading = false;
     if (loginForm.control('remember').value ?? false) {
@@ -60,7 +61,7 @@ class AuthState extends BaseState {
     claim = JWTClaim.fromJson(Jwt.parseJwt(token.accessToken));
     refreshToken = token.refreshToken;
     try {
-      final userResult = await httpAPI.getOne<UserModel>('/user/${claim!.userPublicId}', fromJsonFunc: UserModel.fromJson);
+      final userResult = await httpAPI.getOne<UserModel>('/user/${claim!.userId}', fromJsonFunc: UserModel.fromJson);
       user = userResult;
       notifyListeners();
       AppState().shareState.initAll();

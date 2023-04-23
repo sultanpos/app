@@ -5,10 +5,9 @@ part 'price.g.dart';
 
 @JsonSerializable()
 class PriceModel extends BaseModel {
-  @JsonKey(name: 'public_id')
-  final String publicId;
-  @JsonKey(name: 'price_group_public_id')
-  final String priceGroupPublicId;
+  final int id;
+  @JsonKey(name: 'price_group_id')
+  final int priceGroupId;
   final int count0;
   final int price0;
   @JsonKey(name: 'discount_formula0')
@@ -37,8 +36,8 @@ class PriceModel extends BaseModel {
   @JsonKey(name: 'price_group')
   final PriceGroupModel priceGroup;
   PriceModel(
-    this.publicId,
-    this.priceGroupPublicId,
+    this.id,
+    this.priceGroupId,
     this.count0,
     this.price0,
     this.discountFormula0,
@@ -74,5 +73,5 @@ class PriceModel extends BaseModel {
   }
 
   @override
-  String getPublicId() => publicId;
+  int getId() => id;
 }

@@ -8,8 +8,7 @@ part 'purchase.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class PurchaseModel extends BaseModel {
-  @JsonKey(name: 'public_id')
-  final String publicId;
+  final int id;
   final String number;
   final String type;
   final String status;
@@ -28,7 +27,7 @@ class PurchaseModel extends BaseModel {
   final List<PurchaseItemModel>? purchaseItems;
 
   PurchaseModel(
-    this.publicId,
+    this.id,
     this.number,
     this.type,
     this.status,
@@ -55,7 +54,7 @@ class PurchaseModel extends BaseModel {
   Map<String, dynamic> toJson() => _$PurchaseModelToJson(this);
 
   @override
-  String getPublicId() => publicId;
+  int getId() => id;
 }
 
 @JsonSerializable()
@@ -63,12 +62,12 @@ class PurchaseInsertModel extends BaseModel {
   final String number;
   final String type;
   final String status;
-  @JsonKey(name: 'branch_public_id')
-  final String branchPublicId;
-  @JsonKey(name: 'partner_public_id')
-  final String partnerPublicId;
-  @JsonKey(name: 'user_public_id')
-  final String userPublicId;
+  @JsonKey(name: 'branch_id')
+  final int branchId;
+  @JsonKey(name: 'partner_id')
+  final int partnerId;
+  @JsonKey(name: 'user_id')
+  final int userId;
   @JsonKey(includeIfNull: true)
   final DateTime? deadline;
   @JsonKey(name: 'purchase_items')
@@ -78,9 +77,9 @@ class PurchaseInsertModel extends BaseModel {
     this.number,
     this.type,
     this.status,
-    this.branchPublicId,
-    this.partnerPublicId,
-    this.userPublicId,
+    this.branchId,
+    this.partnerId,
+    this.userId,
     this.deadline,
     this.purchaseItems,
   );

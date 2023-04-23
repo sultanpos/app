@@ -7,8 +7,8 @@ part of 'product.dart';
 // **************************************************************************
 
 ProductModel _$ProductModelFromJson(Map<String, dynamic> json) => ProductModel(
-      json['parent_public_id'] as String,
-      json['public_id'] as String,
+      json['id'] as int,
+      json['parent_id'] as int,
       json['barcode'] as String,
       json['name'] as String,
       json['description'] as String,
@@ -36,8 +36,8 @@ ProductModel _$ProductModelFromJson(Map<String, dynamic> json) => ProductModel(
 
 Map<String, dynamic> _$ProductModelToJson(ProductModel instance) =>
     <String, dynamic>{
-      'parent_public_id': instance.parentPublicId,
-      'public_id': instance.publicId,
+      'id': instance.id,
+      'parent_id': instance.parentId,
       'barcode': instance.barcode,
       'name': instance.name,
       'description': instance.description,
@@ -70,9 +70,9 @@ ProductInsertModel _$ProductInsertModelFromJson(Map<String, dynamic> json) =>
       json['buyable'] as bool,
       json['editable_price'] as bool,
       json['use_sn'] as bool,
-      json['unit_public_id'] as String,
-      json['partner_public_id'] as String,
-      json['category_public_id'] as String,
+      json['unit_id'] as int,
+      json['partner_id'] as int,
+      json['category_id'] as int,
       (json['branches'] as List<dynamic>).map((e) => e as String).toList(),
       json['buy_price'] as int,
       (json['stocks'] as List<dynamic>)
@@ -91,9 +91,9 @@ Map<String, dynamic> _$ProductInsertModelToJson(ProductInsertModel instance) =>
       'main_image': instance.mainImage,
       'calculate_stock': instance.calculateStock,
       'product_type': instance.productType,
-      'unit_public_id': instance.unitPublicId,
-      'category_public_id': instance.categoryPublicId,
-      'partner_public_id': instance.partnerPublicId,
+      'unit_id': instance.unitId,
+      'category_id': instance.categoryId,
+      'partner_id': instance.partnerId,
       'branches': instance.branches,
       'buy_price': instance.buyPrice,
       'sellable': instance.sellable,
@@ -107,14 +107,14 @@ Map<String, dynamic> _$ProductInsertModelToJson(ProductInsertModel instance) =>
 ProductStockInsertModel _$ProductStockInsertModelFromJson(
         Map<String, dynamic> json) =>
     ProductStockInsertModel(
-      json['branch_public_id'] as String,
+      json['branch_id'] as int,
       json['stock'] as int,
     );
 
 Map<String, dynamic> _$ProductStockInsertModelToJson(
         ProductStockInsertModel instance) =>
     <String, dynamic>{
-      'branch_public_id': instance.branchPublicID,
+      'branch_id': instance.branchID,
       'stock': instance.stock,
     };
 
@@ -177,9 +177,9 @@ ProductUpdateModel _$ProductUpdateModelFromJson(Map<String, dynamic> json) =>
       json['main_image'] as String,
       json['calculate_stock'] as bool,
       json['product_type'] as String,
-      json['unit_public_id'] as String,
-      json['partner_public_id'] as String,
-      json['category_public_id'] as String,
+      json['unit_id'] as int,
+      json['partner_id'] as int,
+      json['category_id'] as int,
       json['sellable'] as bool,
       json['buyable'] as bool,
       json['editable_price'] as bool,
@@ -196,9 +196,9 @@ Map<String, dynamic> _$ProductUpdateModelToJson(ProductUpdateModel instance) =>
       'main_image': instance.mainImage,
       'calculate_stock': instance.calculateStock,
       'product_type': instance.productType,
-      'unit_public_id': instance.unitPublicId,
-      'category_public_id': instance.categoryPublicId,
-      'partner_public_id': instance.partnerPublicId,
+      'unit_id': instance.unitId,
+      'category_id': instance.categoryId,
+      'partner_id': instance.partnerId,
       'sellable': instance.sellable,
       'buyable': instance.buyable,
       'editable_price': instance.editablePrice,
