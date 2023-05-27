@@ -47,7 +47,7 @@ class PartnerState extends CrudState<PartnerModel> {
       fValue<String>('phone', ''),
       fValue<String>('npwp', ''),
       fValue<String>('email', ''),
-      fValue<String>('priceGroupId', ''),
+      fValue<int>('priceGroupId', 0),
     );
   }
 

@@ -1,5 +1,3 @@
-import 'package:isar/isar.dart';
-import 'package:path_provider/path_provider.dart';
 
 class LocalDb {
   static final LocalDb _singleton = LocalDb._internal();

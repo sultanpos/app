@@ -38,7 +38,7 @@ class SDataSource<T extends BaseModel> extends DataGridSource {
         padding: const EdgeInsets.all(4.0),
         child: Text(
           col.get!(dataGridCell.value),
-          style: Theme.of(context).textTheme.bodyText1?.copyWith(fontSize: 12),
+          style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 12),
         ),
       );
     }).toList());
@@ -139,7 +139,7 @@ class _SDataTableState<T extends BaseModel> extends State<SDataTable<T>> {
                                 alignment: Alignment.center,
                                 child: Text(
                                   e.title,
-                                  style: Theme.of(context).textTheme.bodyText1?.copyWith(fontSize: 12),
+                                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 12),
                                 ),
                               ),
                             ),

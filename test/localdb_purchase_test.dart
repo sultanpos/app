@@ -1,6 +1,3 @@
-import 'package:isar/isar.dart';
-import 'package:sultanpos/localdb/db.dart';
-import 'package:sultanpos/model/purchase.dart';
 import 'package:test/test.dart';
 
 void main() {

@@ -53,10 +53,10 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Center(
         child: Column(
-          children: const [
+          children: [
             Expanded(
               child: SizedBox(),
             ),
