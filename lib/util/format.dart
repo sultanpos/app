@@ -19,3 +19,18 @@ String formatDateTime(DateTime? date) {
   final df = DateFormat("d-M-y h:m", "id");
   return df.format(date);
 }
+
+int moneyValue(String val) {
+  if (val.isEmpty) return 0;
+  final normalize = val.replaceAll('.', '').replaceAll(',', '.');
+  return int.parse(normalize);
+}
+
+int stockValue(String val) {
+  final normalize = val.replaceAll('.', '').replaceAll(',', '.');
+  final doubleVal = double.tryParse(normalize);
+  if (doubleVal != null) {
+    return (doubleVal * 1000.0).toInt();
+  }
+  return 0;
+}

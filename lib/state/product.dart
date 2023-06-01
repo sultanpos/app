@@ -4,6 +4,7 @@ import 'package:sultanpos/model/product.dart';
 import 'package:sultanpos/state/app.dart';
 import 'package:sultanpos/state/crud.dart';
 import 'package:sultanpos/util/calculate.dart';
+import 'package:sultanpos/util/format.dart';
 
 class DiscountMargin {
   int discount;
@@ -12,65 +13,92 @@ class DiscountMargin {
   DiscountMargin(this.discount, this.finalPrice, this.margin);
 }
 
+class CountSellDisc {
+  FormControl<String> count;
+  FormControl<String> sell;
+  FormControl<String> discount;
+  CountSellDisc(this.count, this.sell, this.discount);
+}
+
 class ProductState extends CrudState<ProductModel> {
   int priceCounter = 1;
-  List<DiscountMargin> discountMargins = [
+  final List<DiscountMargin> discountMargins = [
     DiscountMargin(0, 0, 0),
     DiscountMargin(0, 0, 0),
     DiscountMargin(0, 0, 0),
     DiscountMargin(0, 0, 0),
     DiscountMargin(0, 0, 0),
   ];
+  final fgProductType = FormControl<String>(validators: [Validators.required], touched: true);
+  final fgBarcode = FormControl<String>(validators: [Validators.required], touched: true);
+  final fgName = FormControl<String>(validators: [Validators.required], touched: true);
+  final fgDescription = FormControl<String>();
+  final fgUnitId = FormControl<int>(validators: [Validators.required], touched: true);
+  final fgCategoryId = FormControl<int>(validators: [Validators.required], touched: true);
+  final fgPartnerId = FormControl<int>(validators: [Validators.required], touched: true);
+  final fgBuyPrice = FormControl<String>();
+  final fgCalculateStock = FormControl<bool>();
+  final fgSellable = FormControl<bool>();
+  final fgBuyable = FormControl<bool>();
+  final fgEditablePrice = FormControl<bool>();
+  final fgStock = FormControl<String>();
+  final List<CountSellDisc> csd = [
+    CountSellDisc(FormControl<String>(disabled: true, value: "1"), FormControl<String>(), FormControl<String>()),
+    CountSellDisc(FormControl<String>(), FormControl<String>(), FormControl<String>()),
+    CountSellDisc(FormControl<String>(), FormControl<String>(), FormControl<String>()),
+    CountSellDisc(FormControl<String>(), FormControl<String>(), FormControl<String>()),
+    CountSellDisc(FormControl<String>(), FormControl<String>(), FormControl<String>()),
+  ];
 
   ProductState(super.httpAPI) : super(path: '/product', creator: ProductModel.fromJson) {
     form = FormGroup({
-      'productType': FormControl<String>(validators: [Validators.required], touched: true),
-      'barcode': FormControl<String>(validators: [Validators.required], touched: true),
-      'name': FormControl<String>(validators: [Validators.required], touched: true),
-      'description': FormControl<String>(),
-      'unitId': FormControl<int>(validators: [Validators.required], touched: true),
-      'categoryId': FormControl<int>(validators: [Validators.required], touched: true),
-      'partnerId': FormControl<int>(validators: [Validators.required], touched: true),
-      'buyPrice': FormControl<String>(),
-      'calculateStock': FormControl<bool>(),
-      'sellable': FormControl<bool>(),
-      'buyable': FormControl<bool>(),
-      'editablePrice': FormControl<bool>(),
-      'stock': FormControl<String>(),
-      'count0': FormControl<String>(disabled: true, value: "1"),
-      'sell0': FormControl<String>(),
-      'disc0': FormControl<String>(),
-      'count1': FormControl<String>(),
-      'sell1': FormControl<String>(),
-      'disc1': FormControl<String>(),
-      'count2': FormControl<String>(),
-      'sell2': FormControl<String>(),
-      'disc2': FormControl<String>(),
-      'count3': FormControl<String>(),
-      'sell3': FormControl<String>(),
-      'disc3': FormControl<String>(),
-      'count4': FormControl<String>(),
-      'sell4': FormControl<String>(),
-      'disc4': FormControl<String>(),
+      'productType': fgProductType,
+      'barcode': fgBarcode,
+      'name': fgName,
+      'description': fgDescription,
+      'unitId': fgUnitId,
+      'categoryId': fgCategoryId,
+      'partnerId': fgPartnerId,
+      'buyPrice': fgBuyPrice,
+      'calculateStock': fgCalculateStock,
+      'sellable': fgSellable,
+      'buyable': fgBuyable,
+      'editablePrice': fgEditablePrice,
+      'stock': fgStock,
+      'count0': csd[0].count,
+      'sell0': csd[0].sell,
+      'disc0': csd[0].discount,
+      'count1': csd[1].count,
+      'sell1': csd[1].sell,
+      'disc1': csd[1].discount,
+      'count2': csd[2].count,
+      'sell2': csd[2].sell,
+      'disc2': csd[2].discount,
+      'count3': csd[3].count,
+      'sell3': csd[3].sell,
+      'disc3': csd[3].discount,
+      'count4': csd[4].count,
+      'sell4': csd[4].sell,
+      'disc4': csd[4].discount,
     });
-    form.control('buyPrice').valueChanges.listen((event) {
+    fgBuyPrice.valueChanges.listen((event) {
       calculateDisc();
     });
     for (int i = 0; i < 5; i++) {
-      form.control('sell$i').valueChanges.listen((event) {
+      csd[i].sell.valueChanges.listen((event) {
         calculateDisc();
       });
-      form.control('disc$i').valueChanges.listen((event) {
+      csd[i].discount.valueChanges.listen((event) {
         calculateDisc();
       });
     }
   }
 
   calculateDisc() {
-    final buy = fMoney('buyPrice', 0);
+    final buy = moneyValue(fgBuyPrice.value ?? '0');
     for (int i = 0; i < 5; i++) {
-      final sell = fMoney('sell$i', 0);
-      final discFormula = fValue<String>('disc$i', '');
+      final sell = moneyValue(csd[i].sell.value ?? '0');
+      final discFormula = csd[i].discount.value ?? '';
       final disc = calculateDiscount(sell, discFormula);
       discountMargins[i].finalPrice = sell - disc;
       discountMargins[i].discount = calculateDiscount(sell, discFormula);
@@ -81,8 +109,8 @@ class ProductState extends CrudState<ProductModel> {
 
   @override
   resetForm() {
-    form.control("stock").markAsEnabled(emitEvent: false);
-    form.control("buyPrice").markAsEnabled(emitEvent: false);
+    fgStock.markAsEnabled(emitEvent: false);
+    fgBuyPrice.markAsEnabled(emitEvent: false);
     form.reset(value: {'sellable': true, 'buyable': true, 'calculateStock': true, 'count0': "1"});
     form.markAllAsTouched();
     current = null;
@@ -102,8 +130,8 @@ class ProductState extends CrudState<ProductModel> {
       'calculateStock': value.calculateStock,
       'editablePrice': value.editablePrice,
     };
-    form.control("stock").markAsDisabled(emitEvent: false);
-    form.control("buyPrice").markAsDisabled(emitEvent: false);
+    fgStock.markAsDisabled(emitEvent: false);
+    fgBuyPrice.markAsDisabled(emitEvent: false);
     final defPrice = value.prices.firstWhere(
       (element) => element.priceGroup.isDefault,
     );
@@ -128,29 +156,29 @@ class ProductState extends CrudState<ProductModel> {
     final defaultBranch = AppState().shareState.defaultBranch();
     final priceMap = <String, dynamic>{};
     for (int i = 0; i < 5; i++) {
-      priceMap['count$i'] = i < priceCounter ? fMoney('count$i', 0) : 0;
-      priceMap['price$i'] = i < priceCounter ? fMoney('sell$i', 0) : 0;
-      priceMap['discount_formula$i'] = i < priceCounter ? fValue<String>('disc$i', '') : '';
+      priceMap['count$i'] = i < priceCounter ? moneyValue(csd[i].count.value ?? '0') : 0;
+      priceMap['price$i'] = i < priceCounter ? moneyValue(csd[i].sell.value ?? '0') : 0;
+      priceMap['discount_formula$i'] = i < priceCounter ? csd[i].discount.value ?? '' : '';
       priceMap['discount$i'] = i < priceCounter ? discountMargins[i].discount : 0;
     }
     return ProductInsertModel(
-      fValue<String>('barcode', ''),
-      fValue<String>('name', ''),
-      fValue<String>('description', ''),
+      fgBarcode.value ?? '',
+      fgName.value ?? '',
+      fgDescription.value ?? '',
       true, //fValue<bool>('allBranch', true),
       '', //fValue<String>('mainImage', ''),
-      fValue<bool>('calculateStock', true),
-      fValue<String>('productType', ''),
-      fValue<bool>('sellable', true),
-      fValue<bool>('buyable', true),
-      fValue<bool>('editablePrice', false),
+      fgCalculateStock.value ?? true,
+      fgProductType.value ?? '',
+      fgSellable.value ?? true,
+      fgBuyable.value ?? true,
+      fgEditablePrice.value ?? false,
       false, //fValue<bool>('useSn', false),
-      fValue<int>('unitId', 0),
-      fValue<int>('partnerId', 0),
-      fValue<int>('categoryId', 0),
+      fgUnitId.value ?? 0,
+      fgPartnerId.value ?? 0,
+      fgCategoryId.value ?? 0,
       [],
-      fMoney('buyPrice', 0),
-      [ProductStockInsertModel(defaultBranch!.id, fStock('stock', 0))],
+      moneyValue(fgBuyPrice.value ?? '0'),
+      [ProductStockInsertModel(defaultBranch!.id, stockValue(fgStock.value ?? '0'))],
       ProductPriceInsertModel.fromJson(priceMap),
     );
   }
@@ -159,34 +187,34 @@ class ProductState extends CrudState<ProductModel> {
   BaseModel prepareUpdateModel() {
     final priceMap = <String, dynamic>{};
     for (int i = 0; i < 5; i++) {
-      priceMap['count$i'] = i < priceCounter ? fMoney('count$i', 0) : 0;
-      priceMap['price$i'] = i < priceCounter ? fMoney('sell$i', 0) : 0;
-      priceMap['discount_formula$i'] = i < priceCounter ? fValue<String>('disc$i', '') : '';
+      priceMap['count$i'] = i < priceCounter ? moneyValue(csd[i].count.value ?? '0') : 0;
+      priceMap['price$i'] = i < priceCounter ? moneyValue(csd[i].sell.value ?? '0') : 0;
+      priceMap['discount_formula$i'] = i < priceCounter ? csd[i].discount.value ?? '' : '';
       priceMap['discount$i'] = i < priceCounter ? discountMargins[i].discount : 0;
     }
     return ProductUpdateModel(
-      fValue<String>('barcode', ''),
-      fValue<String>('name', ''),
-      fValue<String>('description', ''),
+      fgBarcode.value ?? '',
+      fgName.value ?? '',
+      fgDescription.value ?? '',
       true, //fValue<bool>('allBranch', true),
       '', //fValue<String>('mainImage', ''),
-      fValue<bool>('calculateStock', true),
-      fValue<String>('productType', ''),
-      fValue<int>('unitId', 0),
-      fValue<int>('partnerId', 0),
-      fValue<int>('categoryId', 0),
-      fValue<bool>('sellable', true),
-      fValue<bool>('buyable', true),
-      fValue<bool>('editablePrice', false),
+      fgCalculateStock.value ?? true,
+      fgProductType.value ?? '',
+      fgUnitId.value ?? 0,
+      fgPartnerId.value ?? 0,
+      fgCategoryId.value ?? 0,
+      fgSellable.value ?? true,
+      fgBuyable.value ?? true,
+      fgEditablePrice.value ?? false,
       false, //fValue<bool>('useSn', false),
       ProductPriceInsertModel.fromJson(priceMap),
     );
   }
 
   resetAddAgain() {
-    form.control('name').updateValue('');
-    form.control('barcode').updateValue('');
-    form.control('barcode').focus();
+    fgName.updateValue('');
+    fgBarcode.updateValue('');
+    fgBarcode.focus();
   }
 
   addPrice() {
