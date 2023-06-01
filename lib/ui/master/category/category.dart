@@ -7,6 +7,7 @@ import 'package:sultanpos/ui/master/category/add.dart';
 import 'package:sultanpos/ui/widget/columnaction.dart';
 import 'package:sultanpos/ui/widget/confirmation.dart';
 import 'package:sultanpos/ui/widget/datatable.dart';
+import 'package:sultanpos/ui/widget/dialogutil.dart';
 import 'package:sultanpos/ui/widget/showerror.dart';
 
 class CategoryWidget extends StatelessWidget {
@@ -32,9 +33,8 @@ class CategoryWidget extends StatelessWidget {
                     ElevatedButton(
                       onPressed: () {
                         AppState().categoryState.resetForm();
-                        showDialog(
+                        sShowDialog(
                           context: ctx,
-                          useRootNavigator: false,
                           builder: (c) {
                             return const CategoryAddWidget(
                               title: "Tambah Kategori",
@@ -80,9 +80,8 @@ class CategoryWidget extends StatelessWidget {
                               [
                                 SColumActionItem('edit', Icons.edit, () {
                                   AppState().categoryState.editForm(v);
-                                  showDialog(
+                                  sShowDialog(
                                     context: ctx,
-                                    useRootNavigator: false,
                                     builder: (c) {
                                       return const CategoryAddWidget(title: "Edit Kategori");
                                     },

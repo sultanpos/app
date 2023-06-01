@@ -31,7 +31,7 @@ CategoryInsertModel _$CategoryInsertModelFromJson(Map<String, dynamic> json) =>
       json['name'] as String,
       json['code'] as String,
       json['description'] as String,
-      json['parent_public_id'] as String,
+      json['parent_public_id'] as int,
     );
 
 Map<String, dynamic> _$CategoryInsertModelToJson(
@@ -48,7 +48,7 @@ CategoryUpdateModel _$CategoryUpdateModelFromJson(Map<String, dynamic> json) =>
       json['name'] as String,
       json['code'] as String,
       json['description'] as String,
-      json['parent_public_id'] as String,
+      json['parent_public_id'] as int,
     );
 
 Map<String, dynamic> _$CategoryUpdateModelToJson(

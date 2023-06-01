@@ -4,30 +4,29 @@ import 'package:sultanpos/model/unit.dart';
 import 'package:sultanpos/state/crud.dart';
 
 class UnitState extends CrudState<UnitModel> {
+  final fgName = FormControl<String>(validators: [Validators.required], touched: true);
+  final fgDescription = FormControl<String>();
+
   UnitState(super.httpAPI) : super(path: '/unit', creator: UnitModel.fromJson) {
     form = FormGroup({
-      'name': FormControl<String>(validators: [Validators.required], touched: true),
-      'description': FormControl<String>(),
+      'name': fgName,
+      'description': fgDescription,
     });
   }
 
   @override
   prepareEditForm(UnitModel value) {
-    form.control('name').updateValue(value.name, emitEvent: false);
-    form.control('description').updateValue(value.description, emitEvent: false);
+    fgName.updateValue(value.name, emitEvent: false);
+    fgDescription.updateValue(value.description, emitEvent: false);
   }
 
   @override
   BaseModel prepareInsertModel() {
-    final value = form.control('name').value;
-    final desc = form.control('description').value;
-    return UnitAddRequestModel(value, desc);
+    return UnitAddRequestModel(fgName.value!, fgDescription.value ?? '');
   }
 
   @override
   BaseModel prepareUpdateModel() {
-    final value = form.control('name').value;
-    final desc = form.control('description').value;
-    return UnitUpdateRequestModel(value, desc);
+    return UnitUpdateRequestModel(fgName.value!, fgDescription.value ?? '');
   }
 }
