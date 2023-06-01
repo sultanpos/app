@@ -36,7 +36,7 @@ class PartnerState extends CrudState<PartnerModel> {
     fgPhone.updateValue(value.phone, emitEvent: false);
     fgEmail.updateValue(value.email, emitEvent: false);
     fgNpwp.updateValue(value.npwp, emitEvent: false);
-    fgPriceGroup.updateValue(value.priceGroup?.id, emitEvent: false);
+    fgPriceGroup.updateValue(value.priceGroupId, emitEvent: false);
   }
 
   @override

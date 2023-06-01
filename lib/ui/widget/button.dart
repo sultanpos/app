@@ -20,6 +20,7 @@ class SButton extends StatelessWidget {
             : ElevatedButton.styleFrom(
                 side: BorderSide(width: 2, color: Theme.of(context).primaryColor),
                 backgroundColor: Colors.transparent,
+                elevation: 0,
               ),
         child: Text(label),
       ),

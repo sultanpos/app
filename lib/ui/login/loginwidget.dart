@@ -5,41 +5,73 @@ import 'package:sultanpos/state/app.dart';
 import 'package:sultanpos/state/auth.dart';
 import 'package:provider/provider.dart';
 import 'package:sultanpos/ui/root.dart';
+import 'package:sultanpos/ui/widget/button.dart';
+import 'package:sultanpos/ui/widget/form/reactivecheckbox.dart';
+import 'package:sultanpos/ui/widget/labelfield.dart';
 import 'package:sultanpos/ui/widget/showerror.dart';
 
-class LoginWidget extends StatelessWidget {
+class LoginWidget extends StatefulWidget {
   const LoginWidget({Key? key}) : super(key: key);
 
+  @override
+  State<LoginWidget> createState() => _LoginWidgetState();
+}
+
+class _LoginWidgetState extends State<LoginWidget> {
+  bool passwordVisible = false;
   @override
   Widget build(BuildContext context) {
     final isLoading = context.select<AuthState, bool>((value) => value.isLoading);
     return Center(
       child: ReactiveForm(
         formGroup: AppState().authState.loginForm,
-        child: SizedBox(
-          width: 300,
-          child: Padding(
-            padding: const EdgeInsets.all(32.0),
+        child: Padding(
+          padding: const EdgeInsets.all(32.0),
+          child: SingleChildScrollView(
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 200, width: 200, child: Image(image: AssetImage("resources/images/icon_1024.png"))),
+                const Center(
+                  child: Text(
+                    "Sultan POS 2",
+                    style: TextStyle(fontSize: 32),
+                  ),
+                ),
+                /*const Center(
+                    child: SizedBox(
+                        height: 80, width: 200, child: Image(image: AssetImage("resources/images/icon_1024.png")))),*/
+                const SizedBox(
+                  height: 48,
+                ),
+                Text("Masuk ke Akun", style: Theme.of(context).textTheme.titleLarge),
+                const SizedBox(
+                  height: 32,
+                ),
+                const LabelField('Username'),
                 ReactiveTextField(
                   formControlName: 'username',
                   decoration: const InputDecoration(
                     hintText: "Username / email",
-                    labelText: "Username / email",
                   ),
                   textInputAction: TextInputAction.next,
                 ),
                 const SizedBox(
                   height: 16,
                 ),
+                const LabelField('Password'),
                 ReactiveTextField(
                   formControlName: 'password',
-                  obscureText: true,
-                  decoration: const InputDecoration(
+                  obscureText: !passwordVisible,
+                  decoration: InputDecoration(
                     hintText: "Password",
-                    labelText: "Password",
+                    suffixIcon: IconButton(
+                      icon: Icon(!passwordVisible ? Icons.visibility : Icons.visibility_off),
+                      onPressed: () {
+                        setState(() {
+                          passwordVisible = !passwordVisible;
+                        });
+                      },
+                    ),
                   ),
                   textInputAction: TextInputAction.go,
                   onSubmitted: (c) => _doLogin(context),
@@ -49,24 +81,32 @@ class LoginWidget extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    ReactiveCheckbox(
+                    SReactiveCheckbox(
+                      title: 'Remember me',
                       formControlName: 'remember',
                     ),
-                    const Text('Remember me')
+                    const Spacer(),
                   ],
                 ),
                 const SizedBox(
                   height: 16,
                 ),
                 SizedBox(
-                  height: 35,
+                  height: 40,
                   width: double.infinity,
-                  child: ElevatedButton(
+                  child: SButton(
                     onPressed: isLoading ? null : () => _doLogin(context),
-                    child: Text(
-                      isLoading ? "Loading..." : "Login",
-                    ),
+                    label: isLoading ? "Loading..." : "Masuk",
                   ),
+                ),
+                const SizedBox(
+                  height: 32,
+                ),
+                const LabelField('Belum punya akun?'),
+                SButton(
+                  label: 'Daftar',
+                  positive: false,
+                  onPressed: () {},
                 ),
               ],
             ),

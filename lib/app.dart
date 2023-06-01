@@ -22,6 +22,8 @@ class _AppState extends State<App> {
       ),
       dark: ThemeData(
         brightness: Brightness.dark,
+        scaffoldBackgroundColor: const Color(0xff111827),
+        secondaryHeaderColor: const Color(0xff1F2937),
         primarySwatch: createMaterialColor(const Color(0xff3D928A)),
         primaryColor: const Color(0xff3D928A),
         fontFamily: 'Ubuntu',

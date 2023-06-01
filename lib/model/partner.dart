@@ -19,11 +19,13 @@ class PartnerModel extends BaseModel {
   final String email;
   final int debt;
   final int credit;
+  @JsonKey(name: 'price_group_id')
+  final int priceGroupId;
   @JsonKey(name: 'price_group')
   final PriceGroupModel? priceGroup;
 
   PartnerModel(this.id, this.isSupplier, this.isCustomer, this.number, this.name, this.address, this.phone, this.npwp,
-      this.email, this.debt, this.credit, this.priceGroup);
+      this.email, this.debt, this.credit, this.priceGroupId, this.priceGroup);
 
   @override
   String? path() {

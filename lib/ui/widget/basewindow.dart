@@ -12,8 +12,9 @@ class BaseWindowWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bgColor = Theme.of(context).secondaryHeaderColor;
     return Dialog(
-      backgroundColor: const Color(0xFF111827),
+      backgroundColor: bgColor,
       child: KeyboardListener(
         focusNode: FocusNode(),
         onKeyEvent: (value) {
@@ -22,9 +23,9 @@ class BaseWindowWidget extends StatelessWidget {
           }
         },
         child: Container(
-          decoration: const BoxDecoration(
-            color: Color(0xFF111827),
-            borderRadius: BorderRadius.all(Radius.circular(16)),
+          decoration: BoxDecoration(
+            color: bgColor,
+            borderRadius: const BorderRadius.all(Radius.circular(16)),
           ),
           width: width ?? 300,
           height: height ?? 300,

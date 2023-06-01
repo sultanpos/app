@@ -7,7 +7,10 @@ import 'package:sultanpos/state/partner.dart';
 import 'package:sultanpos/ui/theme.dart';
 import 'package:sultanpos/ui/util/textformatter.dart';
 import 'package:sultanpos/ui/widget/basewindow.dart';
+import 'package:sultanpos/ui/widget/button.dart';
 import 'package:sultanpos/ui/widget/dropdown.dart';
+import 'package:sultanpos/ui/widget/form/reactivecheckbox.dart';
+import 'package:sultanpos/ui/widget/labelfield.dart';
 import 'package:sultanpos/ui/widget/showerror.dart';
 
 class AddPartnerWidget extends StatelessWidget {
@@ -17,6 +20,7 @@ class AddPartnerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BaseWindowWidget(
+      icon: Icons.people,
       height: 500,
       width: 350,
       title: title,
@@ -32,86 +36,79 @@ class AddPartnerWidget extends StatelessWidget {
                   Expanded(
                     child: SingleChildScrollView(
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          const LabelField('Tipe Mitra'),
                           Row(
                             children: [
-                              Expanded(
-                                child: Row(
-                                  children: [
-                                    ReactiveCheckbox(
-                                      formControlName: "isCustomer",
-                                    ),
-                                    const Text('Customer')
-                                  ],
-                                ),
+                              SReactiveCheckbox(
+                                title: "Customer",
+                                formControlName: "isCustomer",
                               ),
-                              Expanded(
-                                child: Row(
-                                  children: [
-                                    ReactiveCheckbox(
-                                      formControlName: "isSupplier",
-                                    ),
-                                    const Text('Supplier')
-                                  ],
-                                ),
+                              SizedBox(
+                                width: STheme().widgetSpace,
+                              ),
+                              SReactiveCheckbox(
+                                title: "Supplier",
+                                formControlName: "isSupplier",
                               ),
                             ],
                           ),
                           SizedBox(
                             height: STheme().widgetSpace,
                           ),
+                          const LabelField('Nama'),
                           ReactiveTextField(
                             formControlName: 'name',
                             autofocus: true,
                             inputFormatters: [UpperCaseTextFormatter()],
                             decoration: const InputDecoration(
                               hintText: "Masukkan nama mitra",
-                              labelText: "Nama",
                             ),
                             textInputAction: TextInputAction.next,
                           ),
                           SizedBox(
                             height: STheme().widgetSpace,
                           ),
+                          const LabelField('Telepon'),
                           ReactiveTextField(
                             formControlName: 'phone',
                             autofocus: true,
                             decoration: const InputDecoration(
                               hintText: "Masukkan nomor telepon",
-                              labelText: "Telepon",
                             ),
                             textInputAction: TextInputAction.next,
                           ),
                           SizedBox(
                             height: STheme().widgetSpace,
                           ),
+                          const LabelField('Email'),
                           ReactiveTextField(
                             formControlName: 'email',
                             autofocus: true,
                             decoration: const InputDecoration(
                               hintText: "Masukkan alamat email",
-                              labelText: "Email",
                             ),
                             textInputAction: TextInputAction.next,
                           ),
                           SizedBox(
                             height: STheme().widgetSpace,
                           ),
+                          const LabelField('Nomor NPWP'),
                           ReactiveTextField(
                             formControlName: 'npwp',
                             decoration: const InputDecoration(
                               hintText: "Masukkan nomor NPWP",
-                              labelText: "Nomor NPWP",
                             ),
                           ),
                           SizedBox(
                             height: STheme().widgetSpace,
                           ),
+                          const LabelField('Alamat'),
                           ReactiveTextField(
                             formControlName: 'address',
                             decoration: const InputDecoration(
                               hintText: "Masukkan alamat mitra",
-                              labelText: "Alamat",
                             ),
                             onSubmitted: (c) => save(ctx),
                             maxLines: null,
@@ -119,6 +116,7 @@ class AddPartnerWidget extends StatelessWidget {
                           SizedBox(
                             height: STheme().widgetSpace,
                           ),
+                          const LabelField('Group Harga'),
                           DropdownRepo<PriceGroupModel, int>(
                             creator: PriceGroupModel.fromJson,
                             path: "/pricegroup",
@@ -128,7 +126,6 @@ class AddPartnerWidget extends StatelessWidget {
                             valueFn: (value) => value.id,
                             decoration: const InputDecoration(
                               hintText: "Pilih group harga",
-                              labelText: "Group Harga",
                             ),
                           ),
                         ],
@@ -139,30 +136,33 @@ class AddPartnerWidget extends StatelessWidget {
                     height: 16,
                   ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      ElevatedButton(
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
-                          ),
+                      Expanded(
+                        child: SButton(
+                          positive: false,
+                          label: "Batal",
                           onPressed: loading
                               ? null
                               : () {
                                   Navigator.of(ctx).pop();
                                 },
-                          child: const Text("Batal")),
+                        ),
+                      ),
                       const SizedBox(
                         width: 8,
                       ),
-                      ElevatedButton(
+                      Expanded(
+                        child: SButton(
+                          label: "Simpan",
                           onPressed: loading
                               ? null
                               : () async {
                                   save(ctx);
                                 },
-                          child: Text(loading ? "Menyimpan..." : "Simpan")),
+                        ),
+                      ),
                     ],
-                  )
+                  ),
                 ],
               ),
             );
