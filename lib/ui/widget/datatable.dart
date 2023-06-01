@@ -38,7 +38,7 @@ class SDataSource<T extends BaseModel> extends DataGridSource {
         padding: const EdgeInsets.all(4.0),
         child: Text(
           col.get!(dataGridCell.value),
-          style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 12),
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 14),
         ),
       );
     }).toList());
@@ -57,7 +57,8 @@ class SDataColumn<T extends BaseModel> {
   final Widget Function(T v)? getWidget;
   final double? width;
   final Alignment align;
-  SDataColumn({required this.id, required this.title, this.get, this.getWidget, this.width, this.align = Alignment.centerLeft});
+  SDataColumn(
+      {required this.id, required this.title, this.get, this.getWidget, this.width, this.align = Alignment.centerLeft});
 }
 
 class SDataTable<T extends BaseModel> extends StatefulWidget {
@@ -65,7 +66,8 @@ class SDataTable<T extends BaseModel> extends StatefulWidget {
   final ListHttpState<T> state;
   final List<SDataColumn<T>> columns;
   final void Function(T value)? onDoubleClicked;
-  const SDataTable({required this.name, required this.state, required this.columns, this.onDoubleClicked, Key? key}) : super(key: key);
+  const SDataTable({required this.name, required this.state, required this.columns, this.onDoubleClicked, Key? key})
+      : super(key: key);
 
   @override
   State<SDataTable<T>> createState() => _SDataTableState<T>();
@@ -135,11 +137,12 @@ class _SDataTableState<T extends BaseModel> extends State<SDataTable<T>> {
                               width: columnSize[e.id]!,
                               allowEditing: false,
                               label: Container(
-                                color: lighterOrDarkerColor(Theme.of(context), Theme.of(context).scaffoldBackgroundColor),
+                                color:
+                                    lighterOrDarkerColor(Theme.of(context), Theme.of(context).scaffoldBackgroundColor),
                                 alignment: Alignment.center,
                                 child: Text(
                                   e.title,
-                                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 12),
+                                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 14),
                                 ),
                               ),
                             ),

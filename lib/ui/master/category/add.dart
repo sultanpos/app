@@ -7,7 +7,9 @@ import 'package:sultanpos/state/category.dart';
 import 'package:sultanpos/ui/theme.dart';
 import 'package:sultanpos/ui/util/textformatter.dart';
 import 'package:sultanpos/ui/widget/basewindow.dart';
+import 'package:sultanpos/ui/widget/button.dart';
 import 'package:sultanpos/ui/widget/dropdown.dart';
+import 'package:sultanpos/ui/widget/labelfield.dart';
 import 'package:sultanpos/ui/widget/showerror.dart';
 
 class CategoryAddWidget extends StatelessWidget {
@@ -18,8 +20,9 @@ class CategoryAddWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BaseWindowWidget(
       title: title,
-      height: 400,
-      width: 400,
+      icon: Icons.account_tree,
+      height: 500,
+      width: 350,
       child: ChangeNotifierProvider.value(
         value: AppState().categoryState,
         child: Builder(
@@ -28,82 +31,92 @@ class CategoryAddWidget extends StatelessWidget {
             return ReactiveForm(
               formGroup: AppState().categoryState.form,
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  DropdownRepo<CategoryModel, int>(
-                    creator: CategoryModel.fromJson,
-                    path: "/category",
-                    formControlName: 'parent_id',
-                    autoFocus: true,
-                    textFn: (value) => value.name,
-                    valueFn: (value) => value.id,
-                    decoration: const InputDecoration(
-                      hintText: "Pilih parent",
-                      labelText: "Parent Kategori",
+                  Expanded(
+                    child: ListView(
+                      children: [
+                        const LabelField('Parent Kategori'),
+                        DropdownRepo<CategoryModel, int>(
+                          creator: CategoryModel.fromJson,
+                          path: "/category",
+                          formControlName: 'parent_id',
+                          autoFocus: true,
+                          textFn: (value) => value.name,
+                          valueFn: (value) => value.id,
+                          decoration: const InputDecoration(
+                            hintText: "Pilih parent",
+                          ),
+                        ),
+                        SizedBox(
+                          height: STheme().widgetSpace,
+                        ),
+                        const LabelField('Nama Kategori'),
+                        ReactiveTextField(
+                          formControlName: 'name',
+                          inputFormatters: [UpperCaseTextFormatter()],
+                          decoration: const InputDecoration(
+                            hintText: "Masukkan nama kategori",
+                          ),
+                          textInputAction: TextInputAction.next,
+                        ),
+                        SizedBox(
+                          height: STheme().widgetSpace,
+                        ),
+                        const LabelField('Kode'),
+                        ReactiveTextField(
+                          formControlName: 'code',
+                          inputFormatters: [UpperCaseTextFormatter()],
+                          decoration: const InputDecoration(
+                            hintText: "Masukkan code",
+                          ),
+                          textInputAction: TextInputAction.next,
+                        ),
+                        SizedBox(
+                          height: STheme().widgetSpace,
+                        ),
+                        const LabelField('Keterangan'),
+                        ReactiveTextField(
+                          formControlName: 'description',
+                          decoration: const InputDecoration(
+                            hintText: "Masukkan keterangan",
+                          ),
+                          onSubmitted: (c) => save(ctx),
+                        ),
+                      ],
                     ),
                   ),
-                  SizedBox(
-                    height: STheme().widgetSpace,
-                  ),
-                  ReactiveTextField(
-                    formControlName: 'name',
-                    inputFormatters: [UpperCaseTextFormatter()],
-                    decoration: const InputDecoration(
-                      hintText: "Masukkan nama kategori",
-                      labelText: "Nama Kategori",
-                    ),
-                    textInputAction: TextInputAction.next,
-                  ),
-                  SizedBox(
-                    height: STheme().widgetSpace,
-                  ),
-                  ReactiveTextField(
-                    formControlName: 'code',
-                    inputFormatters: [UpperCaseTextFormatter()],
-                    decoration: const InputDecoration(
-                      hintText: "Masukkan code",
-                      labelText: "Code",
-                    ),
-                    textInputAction: TextInputAction.next,
-                  ),
-                  SizedBox(
-                    height: STheme().widgetSpace,
-                  ),
-                  ReactiveTextField(
-                    formControlName: 'description',
-                    decoration: const InputDecoration(
-                      hintText: "Masukkan keterangan",
-                      labelText: "Keterangan",
-                    ),
-                    onSubmitted: (c) => save(ctx),
-                  ),
-                  const Expanded(
-                    child: SizedBox(),
+                  const SizedBox(
+                    height: 16,
                   ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      ElevatedButton(
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
-                          ),
+                      Expanded(
+                        child: SButton(
+                          positive: false,
+                          label: "Batal",
                           onPressed: loading
                               ? null
                               : () {
                                   Navigator.of(ctx).pop();
                                 },
-                          child: const Text("Batal")),
+                        ),
+                      ),
                       const SizedBox(
                         width: 8,
                       ),
-                      ElevatedButton(
+                      Expanded(
+                        child: SButton(
+                          label: "Simpan",
                           onPressed: loading
                               ? null
                               : () async {
                                   save(ctx);
                                 },
-                          child: Text(loading ? "Menyimpan..." : "Simpan")),
+                        ),
+                      ),
                     ],
-                  )
+                  ),
                 ],
               ),
             );

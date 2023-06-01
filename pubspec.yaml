@@ -60,6 +60,22 @@ flutter:
         - asset: resources/fonts/Oxanium/Oxanium-Medium.ttf
         - asset: resources/fonts/Oxanium/Oxanium-Regular.ttf
         - asset: resources/fonts/Oxanium/Oxanium-SemiBold.ttf
+    - family: Ubuntu
+      fonts:
+        - asset: resources/fonts/Ubuntu/Ubuntu-Bold.ttf
+        - asset: resources/fonts/Ubuntu/Ubuntu-BoldItalic.ttf
+        - asset: resources/fonts/Ubuntu/Ubuntu-Italic.ttf
+        - asset: resources/fonts/Ubuntu/Ubuntu-Light.ttf
+        - asset: resources/fonts/Ubuntu/Ubuntu-LightItalic.ttf
+        - asset: resources/fonts/Ubuntu/Ubuntu-Medium.ttf
+        - asset: resources/fonts/Ubuntu/Ubuntu-MediumItalic.ttf
+        - asset: resources/fonts/Ubuntu/Ubuntu-Regular.ttf
+    - family: UbuntuMono
+      fonts:
+        - asset: resources/fonts/Ubuntu_Mono/UbuntuMono-Bold.ttf
+        - asset: resources/fonts/Ubuntu_Mono/UbuntuMono-BoldItalic.ttf
+        - asset: resources/fonts/Ubuntu_Mono/UbuntuMono-Italic.ttf
+        - asset: resources/fonts/Ubuntu_Mono/UbuntuMono-Regular.ttf
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see

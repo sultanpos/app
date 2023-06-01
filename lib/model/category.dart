@@ -35,9 +35,9 @@ class CategoryInsertModel extends BaseModel {
   final String name;
   final String code;
   final String description;
-  @JsonKey(name: 'parent_public_id')
-  final int parentParentId;
-  CategoryInsertModel(this.name, this.code, this.description, this.parentParentId);
+  @JsonKey(name: 'parent_id')
+  final int parentId;
+  CategoryInsertModel(this.name, this.code, this.description, this.parentId);
 
   @override
   String? path() {
@@ -59,9 +59,9 @@ class CategoryUpdateModel extends BaseModel {
   final String name;
   final String code;
   final String description;
-  @JsonKey(name: 'parent_public_id')
-  final int parentParentId;
-  CategoryUpdateModel(this.name, this.code, this.description, this.parentParentId);
+  @JsonKey(name: 'parent_id')
+  final int parentId;
+  CategoryUpdateModel(this.name, this.code, this.description, this.parentId);
 
   @override
   String? path() {

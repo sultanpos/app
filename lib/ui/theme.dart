@@ -13,7 +13,7 @@ class STheme {
   late double widgetSpace;
 
   init() {
-    widgetSpace = 6;
+    widgetSpace = 16;
     defInputDecoration = const InputDecoration(
       isDense: true,
       filled: true,

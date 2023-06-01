@@ -1,6 +1,7 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:sultanpos/ui/splashscreen.dart';
+import 'package:sultanpos/util/color.dart';
 
 class App extends StatefulWidget {
   const App({Key? key}) : super(key: key);
@@ -15,25 +16,28 @@ class _AppState extends State<App> {
     return AdaptiveTheme(
       light: ThemeData(
         brightness: Brightness.light,
-        primarySwatch: Colors.blue,
-        fontFamily: 'Oxanium',
+        primarySwatch: createMaterialColor(const Color(0xff3D928A)),
+        primaryColor: const Color(0xff3D928A),
+        fontFamily: 'Ubuntu',
       ),
       dark: ThemeData(
         brightness: Brightness.dark,
-        primarySwatch: Colors.blue,
-        fontFamily: 'Oxanium',
+        primarySwatch: createMaterialColor(const Color(0xff3D928A)),
+        primaryColor: const Color(0xff3D928A),
+        fontFamily: 'Ubuntu',
         inputDecorationTheme: const InputDecorationTheme(
           isDense: true,
           filled: true,
+          fillColor: Colors.transparent,
           border: OutlineInputBorder(gapPadding: 0, borderSide: BorderSide(width: 0)),
-          contentPadding: EdgeInsets.all(8),
-          errorStyle: TextStyle(height: 0.1),
+          contentPadding: EdgeInsets.all(12),
         ),
         textTheme: const TextTheme(
-          titleMedium: TextStyle(fontSize: 12, height: 1.5),
-          labelLarge: TextStyle(fontSize: 12),
-          bodyLarge: TextStyle(fontSize: 12),
-          bodyMedium: TextStyle(fontSize: 12),
+          titleLarge: TextStyle(fontSize: 18),
+          titleMedium: TextStyle(fontSize: 14),
+          labelLarge: TextStyle(fontSize: 14),
+          bodyLarge: TextStyle(fontSize: 14),
+          bodyMedium: TextStyle(fontSize: 14),
         ),
       ),
       initial: AdaptiveThemeMode.dark,

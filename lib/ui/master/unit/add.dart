@@ -6,6 +6,8 @@ import 'package:sultanpos/state/unit.dart';
 import 'package:sultanpos/ui/theme.dart';
 import 'package:sultanpos/ui/util/textformatter.dart';
 import 'package:sultanpos/ui/widget/basewindow.dart';
+import 'package:sultanpos/ui/widget/button.dart';
+import 'package:sultanpos/ui/widget/labelfield.dart';
 import 'package:sultanpos/ui/widget/showerror.dart';
 
 class UnitAddWidget extends StatelessWidget {
@@ -16,8 +18,9 @@ class UnitAddWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BaseWindowWidget(
       title: title,
-      height: 300,
-      width: 350,
+      height: 400,
+      width: 300,
+      icon: Icons.scale,
       child: ChangeNotifierProvider.value(
         value: AppState().unitState,
         child: Builder(
@@ -26,57 +29,62 @@ class UnitAddWidget extends StatelessWidget {
             return ReactiveForm(
               formGroup: AppState().unitState.form,
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  const LabelField('Nama'),
                   ReactiveTextField(
                     formControlName: 'name',
                     autofocus: true,
                     inputFormatters: [UpperCaseTextFormatter()],
                     decoration: const InputDecoration(
                       hintText: "Masukkan nama unit",
-                      labelText: "Nama",
                     ),
                     textInputAction: TextInputAction.next,
                   ),
                   SizedBox(
                     height: STheme().widgetSpace,
                   ),
+                  const Padding(
+                    padding: EdgeInsets.only(bottom: 8),
+                    child: Text("Keterangan"),
+                  ),
                   ReactiveTextField(
                     formControlName: 'description',
                     decoration: const InputDecoration(
                       hintText: "Masukkan keterangan unit",
-                      labelText: "Keterangan",
                     ),
                     onSubmitted: (c) => save(ctx),
                     maxLines: 3,
                   ),
-                  const Expanded(
-                    child: SizedBox(),
-                  ),
+                  const Spacer(),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      ElevatedButton(
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
-                          ),
+                      Expanded(
+                        child: SButton(
+                          positive: false,
+                          label: "Batal",
                           onPressed: loading
                               ? null
                               : () {
                                   Navigator.of(ctx).pop();
                                 },
-                          child: const Text("Batal")),
+                        ),
+                      ),
                       const SizedBox(
                         width: 8,
                       ),
-                      ElevatedButton(
+                      Expanded(
+                        child: SButton(
+                          label: "Simpan",
                           onPressed: loading
                               ? null
                               : () async {
                                   save(ctx);
                                 },
-                          child: Text(loading ? "Menyimpan..." : "Simpan")),
+                        ),
+                      ),
                     ],
-                  )
+                  ),
                 ],
               ),
             );

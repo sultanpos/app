@@ -37,7 +37,7 @@ class SColumnAction extends StatelessWidget {
         }).toList(),
         child: Text(
           "aksi",
-          style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.blue, fontSize: 12),
+          style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Theme.of(context).primaryColor),
         ),
       ),
     );

@@ -72,6 +72,11 @@ android {
             applicationIdSuffix ".dev"
             versionNameSuffix " Dev"
         }
+        local {
+            dimension "version"
+            applicationIdSuffix ".devlocal"
+            versionNameSuffix " DevLocal"
+        }
     }
 }
 

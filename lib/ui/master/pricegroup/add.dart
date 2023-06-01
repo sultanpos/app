@@ -6,6 +6,8 @@ import 'package:sultanpos/state/pricegroup.dart';
 import 'package:sultanpos/ui/theme.dart';
 import 'package:sultanpos/ui/util/textformatter.dart';
 import 'package:sultanpos/ui/widget/basewindow.dart';
+import 'package:sultanpos/ui/widget/button.dart';
+import 'package:sultanpos/ui/widget/labelfield.dart';
 import 'package:sultanpos/ui/widget/showerror.dart';
 
 class PriceGroupAddWidget extends StatelessWidget {
@@ -16,7 +18,8 @@ class PriceGroupAddWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BaseWindowWidget(
       title: title,
-      height: 300,
+      icon: Icons.attach_money,
+      height: 450,
       width: 350,
       child: ChangeNotifierProvider.value(
         value: AppState().priceGroupState,
@@ -26,67 +29,69 @@ class PriceGroupAddWidget extends StatelessWidget {
             return ReactiveForm(
               formGroup: AppState().priceGroupState.form,
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  const LabelField('Nama Group Harga'),
                   ReactiveTextField(
                     formControlName: 'name',
                     autofocus: true,
                     inputFormatters: [UpperCaseTextFormatter()],
                     decoration: const InputDecoration(
                       hintText: "Masukkan nama group harga",
-                      labelText: "Nama Group Harga",
                     ),
                     textInputAction: TextInputAction.next,
                   ),
                   SizedBox(
                     height: STheme().widgetSpace,
                   ),
+                  const LabelField('Keterangan'),
                   ReactiveTextField(
                     formControlName: 'description',
                     decoration: const InputDecoration(
                       hintText: "Masukkan keterangan",
-                      labelText: "Keterangan",
                     ),
                     textInputAction: TextInputAction.next,
                   ),
                   SizedBox(
                     height: STheme().widgetSpace,
                   ),
+                  const LabelField('Keterangan public'),
                   ReactiveTextField(
                     formControlName: 'publicDescription',
                     decoration: const InputDecoration(
                       hintText: "Masukkan keterangan public",
-                      labelText: "Keterangan public",
                     ),
                     onSubmitted: (c) => save(ctx),
                   ),
-                  const Expanded(
-                    child: SizedBox(),
-                  ),
+                  const Spacer(),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      ElevatedButton(
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
-                          ),
+                      Expanded(
+                        child: SButton(
+                          positive: false,
+                          label: "Batal",
                           onPressed: loading
                               ? null
                               : () {
                                   Navigator.of(ctx).pop();
                                 },
-                          child: const Text("Batal")),
+                        ),
+                      ),
                       const SizedBox(
                         width: 8,
                       ),
-                      ElevatedButton(
+                      Expanded(
+                        child: SButton(
+                          label: "Simpan",
                           onPressed: loading
                               ? null
                               : () async {
                                   save(ctx);
                                 },
-                          child: Text(loading ? "Menyimpan..." : "Simpan")),
+                        ),
+                      ),
                     ],
-                  )
+                  ),
                 ],
               ),
             );
