@@ -7,6 +7,8 @@ import 'package:sultanpos/model/partner.dart';
 import 'package:sultanpos/model/unit.dart';
 import 'package:sultanpos/state/app.dart';
 
+import 'form/reactivecustomdropdown.dart';
+
 class DropdownRepo<T extends BaseModel, R> extends StatefulWidget {
   final String formControlName;
   final bool? autoFocus;
@@ -44,7 +46,7 @@ class _DropdownRepoState<T extends BaseModel, R> extends State<DropdownRepo<T, R
 
   @override
   Widget build(BuildContext context) {
-    return ReactiveDropdownField(
+    return SReactiveCustomDropdown(
       autofocus: widget.autoFocus ?? false,
       formControlName: widget.formControlName,
       decoration: widget.decoration,
