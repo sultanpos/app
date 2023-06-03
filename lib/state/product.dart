@@ -30,18 +30,18 @@ class ProductState extends CrudState<ProductModel> {
     DiscountMargin(0, 0, 0),
     DiscountMargin(0, 0, 0),
   ];
-  final fgProductType = FormControl<String>(validators: [Validators.required], touched: true);
-  final fgBarcode = FormControl<String>(validators: [Validators.required], touched: true);
-  final fgName = FormControl<String>(validators: [Validators.required], touched: true);
+  final fgProductType = FormControl<String>(validators: [Validators.required], touched: false);
+  final fgBarcode = FormControl<String>(validators: [Validators.required], touched: false);
+  final fgName = FormControl<String>(validators: [Validators.required], touched: false);
   final fgDescription = FormControl<String>();
-  final fgUnitId = FormControl<int>(validators: [Validators.required], touched: true);
-  final fgCategoryId = FormControl<int>(validators: [Validators.required], touched: true);
-  final fgPartnerId = FormControl<int>(validators: [Validators.required], touched: true);
+  final fgUnitId = FormControl<int>(validators: [Validators.required], touched: false);
+  final fgCategoryId = FormControl<int>(validators: [Validators.required], touched: false);
+  final fgPartnerId = FormControl<int>(validators: [Validators.required], touched: false);
   final fgBuyPrice = FormControl<String>();
-  final fgCalculateStock = FormControl<bool>();
-  final fgSellable = FormControl<bool>();
-  final fgBuyable = FormControl<bool>();
-  final fgEditablePrice = FormControl<bool>();
+  final fgCalculateStock = FormControl<bool>(value: true);
+  final fgSellable = FormControl<bool>(value: true);
+  final fgBuyable = FormControl<bool>(value: true);
+  final fgEditablePrice = FormControl<bool>(value: false);
   final fgStock = FormControl<String>();
   final List<CountSellDisc> csd = [
     CountSellDisc(FormControl<String>(disabled: true, value: "1"), FormControl<String>(), FormControl<String>()),
@@ -204,13 +204,13 @@ class ProductState extends CrudState<ProductModel> {
       fgDescription.value ?? '',
       true, //fValue<bool>('allBranch', true),
       '', //fValue<String>('mainImage', ''),
-      fgCalculateStock.value ?? true,
+      fgCalculateStock.value ?? false,
       fgProductType.value ?? '',
       fgUnitId.value ?? 0,
       fgPartnerId.value ?? 0,
       fgCategoryId.value ?? 0,
-      fgSellable.value ?? true,
-      fgBuyable.value ?? true,
+      fgSellable.value ?? false,
+      fgBuyable.value ?? false,
       fgEditablePrice.value ?? false,
       false, //fValue<bool>('useSn', false),
       ProductPriceInsertModel.fromJson(priceMap),
@@ -220,6 +220,15 @@ class ProductState extends CrudState<ProductModel> {
   resetAddAgain() {
     fgName.updateValue('');
     fgBarcode.updateValue('');
+    fgStock.updateValue('');
+    fgBuyPrice.updateValue('');
+    for (int i = 0; i < 5; i++) {
+      csd[i].count.updateValue('');
+      csd[i].sell.updateValue('');
+      csd[i].discount.updateValue('');
+    }
+    fgName.markAsUntouched();
+    fgBarcode.markAsUntouched();
     fgBarcode.focus();
   }
 
@@ -230,6 +239,15 @@ class ProductState extends CrudState<ProductModel> {
 
   removePrice(int index) {
     priceCounter--;
+    for (int i = 0; i < 5; i++) {
+      if (i >= index) {
+        final j = i + 1;
+        csd[i].count.updateValue(i < priceCounter ? csd[j].count.value : '');
+        csd[i].sell.updateValue(i < priceCounter ? csd[j].sell.value : '');
+        csd[i].discount.updateValue(i < priceCounter ? csd[j].discount.value : '');
+      }
+    }
+    //form.updateValue(priceMap, updateParent: true, emitEvent: true);
     notifyListeners();
   }
 

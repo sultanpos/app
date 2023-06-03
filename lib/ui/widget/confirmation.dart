@@ -3,13 +3,21 @@ import 'package:sultanpos/ui/theme.dart';
 import 'package:sultanpos/ui/widget/basewindow.dart';
 import 'package:sultanpos/ui/widget/button.dart';
 
-showConfirmation(BuildContext ctx, {required String title, required String message}) {
+showBaseConfirmation(
+  BuildContext ctx, {
+  required String title,
+  required String message,
+  IconData? icon,
+  String? negativeLabel,
+  String? positiveLabel,
+  Color? positiveColor,
+}) {
   return showDialog<bool>(
     context: ctx,
     builder: (context) {
       return BaseWindowWidget(
         title: title,
-        icon: Icons.report_problem,
+        icon: icon ?? Icons.report_problem,
         height: 250,
         width: 350,
         child: Column(
@@ -22,7 +30,7 @@ showConfirmation(BuildContext ctx, {required String title, required String messa
                 Expanded(
                   child: SButton(
                     positive: false,
-                    label: "Batal",
+                    label: negativeLabel ?? "Batal",
                     onPressed: () {
                       Navigator.pop(context, false);
                     },
@@ -38,8 +46,8 @@ showConfirmation(BuildContext ctx, {required String title, required String messa
                       onPressed: () async {
                         Navigator.pop(context, true);
                       },
-                      style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                      child: const Text("Lanjutkan"),
+                      style: ElevatedButton.styleFrom(backgroundColor: positiveColor),
+                      child: Text(positiveLabel ?? "Lanjutkan"),
                     ),
                   ),
                 ),
@@ -47,19 +55,22 @@ showConfirmation(BuildContext ctx, {required String title, required String messa
             ),
           ],
         ),
-        /*actions: [
-          TextButton(
-              onPressed: () {
-                Navigator.pop(context, false);
-              },
-              child: const Text('Batal')),
-          TextButton(
-              onPressed: () {
-                Navigator.pop(context, true);
-              },
-              child: const Text('Lanjutkan')),
-        ],*/
       );
     },
+  );
+}
+
+showConfirmation(BuildContext ctx, {required String title, required String message}) {
+  return showBaseConfirmation(ctx, title: title, message: message, positiveColor: Colors.red);
+}
+
+showAddProductSuccessConfirmation(BuildContext ctx, {required String title, required String message}) {
+  return showBaseConfirmation(
+    ctx,
+    title: title,
+    message: message,
+    icon: Icons.info,
+    negativeLabel: "Selesai",
+    positiveLabel: 'Tambah lagi',
   );
 }

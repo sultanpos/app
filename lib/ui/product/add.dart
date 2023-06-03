@@ -8,15 +8,23 @@ import 'package:sultanpos/ui/theme.dart';
 import 'package:sultanpos/ui/util/textformatter.dart';
 import 'package:sultanpos/ui/widget/button.dart';
 import 'package:sultanpos/ui/widget/chip.dart';
+import 'package:sultanpos/ui/widget/confirmation.dart';
 import 'package:sultanpos/ui/widget/dropdown.dart';
 import 'package:sultanpos/ui/widget/form/reactivecheckbox.dart';
 import 'package:sultanpos/ui/widget/labelfield.dart';
 import 'package:sultanpos/ui/widget/showerror.dart';
 import 'package:sultanpos/ui/widget/space.dart';
 
-class AddProductWidget extends StatelessWidget {
+class AddProductWidget extends StatefulWidget {
   final String title;
   const AddProductWidget({Key? key, required this.title}) : super(key: key);
+
+  @override
+  State<AddProductWidget> createState() => _AddProductWidgetState();
+}
+
+class _AddProductWidgetState extends State<AddProductWidget> {
+  ScrollController scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +39,7 @@ class AddProductWidget extends StatelessWidget {
           Row(
             children: [
               Text(
-                state.current == null ? title : 'Ubah ${state.current!.name}',
+                state.current == null ? widget.title : 'Ubah ${state.current!.name}',
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               const Spacer(),
@@ -41,7 +49,7 @@ class AddProductWidget extends StatelessWidget {
                     AppState().productRootState.closeTab(state.getId());
                   },
                   label: "Batal"),
-              const SHSpace(),
+              const SHSpaceSmall(),
               SButton(
                 onPressed: loading
                     ? null
@@ -49,15 +57,6 @@ class AddProductWidget extends StatelessWidget {
                         save(context, state);
                       },
                 label: loading ? "Menyimpan..." : "Simpan",
-              ),
-              const SHSpace(),
-              SButton(
-                onPressed: loading
-                    ? null
-                    : () async {
-                        save(context, state);
-                      },
-                label: loading ? "Menyimpan..." : "Simpan & Lagi",
               ),
             ],
           ),
@@ -70,6 +69,7 @@ class AddProductWidget extends StatelessWidget {
                 borderRadius: const BorderRadius.all(Radius.circular(8)),
               ),
               child: SingleChildScrollView(
+                controller: scrollController,
                 child: ReactiveForm(
                   formGroup: state.form,
                   child: Column(
@@ -365,6 +365,10 @@ class AddProductWidget extends StatelessWidget {
                               label: "Tambah Harga",
                               onPressed: () {
                                 state.addPrice();
+                                Future.delayed(const Duration(milliseconds: 50)).then((value) {
+                                  scrollController.animateTo(scrollController.offset + 500,
+                                      duration: const Duration(milliseconds: 500), curve: Curves.ease);
+                                });
                               },
                             ),
                         ],
@@ -384,9 +388,17 @@ class AddProductWidget extends StatelessWidget {
     try {
       await state.save();
       if (state.current == null) {
-        state.resetAddAgain();
-        // ignore: use_build_context_synchronously
-        showSuccess(context, title: "Berhasil menyimpan", message: "Barang telah ditambahkan");
+        final result =
+            // ignore: use_build_context_synchronously
+            await showAddProductSuccessConfirmation(context, title: 'Berhasil', message: 'Barang telah ditambahkan');
+        if (result) {
+          state.resetAddAgain();
+          Future.delayed(const Duration(milliseconds: 50)).then((value) {
+            scrollController.animateTo(-1, duration: const Duration(milliseconds: 500), curve: Curves.ease);
+          });
+        } else {
+          AppState().productRootState.closeTab('add');
+        }
       } else {
         // ignore: use_build_context_synchronously
         showSuccess(context, title: "Berhasil menyimpan", message: "Barang telah diubah");
