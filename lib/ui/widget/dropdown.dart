@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:reactive_forms/reactive_forms.dart';
 import 'package:sultanpos/model/base.dart';
 import 'package:sultanpos/model/category.dart';
 import 'package:sultanpos/model/listresult.dart';
@@ -113,7 +112,7 @@ class DropdownProductType extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ReactiveDropdownField<String>(
+    return SReactiveCustomDropdown<String>(
       autofocus: autoFocus ?? false,
       formControlName: formControlName,
       decoration: inputDecoration ?? const InputDecoration(),

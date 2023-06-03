@@ -3,9 +3,9 @@ import 'package:sultanpos/model/base.dart';
 import 'package:sultanpos/model/category.dart';
 import 'package:sultanpos/state/crud.dart';
 
-class CategoryState extends CrudState<CategoryModel> {
-  final fgName = FormControl<String>(validators: [Validators.required], touched: true);
-  final fgCode = FormControl<String>(validators: [Validators.required]);
+class CategoryState extends CrudStateWithList<CategoryModel> {
+  final fgName = FormControl<String>(validators: [Validators.required], touched: false);
+  final fgCode = FormControl<String>(validators: [Validators.required], touched: false);
   final fgDescription = FormControl<String>();
   final fgParentId = FormControl<int>();
 

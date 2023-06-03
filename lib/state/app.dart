@@ -14,7 +14,7 @@ import 'package:sultanpos/state/master.dart';
 import 'package:sultanpos/state/navigation.dart';
 import 'package:sultanpos/state/partner.dart';
 import 'package:sultanpos/state/pricegroup.dart';
-import 'package:sultanpos/state/product.dart';
+import 'package:sultanpos/state/productroot.dart';
 import 'package:sultanpos/state/purchase.dart';
 import 'package:sultanpos/state/share.dart';
 import 'package:sultanpos/state/unit.dart';
@@ -33,7 +33,7 @@ class AppState {
   late AuthState authState;
   late NavigationState navState;
   late ShareState shareState;
-  late ProductState productState;
+  late ProductRootState productRootState;
   late MasterState masterState;
   late CashierState cashierState;
   late UnitState unitState;
@@ -55,7 +55,7 @@ class AppState {
     navState = NavigationState();
     authState = AuthState(httpAPI);
     shareState = ShareState(httpAPI);
-    productState = ProductState(httpAPI);
+    productRootState = ProductRootState(httpAPI);
     masterState = MasterState(httpAPI);
     cashierState = CashierState(httpAPI);
     unitState = UnitState(httpAPI);

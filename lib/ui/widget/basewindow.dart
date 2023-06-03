@@ -19,7 +19,7 @@ class BaseWindowWidget extends StatelessWidget {
         focusNode: FocusNode(),
         onKeyEvent: (value) {
           if (value.logicalKey == LogicalKeyboardKey.escape) {
-            Navigator.pop(context);
+            Navigator.pop(context, false);
           }
         },
         child: Container(
@@ -41,7 +41,7 @@ class BaseWindowWidget extends StatelessWidget {
                   IconButton(
                     icon: const Icon(Icons.close),
                     onPressed: () {
-                      Navigator.of(context).pop();
+                      Navigator.pop(context, false);
                     },
                   ),
                 ],

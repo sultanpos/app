@@ -17,9 +17,9 @@ class AuthState extends BaseState {
   AuthState(HttpAPI httpAPI) : super(httpAPI);
 
   final loginForm = FormGroup({
-    'username': FormControl<String>(validators: [Validators.required], touched: true),
-    'password': FormControl<String>(validators: [Validators.required], touched: true),
-    'remember': FormControl<bool>(touched: true),
+    'username': FormControl<String>(validators: [Validators.required], touched: false),
+    'password': FormControl<String>(validators: [Validators.required], touched: false),
+    'remember': FormControl<bool>(touched: false),
   });
 
   resetForm() {

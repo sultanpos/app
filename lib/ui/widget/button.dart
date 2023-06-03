@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sultanpos/ui/theme.dart';
 
 class SButton extends StatelessWidget {
   final VoidCallback? onPressed;
@@ -11,8 +12,8 @@ class SButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: height ?? 40,
-      width: width ?? double.infinity,
+      height: height ?? STheme().buttonHeight,
+      width: width,
       child: ElevatedButton(
         onPressed: onPressed,
         style: positive

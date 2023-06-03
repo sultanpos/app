@@ -21,6 +21,7 @@ class CountSellDisc {
 }
 
 class ProductState extends CrudState<ProductModel> {
+  String? _id;
   int priceCounter = 1;
   final List<DiscountMargin> discountMargins = [
     DiscountMargin(0, 0, 0),
@@ -94,6 +95,10 @@ class ProductState extends CrudState<ProductModel> {
     }
   }
 
+  String getId() {
+    return _id ?? 'add';
+  }
+
   calculateDisc() {
     final buy = moneyValue(fgBuyPrice.value ?? '0');
     for (int i = 0; i < 5; i++) {
@@ -118,6 +123,7 @@ class ProductState extends CrudState<ProductModel> {
 
   @override
   prepareEditForm(ProductModel value) {
+    _id = '${value.id}';
     final valueMap = {
       'name': value.name,
       'barcode': value.barcode,
@@ -222,8 +228,13 @@ class ProductState extends CrudState<ProductModel> {
     notifyListeners();
   }
 
-  removePrice() {
+  removePrice(int index) {
     priceCounter--;
     notifyListeners();
+  }
+
+  @override
+  afterSaveSuccess() {
+    AppState().productRootState.productList.load(refresh: true);
   }
 }

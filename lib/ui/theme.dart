@@ -11,9 +11,13 @@ class STheme {
 
   late InputDecoration defInputDecoration;
   late double widgetSpace;
+  late double buttonHeight;
+  late double padding;
 
   init() {
     widgetSpace = 16;
+    buttonHeight = 40;
+    padding = 8;
     defInputDecoration = const InputDecoration(
       isDense: true,
       filled: true,

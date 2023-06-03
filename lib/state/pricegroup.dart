@@ -3,7 +3,7 @@ import 'package:sultanpos/model/base.dart';
 import 'package:sultanpos/model/pricegroup.dart';
 import 'package:sultanpos/state/crud.dart';
 
-class PriceGroupState extends CrudState<PriceGroupModel> {
+class PriceGroupState extends CrudStateWithList<PriceGroupModel> {
   final fgName = FormControl<String>(validators: [Validators.required], touched: true);
   final fgDescription = FormControl<String>();
   final fgPublicDescription = FormControl<String>();

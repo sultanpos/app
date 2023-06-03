@@ -51,7 +51,7 @@ class PurchaseEditState extends ChangeNotifier {
   }
 }
 
-class PurchaseState extends CrudState<PurchaseModel> {
+class PurchaseState extends CrudStateWithList<PurchaseModel> {
   PurchaseState(super.httpAPI) : super(path: '/purchase', creator: PurchaseModel.fromJson) {
     form = FormGroup({});
   }

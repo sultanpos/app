@@ -91,13 +91,10 @@ class _LoginWidgetState extends State<LoginWidget> {
                 const SizedBox(
                   height: 16,
                 ),
-                SizedBox(
-                  height: 40,
+                SButton(
                   width: double.infinity,
-                  child: SButton(
-                    onPressed: isLoading ? null : () => _doLogin(context),
-                    label: isLoading ? "Loading..." : "Masuk",
-                  ),
+                  onPressed: isLoading ? null : () => _doLogin(context),
+                  label: isLoading ? "Loading..." : "Masuk",
                 ),
                 const SizedBox(
                   height: 32,
@@ -105,6 +102,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                 const LabelField('Belum punya akun?'),
                 SButton(
                   label: 'Daftar',
+                  width: double.infinity,
                   positive: false,
                   onPressed: () {},
                 ),

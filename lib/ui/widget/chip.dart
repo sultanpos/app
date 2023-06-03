@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 class SChip extends StatelessWidget {
   final Color color;
   final String label;
-  const SChip({Key? key, required this.color, required this.label}) : super(key: key);
+  final double? fontSize;
+  const SChip({Key? key, required this.color, required this.label, this.fontSize}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +13,7 @@ class SChip extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 8),
       child: Text(
         label,
-        style: const TextStyle(fontSize: 12),
+        style: TextStyle(fontSize: fontSize ?? 12),
       ),
     );
   }

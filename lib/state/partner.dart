@@ -5,7 +5,7 @@ import 'package:sultanpos/state/app.dart';
 import 'package:sultanpos/state/crud.dart';
 import 'package:sultanpos/validator/phone.dart';
 
-class PartnerState extends CrudState<PartnerModel> {
+class PartnerState extends CrudStateWithList<PartnerModel> {
   final fgName = FormControl<String>(validators: [Validators.required], touched: true);
   final fgIsCustomer = FormControl<bool>();
   final fgIsSupplier = FormControl<bool>();

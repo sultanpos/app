@@ -8,13 +8,11 @@ abstract class CrudState<T extends BaseModel> extends BaseState {
   final String path;
   final T Function(Map<String, dynamic> json) creator;
 
-  ListHttpState<T> listData;
   bool loading = false;
   T? current;
   late FormGroup form;
 
-  CrudState(super.httpAPI, {required this.path, required this.creator})
-      : listData = ListHttpState<T>(httpAPI, path, creator);
+  CrudState(super.httpAPI, {required this.path, required this.creator});
 
   resetForm() {
     form.reset();
@@ -30,6 +28,9 @@ abstract class CrudState<T extends BaseModel> extends BaseState {
 
   prepareEditForm(T value);
 
+  BaseModel prepareInsertModel();
+  BaseModel prepareUpdateModel();
+
   save() async {
     if (!form.valid) throw 'form tidak valid';
     loading = true;
@@ -42,7 +43,7 @@ abstract class CrudState<T extends BaseModel> extends BaseState {
       }
       loading = false;
       notifyListeners();
-      listData.load(refresh: true);
+      afterSaveSuccess();
     } on ErrorResponse catch (e) {
       loading = false;
       notifyListeners();
@@ -54,15 +55,32 @@ abstract class CrudState<T extends BaseModel> extends BaseState {
     }
   }
 
-  BaseModel prepareInsertModel();
-  BaseModel prepareUpdateModel();
-
   remove(int id) async {
     try {
       await httpAPI.delete('$path/$id');
-      listData.load(refresh: true);
+      afterRemoveSuccess();
     } on ErrorResponse catch (e) {
       throw e.message;
     }
+  }
+
+  afterSaveSuccess() {}
+  afterRemoveSuccess() {}
+}
+
+abstract class CrudStateWithList<T extends BaseModel> extends CrudState<T> {
+  ListHttpState<T> listData;
+
+  CrudStateWithList(super.httpAPI, {required super.path, required super.creator})
+      : listData = ListHttpState<T>(httpAPI, path, creator);
+
+  @override
+  afterSaveSuccess() {
+    listData.load(refresh: true);
+  }
+
+  @override
+  afterRemoveSuccess() {
+    listData.load(refresh: true);
   }
 }

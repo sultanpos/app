@@ -34,13 +34,6 @@ class _AppState extends State<App> {
           border: OutlineInputBorder(gapPadding: 0, borderSide: BorderSide(width: 0)),
           contentPadding: EdgeInsets.all(12),
         ),
-        textTheme: const TextTheme(
-          titleLarge: TextStyle(fontSize: 18),
-          titleMedium: TextStyle(fontSize: 14),
-          labelLarge: TextStyle(fontSize: 14),
-          bodyLarge: TextStyle(fontSize: 14),
-          bodyMedium: TextStyle(fontSize: 14),
-        ),
       ),
       initial: AdaptiveThemeMode.dark,
       builder: (theme, darkTheme) => MaterialApp(

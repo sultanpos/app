@@ -3,7 +3,7 @@ import 'package:sultanpos/model/base.dart';
 import 'package:sultanpos/model/unit.dart';
 import 'package:sultanpos/state/crud.dart';
 
-class UnitState extends CrudState<UnitModel> {
+class UnitState extends CrudStateWithList<UnitModel> {
   final fgName = FormControl<String>(validators: [Validators.required], touched: true);
   final fgDescription = FormControl<String>();
 
