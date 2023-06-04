@@ -102,8 +102,6 @@ Map<String, dynamic> _$PurchaseUpdateModelToJson(
 
 PurchaseItemModel _$PurchaseItemModelFromJson(Map<String, dynamic> json) =>
     PurchaseItemModel(
-      json['public_id'] as String,
-      ProductModel.fromJson(json['product'] as Map<String, dynamic>),
       json['amount'] as int,
       json['buy_price'] as int,
       json['price'] as int,
@@ -112,16 +110,14 @@ PurchaseItemModel _$PurchaseItemModelFromJson(Map<String, dynamic> json) =>
       json['discount'] as int,
       json['total'] as int,
       json['note'] as String,
-      json['serial_stock'] == null
+      json['serial_stock_id'] as int,
+      json['product'] == null
           ? null
-          : SerialStockModel.fromJson(
-              json['serial_stock'] as Map<String, dynamic>),
+          : ProductModel.fromJson(json['product'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$PurchaseItemModelToJson(PurchaseItemModel instance) =>
     <String, dynamic>{
-      'public_id': instance.publicId,
-      'product': instance.product,
       'amount': instance.amount,
       'buy_price': instance.buyPrice,
       'price': instance.price,
@@ -130,5 +126,48 @@ Map<String, dynamic> _$PurchaseItemModelToJson(PurchaseItemModel instance) =>
       'discount': instance.discount,
       'total': instance.total,
       'note': instance.note,
-      'serial_stock': instance.serialStock,
+      'serial_stock_id': instance.serialStockId,
+      'product': instance.product,
+    };
+
+PurchaseItemInsertModel _$PurchaseItemInsertModelFromJson(
+        Map<String, dynamic> json) =>
+    PurchaseItemInsertModel(
+      json['product_id'] as int,
+      json['serial_stock_id'] as int,
+      json['amount'] as int,
+      json['price'] as int,
+      json['discount_formula'] as String,
+      json['note'] as String,
+    );
+
+Map<String, dynamic> _$PurchaseItemInsertModelToJson(
+        PurchaseItemInsertModel instance) =>
+    <String, dynamic>{
+      'serial_stock_id': instance.serialStockId,
+      'product_id': instance.productId,
+      'amount': instance.amount,
+      'price': instance.price,
+      'discount_formula': instance.discountFormula,
+      'note': instance.note,
+    };
+
+PurchaseItemUpdateModel _$PurchaseItemUpdateModelFromJson(
+        Map<String, dynamic> json) =>
+    PurchaseItemUpdateModel(
+      json['product_id'] as int,
+      json['amount'] as int,
+      json['price'] as int,
+      json['discount_formula'] as String,
+      json['note'] as String,
+    );
+
+Map<String, dynamic> _$PurchaseItemUpdateModelToJson(
+        PurchaseItemUpdateModel instance) =>
+    <String, dynamic>{
+      'product_id': instance.productId,
+      'amount': instance.amount,
+      'price': instance.price,
+      'discount_formula': instance.discountFormula,
+      'note': instance.note,
     };

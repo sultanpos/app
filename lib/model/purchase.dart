@@ -141,9 +141,8 @@ class PurchaseUpdateModel extends BaseModel {
 
 @JsonSerializable()
 class PurchaseItemModel extends BaseModel {
-  @JsonKey(name: 'public_id')
-  final String publicId;
-  final ProductModel product;
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  final int? purchaseId;
   final int amount;
   @JsonKey(name: 'buy_price')
   final int buyPrice;
@@ -154,26 +153,17 @@ class PurchaseItemModel extends BaseModel {
   final int discount;
   final int total;
   final String note;
-  @JsonKey(name: 'serial_stock')
-  final SerialStockModel? serialStock;
+  @JsonKey(name: 'serial_stock_id')
+  final int serialStockId;
+  final ProductModel? product;
 
-  PurchaseItemModel(
-    this.publicId,
-    this.product,
-    this.amount,
-    this.buyPrice,
-    this.price,
-    this.subtotal,
-    this.discountFormula,
-    this.discount,
-    this.total,
-    this.note,
-    this.serialStock,
-  );
+  PurchaseItemModel(this.amount, this.buyPrice, this.price, this.subtotal, this.discountFormula, this.discount,
+      this.total, this.note, this.serialStockId, this.product,
+      {this.purchaseId});
 
   @override
   String? path() {
-    return "/purchaseitem";
+    return "/purchase/$purchaseId/item";
   }
 
   @override
@@ -181,4 +171,59 @@ class PurchaseItemModel extends BaseModel {
 
   @override
   Map<String, dynamic> toJson() => _$PurchaseItemModelToJson(this);
+}
+
+@JsonSerializable()
+class PurchaseItemInsertModel extends BaseModel {
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  final int? purchaseId;
+  @JsonKey(name: "serial_stock_id")
+  final int serialStockId;
+  @JsonKey(name: "product_id")
+  final int productId;
+  final int amount;
+  final int price;
+  @JsonKey(name: 'discount_formula')
+  final String discountFormula;
+  final String note;
+
+  PurchaseItemInsertModel(this.productId, this.serialStockId, this.amount, this.price, this.discountFormula, this.note,
+      {this.purchaseId});
+
+  @override
+  String? path() {
+    return "/purchase/$purchaseId/item";
+  }
+
+  @override
+  factory PurchaseItemInsertModel.fromJson(Map<String, dynamic> json) => _$PurchaseItemInsertModelFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => _$PurchaseItemInsertModelToJson(this);
+}
+
+@JsonSerializable()
+class PurchaseItemUpdateModel extends BaseModel {
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  final int? purchaseId;
+  @JsonKey(name: "product_id")
+  final int productId;
+  final int amount;
+  final int price;
+  @JsonKey(name: 'discount_formula')
+  final String discountFormula;
+  final String note;
+
+  PurchaseItemUpdateModel(this.productId, this.amount, this.price, this.discountFormula, this.note, {this.purchaseId});
+
+  @override
+  String? path() {
+    return "/purchase/$purchaseId/item";
+  }
+
+  @override
+  factory PurchaseItemUpdateModel.fromJson(Map<String, dynamic> json) => _$PurchaseItemUpdateModelFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => _$PurchaseItemUpdateModelToJson(this);
 }
