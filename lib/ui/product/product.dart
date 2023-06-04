@@ -30,7 +30,7 @@ class ProductRootWidget extends StatelessWidget {
               ),
               ...state.items
                   .map(
-                    (e) => VerticalMenuItem(
+                    (e) => VerticalMenuItem<String>(
                         title: e.current == null ? "BARU" : "UBAH",
                         id: e.getId(),
                         widget: () => ChangeNotifierProvider<ProductState>.value(

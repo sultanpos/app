@@ -69,6 +69,9 @@ class PurchaseListWidget extends StatelessWidget {
                   title: 'Action',
                   getWidget: (v) => SColumnAction(
                     [
+                      SColumActionItem('detail', Icons.document_scanner, () {
+                        AppState().purchaseState.open(v);
+                      }),
                       SColumActionItem('edit', Icons.edit, () {
                         AppState().purchaseState.editForm(v);
                         sShowDialog(

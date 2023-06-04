@@ -21,9 +21,11 @@ class MasterRootWidget extends StatelessWidget {
             onChanged: (value) => AppState().masterState.setCurrentId(value),
             width: 80,
             menus: [
-              VerticalMenuItem(title: 'Kategori', id: 'category', icon: Icons.account_tree, widget: () => const CategoryWidget()),
-              VerticalMenuItem(title: 'Unit', id: 'unit', icon: Icons.scale, widget: () => const UnitWidget()),
-              VerticalMenuItem(title: 'Harga', id: 'price', icon: Icons.attach_money, widget: () => const PriceGroupWidget()),
+              VerticalMenuItem<String>(
+                  title: 'Kategori', id: 'category', icon: Icons.account_tree, widget: () => const CategoryWidget()),
+              VerticalMenuItem<String>(title: 'Unit', id: 'unit', icon: Icons.scale, widget: () => const UnitWidget()),
+              VerticalMenuItem<String>(
+                  title: 'Harga', id: 'price', icon: Icons.attach_money, widget: () => const PriceGroupWidget()),
             ],
           );
         },

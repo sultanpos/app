@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-class VerticalMenuItem {
+class VerticalMenuItem<T> {
   final String title;
-  final String id;
+  final T id;
   final IconData? icon;
   final Widget Function() widget;
   final bool closable;
@@ -19,12 +19,13 @@ class VerticalMenuItem {
   });
 }
 
-class VerticalMenuItemWidget extends StatefulWidget {
-  final VerticalMenuItem item;
+class VerticalMenuItemWidget<T> extends StatefulWidget {
+  final VerticalMenuItem<T> item;
   final bool selected;
   final VoidCallback? onClick;
   final double? width;
-  const VerticalMenuItemWidget(this.item, {required this.selected, required this.onClick, this.width, Key? key}) : super(key: key);
+  const VerticalMenuItemWidget(this.item, {required this.selected, required this.onClick, this.width, Key? key})
+      : super(key: key);
 
   @override
   State<VerticalMenuItemWidget> createState() => _VerticalMenuItemWidgetState();
@@ -51,7 +52,9 @@ class _VerticalMenuItemWidgetState extends State<VerticalMenuItemWidget> {
             color: _onHover || widget.selected ? bgColor : Colors.black,
             borderRadius: const BorderRadius.only(topLeft: Radius.circular(4.0), bottomLeft: Radius.circular(4.0))),
         padding: const EdgeInsets.all(8),
-        child: widget.item.vertical ? verticalText(context) : Column(children: [Icon(widget.item.icon), Text(widget.item.title)]),
+        child: widget.item.vertical
+            ? verticalText(context)
+            : Column(children: [Icon(widget.item.icon), Text(widget.item.title)]),
       ),
     );
   }
@@ -78,12 +81,13 @@ class _VerticalMenuItemWidgetState extends State<VerticalMenuItemWidget> {
   }
 }
 
-class VerticalMenu extends StatelessWidget {
-  final List<VerticalMenuItem> menus;
+class VerticalMenu<T> extends StatelessWidget {
+  final List<VerticalMenuItem<T>> menus;
   final double? width;
-  final String currentId;
-  final Function(String) onChanged;
-  const VerticalMenu({required this.menus, this.width, required this.currentId, required this.onChanged, Key? key}) : super(key: key);
+  final T currentId;
+  final Function(T) onChanged;
+  const VerticalMenu({required this.menus, this.width, required this.currentId, required this.onChanged, Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -98,7 +102,7 @@ class VerticalMenu extends StatelessWidget {
           child: ListView(
               //crossAxisAlignment: CrossAxisAlignment.end,
               children: menus
-                  .map((e) => VerticalMenuItemWidget(
+                  .map((e) => VerticalMenuItemWidget<T>(
                         e,
                         selected: e.id == currentId,
                         width: width,
