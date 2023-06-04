@@ -9,9 +9,16 @@ part 'purchase.g.dart';
 @JsonSerializable(explicitToJson: true)
 class PurchaseModel extends BaseModel {
   final int id;
+  final DateTime date;
+  @JsonKey(name: 'ref_number')
+  final String refNumber;
   final String number;
   final String type;
   final String status;
+  @JsonKey(name: 'stock_status')
+  final String stockStatus;
+  @JsonKey(name: 'cashier_session_id')
+  final int cashierSessionId;
   @JsonKey(name: 'subtotal')
   final int subTotal;
   @JsonKey(name: 'discount_formula')
@@ -22,21 +29,32 @@ class PurchaseModel extends BaseModel {
   @JsonKey(name: 'payment_residual')
   final int paymentResidual;
   final int total;
+  final DateTime deadline;
+  final int version;
+  @JsonKey(name: 'partner_id')
+  final int partnerId;
   final BranchModel? branch;
   final PartnerModel? partner;
   final List<PurchaseItemModel>? purchaseItems;
 
   PurchaseModel(
     this.id,
+    this.date,
+    this.refNumber,
     this.number,
     this.type,
     this.status,
+    this.stockStatus,
+    this.cashierSessionId,
     this.subTotal,
     this.discountFormula,
     this.discount,
     this.paymentPaid,
     this.paymentResidual,
     this.total,
+    this.deadline,
+    this.version,
+    this.partnerId,
     this.branch,
     this.partner,
     this.purchaseItems,
@@ -59,29 +77,23 @@ class PurchaseModel extends BaseModel {
 
 @JsonSerializable()
 class PurchaseInsertModel extends BaseModel {
-  final String number;
-  final String type;
-  final String status;
+  final DateTime date;
   @JsonKey(name: 'branch_id')
   final int branchId;
   @JsonKey(name: 'partner_id')
   final int partnerId;
-  @JsonKey(name: 'user_id')
-  final int userId;
-  @JsonKey(includeIfNull: true)
-  final DateTime? deadline;
-  @JsonKey(name: 'purchase_items')
-  final List<PurchaseItemModel>? purchaseItems;
+  @JsonKey(name: 'ref_number')
+  final String refNumber;
+  final String type;
+  final DateTime deadline;
 
   PurchaseInsertModel(
-    this.number,
-    this.type,
-    this.status,
+    this.date,
     this.branchId,
     this.partnerId,
-    this.userId,
+    this.refNumber,
+    this.type,
     this.deadline,
-    this.purchaseItems,
   );
 
   @override
@@ -94,6 +106,37 @@ class PurchaseInsertModel extends BaseModel {
 
   @override
   Map<String, dynamic> toJson() => _$PurchaseInsertModelToJson(this);
+}
+
+@JsonSerializable()
+class PurchaseUpdateModel extends BaseModel {
+  final DateTime date;
+  @JsonKey(name: 'branch_id')
+  final int branchId;
+  @JsonKey(name: 'partner_id')
+  final int partnerId;
+  @JsonKey(name: 'ref_number')
+  final String refNumber;
+  final DateTime deadline;
+
+  PurchaseUpdateModel(
+    this.date,
+    this.branchId,
+    this.partnerId,
+    this.refNumber,
+    this.deadline,
+  );
+
+  @override
+  String? path() {
+    return "/purchase";
+  }
+
+  @override
+  factory PurchaseUpdateModel.fromJson(Map<String, dynamic> json) => _$PurchaseUpdateModelFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => _$PurchaseUpdateModelToJson(this);
 }
 
 @JsonSerializable()

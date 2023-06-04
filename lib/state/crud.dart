@@ -16,7 +16,7 @@ abstract class CrudState<T extends BaseModel> extends BaseState {
 
   resetForm() {
     form.reset();
-    form.markAllAsTouched();
+    form.markAsUntouched();
     current = null;
   }
 

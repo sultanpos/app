@@ -63,7 +63,6 @@ class AppState {
     partnerState = PartnerState(httpAPI);
     categoryState = CategoryState(httpAPI);
     purchaseState = PurchaseState(httpAPI);
-    await purchaseState.init();
     await AppState().authState.loadLogin();
   }
 

@@ -247,7 +247,6 @@ class ProductState extends CrudState<ProductModel> {
         csd[i].discount.updateValue(i < priceCounter ? csd[j].discount.value : '');
       }
     }
-    //form.updateValue(priceMap, updateParent: true, emitEvent: true);
     notifyListeners();
   }
 

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:nanoid/nanoid.dart';
 import 'package:sultanpos/model/purchase.dart';
 import 'package:sultanpos/state/app.dart';
+import 'package:sultanpos/ui/purchase/add.dart';
 import 'package:sultanpos/ui/widget/columnaction.dart';
 import 'package:sultanpos/ui/widget/confirmation.dart';
 import 'package:sultanpos/ui/widget/datatable.dart';
+import 'package:sultanpos/ui/widget/dialogutil.dart';
 import 'package:sultanpos/ui/widget/showerror.dart';
 import 'package:sultanpos/util/format.dart';
 
@@ -26,7 +27,15 @@ class PurchaseListWidget extends StatelessWidget {
               const Expanded(child: SizedBox()),
               ElevatedButton(
                 onPressed: () {
-                  AppState().purchaseState.addNewTab(nanoid(), 'Baru', true);
+                  AppState().purchaseState.resetForm();
+                  sShowDialog(
+                    context: context,
+                    builder: (c) {
+                      return const PurchaseAddWidget(
+                        title: "Tambah Pembelian Baru",
+                      );
+                    },
+                  );
                 },
                 child: const Text('Tambah Pembelian'),
               ),
@@ -60,13 +69,23 @@ class PurchaseListWidget extends StatelessWidget {
                   title: 'Action',
                   getWidget: (v) => SColumnAction(
                     [
-                      SColumActionItem('edit', Icons.edit, () {}),
+                      SColumActionItem('edit', Icons.edit, () {
+                        AppState().purchaseState.editForm(v);
+                        sShowDialog(
+                          context: context,
+                          builder: (c) {
+                            return const PurchaseAddWidget(title: 'Ubah pembelian');
+                          },
+                        );
+                      }),
                       SColumActionItem('hapus', Icons.delete_forever, () async {
                         final result = await showConfirmation(context,
                             title: 'Yakin hapus', message: 'Yakin untuk menghapus "${v.number}"');
                         if (result) {
                           try {
                             await AppState().purchaseState.remove(v.id);
+                            // ignore: use_build_context_synchronously
+                            showSuccess(context, title: 'Berhasil', message: 'Pembelian telah dihapus');
                           } catch (e) {
                             // ignore: use_build_context_synchronously
                             showError(context, title: 'Error menghapus', message: e.toString());
@@ -80,6 +99,11 @@ class PurchaseListWidget extends StatelessWidget {
                   id: 'number',
                   title: 'Nomor',
                   get: (v) => v.number,
+                ),
+                SDataColumn(
+                  id: 'refNumber',
+                  title: 'Nomor referensi',
+                  get: (v) => v.refNumber,
                 ),
                 SDataColumn(
                   id: 'partner',

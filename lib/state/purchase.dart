@@ -1,8 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:sultanpos/localfiledb/db.dart';
 import 'package:sultanpos/model/base.dart';
 import 'package:sultanpos/model/purchase.dart';
+import 'package:sultanpos/state/app.dart';
 import 'package:sultanpos/state/crud.dart';
 
 class PurchaseTabItem {
@@ -11,7 +10,7 @@ class PurchaseTabItem {
   PurchaseTabItem(this.id, this.title);
 }
 
-class PurchaseEditState extends ChangeNotifier {
+/*class PurchaseEditState extends ChangeNotifier {
   final String id;
   String title;
   PurchaseModel? purchase;
@@ -49,30 +48,40 @@ class PurchaseEditState extends ChangeNotifier {
       LocalFileDb().purchase.deleteById(purchase!.getId());
     }
   }
-}
+}*/
 
 class PurchaseState extends CrudStateWithList<PurchaseModel> {
+  final fgRefNumber = FormControl<String>();
+  final fgPartnerId = FormControl<int>(validators: [Validators.required], touched: false);
+  final fgDate = FormControl<DateTime>(validators: [Validators.required], touched: false);
+  final fgDeadline = FormControl<DateTime>();
+
   PurchaseState(super.httpAPI) : super(path: '/purchase', creator: PurchaseModel.fromJson) {
-    form = FormGroup({});
+    form = FormGroup({
+      'ref_number': fgRefNumber,
+      'partner_id': fgPartnerId,
+      'date': fgDate,
+      'deadline': fgDeadline,
+    });
   }
 
   String? currentId;
-  List<PurchaseEditState> items = [];
+  //List<PurchaseEditState> items = [];
 
-  init() async {
+  /*init() async {
     final pending = await LocalFileDb().purchase.getAll();
     for (int i = 0; i < pending.length; i++) {
       final purchaseState = PurchaseEditState.fromLocal(pending[i]);
       items.add(purchaseState);
     }
-  }
+  }*/
 
   setCurrentId(String curId) {
     currentId = curId;
     notifyListeners();
   }
 
-  addNewTab(String id, String title, bool newRecord) {
+  /*addNewTab(String id, String title, bool newRecord) {
     final index = items.indexWhere((element) => element.id == id);
     final purchase = PurchaseEditState(id, title: title);
     if (index < 0) items.add(purchase);
@@ -96,18 +105,40 @@ class PurchaseState extends CrudStateWithList<PurchaseModel> {
 
   PurchaseEditState getPurchaseEditState(String id) {
     return items.firstWhere((element) => element.id == id);
+  }*/
+
+  @override
+  prepareEditForm(PurchaseModel value) {
+    fgDate.updateValue(value.date.toLocal());
+    fgRefNumber.updateValue(value.refNumber);
+    fgDeadline.updateValue(value.deadline.toLocal());
+    fgPartnerId.updateValue(value.partnerId);
   }
 
   @override
-  prepareEditForm(PurchaseModel value) {}
-
-  @override
   BaseModel prepareInsertModel() {
-    throw UnimplementedError();
+    final defaultBranch = AppState().shareState.defaultBranch();
+    final now = DateTime.now().add(const Duration(days: 7));
+    return PurchaseInsertModel(
+      fgDate.value!.toUtc(),
+      defaultBranch?.id ?? 0,
+      fgPartnerId.value ?? 0,
+      fgRefNumber.value ?? '',
+      'normal',
+      fgDeadline.value?.toUtc() ?? DateTime(now.year, now.month, now.day).toUtc(),
+    );
   }
 
   @override
   BaseModel prepareUpdateModel() {
-    throw UnimplementedError();
+    final defaultBranch = AppState().shareState.defaultBranch();
+    final now = DateTime.now().add(const Duration(days: 7));
+    return PurchaseUpdateModel(
+      fgDate.value!.toUtc(),
+      defaultBranch?.id ?? 0,
+      fgPartnerId.value ?? 0,
+      fgRefNumber.value ?? '',
+      fgDeadline.value?.toUtc() ?? DateTime(now.year, now.month, now.day).toUtc(),
+    );
   }
 }

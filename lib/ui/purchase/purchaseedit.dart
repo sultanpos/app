@@ -13,7 +13,8 @@ class PurchaseEditWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final state = context.watch<PurchaseEditState>();
+    return Placeholder();
+    /*final state = context.watch<PurchaseEditState>();
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -134,6 +135,6 @@ class PurchaseEditWidget extends StatelessWidget {
           )
         ],
       ),
-    );
+    );*/
   }
 }
