@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:reactive_forms/reactive_forms.dart';
 import 'package:sultanpos/state/app.dart';
-import 'package:sultanpos/state/purchase.dart';
+import 'package:sultanpos/state/purchaseitem.dart';
+import 'package:sultanpos/ui/purchase/additem.dart';
 import 'package:sultanpos/ui/theme.dart';
-import 'package:sultanpos/ui/util/textformatter.dart';
-import 'package:sultanpos/ui/widget/dropdown.dart';
+import 'package:sultanpos/ui/widget/button.dart';
+import 'package:sultanpos/ui/widget/dialogutil.dart';
+import 'package:sultanpos/ui/widget/space.dart';
+import 'package:sultanpos/ui/widget/tilewidget.dart';
 import 'package:sultanpos/util/format.dart';
 
 class PurchaseEditWidget extends StatelessWidget {
@@ -13,7 +15,46 @@ class PurchaseEditWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Placeholder();
+    final state = context.watch<PurchaseItemState>();
+    return Padding(
+      padding: EdgeInsets.all(STheme().padding * 2),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Text(
+                "${state.purchase.number} / ${state.purchase.partner?.name}",
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              const Spacer(),
+              SButton(
+                label: 'Tambah item',
+                onPressed: () {
+                  state.resetForm();
+                  sShowDialog(
+                    context: context,
+                    builder: (c) {
+                      return ChangeNotifierProvider.value(
+                        value: state,
+                        child: const PurchaseItemAddWidget(
+                          "Tambah Item Baru",
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
+            ],
+          ),
+          const SVSpace(),
+          TileWidget(title: 'Total: ', value: 'Rp. ${formatMoney(state.purchase.total)}'),
+          Expanded(
+            child: Text("hola"),
+          ),
+        ],
+      ),
+    );
     /*final state = context.watch<PurchaseEditState>();
     return Padding(
       padding: const EdgeInsets.all(8.0),

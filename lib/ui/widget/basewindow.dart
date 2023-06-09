@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class BaseWindowWidget extends StatelessWidget {
+class BaseWindowWidget extends StatefulWidget {
   final Widget child;
   final String title;
   final double? width;
@@ -11,31 +11,43 @@ class BaseWindowWidget extends StatelessWidget {
       : super(key: key);
 
   @override
+  State<BaseWindowWidget> createState() => _BaseWindowWidgetState();
+}
+
+class _BaseWindowWidgetState extends State<BaseWindowWidget> {
+  final _focusNode = FocusNode(debugLabel: "dialog");
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final bgColor = Theme.of(context).secondaryHeaderColor;
-    return Dialog(
-      backgroundColor: bgColor,
-      child: KeyboardListener(
-        focusNode: FocusNode(),
-        onKeyEvent: (value) {
-          if (value.logicalKey == LogicalKeyboardKey.escape) {
-            Navigator.pop(context, false);
-          }
+    return CallbackShortcuts(
+      bindings: <ShortcutActivator, VoidCallback>{
+        const SingleActivator(LogicalKeyboardKey.escape): () {
+          Navigator.pop(context, false);
         },
+      },
+      child: Dialog(
+        backgroundColor: bgColor,
         child: Container(
           decoration: BoxDecoration(
             color: bgColor,
             borderRadius: const BorderRadius.all(Radius.circular(16)),
           ),
-          width: width ?? 300,
-          height: height ?? 300,
+          width: widget.width ?? 300,
+          height: widget.height ?? 300,
           padding: const EdgeInsets.all(8),
           child: Column(
             children: [
               Row(
                 children: [
                   BaseWindowIcon(
-                    icon: icon,
+                    icon: widget.icon,
                   ),
                   const Spacer(),
                   IconButton(
@@ -53,13 +65,13 @@ class BaseWindowWidget extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 16.0),
                 child: Align(
                   alignment: Alignment.centerLeft,
-                  child: Text(title, style: Theme.of(context).textTheme.titleLarge),
+                  child: Text(widget.title, style: Theme.of(context).textTheme.titleLarge),
                 ),
               ),
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: child,
+                  child: widget.child,
                 ),
               ),
             ],

@@ -62,6 +62,9 @@ class PurchaseListWidget extends StatelessWidget {
           ),
           Expanded(
             child: SDataTable<PurchaseModel>(
+              onDoubleClicked: (value) {
+                AppState().purchaseState.open(value);
+              },
               columns: [
                 SDataColumn(
                   width: 80,

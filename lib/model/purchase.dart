@@ -2,7 +2,6 @@ import 'package:sultanpos/model/base.dart';
 import 'package:sultanpos/model/branch.dart';
 import 'package:sultanpos/model/partner.dart';
 import 'package:sultanpos/model/product.dart';
-import 'package:sultanpos/model/stock.dart';
 
 part 'purchase.g.dart';
 

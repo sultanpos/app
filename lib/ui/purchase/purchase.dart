@@ -30,7 +30,7 @@ class PurchaseWidget extends StatelessWidget {
             onChanged: (value) => AppState().purchaseState.setCurrentId(value),
             width: 60,
             menus: [
-              VerticalMenuItem(
+              VerticalMenuItem<int>(
                 title: 'Daftar',
                 id: 0,
                 icon: Icons.list_alt,
@@ -39,17 +39,18 @@ class PurchaseWidget extends StatelessWidget {
               ...state.items
                   .map(
                     (e) => VerticalMenuItem<int>(
-                        title: "Edit",
-                        id: e.purchase.id,
-                        widget: () => ChangeNotifierProvider<PurchaseItemState>.value(
-                              value: state.getItemState(e.purchase.id),
-                              child: const PurchaseEditWidget(),
-                            ),
-                        vertical: true,
-                        closable: true,
-                        onCloseClicked: () {
-                          state.closeTab(e.purchase.id);
-                        }),
+                      title: e.purchase.number,
+                      id: e.purchase.id,
+                      widget: () => ChangeNotifierProvider<PurchaseItemState>.value(
+                        value: state.getItemState(e.purchase.id),
+                        child: const PurchaseEditWidget(),
+                      ),
+                      vertical: true,
+                      closable: e.purchase.id == state.currentId,
+                      onCloseClicked: () {
+                        state.closeTab(e.purchase.id);
+                      },
+                    ),
                   )
                   .toList(),
             ],

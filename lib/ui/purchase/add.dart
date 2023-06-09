@@ -59,11 +59,13 @@ class _PurchaseAddWidgetState extends State<PurchaseAddWidget> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const LabelField('Tanggal pembelian'),
-                          ReactiveDatePicker(
+                          SReactiveDatePicker(
+                            autoFocus: true,
                             formControlName: 'date',
                             firstDate: DateTime(2000),
                             lastDate: DateTime(2100),
-                            builder: reactiveDatePickerBuilder("date", "Pilih tanggal", _focusNode),
+                            hint: "Pilih tanggal pembelian",
+                            //builder: reactiveDatePickerBuilder("date", "Pilih tanggal", autoFocus: true),
                           ),
                           SizedBox(
                             height: STheme().widgetSpace,
@@ -88,11 +90,11 @@ class _PurchaseAddWidgetState extends State<PurchaseAddWidget> {
                             height: STheme().widgetSpace,
                           ),
                           const LabelField('Tenggat waktu pembayaran'),
-                          ReactiveDatePicker(
+                          SReactiveDatePicker(
                             formControlName: 'deadline',
                             firstDate: DateTime(2000),
                             lastDate: DateTime(2100),
-                            builder: reactiveDatePickerBuilder("deadline", "Pilih tanggal tenggat", _focusNode2),
+                            hint: "Pilih tanggal tenggat",
                           ),
                         ],
                       ),

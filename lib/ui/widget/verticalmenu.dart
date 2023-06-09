@@ -62,19 +62,20 @@ class _VerticalMenuItemWidgetState extends State<VerticalMenuItemWidget> {
   Widget verticalText(BuildContext context) {
     return RotatedBox(
       quarterTurns: 3,
-      child: Column(
+      child: Row(
         children: [
           Text(widget.item.title),
-          SizedBox(
-            width: 40,
-            child: TextButton(
-              onPressed: widget.item.onCloseClicked,
-              child: const Icon(
-                Icons.close,
-                color: Colors.red,
+          if (widget.item.closable)
+            SizedBox(
+              width: 40,
+              child: TextButton(
+                onPressed: widget.item.onCloseClicked,
+                child: const Icon(
+                  Icons.close,
+                  color: Colors.red,
+                ),
               ),
-            ),
-          )
+            )
         ],
       ),
     );
