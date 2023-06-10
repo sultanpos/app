@@ -2,8 +2,8 @@ import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sultanpos/state/app.dart';
-import 'package:sultanpos/ui/layout/mainlayout.dart';
 import 'package:sultanpos/ui/login/loginwidget.dart';
+import 'package:sultanpos/ui/widget/windowbutton.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
