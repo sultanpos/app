@@ -1,9 +1,14 @@
 import 'package:sultanpos/model/branch.dart';
 import 'package:sultanpos/model/pricegroup.dart';
+import 'package:sultanpos/repository/rest/branchrepo.dart';
+import 'package:sultanpos/repository/rest/pricegroup.dart';
+import 'package:sultanpos/repository/rest/restrepository.dart';
 import 'package:sultanpos/state/base.dart';
 
 class ShareState extends BaseState {
-  ShareState(super.httpAPI);
+  final RestPriceGroupRepo priceGroupRepo;
+  final RestBranchRepo branchRepo;
+  ShareState({required this.priceGroupRepo, required this.branchRepo});
 
   PriceGroupModel? defaultPriceGroup;
   List<BranchModel>? branches;
@@ -19,16 +24,12 @@ class ShareState extends BaseState {
   }
 
   getBranches() async {
-    final list = await httpAPI.query('/branch', fromJsonFunc: BranchModel.fromJson, limit: 100, offset: 0);
+    final list = await branchRepo.query(RestFilterModel(limit: 100, offset: 0));
     branches = list.data;
   }
 
   getDefaultPriceGroup() async {
-    final list =
-        await httpAPI.query('/pricegroup', fromJsonFunc: PriceGroupModel.fromJson, limit: 100, offset: 0, queryParameters: {'is_default': 'true'});
-    if (list.data.isNotEmpty) {
-      defaultPriceGroup = list.data[0];
-    }
+    defaultPriceGroup = await priceGroupRepo.defaultPriceGroup();
   }
 
   BranchModel? defaultBranch() {

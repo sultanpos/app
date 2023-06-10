@@ -3,7 +3,7 @@ import 'package:sultanpos/model/listresult.dart';
 
 abstract class BaseCRUDRepository<T extends BaseModel> {
   final T Function(Map<String, dynamic> json) creator;
-  BaseCRUDRepository(this.creator);
+  BaseCRUDRepository({required this.creator});
 
   Future insert(BaseModel data);
   Future update(int id, BaseModel data);

@@ -1,26 +1,32 @@
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:sultanpos/http/httpapi.dart';
 import 'package:sultanpos/model/auth.dart';
 import 'package:sultanpos/model/claim.dart';
 import 'package:sultanpos/model/user.dart';
 import 'package:sultanpos/preference.dart';
+import 'package:sultanpos/repository/rest/authrepo.dart';
 import 'package:sultanpos/state/app.dart';
 import 'package:sultanpos/state/base.dart';
 
 class AuthState extends BaseState {
+  final RestAuthRepo repo;
   JWTClaim? claim;
   String? refreshToken;
   UserModel? user;
   bool isLoading = false;
 
-  AuthState(HttpAPI httpAPI) : super(httpAPI);
+  final fgUsername = FormControl<String>(validators: [Validators.required], touched: false);
+  final fgPassword = FormControl<String>(validators: [Validators.required], touched: false);
+  final fgRemember = FormControl<bool>(touched: false);
+  late FormGroup loginForm;
 
-  final loginForm = FormGroup({
-    'username': FormControl<String>(validators: [Validators.required], touched: false),
-    'password': FormControl<String>(validators: [Validators.required], touched: false),
-    'remember': FormControl<bool>(touched: false),
-  });
+  AuthState({required this.repo}) {
+    loginForm = FormGroup({
+      'username': fgUsername,
+      'password': fgPassword,
+      'remember': fgRemember,
+    });
+  }
 
   resetForm() {
     loginForm.reset();
@@ -45,8 +51,7 @@ class AuthState extends BaseState {
       throw "form is not valid";
     }
     setLoading(true);
-    final result = (await httpAPI.loginWithUsernamePassword(LoginUsernamePasswordRequest.fromJson(loginForm.value)))
-        .normalizeDate();
+    final result = (await repo.loginWithUsernamePassword(fgUsername.value!, fgPassword.value!)).normalizeDate();
     _loadAccessToken(result);
     isLoading = false;
     if (loginForm.control('remember').value ?? false) {
@@ -57,11 +62,11 @@ class AuthState extends BaseState {
   }
 
   _loadAccessToken(LoginResponse token) async {
-    httpAPI.setLogin(token);
+    repo.setLogin(token);
     claim = JWTClaim.fromJson(Jwt.parseJwt(token.accessToken));
     refreshToken = token.refreshToken;
     try {
-      final userResult = await httpAPI.getOne<UserModel>('/user/${claim!.userId}', fromJsonFunc: UserModel.fromJson);
+      final userResult = await repo.getUser(claim!.userId);
       user = userResult;
       notifyListeners();
       AppState().shareState.initAll();
@@ -73,7 +78,7 @@ class AuthState extends BaseState {
   logout() async {
     claim = null;
     user = null;
-    await httpAPI.logout(refreshToken!);
+    await repo.logout(refreshToken!);
     Preference().resetLogin();
     notifyListeners();
   }

@@ -2,7 +2,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 import 'package:sultanpos/model/base.dart';
 import 'package:sultanpos/model/purchase.dart';
 import 'package:sultanpos/repository/repository.dart';
-import 'package:sultanpos/repository/restrepository.dart';
+import 'package:sultanpos/repository/rest/restrepository.dart';
 import 'package:sultanpos/state/app.dart';
 import 'package:sultanpos/state/crud.dart';
 import 'package:sultanpos/state/purchaseitem.dart';

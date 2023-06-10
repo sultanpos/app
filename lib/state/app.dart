@@ -8,12 +8,14 @@ import 'package:sultanpos/localfiledb/db.dart';
 import 'package:sultanpos/model/auth.dart';
 import 'package:sultanpos/model/category.dart';
 import 'package:sultanpos/model/partner.dart';
-import 'package:sultanpos/model/pricegroup.dart';
 import 'package:sultanpos/model/product.dart';
 import 'package:sultanpos/model/purchase.dart';
 import 'package:sultanpos/model/unit.dart';
 import 'package:sultanpos/preference.dart';
-import 'package:sultanpos/repository/restrepository.dart';
+import 'package:sultanpos/repository/rest/authrepo.dart';
+import 'package:sultanpos/repository/rest/branchrepo.dart';
+import 'package:sultanpos/repository/rest/pricegroup.dart';
+import 'package:sultanpos/repository/rest/restrepository.dart';
 import 'package:sultanpos/state/auth.dart';
 import 'package:sultanpos/state/cashier.dart';
 import 'package:sultanpos/state/category.dart';
@@ -58,24 +60,31 @@ class AppState {
     final dioInterceptor = Dio(BaseOptions(baseUrl: Flavor.baseUrl!));
     dioInterceptor.interceptors.add(myinterceptor.LogInterceptor());
     final interceptor = AuthInterceptor(dioInterceptor, "/auth/login/refresh", storeAccessToken: _tokenRefreshed);
+
+    //repo
     httpAPI = HttpAPI.create(Flavor.baseUrl!, interceptor);
+    final branchRepo = RestBranchRepo(httpApi: httpAPI);
+    final priceGroupRepo = RestPriceGroupRepo(httpApi: httpAPI);
+    final productRepo = BaseRestCRUDRepository(path: '/product', httpApi: httpAPI, creator: ProductModel.fromJson);
+    final unitRepo = BaseRestCRUDRepository(path: '/unit', httpApi: httpAPI, creator: UnitModel.fromJson);
+    final partnerRepo = BaseRestCRUDRepository(path: '/partner', httpApi: httpAPI, creator: PartnerModel.fromJson);
+    final categoryRepo = BaseRestCRUDRepository(path: '/category', httpApi: httpAPI, creator: CategoryModel.fromJson);
+    final purchaseRepo = BaseRestCRUDRepository(path: '/purchase', httpApi: httpAPI, creator: PurchaseModel.fromJson);
+
+    //state
     navState = NavigationState();
-    authState = AuthState(httpAPI);
-    shareState = ShareState(httpAPI);
-    productRootState =
-        ProductRootState(repo: RestCRUDRepository(path: '/product', httpApi: httpAPI, creator: ProductModel.fromJson));
-    masterState = MasterState(httpAPI);
-    cashierState = CashierState(httpAPI);
-    unitState = UnitState(repo: RestCRUDRepository(path: '/unit', httpApi: httpAPI, creator: UnitModel.fromJson));
-    priceGroupState = PriceGroupState(
-        repo: RestCRUDRepository(path: '/pricegroup', httpApi: httpAPI, creator: PriceGroupModel.fromJson));
-    partnerState =
-        PartnerState(repo: RestCRUDRepository(path: '/partner', httpApi: httpAPI, creator: PartnerModel.fromJson));
-    categoryState =
-        CategoryState(repo: RestCRUDRepository(path: '/category', httpApi: httpAPI, creator: CategoryModel.fromJson));
+    authState = AuthState(repo: RestAuthRepo(httpAPI));
+    shareState = ShareState(branchRepo: branchRepo, priceGroupRepo: priceGroupRepo);
+    productRootState = ProductRootState(repo: productRepo);
+    masterState = MasterState();
+    cashierState = CashierState();
+    unitState = UnitState(repo: unitRepo);
+    priceGroupState = PriceGroupState(repo: priceGroupRepo);
+    partnerState = PartnerState(repo: partnerRepo);
+    categoryState = CategoryState(repo: categoryRepo);
     purchaseState = PurchaseState(
-        repo: RestCRUDRepository(path: '/purchase', httpApi: httpAPI, creator: PurchaseModel.fromJson),
-        itemRepo: RestCRUDRepository(path: '/purchase', httpApi: httpAPI, creator: PurchaseItemModel.fromJson));
+        repo: purchaseRepo,
+        itemRepo: BaseRestCRUDRepository(path: '/purchase', httpApi: httpAPI, creator: PurchaseItemModel.fromJson));
     await AppState().authState.loadLogin();
   }
 

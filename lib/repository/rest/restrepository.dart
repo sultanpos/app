@@ -2,12 +2,10 @@ import 'package:sultanpos/http/httpapi.dart';
 import 'package:sultanpos/model/base.dart';
 import 'package:sultanpos/repository/repository.dart';
 
-class RestCRUDRepository<T extends BaseModel> extends BaseCRUDRepository<T> {
+class BaseRestCRUDRepository<T extends BaseModel> extends BaseCRUDRepository<T> {
   final HttpAPI httpApi;
   final String path;
-  RestCRUDRepository(
-      {required this.httpApi, required this.path, required T Function(Map<String, dynamic> json) creator})
-      : super(creator);
+  BaseRestCRUDRepository({required this.httpApi, required this.path, required super.creator});
 
   @override
   Future delete(int id) {
