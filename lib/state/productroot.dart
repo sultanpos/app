@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:sultanpos/http/httpapi.dart';
 import 'package:sultanpos/model/product.dart';
+import 'package:sultanpos/repository/repository.dart';
 import 'package:sultanpos/state/list.dart';
 import 'package:sultanpos/state/product.dart';
 
 class ProductRootState extends ChangeNotifier {
-  final HttpAPI httpApi;
-  ListHttpState<ProductModel> productList;
+  final BaseCRUDRepository<ProductModel> repo;
+  HttpListState<ProductModel> productList;
   String? currentId;
   List<ProductState> items = [];
 
-  ProductRootState(this.httpApi)
-      : productList = ListHttpState<ProductModel>(httpApi, "/product", ProductModel.fromJson);
+  ProductRootState({required this.repo}) : productList = HttpListState<ProductModel>(repo: repo);
 
   setCurrentId(String value) {
     currentId = value;
@@ -25,7 +24,7 @@ class ProductRootState extends ChangeNotifier {
       notifyListeners();
       return;
     }
-    items.add(ProductState(httpApi));
+    items.add(ProductState(repo: repo));
     notifyListeners();
   }
 
@@ -45,7 +44,7 @@ class ProductRootState extends ChangeNotifier {
   }
 
   editProduct(ProductModel value) {
-    final p = ProductState(httpApi);
+    final p = ProductState(repo: repo);
     p.editForm(value);
     items.add(p);
     currentId = p.getId();
@@ -53,7 +52,7 @@ class ProductRootState extends ChangeNotifier {
   }
 
   deleteProduct(int id) async {
-    await httpApi.delete('/product/$id');
+    await repo.delete(id);
     productList.load(refresh: true);
   }
 }

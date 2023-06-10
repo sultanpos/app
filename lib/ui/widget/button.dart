@@ -3,11 +3,12 @@ import 'package:sultanpos/ui/theme.dart';
 
 class SButton extends StatelessWidget {
   final VoidCallback? onPressed;
-  final String label;
+  final String? label;
   final double? height;
   final double? width;
   final bool positive;
-  const SButton({super.key, this.onPressed, required this.label, this.height, this.width, this.positive = true});
+  final Widget? child;
+  const SButton({super.key, this.onPressed, this.child, this.label, this.height, this.width, this.positive = true});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,7 @@ class SButton extends StatelessWidget {
                 backgroundColor: Colors.transparent,
                 elevation: 0,
               ),
-        child: Text(label),
+        child: label != null ? Text(label!) : child,
       ),
     );
   }

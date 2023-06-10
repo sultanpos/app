@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sultanpos/model/purchase.dart';
 import 'package:sultanpos/state/app.dart';
 import 'package:sultanpos/ui/purchase/add.dart';
+import 'package:sultanpos/ui/widget/button.dart';
 import 'package:sultanpos/ui/widget/columnaction.dart';
 import 'package:sultanpos/ui/widget/confirmation.dart';
 import 'package:sultanpos/ui/widget/datatable.dart';
@@ -25,7 +26,7 @@ class PurchaseListWidget extends StatelessWidget {
                 style: Theme.of(context).textTheme.headlineSmall,
               ),
               const Expanded(child: SizedBox()),
-              ElevatedButton(
+              SButton(
                 onPressed: () {
                   AppState().purchaseState.resetForm();
                   sShowDialog(
@@ -37,18 +38,19 @@ class PurchaseListWidget extends StatelessWidget {
                     },
                   );
                 },
-                child: const Text('Tambah Pembelian'),
+                label: 'Tambah Pembelian',
               ),
               const SizedBox(
                 width: 4,
               ),
               SizedBox(
-                width: 30,
-                child: ElevatedButton(
+                //width: 30,
+                child: SButton(
+                  positive: false,
                   onPressed: () {
                     AppState().purchaseState.listData.load(refresh: true);
                   },
-                  style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(0)),
+                  //style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(0)),
                   child: const Icon(
                     Icons.refresh,
                     size: 20,

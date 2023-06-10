@@ -1,18 +1,18 @@
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:sultanpos/model/base.dart';
 import 'package:sultanpos/model/error.dart';
-import 'package:sultanpos/state/base.dart';
+import 'package:sultanpos/repository/repository.dart';
+import 'package:flutter/material.dart';
 import 'package:sultanpos/state/list.dart';
 
-abstract class CrudState<T extends BaseModel> extends BaseState {
-  final String path;
-  final T Function(Map<String, dynamic> json) creator;
+abstract class CrudState<T extends BaseModel> extends ChangeNotifier {
+  final BaseCRUDRepository<T> repo;
 
   bool loading = false;
   T? current;
   late FormGroup form;
 
-  CrudState(super.httpAPI, {required this.path, required this.creator});
+  CrudState({required this.repo});
 
   resetForm() {
     form.reset();
@@ -37,9 +37,9 @@ abstract class CrudState<T extends BaseModel> extends BaseState {
     notifyListeners();
     try {
       if (current == null) {
-        await httpAPI.insert(prepareInsertModel());
+        await repo.insert(prepareInsertModel());
       } else {
-        await httpAPI.update(prepareUpdateModel(), (current as BaseModel).getId());
+        await repo.update((current as BaseModel).getId(), prepareUpdateModel());
       }
       loading = false;
       notifyListeners();
@@ -57,7 +57,7 @@ abstract class CrudState<T extends BaseModel> extends BaseState {
 
   remove(int id) async {
     try {
-      await httpAPI.delete('$path/$id');
+      await repo.delete(id);
       afterRemoveSuccess();
     } on ErrorResponse catch (e) {
       throw e.message;
@@ -69,10 +69,9 @@ abstract class CrudState<T extends BaseModel> extends BaseState {
 }
 
 abstract class CrudStateWithList<T extends BaseModel> extends CrudState<T> {
-  ListHttpState<T> listData;
+  HttpListState<T> listData;
 
-  CrudStateWithList(super.httpAPI, {required super.path, required super.creator})
-      : listData = ListHttpState<T>(httpAPI, path, creator);
+  CrudStateWithList({required super.repo}) : listData = HttpListState<T>(repo: repo);
 
   @override
   afterSaveSuccess() {

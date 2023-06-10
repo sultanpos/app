@@ -8,7 +8,7 @@ class PriceGroupState extends CrudStateWithList<PriceGroupModel> {
   final fgDescription = FormControl<String>();
   final fgPublicDescription = FormControl<String>();
 
-  PriceGroupState(super.httpAPI) : super(path: '/pricegroup', creator: PriceGroupModel.fromJson) {
+  PriceGroupState({required super.repo}) {
     form = FormGroup({
       'name': fgName,
       'description': fgDescription,

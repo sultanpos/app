@@ -14,7 +14,7 @@ class PartnerState extends CrudStateWithList<PartnerModel> {
   final fgEmail = FormControl<String>(validators: [Validators.email]);
   final fgNpwp = FormControl<String>();
   final fgPriceGroup = FormControl<int>();
-  PartnerState(super.httpAPI) : super(path: '/partner', creator: PartnerModel.fromJson) {
+  PartnerState({required super.repo}) {
     form = FormGroup({
       'name': fgName,
       'isCustomer': fgIsCustomer,

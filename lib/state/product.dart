@@ -51,7 +51,7 @@ class ProductState extends CrudState<ProductModel> {
     CountSellDisc(FormControl<String>(), FormControl<String>(), FormControl<String>()),
   ];
 
-  ProductState(super.httpAPI) : super(path: '/product', creator: ProductModel.fromJson) {
+  ProductState({required super.repo}) {
     form = FormGroup({
       'productType': fgProductType,
       'barcode': fgBarcode,

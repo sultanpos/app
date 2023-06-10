@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:sultanpos/ui/widget/space.dart';
 
 class BaseWindowWidget extends StatefulWidget {
   final Widget child;
@@ -49,6 +50,13 @@ class _BaseWindowWidgetState extends State<BaseWindowWidget> {
                   BaseWindowIcon(
                     icon: widget.icon,
                   ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 16.0),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(widget.title, style: Theme.of(context).textTheme.titleLarge),
+                    ),
+                  ),
                   const Spacer(),
                   IconButton(
                     icon: const Icon(Icons.close),
@@ -58,16 +66,7 @@ class _BaseWindowWidgetState extends State<BaseWindowWidget> {
                   ),
                 ],
               ),
-              const SizedBox(
-                height: 16,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 16.0),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(widget.title, style: Theme.of(context).textTheme.titleLarge),
-                ),
-              ),
+              const SVSpace(),
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),

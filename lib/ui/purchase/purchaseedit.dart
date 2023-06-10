@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sultanpos/state/app.dart';
 import 'package:sultanpos/state/purchaseitem.dart';
 import 'package:sultanpos/ui/purchase/additem.dart';
 import 'package:sultanpos/ui/theme.dart';
@@ -49,7 +48,7 @@ class PurchaseEditWidget extends StatelessWidget {
           ),
           const SVSpace(),
           TileWidget(title: 'Total: ', value: 'Rp. ${formatMoney(state.purchase.total)}'),
-          Expanded(
+          const Expanded(
             child: Text("hola"),
           ),
         ],

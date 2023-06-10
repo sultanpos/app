@@ -8,3 +8,5 @@ abstract class BaseModel {
   int getId() => 0;
   String? path() => null;
 }
+
+abstract class BaseFilterModel<T> {}

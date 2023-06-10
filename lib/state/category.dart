@@ -9,7 +9,7 @@ class CategoryState extends CrudStateWithList<CategoryModel> {
   final fgDescription = FormControl<String>();
   final fgParentId = FormControl<int>();
 
-  CategoryState(super.httpAPI) : super(path: '/category', creator: CategoryModel.fromJson) {
+  CategoryState({required super.repo}) {
     form = FormGroup({
       'name': fgName,
       'code': fgCode,

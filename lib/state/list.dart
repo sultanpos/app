@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:sultanpos/http/httpapi.dart';
 import 'package:sultanpos/model/base.dart';
 import 'package:sultanpos/model/error.dart';
 import 'package:sultanpos/model/listresult.dart';
+import 'package:sultanpos/repository/repository.dart';
+import 'package:sultanpos/repository/restrepository.dart';
 
 abstract class ListBaseState<T extends BaseModel> extends ChangeNotifier {
-  final T Function(Map<String, dynamic> json) creator;
+  final BaseCRUDRepository<T> repo;
   int page = 0;
   int rowPerPage;
   ListBase state = ListNone();
   int _cachedTotalPage = 0;
 
-  ListBaseState(this.creator, {this.rowPerPage = 50});
+  ListBaseState({required this.repo, this.rowPerPage = 50});
 
   load({int page = -1, bool refresh = false}) async {
     if (state is ListLoading) return;
@@ -56,29 +57,18 @@ abstract class ListBaseState<T extends BaseModel> extends ChangeNotifier {
   void doLoad();
 }
 
-class ListHttpState<T extends BaseModel> extends ListBaseState<T> {
-  final HttpAPI httpAPI;
-  final String path;
-
-  ListHttpState(this.httpAPI, this.path, super.creator, {super.rowPerPage = 50});
+class HttpListState<T extends BaseModel> extends ListBaseState<T> {
+  HttpListState({required super.repo});
 
   @override
   doLoad() async {
     try {
-      state = await httpAPI.query(path, fromJsonFunc: creator, limit: rowPerPage, offset: page * rowPerPage);
+      //state = await httpAPI.query(path, fromJsonFunc: creator, limit: rowPerPage, offset: page * rowPerPage);
+      state = await repo.query(RestFilterModel(limit: rowPerPage, offset: page * rowPerPage));
     } on ErrorResponse catch (e) {
       debugPrint(e.toJson().toString());
       state = ListError(e.message);
     }
-    notifyListeners();
-  }
-}
-
-class ListIsarState<T extends BaseModel> extends ListBaseState<T> {
-  ListIsarState(super.creator, {super.rowPerPage = 50});
-
-  @override
-  doLoad() async {
     notifyListeners();
   }
 }

@@ -6,7 +6,14 @@ import 'package:sultanpos/http/httpapi.dart';
 import 'package:sultanpos/http/loginterceptor.dart' as myinterceptor;
 import 'package:sultanpos/localfiledb/db.dart';
 import 'package:sultanpos/model/auth.dart';
+import 'package:sultanpos/model/category.dart';
+import 'package:sultanpos/model/partner.dart';
+import 'package:sultanpos/model/pricegroup.dart';
+import 'package:sultanpos/model/product.dart';
+import 'package:sultanpos/model/purchase.dart';
+import 'package:sultanpos/model/unit.dart';
 import 'package:sultanpos/preference.dart';
+import 'package:sultanpos/repository/restrepository.dart';
 import 'package:sultanpos/state/auth.dart';
 import 'package:sultanpos/state/cashier.dart';
 import 'package:sultanpos/state/category.dart';
@@ -55,14 +62,20 @@ class AppState {
     navState = NavigationState();
     authState = AuthState(httpAPI);
     shareState = ShareState(httpAPI);
-    productRootState = ProductRootState(httpAPI);
+    productRootState =
+        ProductRootState(repo: RestCRUDRepository(path: '/product', httpApi: httpAPI, creator: ProductModel.fromJson));
     masterState = MasterState(httpAPI);
     cashierState = CashierState(httpAPI);
-    unitState = UnitState(httpAPI);
-    priceGroupState = PriceGroupState(httpAPI);
-    partnerState = PartnerState(httpAPI);
-    categoryState = CategoryState(httpAPI);
-    purchaseState = PurchaseState(httpAPI);
+    unitState = UnitState(repo: RestCRUDRepository(path: '/unit', httpApi: httpAPI, creator: UnitModel.fromJson));
+    priceGroupState = PriceGroupState(
+        repo: RestCRUDRepository(path: '/pricegroup', httpApi: httpAPI, creator: PriceGroupModel.fromJson));
+    partnerState =
+        PartnerState(repo: RestCRUDRepository(path: '/partner', httpApi: httpAPI, creator: PartnerModel.fromJson));
+    categoryState =
+        CategoryState(repo: RestCRUDRepository(path: '/category', httpApi: httpAPI, creator: CategoryModel.fromJson));
+    purchaseState = PurchaseState(
+        repo: RestCRUDRepository(path: '/purchase', httpApi: httpAPI, creator: PurchaseModel.fromJson),
+        itemRepo: RestCRUDRepository(path: '/purchase', httpApi: httpAPI, creator: PurchaseItemModel.fromJson));
     await AppState().authState.loadLogin();
   }
 

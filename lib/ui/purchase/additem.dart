@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:sultanpos/state/purchaseitem.dart';
 import 'package:sultanpos/ui/widget/basewindow.dart';
 
 class PurchaseItemAddWidget extends StatefulWidget {
@@ -14,13 +12,13 @@ class PurchaseItemAddWidget extends StatefulWidget {
 class _PurchaseItemAddWidgetState extends State<PurchaseItemAddWidget> {
   @override
   Widget build(BuildContext context) {
-    final state = context.watch<PurchaseItemState>();
+    //final state = context.watch<PurchaseItemState>();
     return BaseWindowWidget(
       title: widget.title,
       height: 400,
       width: 300,
       icon: Icons.scale,
-      child: Text('HOLA'),
+      child: const Text('HOLA'),
     );
   }
 }

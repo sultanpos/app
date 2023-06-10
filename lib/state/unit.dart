@@ -7,7 +7,7 @@ class UnitState extends CrudStateWithList<UnitModel> {
   final fgName = FormControl<String>(validators: [Validators.required], touched: true);
   final fgDescription = FormControl<String>();
 
-  UnitState(super.httpAPI) : super(path: '/unit', creator: UnitModel.fromJson) {
+  UnitState({required super.repo}) {
     form = FormGroup({
       'name': fgName,
       'description': fgDescription,
