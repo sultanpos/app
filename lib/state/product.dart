@@ -128,9 +128,9 @@ class ProductState extends CrudState<ProductModel> {
       'name': value.name,
       'barcode': value.barcode,
       'productType': value.productType,
-      'unitId': value.unit.id,
-      'categoryId': value.category.id,
-      'partnerId': value.partner.id,
+      'unitId': value.unit?.id,
+      'categoryId': value.category?.id,
+      'partnerId': value.partner?.id,
       'sellable': value.sellable,
       'buyable': value.buyable,
       'calculateStock': value.calculateStock,
@@ -138,21 +138,25 @@ class ProductState extends CrudState<ProductModel> {
     };
     fgStock.markAsDisabled(emitEvent: false);
     fgBuyPrice.markAsDisabled(emitEvent: false);
-    final defPrice = value.prices.firstWhere(
+    final defPrice = value.prices?.firstWhere(
       (element) => element.priceGroup.isDefault,
     );
     priceCounter = 0;
-    final priceMap = defPrice.toJson();
-    for (int i = 0; i < 5; i++) {
-      if (priceMap['count$i'] > 0) {
-        priceCounter++;
-        valueMap['count$i'] = '${priceMap['count$i']}';
-        valueMap['sell$i'] = '${priceMap['price$i']}';
-        valueMap['disc$i'] = priceMap['discount_formula$i'];
+    final priceMap = defPrice?.toJson();
+    if (priceMap != null) {
+      for (int i = 0; i < 5; i++) {
+        if (priceMap['count$i'] > 0) {
+          priceCounter++;
+          valueMap['count$i'] = '${priceMap['count$i']}';
+          valueMap['sell$i'] = '${priceMap['price$i']}';
+          valueMap['disc$i'] = priceMap['discount_formula$i'];
+        }
       }
     }
-    final buyPrice = value.buyPrices.firstWhere((element) => element.branch.isDefault);
-    valueMap['buyPrice'] = '${buyPrice.buyPrice}';
+    final buyPrice = value.buyPrices?.firstWhere((element) => element.branch.isDefault);
+    if (buyPrice != null) {
+      valueMap['buyPrice'] = '${buyPrice.buyPrice}';
+    }
     form.updateValue(valueMap, updateParent: false, emitEvent: false);
     calculateDisc();
   }

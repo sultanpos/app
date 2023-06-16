@@ -20,14 +20,20 @@ ProductModel _$ProductModelFromJson(Map<String, dynamic> json) => ProductModel(
       json['buyable'] as bool,
       json['editable_price'] as bool,
       json['use_sn'] as bool,
-      UnitModel.fromJson(json['unit'] as Map<String, dynamic>),
-      CategoryModel.fromJson(json['category'] as Map<String, dynamic>),
-      PartnerModel.fromJson(json['partner'] as Map<String, dynamic>),
-      (json['prices'] as List<dynamic>)
-          .map((e) => PriceModel.fromJson(e as Map<String, dynamic>))
+      json['unit'] == null
+          ? null
+          : UnitModel.fromJson(json['unit'] as Map<String, dynamic>),
+      json['category'] == null
+          ? null
+          : CategoryModel.fromJson(json['category'] as Map<String, dynamic>),
+      json['partner'] == null
+          ? null
+          : PartnerModel.fromJson(json['partner'] as Map<String, dynamic>),
+      (json['prices'] as List<dynamic>?)
+          ?.map((e) => PriceModel.fromJson(e as Map<String, dynamic>))
           .toList(),
-      (json['buy_prices'] as List<dynamic>)
-          .map((e) => BuyPriceModel.fromJson(e as Map<String, dynamic>))
+      (json['buy_prices'] as List<dynamic>?)
+          ?.map((e) => BuyPriceModel.fromJson(e as Map<String, dynamic>))
           .toList(),
       (json['stocks'] as List<dynamic>?)
           ?.map((e) => StockModel.fromJson(e as Map<String, dynamic>))
@@ -49,11 +55,11 @@ Map<String, dynamic> _$ProductModelToJson(ProductModel instance) =>
       'buyable': instance.buyable,
       'editable_price': instance.editablePrice,
       'use_sn': instance.useSn,
-      'unit': instance.unit.toJson(),
-      'category': instance.category.toJson(),
-      'partner': instance.partner.toJson(),
-      'prices': instance.prices.map((e) => e.toJson()).toList(),
-      'buy_prices': instance.buyPrices.map((e) => e.toJson()).toList(),
+      'unit': instance.unit?.toJson(),
+      'category': instance.category?.toJson(),
+      'partner': instance.partner?.toJson(),
+      'prices': instance.prices?.map((e) => e.toJson()).toList(),
+      'buy_prices': instance.buyPrices?.map((e) => e.toJson()).toList(),
       'stocks': instance.stocks?.map((e) => e.toJson()).toList(),
     };
 

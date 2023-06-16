@@ -9,12 +9,13 @@ import 'package:sultanpos/model/auth.dart';
 import 'package:sultanpos/model/category.dart';
 import 'package:sultanpos/model/partner.dart';
 import 'package:sultanpos/model/product.dart';
-import 'package:sultanpos/model/purchase.dart';
 import 'package:sultanpos/model/unit.dart';
 import 'package:sultanpos/preference.dart';
 import 'package:sultanpos/repository/rest/authrepo.dart';
 import 'package:sultanpos/repository/rest/branchrepo.dart';
 import 'package:sultanpos/repository/rest/pricegroup.dart';
+import 'package:sultanpos/repository/rest/product.dart';
+import 'package:sultanpos/repository/rest/purchase.dart';
 import 'package:sultanpos/repository/rest/restrepository.dart';
 import 'package:sultanpos/state/auth.dart';
 import 'package:sultanpos/state/cashier.dart';
@@ -65,11 +66,11 @@ class AppState {
     httpAPI = HttpAPI.create(Flavor.baseUrl!, interceptor);
     final branchRepo = RestBranchRepo(httpApi: httpAPI);
     final priceGroupRepo = RestPriceGroupRepo(httpApi: httpAPI);
-    final productRepo = BaseRestCRUDRepository(path: '/product', httpApi: httpAPI, creator: ProductModel.fromJson);
+    final productRepo = RestProductRepo(httpApi: httpAPI);
     final unitRepo = BaseRestCRUDRepository(path: '/unit', httpApi: httpAPI, creator: UnitModel.fromJson);
     final partnerRepo = BaseRestCRUDRepository(path: '/partner', httpApi: httpAPI, creator: PartnerModel.fromJson);
     final categoryRepo = BaseRestCRUDRepository(path: '/category', httpApi: httpAPI, creator: CategoryModel.fromJson);
-    final purchaseRepo = BaseRestCRUDRepository(path: '/purchase', httpApi: httpAPI, creator: PurchaseModel.fromJson);
+    final purchaseRepo = RestPurchaseRepo(httpApi: httpAPI);
 
     //state
     navState = NavigationState();
@@ -83,8 +84,9 @@ class AppState {
     partnerState = PartnerState(repo: partnerRepo);
     categoryState = CategoryState(repo: categoryRepo);
     purchaseState = PurchaseState(
-        repo: purchaseRepo,
-        itemRepo: BaseRestCRUDRepository(path: '/purchase', httpApi: httpAPI, creator: PurchaseItemModel.fromJson));
+      purchaseRepo: purchaseRepo,
+      productRepo: productRepo,
+    );
     await AppState().authState.loadLogin();
   }
 

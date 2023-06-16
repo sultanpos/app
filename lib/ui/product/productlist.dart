@@ -97,8 +97,8 @@ class ProductListWidget extends StatelessWidget {
                     title: 'Harga beli',
                     align: Alignment.centerRight,
                     get: (v) {
-                      final value = v.buyPrices.firstWhere((element) => element.branch.isDefault);
-                      return formatMoney(value.buyPrice);
+                      final value = v.buyPrices?.firstWhere((element) => element.branch.isDefault);
+                      return formatMoney(value?.buyPrice ?? 0);
                     },
                   ),
                   SDataColumn(
@@ -106,8 +106,8 @@ class ProductListWidget extends StatelessWidget {
                     title: 'Harga Jual',
                     align: Alignment.centerRight,
                     get: (v) {
-                      final value = v.prices.firstWhere((element) => element.priceGroup.isDefault);
-                      return formatMoney(value.price0);
+                      final value = v.prices?.firstWhere((element) => element.priceGroup.isDefault);
+                      return formatMoney(value?.price0 ?? 0);
                     },
                   ),
                   SDataColumn(
@@ -125,17 +125,17 @@ class ProductListWidget extends StatelessWidget {
                   SDataColumn(
                     id: 'unit',
                     title: 'Unit',
-                    get: (v) => v.unit.name,
+                    get: (v) => v.unit?.name ?? '-',
                   ),
                   SDataColumn(
                     id: 'category',
                     title: 'Kategori',
-                    get: (v) => v.category.name,
+                    get: (v) => v.category?.name ?? '-',
                   ),
                   SDataColumn(
                     id: 'partner',
                     title: 'Suplier',
-                    get: (v) => v.partner.name,
+                    get: (v) => v.partner?.name ?? '-',
                   ),
                 ], name: 'product', state: AppState().productRootState.productList),
               ),

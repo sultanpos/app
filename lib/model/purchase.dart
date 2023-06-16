@@ -142,6 +142,7 @@ class PurchaseUpdateModel extends BaseModel {
 class PurchaseItemModel extends BaseModel {
   @JsonKey(includeFromJson: false, includeToJson: false)
   final int? purchaseId;
+  final int id;
   final int amount;
   @JsonKey(name: 'buy_price')
   final int buyPrice;
@@ -156,7 +157,7 @@ class PurchaseItemModel extends BaseModel {
   final int serialStockId;
   final ProductModel? product;
 
-  PurchaseItemModel(this.amount, this.buyPrice, this.price, this.subtotal, this.discountFormula, this.discount,
+  PurchaseItemModel(this.id, this.amount, this.buyPrice, this.price, this.subtotal, this.discountFormula, this.discount,
       this.total, this.note, this.serialStockId, this.product,
       {this.purchaseId});
 

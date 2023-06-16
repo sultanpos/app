@@ -1,13 +1,18 @@
 import 'package:sultanpos/model/base.dart';
 import 'package:sultanpos/model/listresult.dart';
+import 'package:sultanpos/model/product.dart';
+import 'package:sultanpos/model/purchase.dart';
 
-abstract class BaseCRUDRepository<T extends BaseModel> {
-  final T Function(Map<String, dynamic> json) creator;
-  BaseCRUDRepository({required this.creator});
-
+abstract mixin class BaseCRUDRepository<T extends BaseModel> {
   Future insert(BaseModel data);
   Future update(int id, BaseModel data);
   Future delete(int id);
   Future<T> get(int id);
   Future<ListResult<T>> query(BaseFilterModel filter);
 }
+
+abstract class PurchaseRepository extends BaseCRUDRepository<PurchaseModel> {
+  BaseCRUDRepository<PurchaseItemModel> createItemRepository(int purchaseId);
+}
+
+abstract class ProductRepository extends BaseCRUDRepository<ProductModel> {}

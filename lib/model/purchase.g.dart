@@ -102,6 +102,7 @@ Map<String, dynamic> _$PurchaseUpdateModelToJson(
 
 PurchaseItemModel _$PurchaseItemModelFromJson(Map<String, dynamic> json) =>
     PurchaseItemModel(
+      json['id'] as int,
       json['amount'] as int,
       json['buy_price'] as int,
       json['price'] as int,
@@ -118,6 +119,7 @@ PurchaseItemModel _$PurchaseItemModelFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$PurchaseItemModelToJson(PurchaseItemModel instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'amount': instance.amount,
       'buy_price': instance.buyPrice,
       'price': instance.price,

@@ -30,12 +30,12 @@ class ProductModel extends BaseModel {
   final bool editablePrice;
   @JsonKey(name: 'use_sn')
   final bool useSn;
-  final UnitModel unit;
-  final CategoryModel category;
-  final PartnerModel partner;
-  final List<PriceModel> prices;
+  final UnitModel? unit;
+  final CategoryModel? category;
+  final PartnerModel? partner;
+  final List<PriceModel>? prices;
   @JsonKey(name: 'buy_prices')
-  final List<BuyPriceModel> buyPrices;
+  final List<BuyPriceModel>? buyPrices;
   final List<StockModel>? stocks;
 
   ProductModel(

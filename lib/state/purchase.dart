@@ -2,7 +2,6 @@ import 'package:reactive_forms/reactive_forms.dart';
 import 'package:sultanpos/model/base.dart';
 import 'package:sultanpos/model/purchase.dart';
 import 'package:sultanpos/repository/repository.dart';
-import 'package:sultanpos/repository/rest/restrepository.dart';
 import 'package:sultanpos/state/app.dart';
 import 'package:sultanpos/state/crud.dart';
 import 'package:sultanpos/state/purchaseitem.dart';
@@ -14,13 +13,14 @@ class PurchaseTabItem {
 }
 
 class PurchaseState extends CrudStateWithList<PurchaseModel> {
-  final BaseCRUDRepository<PurchaseItemModel> itemRepo;
+  final PurchaseRepository purchaseRepo;
+  final ProductRepository productRepo;
   final fgRefNumber = FormControl<String>();
   final fgPartnerId = FormControl<int>(validators: [Validators.required], touched: false);
   final fgDate = FormControl<DateTime>(validators: [Validators.required], touched: false);
   final fgDeadline = FormControl<DateTime>();
 
-  PurchaseState({required super.repo, required this.itemRepo}) {
+  PurchaseState({required this.purchaseRepo, required this.productRepo}) : super(repo: purchaseRepo) {
     form = FormGroup({
       'ref_number': fgRefNumber,
       'partner_id': fgPartnerId,
@@ -53,7 +53,8 @@ class PurchaseState extends CrudStateWithList<PurchaseModel> {
       notifyListeners();
       return;
     }
-    items.add(PurchaseItemState(repo: itemRepo, purchase: value));
+    items.add(PurchaseItemState(
+        productRepo: productRepo, repo: purchaseRepo.createItemRepository(value.id), purchase: value));
     currentId = value.id;
     notifyListeners();
   }

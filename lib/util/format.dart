@@ -34,3 +34,8 @@ int stockValue(String val) {
   }
   return 0;
 }
+
+String formatStock(int value) {
+  double stock = value.toDouble() / 1000.0;
+  return formatMoneyDouble(stock);
+}
