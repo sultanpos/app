@@ -63,7 +63,32 @@ class PurchaseEditWidget extends StatelessWidget {
             ],
           ),
           const SVSpace(),
-          TileWidget(title: 'Total: ', value: 'Rp. ${formatMoney(state.purchase.total)}'),
+          Row(
+            children: [
+              TileWidget(title: 'Total: ', value: 'Rp. ${formatMoney(state.purchase.total)}'),
+              const Spacer(),
+              if (state.purchase.paymentResidual > 0) ...[
+                TileIconWidget(
+                  lead: const Icon(Icons.attach_money),
+                  body: Text(
+                      state.purchase.paymentResidual == 0 && state.purchase.paymentPaid > 0 ? 'Lunas' : 'Belum lunas'),
+                  onTap: () {},
+                ),
+                const SHSpaceSmall(),
+              ],
+              TileIconWidget(
+                lead: const Icon(Icons.inventory),
+                body: Text(state.purchase.stockStatus),
+                onTap: () {},
+              ),
+              const SHSpaceSmall(),
+              TileIconWidget(
+                lead: const Icon(Icons.check),
+                body: Text(state.purchase.status),
+                onTap: () {},
+              ),
+            ],
+          ),
           const SVSpace(),
           Expanded(
             child: SDataTable<PurchaseItemModel>(

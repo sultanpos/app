@@ -6,6 +6,7 @@ import 'package:sultanpos/model/purchase.dart';
 import 'package:sultanpos/repository/repository.dart';
 import 'package:sultanpos/repository/rest/restrepository.dart';
 import 'package:sultanpos/state/crud.dart';
+import 'package:sultanpos/util/calculate.dart';
 import 'package:sultanpos/util/format.dart';
 
 class PurchaseItemState extends CrudStateWithList<PurchaseItemModel> {
@@ -17,6 +18,8 @@ class PurchaseItemState extends CrudStateWithList<PurchaseItemModel> {
   bool barcodeInFocus = false;
   bool productLoading = false;
   bool saving = false;
+  int total = 0;
+  int discount = 0;
 
   final fgBarcode = FormControl<String>();
   final fgPrice = FormControl<String>();
@@ -36,6 +39,15 @@ class PurchaseItemState extends CrudStateWithList<PurchaseItemModel> {
         loadBarcode();
       }
       barcodeInFocus = event;
+    });
+    fgPrice.valueChanges.listen((event) {
+      calculate();
+    });
+    fgCount.valueChanges.listen((event) {
+      calculate();
+    });
+    fgDiscountFormula.valueChanges.listen((event) {
+      calculate();
     });
   }
 
@@ -107,5 +119,14 @@ class PurchaseItemState extends CrudStateWithList<PurchaseItemModel> {
     } catch (e) {
       debugPrint(e.toString());
     }
+  }
+
+  calculate() {
+    final amount = stockValue(fgCount.value ?? '0');
+    final price = moneyValue(fgPrice.value ?? '0');
+    final disFormula = fgDiscountFormula.value ?? '';
+    discount = calculateDiscount(price, disFormula);
+    total = (price - discount) * amount ~/ 1000;
+    notifyListeners();
   }
 }

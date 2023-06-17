@@ -69,7 +69,7 @@ class _BaseWindowWidgetState extends State<BaseWindowWidget> {
               const SVSpace(),
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.only(left: 16, bottom: 16, right: 16),
                   child: widget.child,
                 ),
               ),

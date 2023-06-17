@@ -48,7 +48,6 @@ class PurchaseListWidget extends StatelessWidget {
                 onPressed: () {
                   AppState().purchaseState.listData.load(refresh: true);
                 },
-                //style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(0)),
                 child: const Icon(
                   Icons.refresh,
                   size: 20,
