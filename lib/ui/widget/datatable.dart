@@ -35,10 +35,9 @@ class SDataSource<T extends BaseModel> extends DataGridSource {
       if (col.getWidget != null) return col.getWidget!(dataGridCell.value);
       return Container(
         alignment: col.align,
-        padding: const EdgeInsets.all(4.0),
+        padding: const EdgeInsets.all(8.0),
         child: Text(
           col.get!(dataGridCell.value),
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 14),
         ),
       );
     }).toList());
@@ -137,6 +136,7 @@ class _SDataTableState<T extends BaseModel> extends State<SDataTable<T>> {
                               width: columnSize[e.id]!,
                               allowEditing: false,
                               label: Container(
+                                padding: const EdgeInsets.all(8),
                                 color:
                                     lighterOrDarkerColor(Theme.of(context), Theme.of(context).scaffoldBackgroundColor),
                                 alignment: Alignment.center,
@@ -170,8 +170,8 @@ class _SDataTableState<T extends BaseModel> extends State<SDataTable<T>> {
                         setState(() {});
                         return true;
                       },
-                      rowHeight: 30,
-                      headerRowHeight: 30,
+                      //rowHeight: 40,
+                      //headerRowHeight: 50,
                     ),
                     if (list is ListLoading)
                       const BlurryContainer(

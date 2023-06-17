@@ -171,6 +171,9 @@ class PurchaseItemModel extends BaseModel {
 
   @override
   Map<String, dynamic> toJson() => _$PurchaseItemModelToJson(this);
+
+  @override
+  int getId() => id;
 }
 
 @JsonSerializable()

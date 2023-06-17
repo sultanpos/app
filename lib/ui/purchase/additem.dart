@@ -11,7 +11,7 @@ import 'package:sultanpos/ui/widget/space.dart';
 
 class PurchaseItemAddWidget extends StatefulWidget {
   final String title;
-  const PurchaseItemAddWidget(this.title, {super.key});
+  const PurchaseItemAddWidget({required this.title, super.key});
 
   @override
   State<PurchaseItemAddWidget> createState() => _PurchaseItemAddWidgetState();
@@ -118,11 +118,24 @@ class _PurchaseItemAddWidgetState extends State<PurchaseItemAddWidget> {
                 ),
                 Expanded(
                   child: SButton(
-                    label: "Simpan",
+                    label: "Simpan & Lagi",
                     onPressed: state.saving
                         ? null
                         : () async {
-                            save(context, state);
+                            save(context, state, true);
+                          },
+                  ),
+                ),
+                const SizedBox(
+                  width: 8,
+                ),
+                Expanded(
+                  child: SButton(
+                    label: "Simpan & Tutup",
+                    onPressed: state.saving
+                        ? null
+                        : () async {
+                            save(context, state, false);
                           },
                   ),
                 ),
@@ -134,9 +147,16 @@ class _PurchaseItemAddWidgetState extends State<PurchaseItemAddWidget> {
     );
   }
 
-  save(BuildContext context, PurchaseItemState state) async {
+  save(BuildContext context, PurchaseItemState state, bool again) async {
     try {
       await state.save();
+      state.refreshPurchase();
+      if (!again) {
+        // ignore: use_build_context_synchronously
+        Navigator.of(context).pop();
+      } else {
+        state.resetForm();
+      }
       // ignore: use_build_context_synchronously
       showSuccess(context, title: 'Berhasil', message: 'Item berhasil disimpan');
     } catch (e) {

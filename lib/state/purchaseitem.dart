@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:sultanpos/model/base.dart';
 import 'package:sultanpos/model/product.dart';
@@ -9,6 +10,7 @@ import 'package:sultanpos/util/format.dart';
 
 class PurchaseItemState extends CrudStateWithList<PurchaseItemModel> {
   final ProductRepository productRepo;
+  final PurchaseRepository purchaseRepo;
   PurchaseModel purchase;
   ProductModel? product;
   String? error;
@@ -21,7 +23,8 @@ class PurchaseItemState extends CrudStateWithList<PurchaseItemModel> {
   final fgCount = FormControl<String>();
   final fgDiscountFormula = FormControl<String>();
 
-  PurchaseItemState({required this.purchase, required super.repo, required this.productRepo}) {
+  PurchaseItemState(
+      {required this.purchase, required super.repo, required this.productRepo, required this.purchaseRepo}) {
     form = FormGroup({
       'barcode': fgBarcode,
       'price': fgPrice,
@@ -39,7 +42,7 @@ class PurchaseItemState extends CrudStateWithList<PurchaseItemModel> {
   loadBarcode() async {
     final barcodeValue = fgBarcode.value ?? '';
     if (barcodeValue.isEmpty) {
-      throw 'barcode empty';
+      return;
     }
     productLoading = true;
     error = null;
@@ -73,7 +76,10 @@ class PurchaseItemState extends CrudStateWithList<PurchaseItemModel> {
 
   @override
   prepareEditForm(PurchaseItemModel value) {
-    throw UnimplementedError();
+    fgBarcode.updateValue(value.product?.barcode);
+    fgCount.updateValue(formatStock(value.amount));
+    fgPrice.updateValue(formatMoney(value.price));
+    loadBarcode();
   }
 
   @override
@@ -90,6 +96,16 @@ class PurchaseItemState extends CrudStateWithList<PurchaseItemModel> {
   resetForm() {
     product = null;
     error = null;
-    return super.resetForm();
+    super.resetForm();
+    fgBarcode.focus();
+  }
+
+  refreshPurchase() async {
+    try {
+      purchase = await purchaseRepo.get(purchase.id);
+      notifyListeners();
+    } catch (e) {
+      debugPrint(e.toString());
+    }
   }
 }

@@ -42,12 +42,23 @@ class PurchaseEditWidget extends StatelessWidget {
                       return ChangeNotifierProvider.value(
                         value: state,
                         child: const PurchaseItemAddWidget(
-                          "Tambah Item Baru",
+                          title: "Tambah Item Baru",
                         ),
                       );
                     },
                   );
                 },
+              ),
+              const SHSpaceSmall(),
+              SButton(
+                positive: false,
+                onPressed: () {
+                  state.listData.load(refresh: true);
+                },
+                child: const Icon(
+                  Icons.refresh,
+                  size: 20,
+                ),
               ),
             ],
           ),
@@ -56,9 +67,6 @@ class PurchaseEditWidget extends StatelessWidget {
           const SVSpace(),
           Expanded(
             child: SDataTable<PurchaseItemModel>(
-              onDoubleClicked: (value) {
-                //AppState().purchaseState.open(value);
-              },
               columns: [
                 SDataColumn(
                   width: 80,
@@ -67,13 +75,18 @@ class PurchaseEditWidget extends StatelessWidget {
                   getWidget: (v) => SColumnAction(
                     [
                       SColumActionItem('edit', Icons.edit, () {
-                        /*AppState().purchaseState.editForm(v);
+                        state.editForm(v);
                         sShowDialog(
                           context: context,
                           builder: (c) {
-                            return const PurchaseAddWidget(title: 'Ubah pembelian');
+                            return ChangeNotifierProvider.value(
+                              value: state,
+                              child: const PurchaseItemAddWidget(
+                                title: 'Ubah pembelian',
+                              ),
+                            );
                           },
-                        );*/
+                        );
                       }),
                       SColumActionItem('hapus', Icons.delete_forever, () async {
                         final result = await showConfirmation(context,
@@ -81,8 +94,9 @@ class PurchaseEditWidget extends StatelessWidget {
                         if (result) {
                           try {
                             await state.remove(v.id);
+                            state.refreshPurchase();
                             // ignore: use_build_context_synchronously
-                            showSuccess(context, title: 'Berhasil', message: 'Pembelian telah dihapus');
+                            showSuccess(context, title: 'Berhasil', message: 'Item telah dihapus');
                           } catch (e) {
                             // ignore: use_build_context_synchronously
                             showError(context, title: 'Error menghapus', message: e.toString());
@@ -128,7 +142,7 @@ class PurchaseEditWidget extends StatelessWidget {
                   get: (v) => formatMoney(v.total),
                 ),
               ],
-              name: 'purchase',
+              name: 'purchaseedit',
               state: state.listData,
             ),
           ),

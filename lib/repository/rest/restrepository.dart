@@ -36,7 +36,7 @@ class BaseRestCRUDRepository<T extends BaseModel> implements BaseCRUDRepository<
 
   @override
   Future update(int id, BaseModel data) {
-    return httpApi.update(data, id);
+    return httpApi.update(data, id, path: getPath());
   }
 
   String getPath() {

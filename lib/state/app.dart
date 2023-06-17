@@ -8,7 +8,6 @@ import 'package:sultanpos/localfiledb/db.dart';
 import 'package:sultanpos/model/auth.dart';
 import 'package:sultanpos/model/category.dart';
 import 'package:sultanpos/model/partner.dart';
-import 'package:sultanpos/model/product.dart';
 import 'package:sultanpos/model/unit.dart';
 import 'package:sultanpos/preference.dart';
 import 'package:sultanpos/repository/rest/authrepo.dart';

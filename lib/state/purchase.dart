@@ -53,8 +53,14 @@ class PurchaseState extends CrudStateWithList<PurchaseModel> {
       notifyListeners();
       return;
     }
-    items.add(PurchaseItemState(
-        productRepo: productRepo, repo: purchaseRepo.createItemRepository(value.id), purchase: value));
+    items.add(
+      PurchaseItemState(
+        productRepo: productRepo,
+        repo: purchaseRepo.createItemRepository(value.id),
+        purchase: value,
+        purchaseRepo: purchaseRepo,
+      ),
+    );
     currentId = value.id;
     notifyListeners();
   }

@@ -43,18 +43,15 @@ class PurchaseListWidget extends StatelessWidget {
               const SizedBox(
                 width: 4,
               ),
-              SizedBox(
-                //width: 30,
-                child: SButton(
-                  positive: false,
-                  onPressed: () {
-                    AppState().purchaseState.listData.load(refresh: true);
-                  },
-                  //style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(0)),
-                  child: const Icon(
-                    Icons.refresh,
-                    size: 20,
-                  ),
+              SButton(
+                positive: false,
+                onPressed: () {
+                  AppState().purchaseState.listData.load(refresh: true);
+                },
+                //style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(0)),
+                child: const Icon(
+                  Icons.refresh,
+                  size: 20,
                 ),
               ),
             ],
