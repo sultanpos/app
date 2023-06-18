@@ -13,6 +13,8 @@ abstract mixin class BaseCRUDRepository<T extends BaseModel> {
 
 abstract class PurchaseRepository extends BaseCRUDRepository<PurchaseModel> {
   BaseCRUDRepository<PurchaseItemModel> createItemRepository(int purchaseId);
+  Future updateStockStatus(int purchaseId, PurchaseUpdateStockStatusModel newStatus);
+  Future updateStatus(int purchaseId, PurchaseUpdateStatusModel newStatus);
 }
 
 abstract class ProductRepository extends BaseCRUDRepository<ProductModel> {}

@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:sultanpos/model/purchase.dart';
 import 'package:sultanpos/state/purchaseitem.dart';
 import 'package:sultanpos/ui/purchase/additem.dart';
+import 'package:sultanpos/ui/purchase/puchasestateedit.dart';
+import 'package:sultanpos/ui/purchase/puchasestockedit.dart';
 import 'package:sultanpos/ui/theme.dart';
 import 'package:sultanpos/ui/widget/button.dart';
 import 'package:sultanpos/ui/widget/columnaction.dart';
@@ -28,7 +30,7 @@ class PurchaseEditWidget extends StatelessWidget {
           Row(
             children: [
               Text(
-                "${state.purchase.number} / ${state.purchase.partner?.name}",
+                "${state.purchase.number} (${state.purchase.partner?.name})",
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               const Spacer(),
@@ -76,16 +78,40 @@ class PurchaseEditWidget extends StatelessWidget {
                 ),
                 const SHSpaceSmall(),
               ],
-              TileIconWidget(
-                lead: const Icon(Icons.inventory),
-                body: Text(state.purchase.stockStatus),
-                onTap: () {},
-              ),
-              const SHSpaceSmall(),
+              if (state.purchase.editableStock()) ...[
+                TileIconWidget(
+                  lead: const Icon(Icons.inventory),
+                  body: Text(state.purchase.stockStatus.value),
+                  tail: const Icon(Icons.arrow_drop_down),
+                  onTap: () {
+                    sShowDialog(
+                      context: context,
+                      builder: (c) {
+                        return ChangeNotifierProvider.value(
+                          value: state,
+                          child: const PurchaseStockEditWidget(),
+                        );
+                      },
+                    );
+                  },
+                ),
+                const SHSpaceSmall(),
+              ],
               TileIconWidget(
                 lead: const Icon(Icons.check),
-                body: Text(state.purchase.status),
-                onTap: () {},
+                body: Text(state.purchase.status.value),
+                tail: const Icon(Icons.arrow_drop_down),
+                onTap: () {
+                  sShowDialog(
+                    context: context,
+                    builder: (c) {
+                      return ChangeNotifierProvider.value(
+                        value: state,
+                        child: const PurchaseStateEditWidget(),
+                      );
+                    },
+                  );
+                },
               ),
             ],
           ),

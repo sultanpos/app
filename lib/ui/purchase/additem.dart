@@ -10,20 +10,15 @@ import 'package:sultanpos/ui/widget/showerror.dart';
 import 'package:sultanpos/ui/widget/space.dart';
 import 'package:sultanpos/util/format.dart';
 
-class PurchaseItemAddWidget extends StatefulWidget {
+class PurchaseItemAddWidget extends StatelessWidget {
   final String title;
   const PurchaseItemAddWidget({required this.title, super.key});
 
   @override
-  State<PurchaseItemAddWidget> createState() => _PurchaseItemAddWidgetState();
-}
-
-class _PurchaseItemAddWidgetState extends State<PurchaseItemAddWidget> {
-  @override
   Widget build(BuildContext context) {
     final state = context.watch<PurchaseItemState>();
     return BaseWindowWidget(
-      title: widget.title,
+      title: title,
       height: 520,
       width: 480,
       icon: Icons.scale,

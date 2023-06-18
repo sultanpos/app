@@ -129,4 +129,18 @@ class PurchaseItemState extends CrudStateWithList<PurchaseItemModel> {
     total = (price - discount) * amount ~/ 1000;
     notifyListeners();
   }
+
+  updateStockStatus(PurchaseStockStatus newStatus) {
+    if (newStatus == purchase.stockStatus) {
+      throw 'tidak ada perubahan status stock';
+    }
+    return purchaseRepo.updateStockStatus(purchase.id, PurchaseUpdateStockStatusModel(newStatus));
+  }
+
+  updateStatus(PurchaseStatus newStatus) {
+    if (newStatus == purchase.status) {
+      throw 'tidak ada perubahan status';
+    }
+    return purchaseRepo.updateStatus(purchase.id, PurchaseUpdateStatusModel(newStatus));
+  }
 }

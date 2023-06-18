@@ -15,4 +15,14 @@ class RestPurchaseRepo extends BaseRestCRUDRepository<PurchaseModel> implements 
   BaseCRUDRepository<PurchaseItemModel> createItemRepository(int purchaseId) {
     return RestPurchaseItemRepo(purchaseId: purchaseId, httpApi: httpApi);
   }
+
+  @override
+  updateStockStatus(int purchaseId, PurchaseUpdateStockStatusModel newStatus) async {
+    return httpApi.put(newStatus, '/purchase/$purchaseId/stockstatus');
+  }
+
+  @override
+  updateStatus(int purchaseId, PurchaseUpdateStatusModel newStatus) async {
+    return httpApi.put(newStatus, '/purchase/$purchaseId/status');
+  }
 }

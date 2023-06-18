@@ -40,6 +40,7 @@ dependencies:
   shared_preferences: ^2.0.15
   syncfusion_flutter_datagrid: ^21.2.4
   test: ^1.21.4
+  tinycolor2: ^3.0.1
 
 dev_dependencies:
   build_runner: ^2.2.0

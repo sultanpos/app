@@ -5,6 +5,42 @@ import 'package:sultanpos/model/product.dart';
 
 part 'purchase.g.dart';
 
+enum PurchaseStatus implements Comparable<PurchaseStatus> {
+  @JsonValue('draft')
+  draft('Draft'),
+  @JsonValue('validated')
+  validated('Tervalidasi'),
+  @JsonValue('in_progress')
+  inProgress('Process'),
+  @JsonValue('done')
+  done('Selesai');
+
+  final String value;
+  const PurchaseStatus(this.value);
+
+  @override
+  int compareTo(PurchaseStatus other) {
+    return 0;
+  }
+}
+
+enum PurchaseStockStatus implements Comparable<PurchaseStockStatus> {
+  @JsonValue('none')
+  none('none'),
+  @JsonValue('transit')
+  transit('transit'),
+  @JsonValue('received')
+  received('received');
+
+  final String value;
+  const PurchaseStockStatus(this.value);
+
+  @override
+  int compareTo(PurchaseStockStatus other) {
+    return 0;
+  }
+}
+
 @JsonSerializable(explicitToJson: true)
 class PurchaseModel extends BaseModel {
   final int id;
@@ -13,9 +49,9 @@ class PurchaseModel extends BaseModel {
   final String refNumber;
   final String number;
   final String type;
-  final String status;
+  final PurchaseStatus status;
   @JsonKey(name: 'stock_status')
-  final String stockStatus;
+  final PurchaseStockStatus stockStatus;
   @JsonKey(name: 'cashier_session_id')
   final int cashierSessionId;
   @JsonKey(name: 'subtotal')
@@ -72,6 +108,10 @@ class PurchaseModel extends BaseModel {
 
   @override
   int getId() => id;
+
+  bool editableStock() {
+    return status == PurchaseStatus.validated || status == PurchaseStatus.inProgress;
+  }
 }
 
 @JsonSerializable()
@@ -174,6 +214,28 @@ class PurchaseItemModel extends BaseModel {
 
   @override
   int getId() => id;
+}
+
+@JsonSerializable()
+class PurchaseUpdateStockStatusModel extends BaseModel {
+  @JsonKey(name: 'stock_status')
+  final PurchaseStockStatus stockStatus;
+  PurchaseUpdateStockStatusModel(this.stockStatus);
+
+  factory PurchaseUpdateStockStatusModel.fromJson(Map<String, dynamic> json) =>
+      _$PurchaseUpdateStockStatusModelFromJson(json);
+  @override
+  Map<String, dynamic> toJson() => _$PurchaseUpdateStockStatusModelToJson(this);
+}
+
+@JsonSerializable()
+class PurchaseUpdateStatusModel extends BaseModel {
+  final PurchaseStatus status;
+  PurchaseUpdateStatusModel(this.status);
+
+  factory PurchaseUpdateStatusModel.fromJson(Map<String, dynamic> json) => _$PurchaseUpdateStatusModelFromJson(json);
+  @override
+  Map<String, dynamic> toJson() => _$PurchaseUpdateStatusModelToJson(this);
 }
 
 @JsonSerializable()

@@ -13,8 +13,8 @@ PurchaseModel _$PurchaseModelFromJson(Map<String, dynamic> json) =>
       json['ref_number'] as String,
       json['number'] as String,
       json['type'] as String,
-      json['status'] as String,
-      json['stock_status'] as String,
+      $enumDecode(_$PurchaseStatusEnumMap, json['status']),
+      $enumDecode(_$PurchaseStockStatusEnumMap, json['stock_status']),
       json['cashier_session_id'] as int,
       json['subtotal'] as int,
       json['discount_formula'] as String,
@@ -43,8 +43,8 @@ Map<String, dynamic> _$PurchaseModelToJson(PurchaseModel instance) =>
       'ref_number': instance.refNumber,
       'number': instance.number,
       'type': instance.type,
-      'status': instance.status,
-      'stock_status': instance.stockStatus,
+      'status': _$PurchaseStatusEnumMap[instance.status]!,
+      'stock_status': _$PurchaseStockStatusEnumMap[instance.stockStatus]!,
       'cashier_session_id': instance.cashierSessionId,
       'subtotal': instance.subTotal,
       'discount_formula': instance.discountFormula,
@@ -59,6 +59,19 @@ Map<String, dynamic> _$PurchaseModelToJson(PurchaseModel instance) =>
       'partner': instance.partner?.toJson(),
       'purchaseItems': instance.purchaseItems?.map((e) => e.toJson()).toList(),
     };
+
+const _$PurchaseStatusEnumMap = {
+  PurchaseStatus.draft: 'draft',
+  PurchaseStatus.validated: 'validated',
+  PurchaseStatus.inProgress: 'in_progress',
+  PurchaseStatus.done: 'done',
+};
+
+const _$PurchaseStockStatusEnumMap = {
+  PurchaseStockStatus.none: 'none',
+  PurchaseStockStatus.transit: 'transit',
+  PurchaseStockStatus.received: 'received',
+};
 
 PurchaseInsertModel _$PurchaseInsertModelFromJson(Map<String, dynamic> json) =>
     PurchaseInsertModel(
@@ -130,6 +143,30 @@ Map<String, dynamic> _$PurchaseItemModelToJson(PurchaseItemModel instance) =>
       'note': instance.note,
       'serial_stock_id': instance.serialStockId,
       'product': instance.product,
+    };
+
+PurchaseUpdateStockStatusModel _$PurchaseUpdateStockStatusModelFromJson(
+        Map<String, dynamic> json) =>
+    PurchaseUpdateStockStatusModel(
+      $enumDecode(_$PurchaseStockStatusEnumMap, json['stock_status']),
+    );
+
+Map<String, dynamic> _$PurchaseUpdateStockStatusModelToJson(
+        PurchaseUpdateStockStatusModel instance) =>
+    <String, dynamic>{
+      'stock_status': _$PurchaseStockStatusEnumMap[instance.stockStatus]!,
+    };
+
+PurchaseUpdateStatusModel _$PurchaseUpdateStatusModelFromJson(
+        Map<String, dynamic> json) =>
+    PurchaseUpdateStatusModel(
+      $enumDecode(_$PurchaseStatusEnumMap, json['status']),
+    );
+
+Map<String, dynamic> _$PurchaseUpdateStatusModelToJson(
+        PurchaseUpdateStatusModel instance) =>
+    <String, dynamic>{
+      'status': _$PurchaseStatusEnumMap[instance.status]!,
     };
 
 PurchaseItemInsertModel _$PurchaseItemInsertModelFromJson(
