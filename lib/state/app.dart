@@ -12,6 +12,7 @@ import 'package:sultanpos/model/unit.dart';
 import 'package:sultanpos/preference.dart';
 import 'package:sultanpos/repository/rest/authrepo.dart';
 import 'package:sultanpos/repository/rest/branchrepo.dart';
+import 'package:sultanpos/repository/rest/cashiersession.dart';
 import 'package:sultanpos/repository/rest/pricegroup.dart';
 import 'package:sultanpos/repository/rest/product.dart';
 import 'package:sultanpos/repository/rest/purchase.dart';
@@ -44,7 +45,7 @@ class AppState {
   late ShareState shareState;
   late ProductRootState productRootState;
   late MasterState masterState;
-  late CashierState cashierState;
+  late CashierRootState cashierState;
   late UnitState unitState;
   late PriceGroupState priceGroupState;
   late PartnerState partnerState;
@@ -70,6 +71,7 @@ class AppState {
     final partnerRepo = BaseRestCRUDRepository(path: '/partner', httpApi: httpAPI, creator: PartnerModel.fromJson);
     final categoryRepo = BaseRestCRUDRepository(path: '/category', httpApi: httpAPI, creator: CategoryModel.fromJson);
     final purchaseRepo = RestPurchaseRepo(httpApi: httpAPI);
+    final cashierSessionRepo = RestCashierSessionRepo(httpApi: httpAPI);
 
     //state
     navState = NavigationState();
@@ -77,7 +79,7 @@ class AppState {
     shareState = ShareState(branchRepo: branchRepo, priceGroupRepo: priceGroupRepo);
     productRootState = ProductRootState(repo: productRepo);
     masterState = MasterState();
-    cashierState = CashierState();
+    cashierState = CashierRootState(productRepo: productRepo, cashierSessionRepo: cashierSessionRepo);
     unitState = UnitState(repo: unitRepo);
     priceGroupState = PriceGroupState(repo: priceGroupRepo);
     partnerState = PartnerState(repo: partnerRepo);

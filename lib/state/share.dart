@@ -1,11 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:sultanpos/model/branch.dart';
 import 'package:sultanpos/model/pricegroup.dart';
 import 'package:sultanpos/repository/rest/branchrepo.dart';
 import 'package:sultanpos/repository/rest/pricegroup.dart';
 import 'package:sultanpos/repository/rest/restrepository.dart';
-import 'package:sultanpos/state/base.dart';
 
-class ShareState extends BaseState {
+class ShareState extends ChangeNotifier {
   final RestPriceGroupRepo priceGroupRepo;
   final RestBranchRepo branchRepo;
   ShareState({required this.priceGroupRepo, required this.branchRepo});

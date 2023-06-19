@@ -5,6 +5,21 @@ import 'package:sultanpos/model/product.dart';
 
 part 'purchase.g.dart';
 
+enum PurchaseType implements Comparable<PurchaseType> {
+  @JsonValue('po')
+  po('PO'),
+  @JsonValue('normal')
+  normal('Normal');
+
+  final String value;
+  const PurchaseType(this.value);
+
+  @override
+  int compareTo(PurchaseType other) {
+    return 0;
+  }
+}
+
 enum PurchaseStatus implements Comparable<PurchaseStatus> {
   @JsonValue('draft')
   draft('Draft'),
@@ -26,11 +41,11 @@ enum PurchaseStatus implements Comparable<PurchaseStatus> {
 
 enum PurchaseStockStatus implements Comparable<PurchaseStockStatus> {
   @JsonValue('none')
-  none('none'),
+  none('Belum'),
   @JsonValue('transit')
-  transit('transit'),
+  transit('Transit'),
   @JsonValue('received')
-  received('received');
+  received('Diterima');
 
   final String value;
   const PurchaseStockStatus(this.value);
@@ -48,7 +63,7 @@ class PurchaseModel extends BaseModel {
   @JsonKey(name: 'ref_number')
   final String refNumber;
   final String number;
-  final String type;
+  final PurchaseType type;
   final PurchaseStatus status;
   @JsonKey(name: 'stock_status')
   final PurchaseStockStatus stockStatus;
@@ -111,6 +126,10 @@ class PurchaseModel extends BaseModel {
 
   bool editableStock() {
     return status == PurchaseStatus.validated || status == PurchaseStatus.inProgress;
+  }
+
+  bool isPaid() {
+    return paymentPaid >= paymentResidual;
   }
 }
 

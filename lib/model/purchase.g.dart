@@ -12,7 +12,7 @@ PurchaseModel _$PurchaseModelFromJson(Map<String, dynamic> json) =>
       DateTime.parse(json['date'] as String),
       json['ref_number'] as String,
       json['number'] as String,
-      json['type'] as String,
+      $enumDecode(_$PurchaseTypeEnumMap, json['type']),
       $enumDecode(_$PurchaseStatusEnumMap, json['status']),
       $enumDecode(_$PurchaseStockStatusEnumMap, json['stock_status']),
       json['cashier_session_id'] as int,
@@ -42,7 +42,7 @@ Map<String, dynamic> _$PurchaseModelToJson(PurchaseModel instance) =>
       'date': instance.date.toIso8601String(),
       'ref_number': instance.refNumber,
       'number': instance.number,
-      'type': instance.type,
+      'type': _$PurchaseTypeEnumMap[instance.type]!,
       'status': _$PurchaseStatusEnumMap[instance.status]!,
       'stock_status': _$PurchaseStockStatusEnumMap[instance.stockStatus]!,
       'cashier_session_id': instance.cashierSessionId,
@@ -59,6 +59,11 @@ Map<String, dynamic> _$PurchaseModelToJson(PurchaseModel instance) =>
       'partner': instance.partner?.toJson(),
       'purchaseItems': instance.purchaseItems?.map((e) => e.toJson()).toList(),
     };
+
+const _$PurchaseTypeEnumMap = {
+  PurchaseType.po: 'po',
+  PurchaseType.normal: 'normal',
+};
 
 const _$PurchaseStatusEnumMap = {
   PurchaseStatus.draft: 'draft',

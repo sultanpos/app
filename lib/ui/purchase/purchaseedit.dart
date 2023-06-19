@@ -72,6 +72,7 @@ class PurchaseEditWidget extends StatelessWidget {
               if (state.purchase.paymentResidual > 0) ...[
                 TileIconWidget(
                   lead: const Icon(Icons.attach_money),
+                  color: state.purchase.isPaid() ? Colors.green : Colors.red,
                   body: Text(
                       state.purchase.paymentResidual == 0 && state.purchase.paymentPaid > 0 ? 'Lunas' : 'Belum lunas'),
                   onTap: () {},
@@ -146,11 +147,9 @@ class PurchaseEditWidget extends StatelessWidget {
                           try {
                             await state.remove(v.id);
                             state.refreshPurchase();
-                            // ignore: use_build_context_synchronously
-                            showSuccess(context, title: 'Berhasil', message: 'Item telah dihapus');
+                            if (context.mounted) showSuccess(context, title: 'Berhasil', message: 'Item telah dihapus');
                           } catch (e) {
-                            // ignore: use_build_context_synchronously
-                            showError(context, title: 'Error menghapus', message: e.toString());
+                            if (context.mounted) showError(context, title: 'Error menghapus', message: e.toString());
                           }
                         }
                       }, iconColor: Colors.red),

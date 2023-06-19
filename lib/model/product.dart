@@ -8,6 +8,25 @@ import 'package:sultanpos/model/unit.dart';
 
 part 'product.g.dart';
 
+enum ProductType implements Comparable<ProductType> {
+  @JsonValue('template')
+  template('Template'),
+  @JsonValue('product')
+  product('Produk'),
+  @JsonValue('service')
+  service('Jasa'),
+  @JsonValue('package')
+  package('Paket');
+
+  final String value;
+  const ProductType(this.value);
+
+  @override
+  int compareTo(ProductType other) {
+    return 0;
+  }
+}
+
 @JsonSerializable(explicitToJson: true)
 class ProductModel extends BaseModel {
   final int id;
@@ -23,7 +42,7 @@ class ProductModel extends BaseModel {
   @JsonKey(name: 'calculate_stock')
   final bool calculateStock;
   @JsonKey(name: 'product_type')
-  final String productType;
+  final ProductType productType;
   final bool sellable;
   final bool buyable;
   @JsonKey(name: 'editable_price')

@@ -15,7 +15,7 @@ ProductModel _$ProductModelFromJson(Map<String, dynamic> json) => ProductModel(
       json['all_branch'] as bool,
       json['main_image'] as String,
       json['calculate_stock'] as bool,
-      json['product_type'] as String,
+      $enumDecode(_$ProductTypeEnumMap, json['product_type']),
       json['sellable'] as bool,
       json['buyable'] as bool,
       json['editable_price'] as bool,
@@ -50,7 +50,7 @@ Map<String, dynamic> _$ProductModelToJson(ProductModel instance) =>
       'all_branch': instance.allBranch,
       'main_image': instance.mainImage,
       'calculate_stock': instance.calculateStock,
-      'product_type': instance.productType,
+      'product_type': _$ProductTypeEnumMap[instance.productType]!,
       'sellable': instance.sellable,
       'buyable': instance.buyable,
       'editable_price': instance.editablePrice,
@@ -62,6 +62,13 @@ Map<String, dynamic> _$ProductModelToJson(ProductModel instance) =>
       'buy_prices': instance.buyPrices?.map((e) => e.toJson()).toList(),
       'stocks': instance.stocks?.map((e) => e.toJson()).toList(),
     };
+
+const _$ProductTypeEnumMap = {
+  ProductType.template: 'template',
+  ProductType.product: 'product',
+  ProductType.service: 'service',
+  ProductType.package: 'package',
+};
 
 ProductInsertModel _$ProductInsertModelFromJson(Map<String, dynamic> json) =>
     ProductInsertModel(

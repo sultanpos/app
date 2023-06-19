@@ -1,4 +1,5 @@
 import 'package:sultanpos/model/base.dart';
+import 'package:sultanpos/model/cashier.dart';
 import 'package:sultanpos/model/listresult.dart';
 import 'package:sultanpos/model/product.dart';
 import 'package:sultanpos/model/purchase.dart';
@@ -17,4 +18,11 @@ abstract class PurchaseRepository extends BaseCRUDRepository<PurchaseModel> {
   Future updateStatus(int purchaseId, PurchaseUpdateStatusModel newStatus);
 }
 
-abstract class ProductRepository extends BaseCRUDRepository<ProductModel> {}
+abstract class ProductRepository extends BaseCRUDRepository<ProductModel> {
+  Future getByBarcode(String barcode);
+  Future queryByName(String name);
+}
+
+abstract class CashierSessionRepository extends BaseCRUDRepository<CashierSessionModel> {
+  Future<CashierSessionModel> getActive();
+}

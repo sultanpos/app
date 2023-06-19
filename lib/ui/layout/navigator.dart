@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sultanpos/state/app.dart';
+import 'package:sultanpos/state/cashier.dart';
 import 'package:sultanpos/ui/cashier/cashier.dart';
 import 'package:sultanpos/ui/layout/home.dart';
 import 'package:sultanpos/ui/layout/noroute.dart';
@@ -26,7 +28,13 @@ class NavigatorWidget extends StatelessWidget {
           case "/product":
             return _pageBuilder(settings, () => const ProductRootWidget());
           case "/cashier":
-            return _pageBuilder(settings, () => const CashierWidget());
+            AppState().cashierState.init();
+            return _pageBuilder(
+                settings,
+                () => ChangeNotifierProvider<CashierRootState>.value(
+                      value: AppState().cashierState,
+                      child: const CashierWidget(),
+                    ));
           case "/master":
             return _pageBuilder(settings, () => const MasterRootWidget());
           case "/setting":

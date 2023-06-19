@@ -93,10 +93,10 @@ class _PurchaseStockEditWidgetState extends State<PurchaseStockEditWidget> {
     try {
       await state.updateStockStatus(status);
       state.refreshPurchase();
-      // ignore: use_build_context_synchronously
-      Navigator.of(context).pop();
-      // ignore: use_build_context_synchronously
-      showSuccess(context, title: 'Berhasil', message: 'Item berhasil disimpan');
+      if (context.mounted) {
+        Navigator.of(context).pop();
+        showSuccess(context, title: 'Berhasil', message: 'Item berhasil disimpan');
+      }
     } catch (e) {
       showError(context, title: 'Error', message: e.toString());
     }

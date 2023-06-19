@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:sultanpos/model/auth.dart';
@@ -6,9 +7,8 @@ import 'package:sultanpos/model/user.dart';
 import 'package:sultanpos/preference.dart';
 import 'package:sultanpos/repository/rest/authrepo.dart';
 import 'package:sultanpos/state/app.dart';
-import 'package:sultanpos/state/base.dart';
 
-class AuthState extends BaseState {
+class AuthState extends ChangeNotifier {
   final RestAuthRepo repo;
   JWTClaim? claim;
   String? refreshToken;

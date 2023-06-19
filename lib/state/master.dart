@@ -1,6 +1,6 @@
-import 'package:sultanpos/state/base.dart';
+import 'package:flutter/material.dart';
 
-class MasterState extends BaseState {
+class MasterState extends ChangeNotifier {
   MasterState();
   String? currentId;
 

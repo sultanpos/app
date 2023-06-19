@@ -3,7 +3,7 @@ import 'package:sultanpos/ui/theme.dart';
 import 'package:sultanpos/ui/widget/basewindow.dart';
 import 'package:sultanpos/ui/widget/button.dart';
 
-showBaseConfirmation(
+Future<bool?> showBaseConfirmation(
   BuildContext ctx, {
   required String title,
   required String message,
@@ -60,12 +60,14 @@ showBaseConfirmation(
   );
 }
 
-showConfirmation(BuildContext ctx, {required String title, required String message}) {
-  return showBaseConfirmation(ctx, title: title, message: message, positiveColor: Colors.red);
+Future<bool> showConfirmation(BuildContext ctx, {required String title, required String message}) async {
+  final result = await showBaseConfirmation(ctx, title: title, message: message, positiveColor: Colors.red);
+  return result ?? false;
 }
 
-showAddProductSuccessConfirmation(BuildContext ctx, {required String title, required String message}) {
-  return showBaseConfirmation(
+Future<bool> showAddProductSuccessConfirmation(BuildContext ctx,
+    {required String title, required String message}) async {
+  final result = await showBaseConfirmation(
     ctx,
     title: title,
     message: message,
@@ -73,4 +75,5 @@ showAddProductSuccessConfirmation(BuildContext ctx, {required String title, requ
     negativeLabel: "Selesai",
     positiveLabel: 'Tambah lagi',
   );
+  return result ?? false;
 }
