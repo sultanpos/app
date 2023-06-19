@@ -12,42 +12,35 @@ class ProductRootWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider.value(
-      value: AppState().productRootState,
-      child: Builder(
-        builder: (ctx) {
-          final state = ctx.watch<ProductRootState>();
-          return VerticalMenu(
-            currentId: state.currentId ?? "list",
-            onChanged: (value) => AppState().productRootState.setCurrentId(value),
-            width: 60,
-            menus: [
-              VerticalMenuItem(
-                title: 'Daftar',
-                id: 'list',
-                icon: Icons.list_alt,
-                widget: () => const ProductListWidget(),
-              ),
-              ...state.items
-                  .map(
-                    (e) => VerticalMenuItem<String>(
-                        title: e.current == null ? "BARU" : "UBAH",
-                        id: e.getId(),
-                        widget: () => ChangeNotifierProvider<ProductState>.value(
-                              value: state.productWidgetWithId(e.getId()),
-                              child: const AddProductWidget(title: "Tambah barang baru"),
-                            ),
-                        vertical: true,
-                        closable: true,
-                        onCloseClicked: () {
-                          state.closeTab(e.getId());
-                        }),
-                  )
-                  .toList(),
-            ],
-          );
-        },
-      ),
+    final state = context.watch<ProductRootState>();
+    return VerticalMenu(
+      currentId: state.currentId ?? "list",
+      onChanged: (value) => AppState().productRootState.setCurrentId(value),
+      width: 60,
+      menus: [
+        VerticalMenuItem(
+          title: 'Daftar',
+          id: 'list',
+          icon: Icons.list_alt,
+          widget: () => const ProductListWidget(),
+        ),
+        ...state.items
+            .map(
+              (e) => VerticalMenuItem<String>(
+                  title: e.current == null ? "BARU" : "UBAH",
+                  id: e.getId(),
+                  widget: () => ChangeNotifierProvider<ProductState>.value(
+                        value: state.productWidgetWithId(e.getId()),
+                        child: const AddProductWidget(title: "Tambah barang baru"),
+                      ),
+                  vertical: true,
+                  closable: true,
+                  onCloseClicked: () {
+                    state.closeTab(e.getId());
+                  }),
+            )
+            .toList(),
+      ],
     );
   }
 }

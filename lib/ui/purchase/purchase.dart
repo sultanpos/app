@@ -20,43 +20,36 @@ class PurchaseWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider.value(
-      value: AppState().purchaseState,
-      child: Builder(
-        builder: (ctx) {
-          final state = ctx.watch<PurchaseState>();
-          return VerticalMenu<int>(
-            currentId: state.currentId ?? 0,
-            onChanged: (value) => AppState().purchaseState.setCurrentId(value),
-            width: 60,
-            menus: [
-              VerticalMenuItem<int>(
-                title: 'Daftar',
-                id: 0,
-                icon: Icons.list_alt,
-                widget: () => const PurchaseListWidget(),
+    final state = context.watch<PurchaseState>();
+    return VerticalMenu<int>(
+      currentId: state.currentId ?? 0,
+      onChanged: (value) => AppState().purchaseState.setCurrentId(value),
+      width: 60,
+      menus: [
+        VerticalMenuItem<int>(
+          title: 'Daftar',
+          id: 0,
+          icon: Icons.list_alt,
+          widget: () => const PurchaseListWidget(),
+        ),
+        ...state.items
+            .map(
+              (e) => VerticalMenuItem<int>(
+                title: e.purchase.number,
+                id: e.purchase.id,
+                widget: () => ChangeNotifierProvider<PurchaseItemState>.value(
+                  value: state.getItemState(e.purchase.id),
+                  child: const PurchaseEditWidget(),
+                ),
+                vertical: true,
+                closable: e.purchase.id == state.currentId,
+                onCloseClicked: () {
+                  state.closeTab(e.purchase.id);
+                },
               ),
-              ...state.items
-                  .map(
-                    (e) => VerticalMenuItem<int>(
-                      title: e.purchase.number,
-                      id: e.purchase.id,
-                      widget: () => ChangeNotifierProvider<PurchaseItemState>.value(
-                        value: state.getItemState(e.purchase.id),
-                        child: const PurchaseEditWidget(),
-                      ),
-                      vertical: true,
-                      closable: e.purchase.id == state.currentId,
-                      onCloseClicked: () {
-                        state.closeTab(e.purchase.id);
-                      },
-                    ),
-                  )
-                  .toList(),
-            ],
-          );
-        },
-      ),
+            )
+            .toList(),
+      ],
     );
   }
 }
