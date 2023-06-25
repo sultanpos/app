@@ -16,7 +16,13 @@ class HttpAPI {
   HttpAPI._internal({required this.fetch, required this.interceptor});
 
   factory HttpAPI.create(String basePath, AuthInterceptor interceptor) {
-    final dio = Dio(BaseOptions(connectTimeout: 60000, receiveTimeout: 60000, sendTimeout: 60000));
+    final dio = Dio(
+      BaseOptions(
+        connectTimeout: const Duration(minutes: 1),
+        receiveTimeout: const Duration(minutes: 1),
+        sendTimeout: const Duration(minutes: 1),
+      ),
+    );
     if (kDebugMode) dio.interceptors.add(myinterceptor.LogInterceptor());
     dio.interceptors.add(interceptor);
     final fetch = Fetch(basePath, dio);

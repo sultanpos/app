@@ -10,15 +10,15 @@ class Fetch {
 
   Fetch(this.basePath, this.dio);
 
-  _handleError(DioError err) {
+  _handleError(DioException err) {
     switch (err.type) {
-      case DioErrorType.connectTimeout:
-      case DioErrorType.receiveTimeout:
-      case DioErrorType.sendTimeout:
+      case DioExceptionType.connectionTimeout:
+      case DioExceptionType.receiveTimeout:
+      case DioExceptionType.sendTimeout:
         throw ErrorResponse(ErrorResponse.errorCodeTimeout, "request timeout");
-      case DioErrorType.cancel:
+      case DioExceptionType.cancel:
         throw ErrorResponse(ErrorResponse.errorCodeCanceled, "request canceled");
-      case DioErrorType.response:
+      case DioExceptionType.badResponse:
         {
           if (err.response!.data is Map<String, dynamic>) {
             throw ErrorResponse.fromJson(err.response!.data);
@@ -26,6 +26,10 @@ class Fetch {
             throw ErrorResponse(err.response!.statusCode!, "response unknown error");
           }
         }
+      case DioExceptionType.badCertificate:
+        throw ErrorResponse(ErrorResponse.errorBadCertificate, "bad certificate");
+      case DioExceptionType.connectionError:
+        throw ErrorResponse(ErrorResponse.errorConnection, "connection error");
       default:
         throw ErrorResponse(ErrorResponse.errorUnknown, "unknown error");
     }
@@ -34,9 +38,10 @@ class Fetch {
   post(String? path, {required Map<String, dynamic> data, bool skipAuth = false}) async {
     assert(path != null);
     try {
-      final response = await dio.post('$basePath$path', data: data, options: skipAuth ? Options(extra: {'skipAuth': true}) : null);
+      final response =
+          await dio.post('$basePath$path', data: data, options: skipAuth ? Options(extra: {'skipAuth': true}) : null);
       return response;
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       _handleError(e);
     }
   }
@@ -44,9 +49,10 @@ class Fetch {
   put(String? path, {required Map<String, dynamic> data, bool skipAuth = false}) async {
     assert(path != null);
     try {
-      final response = await dio.put('$basePath$path', data: data, options: skipAuth ? Options(extra: {'skipAuth': true}) : null);
+      final response =
+          await dio.put('$basePath$path', data: data, options: skipAuth ? Options(extra: {'skipAuth': true}) : null);
       return response;
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       _handleError(e);
     }
   }
@@ -54,10 +60,10 @@ class Fetch {
   get(String? path, {Map<String, dynamic>? queryParameters, bool skipAuth = false}) async {
     assert(path != null);
     try {
-      final response =
-          await dio.get('$basePath$path', queryParameters: queryParameters, options: skipAuth ? Options(extra: {'skipAuth': true}) : null);
+      final response = await dio.get('$basePath$path',
+          queryParameters: queryParameters, options: skipAuth ? Options(extra: {'skipAuth': true}) : null);
       return response;
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       _handleError(e);
     }
   }
@@ -65,16 +71,25 @@ class Fetch {
   delete(String? path, {Map<String, dynamic>? queryParameters, bool skipAuth = false}) async {
     assert(path != null);
     try {
-      final response =
-          await dio.delete('$basePath$path', queryParameters: queryParameters, options: skipAuth ? Options(extra: {'skipAuth': true}) : null);
+      final response = await dio.delete('$basePath$path',
+          queryParameters: queryParameters, options: skipAuth ? Options(extra: {'skipAuth': true}) : null);
       return response;
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       _handleError(e);
     }
   }
 
   Fetch instance() {
-    _def ??= Fetch(Flavor.baseUrl!, Dio(BaseOptions(connectTimeout: 60000, receiveTimeout: 60000, sendTimeout: 60000)));
+    _def ??= Fetch(
+      Flavor.baseUrl!,
+      Dio(
+        BaseOptions(
+          connectTimeout: const Duration(minutes: 1),
+          receiveTimeout: const Duration(minutes: 1),
+          sendTimeout: const Duration(minutes: 1),
+        ),
+      ),
+    );
     return _def!;
   }
 }

@@ -17,9 +17,10 @@ class LogInterceptor extends Interceptor {
   }
 
   @override
-  void onError(DioError err, ErrorInterceptorHandler handler) {
-    if (err.type == DioErrorType.response) {
-      debugPrint('Error ${_time()} Response: [${err.response!.statusCode}] url: ${err.response!.realUri}; body: ${err.response!.data.toString()}}');
+  void onError(DioException err, ErrorInterceptorHandler handler) {
+    if (err.type == DioExceptionType.badResponse) {
+      debugPrint(
+          'Error ${_time()} Response: [${err.response!.statusCode}] url: ${err.response!.realUri}; body: ${err.response!.data.toString()}}');
     } else {
       debugPrint('Error ${_time()} Response: ${err.toString()}');
     }

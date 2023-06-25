@@ -245,18 +245,18 @@ packages:
     dependency: "direct main"
     description:
       name: dio
-      sha256: "7d328c4d898a61efc3cd93655a0955858e29a0aa647f0f9e02d59b3bb275e2e8"
+      sha256: a9d76e72985d7087eb7c5e7903224ae52b337131518d127c554b9405936752b8
       url: "https://pub.dev"
     source: hosted
-    version: "4.0.6"
+    version: "5.2.1+1"
   dropdown_button2:
     dependency: "direct main"
     description:
       name: dropdown_button2
-      sha256: "374f2390161bf782b4896f0b1b24cbb2b5daaa1cfb11047c3307461dcdf44e07"
+      sha256: "107444581478342c6511040c2eb52850748400df4f3295df3da8be75693180a5"
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.3"
+    version: "2.1.4"
   ffi:
     dependency: transitive
     description:
@@ -327,10 +327,10 @@ packages:
     dependency: "direct main"
     description:
       name: http_mock_adapter
-      sha256: "6fa1a00932a5758750f54c5594f8bf37393fe5ae86e49325281b5a9d99114f33"
+      sha256: "00f48d69f31d79e389f7a8544b266a214020a8b79d9f376f54e84ae13d3e2965"
       url: "https://pub.dev"
     source: hosted
-    version: "0.3.3"
+    version: "0.4.4"
   http_multi_server:
     dependency: transitive
     description:
@@ -423,10 +423,10 @@ packages:
     dependency: "direct main"
     description:
       name: lehttp_overrides
-      sha256: "9c54ada96cda6ff848aafa1608bf95c35377a0628e4a9a30d9af1500cfc4f04b"
+      sha256: "7cb699bf8c7b24d01f0cd25dcf83ff300258b44ac94e860484b6c7c0134b36b7"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.2"
+    version: "1.0.3"
   lints:
     dependency: transitive
     description:
@@ -639,10 +639,10 @@ packages:
     dependency: "direct main"
     description:
       name: reactive_forms
-      sha256: "5aa9c48a0626c20d00a005e597cb10efbdebbfeecb9c4227b03a5945fbb91ec4"
+      sha256: "7f3c7b53d5a875f002658bf675313d0d11795ee58cf8591f26c906b7a86c2b0a"
       url: "https://pub.dev"
     source: hosted
-    version: "14.3.0"
+    version: "15.0.0"
   shared_preferences:
     dependency: "direct main"
     description:
@@ -788,10 +788,10 @@ packages:
     dependency: transitive
     description:
       name: stream_channel
-      sha256: "83615bee9045c1d322bbbd1ba209b7a749c2cbcdcb3fdd1df8eb488b3279c1c8"
+      sha256: ba2aa5d8cc609d96bbb2899c28934f9e1af5cddbd60a827822ea467161eb54e7
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.1"
+    version: "2.1.2"
   stream_transform:
     dependency: transitive
     description:
@@ -812,18 +812,18 @@ packages:
     dependency: transitive
     description:
       name: syncfusion_flutter_core
-      sha256: "4aa69e3541d38810533b1455aa38997a89755f9928e16ef813b62b2e8bcc398c"
+      sha256: "952f5ee970bc3fba2db95a8dac71a295d9a70ad2c0993c7279e3a883c3e1459f"
       url: "https://pub.dev"
     source: hosted
-    version: "21.2.9"
+    version: "22.1.34"
   syncfusion_flutter_datagrid:
     dependency: "direct main"
     description:
       name: syncfusion_flutter_datagrid
-      sha256: "2e2f57d4dbac912f76c64b60bd39ad27e904397d7962262af4284f3957952594"
+      sha256: eca31fb38ac6736507bb343f5e64b7ce531fded72568759502e980f2c05a6c86
       url: "https://pub.dev"
     source: hosted
-    version: "21.2.9"
+    version: "22.1.34"
   term_glyph:
     dependency: transitive
     description:
@@ -900,10 +900,10 @@ packages:
     dependency: transitive
     description:
       name: vm_service
-      sha256: f3743ca475e0c9ef71df4ba15eb2d7684eecd5c8ba20a462462e4e8b561b2e11
+      sha256: b8c67f5fa3897b122cf60fe9ff314f7b0ef71eab25c5f8b771480bc338f48823
       url: "https://pub.dev"
     source: hosted
-    version: "11.6.0"
+    version: "11.7.2"
   watcher:
     dependency: transitive
     description:

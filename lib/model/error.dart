@@ -7,6 +7,8 @@ class ErrorResponse {
   static const int errorCodeCanceled = -1;
   static const int errorCodeTimeout = -2;
   static const int errorCodeOther = -3;
+  static const int errorConnection = -4;
+  static const int errorBadCertificate = -5;
   static const int errorUnknown = -99;
 
   int code;

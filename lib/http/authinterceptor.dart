@@ -25,13 +25,15 @@ class AuthInterceptor extends QueuedInterceptor {
     if (!skipAuth) {
       final errorData = {"code": 401, "message": "unauthorize"};
       if (accessToken == null || accessToken == "") {
-        handler.reject(DioError(
+        handler.reject(DioException(
             requestOptions: options,
-            type: DioErrorType.response,
-            response: Response(requestOptions: options, statusCode: 401, statusMessage: "Unauthorized", data: errorData)));
+            type: DioExceptionType.badResponse,
+            response:
+                Response(requestOptions: options, statusCode: 401, statusMessage: "Unauthorized", data: errorData)));
       } else if (lifeTime!.isBefore(DateTime.now())) {
         dio
-            .post(authRefreshUrl, data: {"refresh_token": refreshToken}, options: Options(headers: {"Content-Type": "application/json"}))
+            .post(authRefreshUrl,
+                data: {"refresh_token": refreshToken}, options: Options(headers: {"Content-Type": "application/json"}))
             .then((value) {
           final loginResponse = LoginResponse.fromJson(value.data);
           if (storeAccessToken != null) storeAccessToken!(loginResponse);
@@ -41,10 +43,11 @@ class AuthInterceptor extends QueuedInterceptor {
           options.headers["Authorization"] = 'Bearer $accessToken';
           handler.next(options);
         }).onError((error, stackTrace) {
-          handler.reject(DioError(
+          handler.reject(DioException(
               requestOptions: options,
-              type: DioErrorType.response,
-              response: Response(requestOptions: options, statusCode: 401, statusMessage: "Unauthorized", data: errorData)));
+              type: DioExceptionType.badResponse,
+              response:
+                  Response(requestOptions: options, statusCode: 401, statusMessage: "Unauthorized", data: errorData)));
         });
       } else {
         options.headers["Authorization"] = 'Bearer $accessToken';

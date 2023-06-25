@@ -20,24 +20,24 @@ class RequestResponse<T> {
 }
 
 class MyFetch {
-  simulatThrow(DioErrorType type) async {
-    throw DioError(requestOptions: RequestOptions(path: "/"), type: type);
+  simulatThrow(DioExceptionType type) async {
+    throw DioException(requestOptions: RequestOptions(path: "/"), type: type);
   }
 
-  String _handle(DioError err) {
-    if (err.type == DioErrorType.cancel) {
+  String _handle(DioException err) {
+    if (err.type == DioExceptionType.cancel) {
       return err.toString();
     }
     throw "error not handled";
   }
 
-  post(DioErrorType? type) async {
+  post(DioExceptionType? type) async {
     try {
       if (type != null) {
         await simulatThrow(type);
       }
       return "works";
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       return _handle(e);
     }
   }
@@ -58,7 +58,7 @@ void main() {
 
     final fetch = MyFetch();
     try {
-      await fetch.post(DioErrorType.connectTimeout);
+      await fetch.post(DioExceptionType.connectionTimeout);
     } catch (e) {
       expect(e.toString(), "error not handled");
     }

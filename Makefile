@@ -7,6 +7,9 @@ fix:
 upgrade:
 	@flutter pub upgrade
 
+outdated:
+	@flutter pub outdated
+
 test:
 	@flutter test
 

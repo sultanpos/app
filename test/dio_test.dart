@@ -44,8 +44,8 @@ void main() {
     try {
       res = await externalDio.get(path1);
       expect(0, res.statusCode); // should not go here
-    } on DioError catch (e) {
-      expect(DioErrorType.response, e.type);
+    } on DioException catch (e) {
+      expect(DioExceptionType.badResponse, e.type);
       expect(401, e.response!.statusCode);
     }
 
@@ -57,8 +57,8 @@ void main() {
     try {
       res = await externalDio.get(path1);
       expect(0, res.statusCode); // should not go here
-    } on DioError catch (e) {
-      expect(DioErrorType.response, e.type);
+    } on DioException catch (e) {
+      expect(DioExceptionType.badResponse, e.type);
       expect(401, e.response!.statusCode);
     }
 
