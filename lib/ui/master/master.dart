@@ -22,10 +22,11 @@ class MasterRootWidget extends StatelessWidget {
             width: 80,
             menus: [
               VerticalMenuItem<String>(
-                  title: 'Kategori', id: 'category', icon: Icons.account_tree, widget: () => const CategoryWidget()),
-              VerticalMenuItem<String>(title: 'Unit', id: 'unit', icon: Icons.scale, widget: () => const UnitWidget()),
+                  title: 'Kategori', id: 'category', icon: Icons.account_tree, widget: (ctx) => const CategoryWidget()),
               VerticalMenuItem<String>(
-                  title: 'Harga', id: 'price', icon: Icons.attach_money, widget: () => const PriceGroupWidget()),
+                  title: 'Unit', id: 'unit', icon: Icons.scale, widget: (ctx) => const UnitWidget()),
+              VerticalMenuItem<String>(
+                  title: 'Harga', id: 'price', icon: Icons.attach_money, widget: (ctx) => const PriceGroupWidget()),
             ],
           );
         },

@@ -30,14 +30,14 @@ class PurchaseWidget extends StatelessWidget {
           title: 'Daftar',
           id: 0,
           icon: Icons.list_alt,
-          widget: () => const PurchaseListWidget(),
+          widget: (ctx) => const PurchaseListWidget(),
         ),
         ...state.items
             .map(
               (e) => VerticalMenuItem<int>(
                 title: e.purchase.number,
                 id: e.purchase.id,
-                widget: () => ChangeNotifierProvider<PurchaseItemState>.value(
+                widget: (ctx) => ChangeNotifierProvider<PurchaseItemState>.value(
                   value: state.getItemState(e.purchase.id),
                   child: const PurchaseEditWidget(),
                 ),

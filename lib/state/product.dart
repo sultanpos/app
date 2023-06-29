@@ -127,7 +127,7 @@ class ProductState extends CrudState<ProductModel> {
     final valueMap = {
       'name': value.name,
       'barcode': value.barcode,
-      'productType': value.productType,
+      'productType': value.productType.value,
       'unitId': value.unit?.id,
       'categoryId': value.category?.id,
       'partnerId': value.partner?.id,

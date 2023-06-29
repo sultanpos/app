@@ -1,26 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:sultanpos/state/app.dart';
 import 'package:sultanpos/state/cashier.dart';
+import 'package:sultanpos/state/cart.dart';
 import 'package:sultanpos/ui/cashier/addsession.dart';
+import 'package:sultanpos/ui/cashier/cart.dart';
 import 'package:sultanpos/ui/widget/button.dart';
 import 'package:sultanpos/ui/widget/confirmation.dart';
 import 'package:sultanpos/ui/widget/dialogutil.dart';
+import 'package:sultanpos/ui/widget/keyshortcut.dart';
 import 'package:sultanpos/ui/widget/space.dart';
+import 'package:sultanpos/ui/widget/verticalmenu.dart';
 
 class CashierWidget extends StatelessWidget {
   const CashierWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final state = context.watch<CashierRootState>();
+    final loadingInit = context.select<CashierRootState, bool>(
+      (value) => value.loadingInit,
+    );
+    final cashierOpened = context.select<CashierRootState, bool>(
+      (value) => value.cashierOpened,
+    );
     return Center(
-      child: state.loadingInit
+      child: loadingInit
           ? const Center(
               child: CircularProgressIndicator(),
             )
-          : !state.cashierOpened
+          : !cashierOpened
               ? const CashierNoSessionWidget()
-              : const Text('Root here'),
+              : const CashierRootWidget(),
     );
   }
 }
@@ -76,6 +87,49 @@ class CashierNoSessionWidget extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class CashierRootWidget extends StatelessWidget {
+  const CashierRootWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final state = context.watch<CashierRootState>();
+    return KeyboardShortcut(
+      keyEvent: (event) {
+        if (event.isControlPressed && event.logicalKey == LogicalKeyboardKey.keyN) {
+          AppState().cashierState.newTabCashier();
+          return KeyEventResult.handled;
+        }
+        return KeyEventResult.ignored;
+      },
+      child: VerticalMenu<int>(
+        menus: state.cashierItems
+            .map((e) => VerticalMenuItem(
+                  title: '#${e.id}',
+                  id: e.id,
+                  closable: true,
+                  vertical: true,
+                  onCloseClicked: () {
+                    if (state.cashierItems.length > 1) {
+                      state.closeTab(e.id);
+                    }
+                  },
+                  widget: (ctx) {
+                    return ChangeNotifierProvider<CartState>.value(
+                      value: e,
+                      child: const CartWidget(),
+                    );
+                  },
+                ))
+            .toList(),
+        currentId: state.currentCashierTabId,
+        onChanged: (p0) {
+          state.setCurrentTab(p0);
+        },
       ),
     );
   }

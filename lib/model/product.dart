@@ -10,16 +10,17 @@ part 'product.g.dart';
 
 enum ProductType implements Comparable<ProductType> {
   @JsonValue('template')
-  template('Template'),
+  template('template', 'Template'),
   @JsonValue('product')
-  product('Produk'),
+  product('product', 'Produk'),
   @JsonValue('service')
-  service('Jasa'),
+  service('service', 'Jasa'),
   @JsonValue('package')
-  package('Paket');
+  package('package', 'Paket');
 
   final String value;
-  const ProductType(this.value);
+  final String text;
+  const ProductType(this.value, this.text);
 
   @override
   int compareTo(ProductType other) {
@@ -90,6 +91,29 @@ class ProductModel extends BaseModel {
 
   @override
   int getId() => id;
+
+  int priceForAmount(int amount) {
+    if (prices?.isEmpty ?? true) {
+      return 0;
+    }
+    for (var i = 0; i < prices!.length; i++) {
+      if (prices![i].count0 >= amount) {
+        return prices![i].price0;
+      } else if (prices![i].count1 >= amount) {
+        return prices![i].price1;
+      }
+      if (prices![i].count2 >= amount) {
+        return prices![i].price2;
+      }
+      if (prices![i].count3 >= amount) {
+        return prices![i].price3;
+      }
+      if (prices![i].count4 >= amount) {
+        return prices![i].price4;
+      }
+    }
+    return 0;
+  }
 }
 
 @JsonSerializable(explicitToJson: true)

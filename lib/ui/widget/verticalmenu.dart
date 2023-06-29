@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
+typedef VerticalMenuWidget = Widget Function(BuildContext);
+
 class VerticalMenuItem<T> {
   final String title;
   final T id;
   final IconData? icon;
-  final Widget Function() widget;
+  final VerticalMenuWidget widget;
   final bool closable;
   final bool vertical;
   final VoidCallback? onCloseClicked;
@@ -116,7 +118,7 @@ class VerticalMenu<T> extends StatelessWidget {
         Expanded(
           child: AnimatedSwitcher(
             duration: const Duration(milliseconds: 100),
-            child: menus[index].widget(),
+            child: menus[index].widget(context),
           ),
         ),
       ],

@@ -5,14 +5,15 @@ part 'sale.g.dart';
 
 enum SaleType implements Comparable<SaleType> {
   @JsonValue('so')
-  so('SO'),
+  so('so', 'SO'),
   @JsonValue('normal')
-  normal('Normal'),
+  normal('normal', 'Normal'),
   @JsonValue('cashier')
-  cashier('Kasir');
+  cashier('cashier', 'Kasir');
 
   final String value;
-  const SaleType(this.value);
+  final String text;
+  const SaleType(this.value, this.text);
 
   @override
   int compareTo(SaleType other) {
@@ -22,16 +23,17 @@ enum SaleType implements Comparable<SaleType> {
 
 enum SaleStatus implements Comparable<SaleStatus> {
   @JsonValue('draft')
-  draft('Draft'),
+  draft('draft', 'Draft'),
   @JsonValue('validated')
-  validated('Tervalidasi'),
+  validated('validated', 'Tervalidasi'),
   @JsonValue('in_progress')
-  inProgress('Proses'),
+  inProgress('in_progress', 'Proses'),
   @JsonValue('done')
-  done('Selesai');
+  done('done', 'Selesai');
 
   final String value;
-  const SaleStatus(this.value);
+  final String text;
+  const SaleStatus(this.value, this.text);
 
   @override
   int compareTo(SaleStatus other) {
@@ -41,14 +43,15 @@ enum SaleStatus implements Comparable<SaleStatus> {
 
 enum SaleStockStatus implements Comparable<SaleStockStatus> {
   @JsonValue('none')
-  none('Belum'),
+  none('none', 'Belum'),
   @JsonValue('transit')
-  transit('Transit'),
+  transit('transit', 'Transit'),
   @JsonValue('received')
-  received('Diterima');
+  received('received', 'Diterima');
 
   final String value;
-  const SaleStockStatus(this.value);
+  final String text;
+  const SaleStockStatus(this.value, this.text);
 
   @override
   int compareTo(SaleStockStatus other) {

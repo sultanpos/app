@@ -18,10 +18,7 @@ abstract class PurchaseRepository extends BaseCRUDRepository<PurchaseModel> {
   Future updateStatus(int purchaseId, PurchaseUpdateStatusModel newStatus);
 }
 
-abstract class ProductRepository extends BaseCRUDRepository<ProductModel> {
-  Future getByBarcode(String barcode);
-  Future queryByName(String name);
-}
+abstract class ProductRepository extends BaseCRUDRepository<ProductModel> {}
 
 abstract class CashierSessionRepository extends BaseCRUDRepository<CashierSessionModel> {
   Future<CashierSessionModel> getActive();

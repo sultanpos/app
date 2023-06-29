@@ -22,14 +22,14 @@ class ProductRootWidget extends StatelessWidget {
           title: 'Daftar',
           id: 'list',
           icon: Icons.list_alt,
-          widget: () => const ProductListWidget(),
+          widget: (ctx) => const ProductListWidget(),
         ),
         ...state.items
             .map(
               (e) => VerticalMenuItem<String>(
                   title: e.current == null ? "BARU" : "UBAH",
                   id: e.getId(),
-                  widget: () => ChangeNotifierProvider<ProductState>.value(
+                  widget: (ctx) => ChangeNotifierProvider<ProductState>.value(
                         value: state.productWidgetWithId(e.getId()),
                         child: const AddProductWidget(title: "Tambah barang baru"),
                       ),

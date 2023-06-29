@@ -1,0 +1,157 @@
+import 'package:json_annotation/json_annotation.dart';
+import 'package:sultanpos/model/product.dart';
+import 'package:sultanpos/util/calculate.dart';
+
+part 'cart.g.dart';
+
+abstract class ICartItem {
+  int id();
+  String name();
+  String barcode();
+  String unit();
+  int amount();
+  int price();
+  int discount();
+  ICartItem addAmount(int amount);
+  String discountFormula();
+  int total();
+}
+
+abstract class ICart {
+  ICartItem itemAt(int index);
+  void removeItemByIndex(int index);
+  void removeItem(ICartItem item);
+  void addItem(ICartItem item);
+  int itemLength();
+  int total();
+}
+
+@JsonSerializable(explicitToJson: true)
+class CartModel implements ICart {
+  int id;
+  List<CartItemModel> items = [];
+  CartModel({required this.id});
+  factory CartModel.fromJson(Map<String, dynamic> json) => _$CartModelFromJson(json);
+  Map<String, dynamic> toJson() => _$CartModelToJson(this);
+
+  @override
+  int total() {
+    return items.fold(0, (previousValue, element) => previousValue + element.total());
+  }
+
+  addProduct(int amount, int price, String discountFormula, ProductModel product) {
+    //check if contains product already
+    int index = items.indexWhere((element) => element.id() == product.id);
+    if (index >= 0) {
+      items[index] = items[index].addAmount(amount);
+    } else {
+      items.add(
+        CartItemModel(
+          product: product,
+          itemAmount: amount,
+          itemPrice: price,
+          itemDiscountFormula: discountFormula,
+        ),
+      );
+    }
+  }
+
+  @override
+  void addItem(ICartItem item) {
+    // TODO: implement addItem
+  }
+
+  @override
+  ICartItem itemAt(int index) {
+    return items[index];
+  }
+
+  @override
+  int itemLength() {
+    return items.length;
+  }
+
+  @override
+  void removeItem(ICartItem item) {
+    // TODO: implement removeItem
+  }
+
+  @override
+  void removeItemByIndex(int index) {
+    // TODO: implement removeItemByIndex
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class CartItemModel implements ICartItem {
+  final ProductModel product;
+  final int itemAmount;
+  final int itemPrice;
+  final String itemDiscountFormula;
+
+  CartItemModel({
+    required this.product,
+    required this.itemAmount,
+    required this.itemPrice,
+    required this.itemDiscountFormula,
+  });
+
+  factory CartItemModel.fromJson(Map<String, dynamic> json) => _$CartItemModelFromJson(json);
+
+  Map<String, dynamic> toJson() => _$CartItemModelToJson(this);
+
+  @override
+  int total() {
+    return rawCalculateTotal(itemAmount, itemPrice, itemDiscountFormula);
+  }
+
+  @override
+  String barcode() {
+    return product.barcode;
+  }
+
+  @override
+  int discount() {
+    return calculateDiscount(itemPrice, itemDiscountFormula);
+  }
+
+  @override
+  int id() {
+    return product.id;
+  }
+
+  @override
+  String name() {
+    return product.name;
+  }
+
+  @override
+  String unit() {
+    return product.unit?.name ?? '-';
+  }
+
+  @override
+  int amount() {
+    return itemAmount;
+  }
+
+  @override
+  String discountFormula() {
+    return itemDiscountFormula;
+  }
+
+  @override
+  int price() {
+    return itemPrice;
+  }
+
+  @override
+  CartItemModel addAmount(int amount) {
+    return CartItemModel(
+      product: product,
+      itemAmount: itemAmount + amount,
+      itemDiscountFormula: itemDiscountFormula,
+      itemPrice: itemPrice,
+    );
+  }
+}

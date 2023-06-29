@@ -10,7 +10,7 @@ class PartnerState extends CrudStateWithList<PartnerModel> {
   final fgIsCustomer = FormControl<bool>();
   final fgIsSupplier = FormControl<bool>();
   final fgAddress = FormControl<String>();
-  final fgPhone = FormControl<String>(validators: [PhoneValidator().validate]);
+  final fgPhone = FormControl<String>(validators: [PhoneValidator()]);
   final fgEmail = FormControl<String>(validators: [Validators.email]);
   final fgNpwp = FormControl<String>();
   final fgPriceGroup = FormControl<int>();

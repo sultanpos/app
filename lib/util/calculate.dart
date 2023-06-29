@@ -27,3 +27,8 @@ double calculateMargin(int buy, int sell) {
   if (buy == 0) return 0;
   return diff * 100.0 / buy.toDouble();
 }
+
+int rawCalculateTotal(int amount, int price, String discountFormula) {
+  int newPrice = price - calculateDiscount(price, discountFormula);
+  return (newPrice * amount) ~/ 1000;
+}
