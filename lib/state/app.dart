@@ -8,6 +8,7 @@ import 'package:sultanpos/localfiledb/db.dart';
 import 'package:sultanpos/model/auth.dart';
 import 'package:sultanpos/model/category.dart';
 import 'package:sultanpos/model/partner.dart';
+import 'package:sultanpos/model/paymentmethod.dart';
 import 'package:sultanpos/model/unit.dart';
 import 'package:sultanpos/preference.dart';
 import 'package:sultanpos/repository/rest/authrepo.dart';
@@ -23,6 +24,7 @@ import 'package:sultanpos/state/category.dart';
 import 'package:sultanpos/state/master.dart';
 import 'package:sultanpos/state/navigation.dart';
 import 'package:sultanpos/state/partner.dart';
+import 'package:sultanpos/state/paymentmethod.dart';
 import 'package:sultanpos/state/pricegroup.dart';
 import 'package:sultanpos/state/productroot.dart';
 import 'package:sultanpos/state/purchase.dart';
@@ -51,6 +53,7 @@ class AppState {
   late PartnerState partnerState;
   late CategoryState categoryState;
   late PurchaseState purchaseState;
+  late PaymentMethodState paymentMethodState;
 
   init() async {
     if (initted) return;
@@ -70,6 +73,8 @@ class AppState {
     final unitRepo = BaseRestCRUDRepository(path: '/unit', httpApi: httpAPI, creator: UnitModel.fromJson);
     final partnerRepo = BaseRestCRUDRepository(path: '/partner', httpApi: httpAPI, creator: PartnerModel.fromJson);
     final categoryRepo = BaseRestCRUDRepository(path: '/category', httpApi: httpAPI, creator: CategoryModel.fromJson);
+    final paymentMethodRepo =
+        BaseRestCRUDRepository(path: '/paymentmethod', httpApi: httpAPI, creator: PaymentMethodModel.fromJson);
     final purchaseRepo = RestPurchaseRepo(httpApi: httpAPI);
     final cashierSessionRepo = RestCashierSessionRepo(httpApi: httpAPI);
 
@@ -88,6 +93,7 @@ class AppState {
       purchaseRepo: purchaseRepo,
       productRepo: productRepo,
     );
+    paymentMethodState = PaymentMethodState(repo: paymentMethodRepo);
     await AppState().authState.loadLogin();
   }
 

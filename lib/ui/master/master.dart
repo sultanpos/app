@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:sultanpos/state/app.dart';
 import 'package:sultanpos/state/master.dart';
 import 'package:sultanpos/ui/master/category/category.dart';
+import 'package:sultanpos/ui/master/paymentmethod/paymentmethod.dart';
 import 'package:sultanpos/ui/master/pricegroup/pricegroup.dart';
 import 'package:sultanpos/ui/master/unit/unit.dart';
 import 'package:sultanpos/ui/widget/verticalmenu.dart';
@@ -27,6 +28,11 @@ class MasterRootWidget extends StatelessWidget {
                   title: 'Unit', id: 'unit', icon: Icons.scale, widget: (ctx) => const UnitWidget()),
               VerticalMenuItem<String>(
                   title: 'Harga', id: 'price', icon: Icons.attach_money, widget: (ctx) => const PriceGroupWidget()),
+              VerticalMenuItem<String>(
+                  title: 'Metode',
+                  id: 'paymentmethod',
+                  icon: Icons.payments,
+                  widget: (ctx) => const PaymentMethodWidget()),
             ],
           );
         },

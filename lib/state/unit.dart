@@ -4,7 +4,7 @@ import 'package:sultanpos/model/unit.dart';
 import 'package:sultanpos/state/crud.dart';
 
 class UnitState extends CrudStateWithList<UnitModel> {
-  final fgName = FormControl<String>(validators: [Validators.required], touched: true);
+  final fgName = FormControl<String>(validators: [Validators.required], touched: false);
   final fgDescription = FormControl<String>();
 
   UnitState({required super.repo}) {

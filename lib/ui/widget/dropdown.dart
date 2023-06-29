@@ -3,6 +3,7 @@ import 'package:sultanpos/model/base.dart';
 import 'package:sultanpos/model/category.dart';
 import 'package:sultanpos/model/listresult.dart';
 import 'package:sultanpos/model/partner.dart';
+import 'package:sultanpos/model/paymentmethod.dart';
 import 'package:sultanpos/model/unit.dart';
 import 'package:sultanpos/state/app.dart';
 
@@ -124,6 +125,41 @@ class DropdownProductType extends StatelessWidget {
         DropdownMenuItem(
           value: 'service',
           child: Text('Jasa'),
+        )
+      ],
+    );
+  }
+}
+
+class DropdownPaymentMethodType extends StatelessWidget {
+  final bool? autoFocus;
+  final String formControlName;
+  final InputDecoration? inputDecoration;
+  const DropdownPaymentMethodType({required this.formControlName, this.autoFocus, this.inputDecoration, Key? key})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SReactiveCustomDropdown<PaymentMethodType>(
+      autofocus: autoFocus ?? false,
+      formControlName: formControlName,
+      decoration: inputDecoration ?? const InputDecoration(),
+      items: const [
+        DropdownMenuItem(
+          value: PaymentMethodType.cash,
+          child: Text('Cash'),
+        ),
+        DropdownMenuItem(
+          value: PaymentMethodType.edc,
+          child: Text('EDC'),
+        ),
+        DropdownMenuItem(
+          value: PaymentMethodType.transfer,
+          child: Text('Transfer'),
+        ),
+        DropdownMenuItem(
+          value: PaymentMethodType.online,
+          child: Text('Online'),
         )
       ],
     );
