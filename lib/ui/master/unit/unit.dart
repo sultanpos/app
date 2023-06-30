@@ -4,6 +4,7 @@ import 'package:sultanpos/model/unit.dart';
 import 'package:sultanpos/state/app.dart';
 import 'package:sultanpos/state/unit.dart';
 import 'package:sultanpos/ui/master/unit/add.dart';
+import 'package:sultanpos/ui/widget/button.dart';
 import 'package:sultanpos/ui/widget/columnaction.dart';
 import 'package:sultanpos/ui/widget/confirmation.dart';
 import 'package:sultanpos/ui/widget/datatable.dart';
@@ -30,7 +31,7 @@ class UnitWidget extends StatelessWidget {
                       style: Theme.of(context).textTheme.headlineSmall,
                     ),
                     const Expanded(child: SizedBox()),
-                    ElevatedButton(
+                    SButton(
                       onPressed: () {
                         AppState().unitState.resetForm();
                         sShowDialog(
@@ -47,17 +48,14 @@ class UnitWidget extends StatelessWidget {
                     const SizedBox(
                       width: 4,
                     ),
-                    SizedBox(
-                      width: 30,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          AppState().unitState.listData.load(refresh: true);
-                        },
-                        style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(0)),
-                        child: const Icon(
-                          Icons.refresh,
-                          size: 20,
-                        ),
+                    SButton(
+                      positive: false,
+                      onPressed: () {
+                        AppState().unitState.listData.load(refresh: true);
+                      },
+                      child: const Icon(
+                        Icons.refresh,
+                        size: 20,
                       ),
                     ),
                   ],

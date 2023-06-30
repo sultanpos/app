@@ -4,6 +4,7 @@ import 'package:sultanpos/model/pricegroup.dart';
 import 'package:sultanpos/state/app.dart';
 import 'package:sultanpos/state/pricegroup.dart';
 import 'package:sultanpos/ui/master/pricegroup/add.dart';
+import 'package:sultanpos/ui/widget/button.dart';
 import 'package:sultanpos/ui/widget/columnaction.dart';
 import 'package:sultanpos/ui/widget/confirmation.dart';
 import 'package:sultanpos/ui/widget/datatable.dart';
@@ -30,7 +31,7 @@ class PriceGroupWidget extends StatelessWidget {
                       style: Theme.of(context).textTheme.headlineSmall,
                     ),
                     const Expanded(child: SizedBox()),
-                    ElevatedButton(
+                    SButton(
                       onPressed: () {
                         AppState().priceGroupState.resetForm();
                         sShowDialog(
@@ -47,17 +48,13 @@ class PriceGroupWidget extends StatelessWidget {
                     const SizedBox(
                       width: 4,
                     ),
-                    SizedBox(
-                      width: 30,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          AppState().priceGroupState.listData.load(refresh: true);
-                        },
-                        style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(0)),
-                        child: const Icon(
-                          Icons.refresh,
-                          size: 20,
-                        ),
+                    SButton(
+                      onPressed: () {
+                        AppState().priceGroupState.listData.load(refresh: true);
+                      },
+                      child: const Icon(
+                        Icons.refresh,
+                        size: 20,
                       ),
                     ),
                   ],
