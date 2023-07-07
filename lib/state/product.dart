@@ -147,8 +147,8 @@ class ProductState extends CrudState<ProductModel> {
       for (int i = 0; i < 5; i++) {
         if (priceMap['count$i'] > 0) {
           priceCounter++;
-          valueMap['count$i'] = '${priceMap['count$i']}';
-          valueMap['sell$i'] = '${priceMap['price$i']}';
+          valueMap['count$i'] = formatStock(priceMap['count$i']);
+          valueMap['sell$i'] = formatMoney(priceMap['price$i']);
           valueMap['disc$i'] = priceMap['discount_formula$i'];
         }
       }
@@ -166,7 +166,7 @@ class ProductState extends CrudState<ProductModel> {
     final defaultBranch = AppState().shareState.defaultBranch();
     final priceMap = <String, dynamic>{};
     for (int i = 0; i < 5; i++) {
-      priceMap['count$i'] = i < priceCounter ? moneyValue(csd[i].count.value ?? '0') : 0;
+      priceMap['count$i'] = i < priceCounter ? stockValue(csd[i].count.value ?? '0') : 0;
       priceMap['price$i'] = i < priceCounter ? moneyValue(csd[i].sell.value ?? '0') : 0;
       priceMap['discount_formula$i'] = i < priceCounter ? csd[i].discount.value ?? '' : '';
       priceMap['discount$i'] = i < priceCounter ? discountMargins[i].discount : 0;
@@ -197,7 +197,7 @@ class ProductState extends CrudState<ProductModel> {
   BaseModel prepareUpdateModel() {
     final priceMap = <String, dynamic>{};
     for (int i = 0; i < 5; i++) {
-      priceMap['count$i'] = i < priceCounter ? moneyValue(csd[i].count.value ?? '0') : 0;
+      priceMap['count$i'] = i < priceCounter ? stockValue(csd[i].count.value ?? '0') : 0;
       priceMap['price$i'] = i < priceCounter ? moneyValue(csd[i].sell.value ?? '0') : 0;
       priceMap['discount_formula$i'] = i < priceCounter ? csd[i].discount.value ?? '' : '';
       priceMap['discount$i'] = i < priceCounter ? discountMargins[i].discount : 0;
@@ -227,7 +227,7 @@ class ProductState extends CrudState<ProductModel> {
     fgStock.updateValue('');
     fgBuyPrice.updateValue('');
     for (int i = 0; i < 5; i++) {
-      csd[i].count.updateValue('');
+      if (i > 0) csd[i].count.updateValue('');
       csd[i].sell.updateValue('');
       csd[i].discount.updateValue('');
     }

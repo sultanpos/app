@@ -117,3 +117,134 @@ class SaleModel extends BaseModel {
   @override
   Map<String, dynamic> toJson() => _$SaleModelToJson(this);
 }
+
+@JsonSerializable(explicitToJson: true)
+class SaleItemModel extends BaseModel {
+  final int id;
+  @JsonKey(name: 'sale_id')
+  final int saleId;
+  @JsonKey(name: 'product_id')
+  final int productId;
+  final int batch;
+  final int amount;
+  @JsonKey(name: 'buy_price')
+  final int buyPrice;
+  final int price;
+  final int subtotal;
+  @JsonKey(name: 'discount_formula')
+  final String discountFormula;
+  final int discount;
+  final int total;
+  final String note;
+
+  SaleItemModel(this.id, this.saleId, this.productId, this.batch, this.amount, this.buyPrice, this.price, this.subtotal,
+      this.discountFormula, this.discount, this.total, this.note);
+
+  @override
+  factory SaleItemModel.fromJson(Map<String, dynamic> json) => _$SaleItemModelFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => _$SaleItemModelToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class PaymentCashierInsertModel extends BaseModel {
+  final int amount;
+  final int payment;
+  final int changes;
+  @JsonKey(name: 'payment_method_id')
+  final int paymentMethodID;
+  final String reference;
+  final String note;
+
+  PaymentCashierInsertModel(
+    this.amount,
+    this.payment,
+    this.changes,
+    this.paymentMethodID,
+    this.reference,
+    this.note,
+  );
+
+  @override
+  factory PaymentCashierInsertModel.fromJson(Map<String, dynamic> json) => _$PaymentCashierInsertModelFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => _$PaymentCashierInsertModelToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class SaleItemInsertModel extends BaseModel {
+  final int batch;
+  @JsonKey(name: 'product_id')
+  final int productId;
+  final int amount;
+  final int price;
+  final int subtotal;
+  @JsonKey(name: 'discount_formula')
+  final String discountFormula;
+  final int discount;
+  final int total;
+  final int note;
+
+  SaleItemInsertModel(
+    this.batch,
+    this.productId,
+    this.amount,
+    this.price,
+    this.subtotal,
+    this.discountFormula,
+    this.discount,
+    this.total,
+    this.note,
+  );
+
+  @override
+  factory SaleItemInsertModel.fromJson(Map<String, dynamic> json) => _$SaleItemInsertModelFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => _$SaleItemInsertModelToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class SaleCashierInsertModel extends BaseModel {
+  final int version;
+  final String number;
+  @JsonKey(name: 'user_id')
+  final int userId;
+  @JsonKey(name: 'cashier_session_id')
+  final int cashierSessionId;
+  final DateTime date;
+  @JsonKey(name: 'partner_id')
+  final int partnerId;
+  final DateTime? deadline;
+  @JsonKey(name: 'discount_formula')
+  final String discountFormula;
+  final int subtotal;
+  final int discount;
+  final int total;
+  final List<SaleItemInsertModel> items;
+  final List<PaymentCashierInsertModel> payments;
+
+  SaleCashierInsertModel(
+    this.version,
+    this.number,
+    this.userId,
+    this.cashierSessionId,
+    this.date,
+    this.partnerId,
+    this.deadline,
+    this.discountFormula,
+    this.subtotal,
+    this.discount,
+    this.total,
+    this.items,
+    this.payments,
+  );
+
+  @override
+  factory SaleCashierInsertModel.fromJson(Map<String, dynamic> json) => _$SaleCashierInsertModelFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => _$SaleCashierInsertModelToJson(this);
+}
