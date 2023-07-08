@@ -1,6 +1,7 @@
 import 'package:sultanpos/model/base.dart';
 import 'package:sultanpos/model/cashier.dart';
 import 'package:sultanpos/model/listresult.dart';
+import 'package:sultanpos/model/paymentmethod.dart';
 import 'package:sultanpos/model/product.dart';
 import 'package:sultanpos/model/purchase.dart';
 
@@ -22,4 +23,8 @@ abstract class ProductRepository extends BaseCRUDRepository<ProductModel> {}
 
 abstract class CashierSessionRepository extends BaseCRUDRepository<CashierSessionModel> {
   Future<CashierSessionModel> getActive();
+}
+
+abstract class PaymentMethodRepository extends BaseCRUDRepository<PaymentMethodModel> {
+  Future<PaymentMethodModel> getDefaultCashMethod();
 }

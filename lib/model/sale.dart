@@ -157,14 +157,14 @@ class PaymentCashierInsertModel extends BaseModel {
   final String reference;
   final String note;
 
-  PaymentCashierInsertModel(
-    this.amount,
-    this.payment,
-    this.changes,
-    this.paymentMethodID,
-    this.reference,
-    this.note,
-  );
+  PaymentCashierInsertModel({
+    required this.amount,
+    required this.payment,
+    required this.changes,
+    required this.paymentMethodID,
+    required this.reference,
+    required this.note,
+  });
 
   @override
   factory PaymentCashierInsertModel.fromJson(Map<String, dynamic> json) => _$PaymentCashierInsertModelFromJson(json);
@@ -185,19 +185,19 @@ class SaleItemInsertModel extends BaseModel {
   final String discountFormula;
   final int discount;
   final int total;
-  final int note;
+  final String note;
 
-  SaleItemInsertModel(
-    this.batch,
-    this.productId,
-    this.amount,
-    this.price,
-    this.subtotal,
-    this.discountFormula,
-    this.discount,
-    this.total,
-    this.note,
-  );
+  SaleItemInsertModel({
+    required this.batch,
+    required this.productId,
+    required this.amount,
+    required this.price,
+    required this.subtotal,
+    required this.discountFormula,
+    required this.discount,
+    required this.total,
+    required this.note,
+  });
 
   @override
   factory SaleItemInsertModel.fromJson(Map<String, dynamic> json) => _$SaleItemInsertModelFromJson(json);
@@ -226,21 +226,21 @@ class SaleCashierInsertModel extends BaseModel {
   final List<SaleItemInsertModel> items;
   final List<PaymentCashierInsertModel> payments;
 
-  SaleCashierInsertModel(
-    this.version,
-    this.number,
-    this.userId,
-    this.cashierSessionId,
-    this.date,
-    this.partnerId,
-    this.deadline,
-    this.discountFormula,
-    this.subtotal,
-    this.discount,
-    this.total,
-    this.items,
-    this.payments,
-  );
+  SaleCashierInsertModel({
+    required this.version,
+    required this.number,
+    required this.userId,
+    required this.cashierSessionId,
+    required this.date,
+    required this.partnerId,
+    required this.deadline,
+    required this.discountFormula,
+    required this.subtotal,
+    required this.discount,
+    required this.total,
+    required this.items,
+    required this.payments,
+  });
 
   @override
   factory SaleCashierInsertModel.fromJson(Map<String, dynamic> json) => _$SaleCashierInsertModelFromJson(json);

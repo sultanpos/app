@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:sultanpos/model/cart.dart';
 import 'package:sultanpos/model/product.dart';
+import 'package:sultanpos/model/sale.dart';
 import 'package:sultanpos/repository/repository.dart';
 import 'package:sultanpos/repository/rest/restrepository.dart';
+import 'package:sultanpos/state/app.dart';
 
 class CartState extends ChangeNotifier {
   final ProductRepository productRepo;
+  final PaymentMethodRepository paymentMethodRepo;
   final int id;
-  CartState(this.id, {required this.productRepo}) : cartModel = CartModel(id: id);
+  final int cashierSessionId;
+  CartState(this.id, {required this.productRepo, required this.paymentMethodRepo, this.cashierSessionId = 0})
+      : cartModel = CartModel(id: id);
 
   bool loadingProduct = false;
   ProductModel? currentProduct;
@@ -36,5 +41,45 @@ class CartState extends ChangeNotifier {
     // currently just use the first data
     loadingProduct = false;
     notifyListeners();
+  }
+
+  paySimple(int payment) async {
+    final defMethod = await paymentMethodRepo.getDefaultCashMethod();
+    final insert = SaleCashierInsertModel(
+        date: DateTime.now(),
+        cashierSessionId: cashierSessionId,
+        deadline: null,
+        discount: 0,
+        discountFormula: '',
+        number: '',
+        partnerId: 0,
+        subtotal: cartModel.total(),
+        total: cartModel.total(),
+        version: 0,
+        userId: AppState().authState.user!.id,
+        payments: [
+          PaymentCashierInsertModel(
+            amount: cartModel.total(),
+            payment: payment,
+            changes: cartModel.total() - payment,
+            paymentMethodID: defMethod.id,
+            reference: '',
+            note: '',
+          ),
+        ],
+        items: cartModel.items
+            .map<SaleItemInsertModel>((e) => SaleItemInsertModel(
+                  batch: 0,
+                  amount: e.amount(),
+                  discount: e.discount(),
+                  discountFormula: e.discountFormula(),
+                  price: e.price(),
+                  productId: e.product.id,
+                  subtotal: e.subtotal(),
+                  note: '',
+                  total: e.total(),
+                ))
+            .toList());
+    print(insert);
   }
 }

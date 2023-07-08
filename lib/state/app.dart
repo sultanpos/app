@@ -8,12 +8,12 @@ import 'package:sultanpos/localfiledb/db.dart';
 import 'package:sultanpos/model/auth.dart';
 import 'package:sultanpos/model/category.dart';
 import 'package:sultanpos/model/partner.dart';
-import 'package:sultanpos/model/paymentmethod.dart';
 import 'package:sultanpos/model/unit.dart';
 import 'package:sultanpos/preference.dart';
 import 'package:sultanpos/repository/rest/authrepo.dart';
 import 'package:sultanpos/repository/rest/branchrepo.dart';
 import 'package:sultanpos/repository/rest/cashiersession.dart';
+import 'package:sultanpos/repository/rest/paymentmethodrepo.dart';
 import 'package:sultanpos/repository/rest/pricegroup.dart';
 import 'package:sultanpos/repository/rest/product.dart';
 import 'package:sultanpos/repository/rest/purchase.dart';
@@ -73,10 +73,9 @@ class AppState {
     final unitRepo = BaseRestCRUDRepository(path: '/unit', httpApi: httpAPI, creator: UnitModel.fromJson);
     final partnerRepo = BaseRestCRUDRepository(path: '/partner', httpApi: httpAPI, creator: PartnerModel.fromJson);
     final categoryRepo = BaseRestCRUDRepository(path: '/category', httpApi: httpAPI, creator: CategoryModel.fromJson);
-    final paymentMethodRepo =
-        BaseRestCRUDRepository(path: '/paymentmethod', httpApi: httpAPI, creator: PaymentMethodModel.fromJson);
     final purchaseRepo = RestPurchaseRepo(httpApi: httpAPI);
     final cashierSessionRepo = RestCashierSessionRepo(httpApi: httpAPI);
+    final paymentMethodRepo = RestPaymentMethodRepo(httpApi: httpAPI);
 
     //state
     navState = NavigationState();
@@ -84,7 +83,11 @@ class AppState {
     shareState = ShareState(branchRepo: branchRepo, priceGroupRepo: priceGroupRepo);
     productRootState = ProductRootState(repo: productRepo);
     masterState = MasterState();
-    cashierState = CashierRootState(productRepo: productRepo, cashierSessionRepo: cashierSessionRepo);
+    cashierState = CashierRootState(
+      productRepo: productRepo,
+      cashierSessionRepo: cashierSessionRepo,
+      paymetnMethodRepo: paymentMethodRepo,
+    );
     unitState = UnitState(repo: unitRepo);
     priceGroupState = PriceGroupState(repo: priceGroupRepo);
     partnerState = PartnerState(repo: partnerRepo);

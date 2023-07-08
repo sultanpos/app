@@ -14,6 +14,7 @@ abstract class ICartItem {
   int discount();
   ICartItem addAmount(int amount);
   String discountFormula();
+  int subtotal();
   int total();
 }
 
@@ -153,5 +154,10 @@ class CartItemModel implements ICartItem {
       itemDiscountFormula: itemDiscountFormula,
       itemPrice: itemPrice,
     );
+  }
+
+  @override
+  int subtotal() {
+    return rawCalculateTotal(itemAmount, itemPrice, '');
   }
 }

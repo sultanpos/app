@@ -108,12 +108,12 @@ Map<String, dynamic> _$SaleItemModelToJson(SaleItemModel instance) =>
 PaymentCashierInsertModel _$PaymentCashierInsertModelFromJson(
         Map<String, dynamic> json) =>
     PaymentCashierInsertModel(
-      json['amount'] as int,
-      json['payment'] as int,
-      json['changes'] as int,
-      json['payment_method_id'] as int,
-      json['reference'] as String,
-      json['note'] as String,
+      amount: json['amount'] as int,
+      payment: json['payment'] as int,
+      changes: json['changes'] as int,
+      paymentMethodID: json['payment_method_id'] as int,
+      reference: json['reference'] as String,
+      note: json['note'] as String,
     );
 
 Map<String, dynamic> _$PaymentCashierInsertModelToJson(
@@ -129,15 +129,15 @@ Map<String, dynamic> _$PaymentCashierInsertModelToJson(
 
 SaleItemInsertModel _$SaleItemInsertModelFromJson(Map<String, dynamic> json) =>
     SaleItemInsertModel(
-      json['batch'] as int,
-      json['product_id'] as int,
-      json['amount'] as int,
-      json['price'] as int,
-      json['subtotal'] as int,
-      json['discount_formula'] as String,
-      json['discount'] as int,
-      json['total'] as int,
-      json['note'] as int,
+      batch: json['batch'] as int,
+      productId: json['product_id'] as int,
+      amount: json['amount'] as int,
+      price: json['price'] as int,
+      subtotal: json['subtotal'] as int,
+      discountFormula: json['discount_formula'] as String,
+      discount: json['discount'] as int,
+      total: json['total'] as int,
+      note: json['note'] as String,
     );
 
 Map<String, dynamic> _$SaleItemInsertModelToJson(
@@ -157,23 +157,23 @@ Map<String, dynamic> _$SaleItemInsertModelToJson(
 SaleCashierInsertModel _$SaleCashierInsertModelFromJson(
         Map<String, dynamic> json) =>
     SaleCashierInsertModel(
-      json['version'] as int,
-      json['number'] as String,
-      json['user_id'] as int,
-      json['cashier_session_id'] as int,
-      DateTime.parse(json['date'] as String),
-      json['partner_id'] as int,
-      json['deadline'] == null
+      version: json['version'] as int,
+      number: json['number'] as String,
+      userId: json['user_id'] as int,
+      cashierSessionId: json['cashier_session_id'] as int,
+      date: DateTime.parse(json['date'] as String),
+      partnerId: json['partner_id'] as int,
+      deadline: json['deadline'] == null
           ? null
           : DateTime.parse(json['deadline'] as String),
-      json['discount_formula'] as String,
-      json['subtotal'] as int,
-      json['discount'] as int,
-      json['total'] as int,
-      (json['items'] as List<dynamic>)
+      discountFormula: json['discount_formula'] as String,
+      subtotal: json['subtotal'] as int,
+      discount: json['discount'] as int,
+      total: json['total'] as int,
+      items: (json['items'] as List<dynamic>)
           .map((e) => SaleItemInsertModel.fromJson(e as Map<String, dynamic>))
           .toList(),
-      (json['payments'] as List<dynamic>)
+      payments: (json['payments'] as List<dynamic>)
           .map((e) =>
               PaymentCashierInsertModel.fromJson(e as Map<String, dynamic>))
           .toList(),
