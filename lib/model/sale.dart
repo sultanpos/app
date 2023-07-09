@@ -208,6 +208,8 @@ class SaleItemInsertModel extends BaseModel {
 
 @JsonSerializable(explicitToJson: true)
 class SaleCashierInsertModel extends BaseModel {
+  @JsonKey(name: 'branch_id')
+  final int branchId;
   final int version;
   final String number;
   @JsonKey(name: 'user_id')
@@ -227,6 +229,7 @@ class SaleCashierInsertModel extends BaseModel {
   final List<PaymentCashierInsertModel> payments;
 
   SaleCashierInsertModel({
+    required this.branchId,
     required this.version,
     required this.number,
     required this.userId,

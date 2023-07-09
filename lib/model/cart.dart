@@ -25,15 +25,22 @@ abstract class ICart {
   void addItem(ICartItem item);
   int itemLength();
   int total();
+  int change();
+  int payment();
 }
 
 @JsonSerializable(explicitToJson: true)
 class CartModel implements ICart {
   int id;
+  int _payment = 0;
   List<CartItemModel> items = [];
   CartModel({required this.id});
   factory CartModel.fromJson(Map<String, dynamic> json) => _$CartModelFromJson(json);
   Map<String, dynamic> toJson() => _$CartModelToJson(this);
+
+  set setPayment(int payment) {
+    _payment = payment;
+  }
 
   @override
   int total() {
@@ -80,6 +87,16 @@ class CartModel implements ICart {
   @override
   void removeItemByIndex(int index) {
     // TODO: implement removeItemByIndex
+  }
+
+  @override
+  int change() {
+    return total() - _payment;
+  }
+
+  @override
+  int payment() {
+    return _payment;
   }
 }
 

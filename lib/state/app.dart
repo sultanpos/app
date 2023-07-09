@@ -18,6 +18,7 @@ import 'package:sultanpos/repository/rest/pricegroup.dart';
 import 'package:sultanpos/repository/rest/product.dart';
 import 'package:sultanpos/repository/rest/purchase.dart';
 import 'package:sultanpos/repository/rest/restrepository.dart';
+import 'package:sultanpos/repository/rest/sale.dart';
 import 'package:sultanpos/state/auth.dart';
 import 'package:sultanpos/state/cashier.dart';
 import 'package:sultanpos/state/category.dart';
@@ -76,6 +77,7 @@ class AppState {
     final purchaseRepo = RestPurchaseRepo(httpApi: httpAPI);
     final cashierSessionRepo = RestCashierSessionRepo(httpApi: httpAPI);
     final paymentMethodRepo = RestPaymentMethodRepo(httpApi: httpAPI);
+    final saleRepo = RestSaleRepo(httpApi: httpAPI);
 
     //state
     navState = NavigationState();
@@ -87,6 +89,7 @@ class AppState {
       productRepo: productRepo,
       cashierSessionRepo: cashierSessionRepo,
       paymetnMethodRepo: paymentMethodRepo,
+      saleRepo: saleRepo,
     );
     unitState = UnitState(repo: unitRepo);
     priceGroupState = PriceGroupState(repo: priceGroupRepo);

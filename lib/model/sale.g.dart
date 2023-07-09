@@ -157,6 +157,7 @@ Map<String, dynamic> _$SaleItemInsertModelToJson(
 SaleCashierInsertModel _$SaleCashierInsertModelFromJson(
         Map<String, dynamic> json) =>
     SaleCashierInsertModel(
+      branchId: json['branch_id'] as int,
       version: json['version'] as int,
       number: json['number'] as String,
       userId: json['user_id'] as int,
@@ -182,6 +183,7 @@ SaleCashierInsertModel _$SaleCashierInsertModelFromJson(
 Map<String, dynamic> _$SaleCashierInsertModelToJson(
         SaleCashierInsertModel instance) =>
     <String, dynamic>{
+      'branch_id': instance.branchId,
       'version': instance.version,
       'number': instance.number,
       'user_id': instance.userId,

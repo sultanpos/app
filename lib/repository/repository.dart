@@ -4,6 +4,7 @@ import 'package:sultanpos/model/listresult.dart';
 import 'package:sultanpos/model/paymentmethod.dart';
 import 'package:sultanpos/model/product.dart';
 import 'package:sultanpos/model/purchase.dart';
+import 'package:sultanpos/model/sale.dart';
 
 abstract mixin class BaseCRUDRepository<T extends BaseModel> {
   Future insert(BaseModel data);
@@ -27,4 +28,8 @@ abstract class CashierSessionRepository extends BaseCRUDRepository<CashierSessio
 
 abstract class PaymentMethodRepository extends BaseCRUDRepository<PaymentMethodModel> {
   Future<PaymentMethodModel> getDefaultCashMethod();
+}
+
+abstract class SaleRepository extends BaseCRUDRepository<SaleModel> {
+  Future insertCashier(SaleCashierInsertModel data);
 }

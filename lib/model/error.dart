@@ -18,4 +18,9 @@ class ErrorResponse {
   factory ErrorResponse.fromJson(Map<String, dynamic> json) => _$ErrorResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$ErrorResponseToJson(this);
+
+  @override
+  String toString() {
+    return 'code: $code; message: $message';
+  }
 }

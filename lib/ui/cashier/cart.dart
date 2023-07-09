@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:sultanpos/model/cart.dart';
 import 'package:sultanpos/state/cart.dart';
+import 'package:sultanpos/ui/cashier/cashiersuccess.dart';
 import 'package:sultanpos/ui/cashier/payment.dart';
 import 'package:sultanpos/ui/theme.dart';
 import 'package:sultanpos/ui/widget/button.dart';
@@ -139,12 +140,26 @@ class _CartWidgetState extends State<CartWidget> {
   }
 
   pay(CartState state) async {
-    sShowDialog(
+    final result = await sShowDialog<bool>(
       context: context,
       builder: (c) {
         return ChangeNotifierProvider.value(value: state, child: const AddPaymentWidget());
       },
     );
+    if (result != null && result) {
+      // ignore: use_build_context_synchronously
+      final shouldPrint = await sShowDialog<bool>(
+        context: context,
+        builder: (c) {
+          return ChangeNotifierProvider.value(value: state, child: const CashierSuccessWidget());
+        },
+      );
+      if (shouldPrint != null && shouldPrint) {
+        //TODO: re-print me
+        print("print me");
+      }
+      state.reset();
+    }
   }
 }
 

@@ -7,6 +7,7 @@ class CashierRootState extends ChangeNotifier {
   final ProductRepository productRepo;
   final CashierSessionRepository cashierSessionRepo;
   final PaymentMethodRepository paymetnMethodRepo;
+  final SaleRepository saleRepo;
 
   int cashierId = 0;
   bool loadingInit = true;
@@ -16,7 +17,12 @@ class CashierRootState extends ChangeNotifier {
 
   late List<CartState> cashierItems;
 
-  CashierRootState({required this.productRepo, required this.cashierSessionRepo, required this.paymetnMethodRepo});
+  CashierRootState({
+    required this.productRepo,
+    required this.cashierSessionRepo,
+    required this.paymetnMethodRepo,
+    required this.saleRepo,
+  });
 
   init() async {
     try {
@@ -39,11 +45,23 @@ class CashierRootState extends ChangeNotifier {
   }
 
   setUpFirstCashierItem() {
-    cashierItems = [CartState(cashierId++, productRepo: productRepo, paymentMethodRepo: paymetnMethodRepo)];
+    cashierItems = [
+      CartState(
+        cashierId++,
+        productRepo: productRepo,
+        paymentMethodRepo: paymetnMethodRepo,
+        saleRepository: saleRepo,
+      )
+    ];
   }
 
   newTabCashier() {
-    cashierItems.add(CartState(cashierId++, productRepo: productRepo, paymentMethodRepo: paymetnMethodRepo));
+    cashierItems.add(CartState(
+      cashierId++,
+      productRepo: productRepo,
+      paymentMethodRepo: paymetnMethodRepo,
+      saleRepository: saleRepo,
+    ));
     currentCashierTabId = cashierItems.last.id;
     notifyListeners();
   }

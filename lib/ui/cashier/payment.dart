@@ -6,6 +6,7 @@ import 'package:sultanpos/ui/util/textformatter.dart';
 import 'package:sultanpos/ui/widget/basewindow.dart';
 import 'package:sultanpos/ui/widget/button.dart';
 import 'package:sultanpos/ui/widget/labelfield.dart';
+import 'package:sultanpos/ui/widget/showerror.dart';
 import 'package:sultanpos/ui/widget/space.dart';
 import 'package:sultanpos/util/format.dart';
 
@@ -63,24 +64,44 @@ class _AddPaymentWidgetState extends State<AddPaymentWidget> {
           const Spacer(),
           SButton(
             width: double.infinity,
-            onPressed: _saveEnabled ? () {} : null,
+            onPressed: _saveEnabled
+                ? () {
+                    save(state, true);
+                  }
+                : null,
             label: 'Simpan dan Print',
           ),
           const SVSpaceSmall(),
           SButton(
             width: double.infinity,
-            onPressed: _saveEnabled ? () {} : null,
+            onPressed: _saveEnabled
+                ? () {
+                    save(state, true);
+                  }
+                : null,
             label: 'Simpan',
           ),
           const SVSpaceSmall(),
           SButton(
             width: double.infinity,
             positive: false,
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pop(context, false);
+            },
             label: 'Batal',
           ),
         ],
       ),
     );
+  }
+
+  save(CartState state, bool print) async {
+    try {
+      await state.paySimple(moneyValue(_controller.text));
+      // ignore: use_build_context_synchronously
+      Navigator.pop(context, true);
+    } catch (e) {
+      showError(context, title: "Error pembayaran", message: e.toString());
+    }
   }
 }
