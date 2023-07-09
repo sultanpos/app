@@ -7,6 +7,7 @@ import 'package:sultanpos/ui/cashier/cashiersuccess.dart';
 import 'package:sultanpos/ui/cashier/payment.dart';
 import 'package:sultanpos/ui/theme.dart';
 import 'package:sultanpos/ui/widget/button.dart';
+import 'package:sultanpos/ui/widget/confirmation.dart';
 import 'package:sultanpos/ui/widget/dialogutil.dart';
 import 'package:sultanpos/ui/widget/keyshortcut.dart';
 import 'package:sultanpos/ui/widget/space.dart';
@@ -38,8 +39,13 @@ class _CartWidgetState extends State<CartWidget> {
       keyEvent: (event) {
         if (event.isKeyPressed(LogicalKeyboardKey.f1)) {
           _barcodeFN.requestFocus();
+          return KeyEventResult.handled;
         } else if (event.isKeyPressed(LogicalKeyboardKey.f5)) {
           pay(state);
+          return KeyEventResult.handled;
+        } else if (event.isKeyPressed(LogicalKeyboardKey.delete) && event.isControlPressed) {
+          resetCart();
+          return KeyEventResult.handled;
         }
         return KeyEventResult.ignored;
       },
@@ -114,7 +120,7 @@ class _CartWidgetState extends State<CartWidget> {
                   Align(
                     alignment: Alignment.centerRight,
                     child: Text(
-                      formatMoney(state.cartModel.total()),
+                      formatMoney(state.cartModel.getTotal()),
                       style: Theme.of(context).textTheme.headlineLarge,
                     ),
                   ),
@@ -158,6 +164,15 @@ class _CartWidgetState extends State<CartWidget> {
         //TODO: re-print me
         print("print me");
       }
+      state.reset();
+    }
+  }
+
+  resetCart() async {
+    bool value = await showConfirmation(context, title: 'Konfirmasi', message: 'Yakin untuk mereset belanja?');
+    if (value) {
+      // ignore: use_build_context_synchronously
+      final state = context.read<CartState>();
       state.reset();
     }
   }

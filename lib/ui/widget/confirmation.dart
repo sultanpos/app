@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:sultanpos/ui/theme.dart';
 import 'package:sultanpos/ui/widget/basewindow.dart';
 import 'package:sultanpos/ui/widget/button.dart';
+import 'package:sultanpos/ui/widget/keyshortcut.dart';
 
 Future<bool?> showBaseConfirmation(
   BuildContext ctx, {
@@ -20,40 +22,50 @@ Future<bool?> showBaseConfirmation(
         icon: icon ?? Icons.report_problem,
         height: 250,
         width: 350,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(message),
-            const Spacer(),
-            Row(
-              children: [
-                Expanded(
-                  child: SButton(
-                    positive: false,
-                    label: negativeLabel ?? "Batal",
-                    onPressed: () {
-                      Navigator.pop(context, false);
-                    },
-                  ),
-                ),
-                const SizedBox(
-                  width: 8,
-                ),
-                Expanded(
-                  child: SizedBox(
-                    height: STheme().buttonHeight,
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        Navigator.pop(context, true);
+        child: KeyboardShortcut(
+          keyEvent: (event) {
+            if (event.isKeyPressed(LogicalKeyboardKey.enter)) {
+              Navigator.pop(context, true);
+              return KeyEventResult.handled;
+            }
+            return KeyEventResult.ignored;
+          },
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(message),
+              const Spacer(),
+              Row(
+                children: [
+                  Expanded(
+                    child: SButton(
+                      positive: false,
+                      label: negativeLabel ?? "Batal",
+                      onPressed: () {
+                        Navigator.pop(context, false);
                       },
-                      style: ElevatedButton.styleFrom(backgroundColor: positiveColor),
-                      child: Text(positiveLabel ?? "Lanjutkan"),
                     ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                  const SizedBox(
+                    width: 8,
+                  ),
+                  Expanded(
+                    child: SizedBox(
+                      height: STheme().buttonHeight,
+                      child: ElevatedButton(
+                        autofocus: true,
+                        onPressed: () async {
+                          Navigator.pop(context, true);
+                        },
+                        style: ElevatedButton.styleFrom(backgroundColor: positiveColor),
+                        child: Text(positiveLabel ?? "Lanjutkan"),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       );
     },

@@ -24,9 +24,9 @@ abstract class ICart {
   void removeItem(ICartItem item);
   void addItem(ICartItem item);
   int itemLength();
-  int total();
-  int change();
-  int payment();
+  int getTotal();
+  int getChange();
+  int getPayment();
 }
 
 @JsonSerializable(explicitToJson: true)
@@ -38,12 +38,10 @@ class CartModel implements ICart {
   factory CartModel.fromJson(Map<String, dynamic> json) => _$CartModelFromJson(json);
   Map<String, dynamic> toJson() => _$CartModelToJson(this);
 
-  set setPayment(int payment) {
-    _payment = payment;
-  }
+  set payment(int value) => _payment = value;
 
   @override
-  int total() {
+  int getTotal() {
     return items.fold(0, (previousValue, element) => previousValue + element.total());
   }
 
@@ -90,12 +88,12 @@ class CartModel implements ICart {
   }
 
   @override
-  int change() {
-    return total() - _payment;
+  int getChange() {
+    return getTotal() - getPayment();
   }
 
   @override
-  int payment() {
+  int getPayment() {
     return _payment;
   }
 }

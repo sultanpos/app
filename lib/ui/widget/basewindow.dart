@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:sultanpos/ui/widget/keyshortcut.dart';
 import 'package:sultanpos/ui/widget/space.dart';
 
 class BaseWindowWidget extends StatefulWidget {
@@ -27,56 +28,62 @@ class _BaseWindowWidgetState extends State<BaseWindowWidget> {
   @override
   Widget build(BuildContext context) {
     final bgColor = Theme.of(context).secondaryHeaderColor;
-    return CallbackShortcuts(
-      bindings: <ShortcutActivator, VoidCallback>{
-        const SingleActivator(LogicalKeyboardKey.escape): () {
-          Navigator.pop(context, false);
-        },
-      },
-      child: Dialog(
-        backgroundColor: bgColor,
-        child: Container(
-          decoration: BoxDecoration(
-            color: bgColor,
-            borderRadius: const BorderRadius.all(Radius.circular(16)),
-          ),
-          width: widget.width ?? 300,
-          height: widget.height ?? 300,
-          padding: const EdgeInsets.all(8),
-          child: Column(
-            children: [
-              Row(
+    return KeyboardShortcutManager(
+      child: Builder(builder: (ctx) {
+        return KeyboardShortcut(
+          keyEvent: (event) {
+            if (event.isKeyPressed(LogicalKeyboardKey.escape)) {
+              Navigator.pop(context, false);
+              return KeyEventResult.handled;
+            }
+            return KeyEventResult.ignored;
+          },
+          child: Dialog(
+            backgroundColor: bgColor,
+            child: Container(
+              decoration: BoxDecoration(
+                color: bgColor,
+                borderRadius: const BorderRadius.all(Radius.circular(16)),
+              ),
+              width: widget.width ?? 300,
+              height: widget.height ?? 300,
+              padding: const EdgeInsets.all(8),
+              child: Column(
                 children: [
-                  BaseWindowIcon(
-                    icon: widget.icon,
+                  Row(
+                    children: [
+                      BaseWindowIcon(
+                        icon: widget.icon,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 16.0),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(widget.title, style: Theme.of(context).textTheme.titleLarge),
+                        ),
+                      ),
+                      const Spacer(),
+                      IconButton(
+                        icon: const Icon(Icons.close),
+                        onPressed: () {
+                          Navigator.pop(context, false);
+                        },
+                      ),
+                    ],
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 16.0),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(widget.title, style: Theme.of(context).textTheme.titleLarge),
+                  const SVSpace(),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 16, bottom: 16, right: 16),
+                      child: widget.child,
                     ),
-                  ),
-                  const Spacer(),
-                  IconButton(
-                    icon: const Icon(Icons.close),
-                    onPressed: () {
-                      Navigator.pop(context, false);
-                    },
                   ),
                 ],
               ),
-              const SVSpace(),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 16, bottom: 16, right: 16),
-                  child: widget.child,
-                ),
-              ),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      }),
     );
   }
 }

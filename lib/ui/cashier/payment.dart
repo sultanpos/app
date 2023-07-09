@@ -24,12 +24,12 @@ class _AddPaymentWidgetState extends State<AddPaymentWidget> {
   @override
   void initState() {
     final state = context.read<CartState>();
-    _controller.text = formatMoney(state.cartModel.total());
+    _controller.text = formatMoney(state.cartModel.getTotal());
     _controller.selection = TextSelection(baseOffset: 0, extentOffset: _controller.text.length);
     _controller.addListener(() {
       final money = moneyValue(_controller.text);
       setState(() {
-        _saveEnabled = money >= state.cartModel.total();
+        _saveEnabled = money >= state.cartModel.getTotal();
       });
     });
     super.initState();
@@ -49,7 +49,7 @@ class _AddPaymentWidgetState extends State<AddPaymentWidget> {
           Align(
             alignment: Alignment.centerRight,
             child: Text(
-              formatMoney(state.cartModel.total()),
+              formatMoney(state.cartModel.getTotal()),
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 20),
             ),
           ),

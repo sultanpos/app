@@ -96,23 +96,20 @@ class ProductModel extends BaseModel {
     if (prices?.isEmpty ?? true) {
       return 0;
     }
-    for (var i = 0; i < prices!.length; i++) {
-      if (prices![i].count0 >= amount) {
-        return prices![i].price0;
-      } else if (prices![i].count1 >= amount) {
-        return prices![i].price1;
-      }
-      if (prices![i].count2 >= amount) {
-        return prices![i].price2;
-      }
-      if (prices![i].count3 >= amount) {
-        return prices![i].price3;
-      }
-      if (prices![i].count4 >= amount) {
-        return prices![i].price4;
-      }
+    //TODO: find the proper index from list of prices
+    final idx = 0;
+    if (prices![idx].count4 >= amount) {
+      return prices![idx].price4;
+    } else if (prices![idx].count3 >= amount) {
+      return prices![idx].price3;
     }
-    return 0;
+    if (prices![idx].count2 >= amount) {
+      return prices![idx].price2;
+    }
+    if (prices![idx].count1 >= amount) {
+      return prices![idx].price1;
+    }
+    return prices![idx].price0;
   }
 }
 

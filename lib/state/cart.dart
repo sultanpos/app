@@ -53,7 +53,7 @@ class CartState extends ChangeNotifier {
     currentListProduct = productResult.data;
     if (currentListProduct.isNotEmpty) {
       currentProduct = currentListProduct.first;
-      cartModel.addProduct(count, currentProduct!.priceForAmount(1000), "", currentProduct!);
+      cartModel.addProduct(count, currentProduct!.priceForAmount(count), "", currentProduct!);
     }
     // currently just use the first data
     loadingProduct = false;
@@ -65,6 +65,7 @@ class CartState extends ChangeNotifier {
     final defaultBranch = AppState().shareState.defaultBranch();
     saving = true;
     notifyListeners();
+    cartModel.payment = payment;
     try {
       final insert = SaleCashierInsertModel(
           branchId: defaultBranch!.id,
@@ -75,15 +76,15 @@ class CartState extends ChangeNotifier {
           discountFormula: '',
           number: '',
           partnerId: 0,
-          subtotal: cartModel.total(),
-          total: cartModel.total(),
+          subtotal: cartModel.getTotal(),
+          total: cartModel.getTotal(),
           version: 0,
           userId: AppState().authState.user!.id,
           payments: [
             PaymentCashierInsertModel(
-              amount: cartModel.total(),
+              amount: cartModel.getTotal(),
               payment: payment,
-              changes: cartModel.total() - payment,
+              changes: cartModel.getTotal() - payment,
               paymentMethodID: defMethod.id,
               reference: '',
               note: '',

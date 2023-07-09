@@ -25,7 +25,7 @@ class CashierSuccessWidget extends StatelessWidget {
           Align(
             alignment: Alignment.centerRight,
             child: Text(
-              formatMoney(state.cartModel.total()),
+              formatMoney(state.cartModel.getTotal()),
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 20),
             ),
           ),
@@ -33,7 +33,7 @@ class CashierSuccessWidget extends StatelessWidget {
           Align(
             alignment: Alignment.centerRight,
             child: Text(
-              formatMoney(state.cartModel.payment()),
+              formatMoney(state.cartModel.getPayment()),
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 20),
             ),
           ),
@@ -41,7 +41,7 @@ class CashierSuccessWidget extends StatelessWidget {
           Align(
             alignment: Alignment.centerRight,
             child: Text(
-              formatMoney(state.cartModel.payment()),
+              formatMoney(state.cartModel.getPayment()),
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 32),
             ),
           ),

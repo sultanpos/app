@@ -64,7 +64,8 @@ class _KeyboardShortcutManagerState extends State<KeyboardShortcutManager> {
 class KeyboardShortcut extends StatefulWidget {
   final Widget child;
   final KeyboardKeyEvent keyEvent;
-  const KeyboardShortcut({super.key, required this.child, required this.keyEvent});
+  final String? debugName;
+  const KeyboardShortcut({super.key, required this.child, required this.keyEvent, this.debugName});
 
   @override
   State<KeyboardShortcut> createState() => KeyboardShortcutState();
