@@ -1,6 +1,7 @@
 import 'package:sultanpos/model/base.dart';
 import 'package:sultanpos/model/partner.dart';
 import 'package:sultanpos/model/product.dart';
+import 'package:sultanpos/model/request.dart';
 import 'package:sultanpos/model/user.dart';
 
 part 'sale.g.dart';
@@ -257,4 +258,7 @@ class SaleCashierInsertModel extends BaseModel {
 
   @override
   Map<String, dynamic> toJson() => _$SaleCashierInsertModelToJson(this);
+
+  @override
+  BaseModel? responseFromJson(Map<String, dynamic> json) => InsertSuccessModel.fromJson(json);
 }

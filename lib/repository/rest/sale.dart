@@ -1,5 +1,6 @@
 import 'package:sultanpos/model/listresult.dart';
 import 'package:sultanpos/model/payment.dart';
+import 'package:sultanpos/model/request.dart';
 import 'package:sultanpos/model/sale.dart';
 import 'package:sultanpos/repository/repository.dart';
 import 'package:sultanpos/repository/rest/restrepository.dart';
@@ -8,8 +9,8 @@ class RestSaleRepo extends BaseRestCRUDRepository<SaleModel> implements SaleRepo
   RestSaleRepo({required super.httpApi}) : super(path: '/sale', creator: SaleModel.fromJson);
 
   @override
-  Future insertCashier(SaleCashierInsertModel data) async {
-    return httpApi.post(data, '/sale/cashier');
+  Future<InsertSuccessModel> insertCashier(SaleCashierInsertModel data) async {
+    return httpApi.post<InsertSuccessModel>(data, '/sale/cashier');
   }
 
   @override

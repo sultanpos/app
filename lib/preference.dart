@@ -53,7 +53,7 @@ class Preference {
 
   AppConfigPrinter? getDefaultPrinter() {
     final jsonString = sharedPreferences.getString("defaultPrinter");
-    if (jsonString == null) {
+    if (jsonString == null || jsonString.isEmpty) {
       return null;
     }
     return AppConfigPrinter.fromJsonString(jsonString);

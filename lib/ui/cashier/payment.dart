@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:sultanpos/state/app.dart';
 import 'package:sultanpos/state/cart.dart';
 import 'package:sultanpos/ui/util/textformatter.dart';
 import 'package:sultanpos/ui/widget/basewindow.dart';
@@ -96,12 +97,22 @@ class _AddPaymentWidgetState extends State<AddPaymentWidget> {
   }
 
   save(CartState state, bool print) async {
+    int saleId = 0;
     try {
-      await state.paySimple(moneyValue(_controller.text));
+      final result = await state.paySimple(moneyValue(_controller.text));
+      saleId = result.id;
       // ignore: use_build_context_synchronously
       Navigator.pop(context, true);
     } catch (e) {
       showError(context, title: "Error pembayaran", message: e.toString());
+    }
+    if (print && saleId > 0) {
+      try {
+        await AppState().printer.printSale(saleId);
+      } catch (e) {
+        // ignore: use_build_context_synchronously
+        showError(context, title: "Error printer", message: e.toString());
+      }
     }
   }
 }

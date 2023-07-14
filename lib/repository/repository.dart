@@ -5,6 +5,7 @@ import 'package:sultanpos/model/payment.dart';
 import 'package:sultanpos/model/paymentmethod.dart';
 import 'package:sultanpos/model/product.dart';
 import 'package:sultanpos/model/purchase.dart';
+import 'package:sultanpos/model/request.dart';
 import 'package:sultanpos/model/sale.dart';
 import 'package:sultanpos/model/unit.dart';
 
@@ -35,7 +36,7 @@ abstract class PaymentMethodRepository extends BaseCRUDRepository<PaymentMethodM
 }
 
 abstract class SaleRepository extends BaseCRUDRepository<SaleModel> {
-  Future insertCashier(SaleCashierInsertModel data);
+  Future<InsertSuccessModel> insertCashier(SaleCashierInsertModel data);
   Future<ListResult<SaleItemModel>> items(int saleId);
   Future<ListResult<PaymentModel>> payments(int saleId);
 }

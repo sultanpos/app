@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sultanpos/model/cart.dart';
 import 'package:sultanpos/model/product.dart';
+import 'package:sultanpos/model/request.dart';
 import 'package:sultanpos/model/sale.dart';
 import 'package:sultanpos/repository/repository.dart';
 import 'package:sultanpos/repository/rest/restrepository.dart';
@@ -25,6 +26,7 @@ class CartState extends ChangeNotifier {
   List<ProductModel> currentListProduct = [];
   CartModel cartModel;
   int curIndex = -1;
+  int lastSale = 0;
   bool saving = false;
 
   reset() {
@@ -60,7 +62,7 @@ class CartState extends ChangeNotifier {
     notifyListeners();
   }
 
-  paySimple(int payment) async {
+  Future<InsertSuccessModel> paySimple(int payment) async {
     final defMethod = await paymentMethodRepo.getDefaultCashMethod();
     final defaultBranch = AppState().shareState.defaultBranch();
     saving = true;
@@ -103,9 +105,11 @@ class CartState extends ChangeNotifier {
                     total: e.total(),
                   ))
               .toList());
-      await saleRepository.insertCashier(insert);
+      final result = await saleRepository.insertCashier(insert);
       saving = false;
       notifyListeners();
+      lastSale = result.id;
+      return result;
     } catch (e) {
       saving = false;
       notifyListeners();

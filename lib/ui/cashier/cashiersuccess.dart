@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:sultanpos/state/app.dart';
 import 'package:sultanpos/state/cart.dart';
 import 'package:sultanpos/ui/widget/basewindow.dart';
 import 'package:sultanpos/ui/widget/button.dart';
 import 'package:sultanpos/ui/widget/labelfield.dart';
+import 'package:sultanpos/ui/widget/showerror.dart';
 import 'package:sultanpos/ui/widget/space.dart';
 import 'package:sultanpos/util/format.dart';
 
@@ -41,16 +43,20 @@ class CashierSuccessWidget extends StatelessWidget {
           Align(
             alignment: Alignment.centerRight,
             child: Text(
-              formatMoney(state.cartModel.getPayment()),
+              formatMoney(state.cartModel.getChange()),
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 32),
             ),
           ),
           const Spacer(),
           SButton(
             width: double.infinity,
-            onPressed: () {
-              //TODO: re-print
+            onPressed: () async {
               Navigator.pop(context, true);
+              try {
+                await AppState().printer.printSale(state.lastSale);
+              } catch (e) {
+                showError(context, title: 'Error printer', message: e.toString());
+              }
             },
             label: 'Tutup dan Print',
           ),
