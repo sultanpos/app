@@ -20,6 +20,7 @@ ProductModel _$ProductModelFromJson(Map<String, dynamic> json) => ProductModel(
       json['buyable'] as bool,
       json['editable_price'] as bool,
       json['use_sn'] as bool,
+      json['unit_id'] as int,
       json['unit'] == null
           ? null
           : UnitModel.fromJson(json['unit'] as Map<String, dynamic>),
@@ -55,6 +56,7 @@ Map<String, dynamic> _$ProductModelToJson(ProductModel instance) =>
       'buyable': instance.buyable,
       'editable_price': instance.editablePrice,
       'use_sn': instance.useSn,
+      'unit_id': instance.unitId,
       'unit': instance.unit?.toJson(),
       'category': instance.category?.toJson(),
       'partner': instance.partner?.toJson(),

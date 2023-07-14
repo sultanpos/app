@@ -1,5 +1,7 @@
 import 'package:sultanpos/model/base.dart';
 import 'package:sultanpos/model/partner.dart';
+import 'package:sultanpos/model/product.dart';
+import 'package:sultanpos/model/user.dart';
 
 part 'sale.g.dart';
 
@@ -62,6 +64,7 @@ enum SaleStockStatus implements Comparable<SaleStockStatus> {
 @JsonSerializable(explicitToJson: true)
 class SaleModel extends BaseModel {
   final int id;
+  final String number;
   final DateTime date;
   @JsonKey(name: "branch_id")
   final int branchId;
@@ -89,8 +92,10 @@ class SaleModel extends BaseModel {
   @JsonKey(name: 'partner_id')
   final int partnerId;
   final PartnerModel? partner;
+  final UserModel? user;
   SaleModel(
     this.id,
+    this.number,
     this.date,
     this.branchId,
     this.userId,
@@ -109,6 +114,7 @@ class SaleModel extends BaseModel {
     this.version,
     this.partnerId,
     this.partner,
+    this.user,
   );
 
   @override
@@ -136,9 +142,10 @@ class SaleItemModel extends BaseModel {
   final int discount;
   final int total;
   final String note;
+  final ProductModel? product;
 
   SaleItemModel(this.id, this.saleId, this.productId, this.batch, this.amount, this.buyPrice, this.price, this.subtotal,
-      this.discountFormula, this.discount, this.total, this.note);
+      this.discountFormula, this.discount, this.total, this.note, this.product);
 
   @override
   factory SaleItemModel.fromJson(Map<String, dynamic> json) => _$SaleItemModelFromJson(json);

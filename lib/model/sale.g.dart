@@ -8,6 +8,7 @@ part of 'sale.dart';
 
 SaleModel _$SaleModelFromJson(Map<String, dynamic> json) => SaleModel(
       json['id'] as int,
+      json['number'] as String,
       DateTime.parse(json['date'] as String),
       json['branch_id'] as int,
       json['user_id'] as int,
@@ -30,10 +31,14 @@ SaleModel _$SaleModelFromJson(Map<String, dynamic> json) => SaleModel(
       json['partner'] == null
           ? null
           : PartnerModel.fromJson(json['partner'] as Map<String, dynamic>),
+      json['user'] == null
+          ? null
+          : UserModel.fromJson(json['user'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$SaleModelToJson(SaleModel instance) => <String, dynamic>{
       'id': instance.id,
+      'number': instance.number,
       'date': instance.date.toIso8601String(),
       'branch_id': instance.branchId,
       'user_id': instance.userId,
@@ -52,6 +57,7 @@ Map<String, dynamic> _$SaleModelToJson(SaleModel instance) => <String, dynamic>{
       'version': instance.version,
       'partner_id': instance.partnerId,
       'partner': instance.partner?.toJson(),
+      'user': instance.user?.toJson(),
     };
 
 const _$SaleTypeEnumMap = {
@@ -87,6 +93,9 @@ SaleItemModel _$SaleItemModelFromJson(Map<String, dynamic> json) =>
       json['discount'] as int,
       json['total'] as int,
       json['note'] as String,
+      json['product'] == null
+          ? null
+          : ProductModel.fromJson(json['product'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$SaleItemModelToJson(SaleItemModel instance) =>
@@ -103,6 +112,7 @@ Map<String, dynamic> _$SaleItemModelToJson(SaleItemModel instance) =>
       'discount': instance.discount,
       'total': instance.total,
       'note': instance.note,
+      'product': instance.product?.toJson(),
     };
 
 PaymentCashierInsertModel _$PaymentCashierInsertModelFromJson(

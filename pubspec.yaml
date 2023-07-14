@@ -25,6 +25,7 @@ dependencies:
   dropdown_button2: ^2.1.3
   flutter:
     sdk: flutter
+  flutter_pos_printer_platform: ^1.4.1
   font_awesome_flutter: ^10.4.0
   http_mock_adapter: ^0.4.4
   intl: ^0.18.1
@@ -53,6 +54,7 @@ flutter:
   uses-material-design: true
   assets:
     - resources/images/icon_1024.png
+    - resources/images/old_icon_512.png
   fonts:
     - family: Ubuntu
       fonts:

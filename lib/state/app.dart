@@ -8,7 +8,6 @@ import 'package:sultanpos/localfiledb/db.dart';
 import 'package:sultanpos/model/auth.dart';
 import 'package:sultanpos/model/category.dart';
 import 'package:sultanpos/model/partner.dart';
-import 'package:sultanpos/model/unit.dart';
 import 'package:sultanpos/preference.dart';
 import 'package:sultanpos/repository/rest/authrepo.dart';
 import 'package:sultanpos/repository/rest/branchrepo.dart';
@@ -19,6 +18,7 @@ import 'package:sultanpos/repository/rest/product.dart';
 import 'package:sultanpos/repository/rest/purchase.dart';
 import 'package:sultanpos/repository/rest/restrepository.dart';
 import 'package:sultanpos/repository/rest/sale.dart';
+import 'package:sultanpos/repository/rest/unitrepo.dart';
 import 'package:sultanpos/state/auth.dart';
 import 'package:sultanpos/state/cashier.dart';
 import 'package:sultanpos/state/category.dart';
@@ -27,6 +27,7 @@ import 'package:sultanpos/state/navigation.dart';
 import 'package:sultanpos/state/partner.dart';
 import 'package:sultanpos/state/paymentmethod.dart';
 import 'package:sultanpos/state/pricegroup.dart';
+import 'package:sultanpos/state/printer.dart';
 import 'package:sultanpos/state/productroot.dart';
 import 'package:sultanpos/state/purchase.dart';
 import 'package:sultanpos/state/share.dart';
@@ -43,6 +44,7 @@ class AppState {
 
   bool initted = false;
   late HttpAPI httpAPI;
+  late PrinterState printer;
   late AuthState authState;
   late NavigationState navState;
   late ShareState shareState;
@@ -71,7 +73,7 @@ class AppState {
     final branchRepo = RestBranchRepo(httpApi: httpAPI);
     final priceGroupRepo = RestPriceGroupRepo(httpApi: httpAPI);
     final productRepo = RestProductRepo(httpApi: httpAPI);
-    final unitRepo = BaseRestCRUDRepository(path: '/unit', httpApi: httpAPI, creator: UnitModel.fromJson);
+    final unitRepo = RestUnitRepo(httpApi: httpAPI);
     final partnerRepo = BaseRestCRUDRepository(path: '/partner', httpApi: httpAPI, creator: PartnerModel.fromJson);
     final categoryRepo = BaseRestCRUDRepository(path: '/category', httpApi: httpAPI, creator: CategoryModel.fromJson);
     final purchaseRepo = RestPurchaseRepo(httpApi: httpAPI);
@@ -100,6 +102,7 @@ class AppState {
       productRepo: productRepo,
     );
     paymentMethodState = PaymentMethodState(repo: paymentMethodRepo);
+    printer = PrinterState(preference: Preference(), saleRepo: saleRepo, unitRepo: unitRepo);
     await AppState().authState.loadLogin();
   }
 

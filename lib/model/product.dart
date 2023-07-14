@@ -50,6 +50,8 @@ class ProductModel extends BaseModel {
   final bool editablePrice;
   @JsonKey(name: 'use_sn')
   final bool useSn;
+  @JsonKey(name: 'unit_id')
+  final int unitId;
   final UnitModel? unit;
   final CategoryModel? category;
   final PartnerModel? partner;
@@ -72,6 +74,7 @@ class ProductModel extends BaseModel {
     this.buyable,
     this.editablePrice,
     this.useSn,
+    this.unitId,
     this.unit,
     this.category,
     this.partner,
@@ -97,7 +100,7 @@ class ProductModel extends BaseModel {
       return 0;
     }
     //TODO: find the proper index from list of prices
-    final idx = 0;
+    const idx = 0;
     if (prices![idx].count4 >= amount) {
       return prices![idx].price4;
     } else if (prices![idx].count3 >= amount) {

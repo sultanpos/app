@@ -47,7 +47,8 @@ class _SplashScreenState extends State<SplashScreen> {
   next() {
     _step++;
     if (_step >= 2) {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (c) => _gotoHome ? const RootWidget() : const LoginPage()));
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (c) => _gotoHome ? const RootWidget() : const LoginPage()));
     }
   }
 

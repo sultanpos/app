@@ -20,6 +20,12 @@ String formatDateTime(DateTime? date) {
   return df.format(date);
 }
 
+String formatDateTimeWithMonthName(DateTime? date) {
+  if (date == null) return "";
+  final df = DateFormat("dd-MMM-y hh:mm", "id");
+  return df.format(date);
+}
+
 int moneyValue(String val) {
   if (val.isEmpty) return 0;
   final normalize = val.replaceAll('.', '').replaceAll(',', '.');
