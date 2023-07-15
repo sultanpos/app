@@ -49,9 +49,12 @@ class CartModel implements ICart {
     //check if contains product already
     int index = items.indexWhere((element) => element.id() == product.id);
     if (index >= 0) {
-      items[index] = items[index].addAmount(amount);
+      final item = items[index].addAmount(amount);
+      items.removeAt(index);
+      items.insert(0, item);
     } else {
-      items.add(
+      items.insert(
+        0,
         CartItemModel(
           product: product,
           itemAmount: amount,
@@ -84,7 +87,7 @@ class CartModel implements ICart {
 
   @override
   void removeItemByIndex(int index) {
-    // TODO: implement removeItemByIndex
+    items.removeAt(index);
   }
 
   @override

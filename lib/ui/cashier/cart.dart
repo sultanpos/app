@@ -10,6 +10,7 @@ import 'package:sultanpos/ui/widget/button.dart';
 import 'package:sultanpos/ui/widget/confirmation.dart';
 import 'package:sultanpos/ui/widget/dialogutil.dart';
 import 'package:sultanpos/ui/widget/keyshortcut.dart';
+import 'package:sultanpos/ui/widget/showerror.dart';
 import 'package:sultanpos/ui/widget/space.dart';
 import 'package:sultanpos/util/format.dart';
 import 'package:tinycolor2/tinycolor2.dart';
@@ -24,11 +25,13 @@ class CartWidget extends StatefulWidget {
 
 class _CartWidgetState extends State<CartWidget> {
   final FocusNode _barcodeFN = FocusNode();
+  final FocusNode _cartFN = FocusNode();
   final TextEditingController _barcodeCtrl = TextEditingController();
 
   @override
   void dispose() {
     _barcodeFN.dispose();
+    _cartFN.dispose();
     super.dispose();
   }
 
@@ -40,12 +43,28 @@ class _CartWidgetState extends State<CartWidget> {
         if (event.isKeyPressed(LogicalKeyboardKey.f1)) {
           _barcodeFN.requestFocus();
           return KeyEventResult.handled;
+        } else if (event.isKeyPressed(LogicalKeyboardKey.f4)) {
+          _cartFN.requestFocus();
+          return KeyEventResult.handled;
         } else if (event.isKeyPressed(LogicalKeyboardKey.f5)) {
           pay(state);
           return KeyEventResult.handled;
         } else if (event.isKeyPressed(LogicalKeyboardKey.delete) && event.isControlPressed) {
           resetCart();
           return KeyEventResult.handled;
+        } else {
+          if (_cartFN.hasFocus) {
+            if (event.isKeyPressed(LogicalKeyboardKey.arrowDown)) {
+              state.nextItem();
+              return KeyEventResult.handled;
+            } else if (event.isKeyPressed(LogicalKeyboardKey.arrowUp)) {
+              state.prevItem();
+              return KeyEventResult.handled;
+            } else if (event.isKeyPressed(LogicalKeyboardKey.delete)) {
+              removeItem();
+              return KeyEventResult.handled;
+            }
+          }
         }
         return KeyEventResult.ignored;
       },
@@ -54,54 +73,92 @@ class _CartWidgetState extends State<CartWidget> {
         child: Row(
           children: [
             Expanded(
-              child: Container(
-                height: double.infinity,
-                padding: EdgeInsets.all(STheme().padding),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).secondaryHeaderColor,
-                  borderRadius: const BorderRadius.all(Radius.circular(8)),
-                ),
-                child: Column(
-                  children: [
-                    TextFormField(
-                      focusNode: _barcodeFN,
-                      controller: _barcodeCtrl,
-                      autofocus: true,
-                      decoration: const InputDecoration(hintText: "Scan barcode"),
-                      onFieldSubmitted: (value) {
-                        if (!state.loadingProduct) {
-                          try {
-                            state.scanBarcode(value);
-                            _barcodeCtrl.text = "";
-                            _barcodeFN.requestFocus();
-                          } catch (e) {}
-                        }
-                      },
+              child: Column(
+                children: [
+                  Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.all(STheme().padding),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).secondaryHeaderColor,
+                      borderRadius: const BorderRadius.all(Radius.circular(8)),
                     ),
-                    // const Divider(),
-                    Expanded(
-                      child: Container(
-                        padding: const EdgeInsets.all(8),
-                        /*decoration: BoxDecoration(
-                          border: Border.all(color: Colors.blue),
-                          //color: Theme.of(context).secondaryHeaderColor,
-                          borderRadius: const BorderRadius.all(Radius.circular(8)),
-                        ),*/
-                        child: ListView.separated(
-                            itemBuilder: (context, index) {
-                              return CartItem(
-                                item: state.cartModel.itemAt(index),
-                                selected: index == 0,
+                    child: Column(
+                      children: [
+                        TextFormField(
+                          focusNode: _barcodeFN,
+                          controller: _barcodeCtrl,
+                          autofocus: true,
+                          decoration: const InputDecoration(hintText: "Scan barcode"),
+                          onFieldSubmitted: (value) async {
+                            if (!state.loadingProduct) {
+                              final result = await state.scanBarcode(value);
+                              if (!result.found) {
+                                if (result.error != null) {
+                                  // ignore: use_build_context_synchronously
+                                  showError(context, title: 'Tidak ditemukan', message: result.error!);
+                                } else {
+                                  // ignore: use_build_context_synchronously
+                                  showError(context, title: 'Tidak ditemukan', message: "Barang tidak diketemukan");
+                                }
+                              }
+                              _barcodeCtrl.selection = TextSelection(
+                                baseOffset: 0,
+                                extentOffset: _barcodeCtrl.text.length,
                               );
-                            },
-                            separatorBuilder: (context, index) => const Divider(
-                                  height: 0,
-                                ),
-                            itemCount: state.cartModel.itemLength()),
+                              _barcodeFN.requestFocus();
+                            }
+                          },
+                        ),
+                        if (state.cartModel.items.isNotEmpty)
+                          CartItem(item: state.cartModel.items.first, selected: true),
+                      ],
+                    ),
+                  ),
+                  const SVSpace(),
+                  Expanded(
+                    child: Container(
+                      height: double.infinity,
+                      padding: EdgeInsets.all(STheme().padding),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).secondaryHeaderColor,
+                        borderRadius: const BorderRadius.all(Radius.circular(8)),
+                      ),
+                      child: Column(
+                        children: [
+                          // const Divider(),
+
+                          Expanded(
+                            child: Focus(
+                              focusNode: _cartFN,
+                              canRequestFocus: true,
+                              child: Container(
+                                //padding: const EdgeInsets.all(8),
+                                decoration: _cartFN.hasFocus
+                                    ? BoxDecoration(
+                                        border: Border.all(color: Colors.blue),
+                                        //color: Theme.of(context).secondaryHeaderColor,
+                                        borderRadius: const BorderRadius.all(Radius.circular(8)),
+                                      )
+                                    : null,
+                                child: ListView.separated(
+                                    itemBuilder: (context, index) {
+                                      return CartItem(
+                                        item: state.cartModel.itemAt(index),
+                                        selected: index == state.curIndex,
+                                      );
+                                    },
+                                    separatorBuilder: (context, index) => const Divider(
+                                          height: 0,
+                                        ),
+                                    itemCount: state.cartModel.itemLength()),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
             const SHSpace(),
@@ -174,6 +231,15 @@ class _CartWidgetState extends State<CartWidget> {
       // ignore: use_build_context_synchronously
       final state = context.read<CartState>();
       state.reset();
+    }
+  }
+
+  removeItem() async {
+    bool value = await showConfirmation(context, title: "Konfirmasi", message: "Yakin menghapus item?");
+    if (value) {
+      // ignore: use_build_context_synchronously
+      final state = context.read<CartState>();
+      state.removeItem();
     }
   }
 }

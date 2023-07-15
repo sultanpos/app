@@ -7,6 +7,13 @@ import 'package:sultanpos/repository/repository.dart';
 import 'package:sultanpos/repository/rest/restrepository.dart';
 import 'package:sultanpos/state/app.dart';
 
+class ScanResult {
+  String barcode;
+  bool found;
+  String? error;
+  ScanResult(this.barcode, this.found, {this.error});
+}
+
 class CartState extends ChangeNotifier {
   final ProductRepository productRepo;
   final PaymentMethodRepository paymentMethodRepo;
@@ -25,7 +32,7 @@ class CartState extends ChangeNotifier {
   ProductModel? currentProduct;
   List<ProductModel> currentListProduct = [];
   CartModel cartModel;
-  int curIndex = -1;
+  int curIndex = 0;
   int lastSale = 0;
   bool saving = false;
 
@@ -34,8 +41,9 @@ class CartState extends ChangeNotifier {
     notifyListeners();
   }
 
-  scanBarcode(String searchSource) async {
-    if (searchSource.isEmpty) return;
+  Future<ScanResult> scanBarcode(String searchSource) async {
+    ScanResult result = ScanResult(searchSource, false);
+    if (searchSource.isEmpty) return ScanResult('', false, error: 'empty barcode');
     final split = searchSource.split("*");
     final barcode = split.length > 1 ? split[1] : split[0];
     int count = 1000;
@@ -44,22 +52,32 @@ class CartState extends ChangeNotifier {
       count = splitCount * 1000;
     }
     loadingProduct = true;
+    result.barcode = barcode;
     notifyListeners();
-    final productResult = await productRepo.query(
-      RestFilterModel(
-        limit: 10,
-        offset: 0,
-        queryParameters: {'barcode': barcode},
-      ),
-    );
-    currentListProduct = productResult.data;
-    if (currentListProduct.isNotEmpty) {
-      currentProduct = currentListProduct.first;
-      cartModel.addProduct(count, currentProduct!.priceForAmount(count), "", currentProduct!);
+    try {
+      final productResult = await productRepo.query(
+        RestFilterModel(
+          limit: 10,
+          offset: 0,
+          queryParameters: {'barcode': barcode},
+        ),
+      );
+      currentListProduct = productResult.data;
+      if (currentListProduct.isNotEmpty) {
+        currentProduct = currentListProduct.first;
+        cartModel.addProduct(count, currentProduct!.priceForAmount(count), "", currentProduct!);
+      }
+      // currently just use the first data
+      loadingProduct = false;
+      notifyListeners();
+      curIndex = 0;
+      result.found = currentListProduct.isNotEmpty;
+    } catch (e) {
+      result.error = e.toString();
+      loadingProduct = false;
+      notifyListeners();
     }
-    // currently just use the first data
-    loadingProduct = false;
-    notifyListeners();
+    return result;
   }
 
   Future<InsertSuccessModel> paySimple(int payment) async {
@@ -115,5 +133,27 @@ class CartState extends ChangeNotifier {
       notifyListeners();
       rethrow;
     }
+  }
+
+  nextItem() {
+    if (curIndex < cartModel.items.length - 1) {
+      curIndex++;
+      notifyListeners();
+    }
+  }
+
+  prevItem() {
+    if (curIndex > 0) {
+      curIndex--;
+      notifyListeners();
+    }
+  }
+
+  removeItem() {
+    cartModel.removeItemByIndex(curIndex);
+    if (curIndex > cartModel.items.length - 1) {
+      curIndex = cartModel.items.length - 1;
+    }
+    notifyListeners();
   }
 }
