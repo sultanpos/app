@@ -89,7 +89,7 @@ class CartModel implements ICart {
 
   @override
   int getChange() {
-    return getTotal() - getPayment();
+    return getPayment() - getTotal();
   }
 
   @override

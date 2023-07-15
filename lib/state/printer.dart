@@ -78,7 +78,7 @@ class PrinterState extends ChangeNotifier {
         final payment = payments.data[0];
         escp
             .leftRight("Pembayaran", formatMoney(payment.payment))
-            .leftRight("Kembali", formatMoney(sale.total - payment.payment));
+            .leftRight("Kembali", formatMoney(payment.payment - sale.total));
       } else {
         for (int i = 0; i < payments.data.length; i++) {
           final payment = payments.data[i];

@@ -77,7 +77,7 @@ class _AddPaymentWidgetState extends State<AddPaymentWidget> {
             width: double.infinity,
             onPressed: _saveEnabled
                 ? () {
-                    save(state, true);
+                    save(state, false);
                   }
                 : null,
             label: 'Simpan',
