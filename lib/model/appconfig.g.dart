@@ -8,19 +8,26 @@ part of 'appconfig.dart';
 
 AppConfigPrinter _$AppConfigPrinterFromJson(Map<String, dynamic> json) =>
     AppConfigPrinter(
-      $enumDecodeNullable(_$AppConfigPrinterTypeEnumMap, json['type']),
-      json['name'] as String?,
-      json['vendorId'] as String?,
-      json['productId'] as String?,
-      json['address'] as String?,
-      json['title'] as String?,
-      (json['subtitles'] as List<dynamic>).map((e) => e as String).toList(),
-      (json['footnotes'] as List<dynamic>).map((e) => e as String).toList(),
+      type: $enumDecodeNullable(_$AppConfigPrinterTypeEnumMap, json['type']),
+      paperSize: $enumDecodeNullable(
+          _$AppConfigPrinterPaperSizeEnumMap, json['paperSize']),
+      name: json['name'] as String?,
+      vendorId: json['vendorId'] as String?,
+      productId: json['productId'] as String?,
+      address: json['address'] as String?,
+      title: json['title'] as String?,
+      subtitles: (json['subtitles'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
+      footnotes: (json['footnotes'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
     );
 
 Map<String, dynamic> _$AppConfigPrinterToJson(AppConfigPrinter instance) =>
     <String, dynamic>{
       'type': _$AppConfigPrinterTypeEnumMap[instance.type],
+      'paperSize': _$AppConfigPrinterPaperSizeEnumMap[instance.paperSize],
       'name': instance.name,
       'vendorId': instance.vendorId,
       'productId': instance.productId,
@@ -33,4 +40,9 @@ Map<String, dynamic> _$AppConfigPrinterToJson(AppConfigPrinter instance) =>
 const _$AppConfigPrinterTypeEnumMap = {
   AppConfigPrinterType.usb: 'usb',
   AppConfigPrinterType.bluetooth: 'bluetooth',
+};
+
+const _$AppConfigPrinterPaperSizeEnumMap = {
+  AppConfigPrinterPaperSize.paper58: 'paper58',
+  AppConfigPrinterPaperSize.paper80: 'paper80',
 };

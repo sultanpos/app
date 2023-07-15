@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_pos_printer_platform/flutter_pos_printer_platform.dart';
+import 'package:sultanpos/model/appconfig.dart';
 import 'package:sultanpos/preference.dart';
 import 'package:sultanpos/repository/repository.dart';
 import 'package:flutter_pos_printer_platform/esc_pos_utils_platform/esc_pos_utils_platform.dart';
@@ -23,7 +24,8 @@ class PrinterState extends ChangeNotifier {
 
   discover() {
     printers = [];
-    notifyListeners();
+    //notifyListeners();
+    //discover usb
     _discoverStream = PrinterManager.instance.discovery(type: PrinterType.usb).listen((event) {
       printers.add(event);
       notifyListeners();
@@ -47,9 +49,17 @@ class PrinterState extends ChangeNotifier {
       final profile = await CapabilityProfile.load();
       final Escp escp = Escp(PaperSize.mm58, profile);
 
+      escp.text(printer.title ?? "Sultan POS",
+          style: const PosStyles(height: PosTextSize.size2, align: PosAlign.center));
+      if (printer.subtitles != null) {
+        for (var item in printer.subtitles!) {
+          escp.text(item, style: const PosStyles(align: PosAlign.center));
+        }
+      } else {
+        escp.text("Jln. Tambangan 1", style: const PosStyles(align: PosAlign.center));
+        escp.text("Purwosari Bojonegoro", style: const PosStyles(align: PosAlign.center));
+      }
       escp
-          .text("Sultan POS", style: const PosStyles(height: PosTextSize.size2, align: PosAlign.center))
-          .text("Jln. Surabaya Cepu", style: const PosStyles(align: PosAlign.center))
           .hr()
           .style(const PosStyles())
           .leftRight("Tanggal", formatDateTimeWithMonthName(sale.date.toLocal()))
@@ -84,7 +94,15 @@ class PrinterState extends ChangeNotifier {
             .text("*** LUNAS ***", style: const PosStyles(bold: true, align: PosAlign.center))
             .style(const PosStyles());
       }
-      escp.hr().text("Terima kasih sudah berbelanja", style: const PosStyles(align: PosAlign.center)).feed(2);
+      escp.hr();
+      if (printer.footnotes != null) {
+        for (var item in printer.footnotes!) {
+          escp.text(item, style: const PosStyles(align: PosAlign.center));
+        }
+      } else {
+        escp.text("Terima kasih sudah berbelanja", style: const PosStyles(align: PosAlign.center));
+      }
+      escp.feed(2);
 
       final connect = await PrinterManager.instance.connect(
           type: PrinterType.usb,
@@ -103,5 +121,13 @@ class PrinterState extends ChangeNotifier {
       debugPrint(e.toString());
       rethrow;
     }
+  }
+
+  AppConfigPrinter? getConfigPrinter() {
+    return preference.getDefaultPrinter();
+  }
+
+  saveChasierPrinter(AppConfigPrinter config) {
+    preference.setDefaultPrinter(config);
   }
 }

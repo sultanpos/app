@@ -19,18 +19,35 @@ enum AppConfigPrinterType implements Comparable<AppConfigPrinterType> {
   }
 }
 
+enum AppConfigPrinterPaperSize implements Comparable<AppConfigPrinterPaperSize> {
+  @JsonValue('paper58')
+  paper58('paper58', 'Kertas 58mm'),
+  @JsonValue('paper80')
+  paper80('paper80', 'Kertas 80mm');
+
+  final String value;
+  final String text;
+  const AppConfigPrinterPaperSize(this.value, this.text);
+  @override
+  int compareTo(AppConfigPrinterPaperSize other) {
+    return 0;
+  }
+}
+
 @JsonSerializable()
 class AppConfigPrinter {
   final AppConfigPrinterType? type;
+  final AppConfigPrinterPaperSize? paperSize;
   final String? name;
   final String? vendorId;
   final String? productId;
   final String? address;
   final String? title;
-  final List<String> subtitles;
-  final List<String> footnotes;
-  AppConfigPrinter(
+  final List<String>? subtitles;
+  final List<String>? footnotes;
+  AppConfigPrinter({
     this.type,
+    this.paperSize,
     this.name,
     this.vendorId,
     this.productId,
@@ -38,10 +55,11 @@ class AppConfigPrinter {
     this.title,
     this.subtitles,
     this.footnotes,
-  );
+  });
 
   copyWith(
       {AppConfigPrinterType? type,
+      AppConfigPrinterPaperSize? paperSize,
       String? name,
       String? vendorId,
       String? productId,
@@ -50,14 +68,15 @@ class AppConfigPrinter {
       List<String>? subtitles,
       List<String>? footnotes}) {
     return AppConfigPrinter(
-      type ?? this.type,
-      name ?? this.name,
-      vendorId ?? this.vendorId,
-      productId ?? this.productId,
-      address ?? this.address,
-      title ?? this.title,
-      subtitles ?? this.subtitles,
-      footnotes ?? this.footnotes,
+      type: type ?? this.type,
+      paperSize: paperSize ?? this.paperSize,
+      name: name ?? this.name,
+      vendorId: vendorId ?? this.vendorId,
+      productId: productId ?? this.productId,
+      address: address ?? this.address,
+      title: title ?? this.title,
+      subtitles: subtitles ?? this.subtitles,
+      footnotes: footnotes ?? this.footnotes,
     );
   }
 

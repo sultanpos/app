@@ -30,6 +30,7 @@ import 'package:sultanpos/state/pricegroup.dart';
 import 'package:sultanpos/state/printer.dart';
 import 'package:sultanpos/state/productroot.dart';
 import 'package:sultanpos/state/purchase.dart';
+import 'package:sultanpos/state/setting.dart';
 import 'package:sultanpos/state/share.dart';
 import 'package:sultanpos/state/unit.dart';
 
@@ -57,6 +58,7 @@ class AppState {
   late CategoryState categoryState;
   late PurchaseState purchaseState;
   late PaymentMethodState paymentMethodState;
+  late SettingState settingState;
 
   init() async {
     if (initted) return;
@@ -103,6 +105,7 @@ class AppState {
     );
     paymentMethodState = PaymentMethodState(repo: paymentMethodRepo);
     printer = PrinterState(preference: Preference(), saleRepo: saleRepo, unitRepo: unitRepo);
+    settingState = SettingState(Preference());
     await AppState().authState.loadLogin();
   }
 
