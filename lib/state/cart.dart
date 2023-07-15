@@ -65,7 +65,8 @@ class CartState extends ChangeNotifier {
       currentListProduct = productResult.data;
       if (currentListProduct.isNotEmpty) {
         currentProduct = currentListProduct.first;
-        cartModel.addProduct(count, currentProduct!.priceForAmount(count), "", currentProduct!);
+        cartModel.addProduct(
+            count, currentProduct!.priceForAmount(cartModel.amount(currentProduct!) + count), "", currentProduct!);
       }
       // currently just use the first data
       loadingProduct = false;

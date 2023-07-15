@@ -12,7 +12,7 @@ abstract class ICartItem {
   int amount();
   int price();
   int discount();
-  ICartItem addAmount(int amount);
+  ICartItem addAmountAndPrice(int amount, int price);
   String discountFormula();
   int subtotal();
   int total();
@@ -49,7 +49,7 @@ class CartModel implements ICart {
     //check if contains product already
     int index = items.indexWhere((element) => element.id() == product.id);
     if (index >= 0) {
-      final item = items[index].addAmount(amount);
+      final item = items[index].addAmountAndPrice(amount, price);
       items.removeAt(index);
       items.insert(0, item);
     } else {
@@ -63,6 +63,14 @@ class CartModel implements ICart {
         ),
       );
     }
+  }
+
+  int amount(ProductModel product) {
+    int index = items.indexWhere((element) => element.id() == product.id);
+    if (index >= 0) {
+      return items[index].itemAmount;
+    }
+    return 0;
   }
 
   @override
@@ -165,12 +173,12 @@ class CartItemModel implements ICartItem {
   }
 
   @override
-  CartItemModel addAmount(int amount) {
+  CartItemModel addAmountAndPrice(int amount, int price) {
     return CartItemModel(
       product: product,
       itemAmount: itemAmount + amount,
       itemDiscountFormula: itemDiscountFormula,
-      itemPrice: itemPrice,
+      itemPrice: price,
     );
   }
 

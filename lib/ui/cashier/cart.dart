@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:sultanpos/model/cart.dart';
+import 'package:sultanpos/model/product.dart';
 import 'package:sultanpos/state/cart.dart';
 import 'package:sultanpos/ui/cashier/cashiersuccess.dart';
 import 'package:sultanpos/ui/cashier/payment.dart';
@@ -109,8 +110,10 @@ class _CartWidgetState extends State<CartWidget> {
                             }
                           },
                         ),
-                        if (state.cartModel.items.isNotEmpty)
-                          CartItem(item: state.cartModel.items.first, selected: true),
+                        if (state.currentProduct != null)
+                          ProductScanWidget(
+                            product: state.currentProduct!,
+                          ),
                       ],
                     ),
                   ),
@@ -257,7 +260,8 @@ class _CartItemState extends State<CartItem> {
   bool hovered = false;
   @override
   Widget build(BuildContext context) {
-    final multiplier = widget.selected ? 1.5 : 1.0;
+    const multiplier = 1.0;
+    //widget.selected ? 1.5 : 1.0;
     final TextStyle medium = Theme.of(context).textTheme.bodyMedium!;
     final TextStyle titleMed = Theme.of(context).textTheme.titleMedium!;
     final Color initialColor = Theme.of(context).secondaryHeaderColor;
@@ -284,7 +288,7 @@ class _CartItemState extends State<CartItem> {
                   const SVSpaceSmall(),
                   Row(
                     children: [
-                      Icon(
+                      const Icon(
                         FontAwesomeIcons.barcode,
                         size: 14.0 * multiplier,
                       ),
@@ -323,6 +327,35 @@ class _CartItemState extends State<CartItem> {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class ProductScanWidget extends StatelessWidget {
+  final ProductModel product;
+  const ProductScanWidget({required this.product, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final priceList = product.priceList();
+    return Padding(
+      padding: EdgeInsets.only(top: STheme().padding),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            product.name,
+            style: const TextStyle(fontSize: 16),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: priceList
+                .map((e) => Text('${formatStock(e.$1)} ${product.unit?.name ?? ''} @${formatMoney(e.$2)}'))
+                .toList(),
+          )
+        ],
       ),
     );
   }

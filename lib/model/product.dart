@@ -101,18 +101,40 @@ class ProductModel extends BaseModel {
     }
     //TODO: find the proper index from list of prices
     const idx = 0;
-    if (prices![idx].count4 >= amount) {
-      return prices![idx].price4;
-    } else if (prices![idx].count3 >= amount) {
-      return prices![idx].price3;
+    final price = prices![idx];
+    if (price.count4 > 0 && price.count4 <= amount) {
+      return price.price4;
+    } else if (price.count3 > 0 && price.count3 <= amount) {
+      return price.price3;
     }
-    if (prices![idx].count2 >= amount) {
-      return prices![idx].price2;
+    if (price.count2 > 0 && price.count2 <= amount) {
+      return price.price2;
     }
-    if (prices![idx].count1 >= amount) {
-      return prices![idx].price1;
+    if (price.count1 > 0 && price.count1 <= amount) {
+      return price.price1;
     }
-    return prices![idx].price0;
+    return price.price0;
+  }
+
+  List<(int, int)> priceList() {
+    List<(int, int)> retVal = [];
+    if (prices?.isEmpty ?? true) {
+      return retVal;
+    }
+    //TODO: find the proper index from list of prices
+    const idx = 0;
+    final price = prices![idx];
+    if (price.price0 == 0) return retVal;
+    retVal.add((price.count0, price.price0));
+    if (price.price1 == 0) return retVal;
+    retVal.add((price.count1, price.price1));
+    if (price.price2 == 0) return retVal;
+    retVal.add((price.count2, price.price2));
+    if (price.price3 == 0) return retVal;
+    retVal.add((price.count3, price.price3));
+    if (price.price4 == 0) return retVal;
+    retVal.add((price.count4, price.price4));
+    return retVal;
   }
 }
 
