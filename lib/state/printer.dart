@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_pos_printer_platform/esc_pos_utils_platform/src/commands.dart';
 import 'package:flutter_pos_printer_platform/flutter_pos_printer_platform.dart';
 import 'package:sultanpos/model/appconfig.dart';
 import 'package:sultanpos/preference.dart';
@@ -12,6 +13,7 @@ import 'package:sultanpos/util/format.dart';
 class PrinterState extends ChangeNotifier {
   final SaleRepository saleRepo;
   final UnitRepository unitRepo;
+  final CashierSessionRepository cashierSessionRepo;
   final Preference preference;
   StreamSubscription? _discoverStream;
   List<PrinterDevice> printers = [];
@@ -20,6 +22,7 @@ class PrinterState extends ChangeNotifier {
     required this.preference,
     required this.saleRepo,
     required this.unitRepo,
+    required this.cashierSessionRepo,
   });
 
   discover() {
@@ -102,24 +105,60 @@ class PrinterState extends ChangeNotifier {
       } else {
         escp.text("Terima kasih sudah berbelanja", style: const PosStyles(align: PosAlign.center));
       }
-      escp.feed(2);
+      escp.feed(printer.feed ?? 2);
 
-      final connect = await PrinterManager.instance.connect(
-          type: PrinterType.usb,
-          model: UsbPrinterInput(
-            name: printer.name,
-            productId: printer.productId,
-            vendorId: printer.vendorId,
-          ));
-      if (connect) {
-        await PrinterManager.instance.send(type: PrinterType.usb, bytes: escp.data);
-        await PrinterManager.instance.disconnect(type: PrinterType.usb);
-      } else {
-        throw 'unable to connect printer';
-      }
+      printToDevice(printer, escp.data);
     } catch (e) {
       debugPrint(e.toString());
       rethrow;
+    }
+  }
+
+  printCashierClose(int id) async {
+    final printer = preference.getDefaultPrinter();
+    if (printer == null) {
+      throw 'no printer found';
+    }
+    try {
+      final session = await cashierSessionRepo.get(id);
+      final report = await cashierSessionRepo.getReport(id);
+      final profile = await CapabilityProfile.load();
+      final Escp escp = Escp(PaperSize.mm58, profile);
+      escp
+          .text("Laporan Kasir", style: const PosStyles(height: PosTextSize.size2, align: PosAlign.center))
+          .style(const PosStyles())
+          .hr()
+          .leftRight("Nama", session.user?.name ?? "-")
+          .leftRight("Tanggal buka", formatDateTime(session.dateOpen))
+          .leftRight("Tanggal tutup", formatDateTime(session.dateClose))
+          .hr()
+          .leftRight("Modal awal", formatMoney(session.openValue))
+          .leftRight("Uang masuk", formatMoney(report.paymentInTotal))
+          .leftRight("Uang keluar", formatMoney(report.paymentOutTotal))
+          .hr()
+          .leftRight("Uang system", formatMoney(session.openValue + report.paymentInTotal))
+          .leftRight("Fisik", formatMoney(session.closeValue))
+          .hr()
+          .feed(printer.feed ?? 2);
+      printToDevice(printer, escp.data);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  printToDevice(AppConfigPrinter printer, List<int> data) async {
+    final connect = await PrinterManager.instance.connect(
+        type: PrinterType.usb,
+        model: UsbPrinterInput(
+          name: printer.name,
+          productId: printer.productId,
+          vendorId: printer.vendorId,
+        ));
+    if (connect) {
+      await PrinterManager.instance.send(type: PrinterType.usb, bytes: data);
+      await PrinterManager.instance.disconnect(type: PrinterType.usb);
+    } else {
+      throw 'unable to connect printer';
     }
   }
 

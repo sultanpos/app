@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pos_printer_platform/flutter_pos_printer_platform.dart';
 import 'package:provider/provider.dart';
 import 'package:sultanpos/model/appconfig.dart';
 import 'package:sultanpos/state/printer.dart';
 import 'package:sultanpos/ui/theme.dart';
+import 'package:sultanpos/ui/util/textformatter.dart';
 import 'package:sultanpos/ui/widget/button.dart';
 import 'package:sultanpos/ui/widget/labelfield.dart';
 import 'package:sultanpos/ui/widget/showerror.dart';
@@ -136,6 +136,19 @@ class _PrinterSettingWidgetState extends State<PrinterSettingWidget> {
                     decoration: const InputDecoration(
                       hintText: "Masukkan catatan kaki",
                       helperText: "Gunakan enter untuk multi catatan kaki",
+                    ),
+                  ),
+                  const SVSpace(),
+                  const LabelField("Feed"),
+                  TextFormField(
+                    initialValue: '${_config.feed ?? 2}',
+                    inputFormatters: [MoneyTextFormatter()],
+                    onChanged: (v) {
+                      _config = _config.copyWith(feed: int.parse(v));
+                    },
+                    decoration: const InputDecoration(
+                      hintText: "Masukkan feed",
+                      helperText: "Feed printer pada akhir",
                     ),
                   ),
                 ],

@@ -22,6 +22,7 @@ AppConfigPrinter _$AppConfigPrinterFromJson(Map<String, dynamic> json) =>
       footnotes: (json['footnotes'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
+      feed: json['feed'] as int?,
     );
 
 Map<String, dynamic> _$AppConfigPrinterToJson(AppConfigPrinter instance) =>
@@ -33,6 +34,7 @@ Map<String, dynamic> _$AppConfigPrinterToJson(AppConfigPrinter instance) =>
       'productId': instance.productId,
       'address': instance.address,
       'title': instance.title,
+      'feed': instance.feed,
       'subtitles': instance.subtitles,
       'footnotes': instance.footnotes,
     };

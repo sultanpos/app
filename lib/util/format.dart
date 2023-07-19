@@ -20,6 +20,12 @@ String formatDateTime(DateTime? date) {
   return df.format(date);
 }
 
+String? formatDateTimeNullable(DateTime? date) {
+  if (date == null) return null;
+  final df = DateFormat("d-M-y hh:mm", "id");
+  return df.format(date);
+}
+
 String formatDateTimeWithMonthName(DateTime? date) {
   if (date == null) return "";
   final df = DateFormat("dd-MMM-y hh:mm", "id");

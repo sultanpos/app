@@ -59,6 +59,7 @@ class AuthState extends ChangeNotifier {
     } else {
       Preference().resetLogin();
     }
+    AppState().global.setupBranch(claim!);
   }
 
   _loadAccessToken(LoginResponse token) async {
@@ -69,7 +70,6 @@ class AuthState extends ChangeNotifier {
       final userResult = await repo.getUser(claim!.userId);
       user = userResult;
       notifyListeners();
-      AppState().shareState.initAll();
     } catch (e) {
       rethrow;
     }

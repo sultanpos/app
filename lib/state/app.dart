@@ -22,6 +22,7 @@ import 'package:sultanpos/repository/rest/unitrepo.dart';
 import 'package:sultanpos/state/auth.dart';
 import 'package:sultanpos/state/cashier.dart';
 import 'package:sultanpos/state/category.dart';
+import 'package:sultanpos/state/global.dart';
 import 'package:sultanpos/state/master.dart';
 import 'package:sultanpos/state/navigation.dart';
 import 'package:sultanpos/state/partner.dart';
@@ -31,7 +32,6 @@ import 'package:sultanpos/state/printer.dart';
 import 'package:sultanpos/state/productroot.dart';
 import 'package:sultanpos/state/purchase.dart';
 import 'package:sultanpos/state/setting.dart';
-import 'package:sultanpos/state/share.dart';
 import 'package:sultanpos/state/unit.dart';
 
 class AppState {
@@ -45,10 +45,10 @@ class AppState {
 
   bool initted = false;
   late HttpAPI httpAPI;
+  late GlobalState global;
   late PrinterState printer;
   late AuthState authState;
   late NavigationState navState;
-  late ShareState shareState;
   late ProductRootState productRootState;
   late MasterState masterState;
   late CashierRootState cashierState;
@@ -84,9 +84,9 @@ class AppState {
     final saleRepo = RestSaleRepo(httpApi: httpAPI);
 
     //state
+    global = GlobalState(branchRepo, Preference());
     navState = NavigationState();
     authState = AuthState(repo: RestAuthRepo(httpAPI));
-    shareState = ShareState(branchRepo: branchRepo, priceGroupRepo: priceGroupRepo);
     productRootState = ProductRootState(repo: productRepo);
     masterState = MasterState();
     cashierState = CashierRootState(
@@ -97,16 +97,20 @@ class AppState {
     );
     unitState = UnitState(repo: unitRepo);
     priceGroupState = PriceGroupState(repo: priceGroupRepo);
-    partnerState = PartnerState(repo: partnerRepo);
+    partnerState = PartnerState(repo: partnerRepo, priceGroupRepo: priceGroupRepo);
     categoryState = CategoryState(repo: categoryRepo);
     purchaseState = PurchaseState(
       purchaseRepo: purchaseRepo,
       productRepo: productRepo,
     );
     paymentMethodState = PaymentMethodState(repo: paymentMethodRepo);
-    printer = PrinterState(preference: Preference(), saleRepo: saleRepo, unitRepo: unitRepo);
+    printer = PrinterState(
+        preference: Preference(), saleRepo: saleRepo, unitRepo: unitRepo, cashierSessionRepo: cashierSessionRepo);
     settingState = SettingState(Preference());
-    await AppState().authState.loadLogin();
+
+    // this loadlogin throw an error
+    await authState.loadLogin();
+    global.setupBranch(authState.claim!);
   }
 
   _tokenRefreshed(LoginResponse token) {

@@ -75,11 +75,11 @@ class PurchaseState extends CrudStateWithList<PurchaseModel> {
 
   @override
   BaseModel prepareInsertModel() {
-    final defaultBranch = AppState().shareState.defaultBranch();
+    final branch = AppState().global.currentBranch!;
     final now = DateTime.now().add(const Duration(days: 7));
     return PurchaseInsertModel(
       fgDate.value!.toUtc(),
-      defaultBranch?.id ?? 0,
+      branch.id,
       fgPartnerId.value ?? 0,
       fgRefNumber.value ?? '',
       'normal',
@@ -89,11 +89,11 @@ class PurchaseState extends CrudStateWithList<PurchaseModel> {
 
   @override
   BaseModel prepareUpdateModel() {
-    final defaultBranch = AppState().shareState.defaultBranch();
+    final defaultBranch = AppState().global.currentBranch!;
     final now = DateTime.now().add(const Duration(days: 7));
     return PurchaseUpdateModel(
       fgDate.value!.toUtc(),
-      defaultBranch?.id ?? 0,
+      defaultBranch.id,
       fgPartnerId.value ?? 0,
       fgRefNumber.value ?? '',
       fgDeadline.value?.toUtc() ?? DateTime(now.year, now.month, now.day).toUtc(),

@@ -73,6 +73,10 @@ class CartModel implements ICart {
     return 0;
   }
 
+  bool isEmpty() {
+    return items.isEmpty;
+  }
+
   @override
   void addItem(ICartItem item) {
     // TODO: implement addItem

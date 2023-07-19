@@ -43,6 +43,7 @@ class AppConfigPrinter {
   final String? productId;
   final String? address;
   final String? title;
+  final int? feed;
   final List<String>? subtitles;
   final List<String>? footnotes;
   AppConfigPrinter({
@@ -55,6 +56,7 @@ class AppConfigPrinter {
     this.title,
     this.subtitles,
     this.footnotes,
+    this.feed,
   });
 
   copyWith(
@@ -66,7 +68,8 @@ class AppConfigPrinter {
       String? address,
       String? title,
       List<String>? subtitles,
-      List<String>? footnotes}) {
+      List<String>? footnotes,
+      int? feed}) {
     return AppConfigPrinter(
       type: type ?? this.type,
       paperSize: paperSize ?? this.paperSize,
@@ -77,6 +80,7 @@ class AppConfigPrinter {
       title: title ?? this.title,
       subtitles: subtitles ?? this.subtitles,
       footnotes: footnotes ?? this.footnotes,
+      feed: feed ?? this.feed,
     );
   }
 

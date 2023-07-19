@@ -10,4 +10,15 @@ class RestCashierSessionRepo extends BaseRestCRUDRepository<CashierSessionModel>
   Future<CashierSessionModel> getActive() {
     return httpApi.getOne<CashierSessionModel>('$path/active', fromJsonFunc: CashierSessionModel.fromJson);
   }
+
+  @override
+  Future<CashierSessionReportModel> getReport(int id) async {
+    return httpApi.getOne<CashierSessionReportModel>('$path/$id/report',
+        fromJsonFunc: CashierSessionReportModel.fromJson);
+  }
+
+  @override
+  Future close(int id, CashierSessionCloseModel data) {
+    return httpApi.put(data, '$path/$id/close');
+  }
 }

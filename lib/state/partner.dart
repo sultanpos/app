@@ -1,11 +1,13 @@
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:sultanpos/model/base.dart';
 import 'package:sultanpos/model/partner.dart';
-import 'package:sultanpos/state/app.dart';
+import 'package:sultanpos/repository/repository.dart';
 import 'package:sultanpos/state/crud.dart';
 import 'package:sultanpos/validator/phone.dart';
 
 class PartnerState extends CrudStateWithList<PartnerModel> {
+  final PriceGroupRepository priceGroupRepo;
+
   final fgName = FormControl<String>(validators: [Validators.required], touched: true);
   final fgIsCustomer = FormControl<bool>();
   final fgIsSupplier = FormControl<bool>();
@@ -14,7 +16,7 @@ class PartnerState extends CrudStateWithList<PartnerModel> {
   final fgEmail = FormControl<String>(validators: [Validators.email]);
   final fgNpwp = FormControl<String>();
   final fgPriceGroup = FormControl<int>();
-  PartnerState({required super.repo}) {
+  PartnerState({required super.repo, required this.priceGroupRepo}) {
     form = FormGroup({
       'name': fgName,
       'isCustomer': fgIsCustomer,
@@ -40,9 +42,10 @@ class PartnerState extends CrudStateWithList<PartnerModel> {
   }
 
   @override
-  resetForm() {
+  resetForm() async {
     super.resetForm();
-    fgPriceGroup.updateValue(AppState().shareState.defaultPriceGroup?.id ?? 0, emitEvent: false);
+    final priceGroup = await priceGroupRepo.defaultPriceGroup();
+    fgPriceGroup.updateValue(priceGroup?.id ?? 0, emitEvent: false);
   }
 
   @override

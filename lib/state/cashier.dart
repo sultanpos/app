@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:reactive_forms/reactive_forms.dart';
 import 'package:sultanpos/model/cashier.dart';
 import 'package:sultanpos/repository/repository.dart';
+import 'package:sultanpos/state/app.dart';
 import 'package:sultanpos/state/cart.dart';
+import 'package:sultanpos/util/format.dart';
 
 class CashierRootState extends ChangeNotifier {
   final ProductRepository productRepo;
@@ -9,11 +12,19 @@ class CashierRootState extends ChangeNotifier {
   final PaymentMethodRepository paymetnMethodRepo;
   final SaleRepository saleRepo;
 
+  final fgOpenValue = FormControl<String>(validators: [Validators.required]);
+  final fgCloseValue = FormControl<String>(validators: [Validators.required]);
+  late FormGroup formGroup;
+  late FormGroup formGroupClose;
+
   int cashierId = 0;
   bool loadingInit = true;
   CashierSessionModel? currentSession;
+  CashierSessionReportModel? report;
   bool cashierOpened = false;
   int currentCashierTabId = 0;
+  bool saving = false;
+  bool reportLoading = false;
 
   late List<CartState> cashierItems;
 
@@ -22,7 +33,14 @@ class CashierRootState extends ChangeNotifier {
     required this.cashierSessionRepo,
     required this.paymetnMethodRepo,
     required this.saleRepo,
-  });
+  }) {
+    formGroup = FormGroup({
+      'openValue': fgOpenValue,
+    });
+    formGroupClose = FormGroup({
+      'closeValue': fgCloseValue,
+    });
+  }
 
   init() async {
     try {
@@ -45,14 +63,17 @@ class CashierRootState extends ChangeNotifier {
   }
 
   setUpFirstCashierItem() {
+    cashierId = 0;
     cashierItems = [
       CartState(
         cashierId++,
         productRepo: productRepo,
         paymentMethodRepo: paymetnMethodRepo,
         saleRepository: saleRepo,
+        cashierSessionId: currentSession?.id ?? 0,
       )
     ];
+    currentCashierTabId = cashierId - 1;
   }
 
   newTabCashier() {
@@ -61,6 +82,7 @@ class CashierRootState extends ChangeNotifier {
       productRepo: productRepo,
       paymentMethodRepo: paymetnMethodRepo,
       saleRepository: saleRepo,
+      cashierSessionId: currentSession?.id ?? 0,
     ));
     currentCashierTabId = cashierItems.last.id;
     notifyListeners();
@@ -79,6 +101,72 @@ class CashierRootState extends ChangeNotifier {
     } else if (cashierItems.length > index - 1) {
       currentCashierTabId = cashierItems[index - 1].id;
     }
+    notifyListeners();
+  }
+
+  resetForm() {
+    formGroup.reset();
+  }
+
+  saveCashierSession() async {
+    saving = true;
+    notifyListeners();
+    try {
+      await cashierSessionRepo.insert(CashierSessionInsertModel(
+        branchId: AppState().global.currentBranch!.id,
+        dateOpen: DateTime.now().toUtc(),
+        machineId: 0,
+        openValue: moneyValue(fgOpenValue.value ?? '0'),
+        note: '',
+        userId: AppState().authState.user!.id,
+      ));
+      currentSession = await cashierSessionRepo.getActive();
+      cashierOpened = true;
+      setUpFirstCashierItem();
+      saving = false;
+      notifyListeners();
+    } catch (e) {
+      saving = false;
+      notifyListeners();
+      rethrow;
+    }
+  }
+
+  loadReport() async {
+    reportLoading = true;
+    fgCloseValue.reset();
+    notifyListeners();
+    try {
+      report = await cashierSessionRepo.getReport(currentSession!.id);
+      reportLoading = false;
+      notifyListeners();
+    } catch (e) {
+      reportLoading = false;
+      notifyListeners();
+      rethrow;
+    }
+  }
+
+  closeSession() async {
+    saving = true;
+    notifyListeners();
+    try {
+      await cashierSessionRepo.close(
+          currentSession!.id, CashierSessionCloseModel(DateTime.now().toUtc(), moneyValue(fgCloseValue.value!)));
+      currentSession = await cashierSessionRepo.get(currentSession!.id);
+      reportLoading = true;
+      saving = false;
+      notifyListeners();
+    } catch (e) {
+      saving = false;
+      notifyListeners();
+      rethrow;
+    }
+  }
+
+  reset() {
+    cashierOpened = false;
+    cashierItems.clear();
     notifyListeners();
   }
 }

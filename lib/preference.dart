@@ -5,6 +5,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sultanpos/model/appconfig.dart';
 import 'package:sultanpos/model/auth.dart';
+import 'package:sultanpos/model/branch.dart';
 
 class Preference {
   static final Preference _singleton = Preference._internal();
@@ -61,5 +62,21 @@ class Preference {
 
   setDefaultPrinter(AppConfigPrinter model) {
     return sharedPreferences.setString("defaultPrinter", model.toJsonString());
+  }
+
+  saveBranch(BranchModel? branch) {
+    if (branch == null) {
+      sharedPreferences.remove("branch");
+    } else {
+      sharedPreferences.setString("branch", jsonEncode(branch.toJson()));
+    }
+  }
+
+  BranchModel? getBranch() {
+    final branchJsonString = sharedPreferences.getString("branch");
+    if (branchJsonString == null || branchJsonString == "") {
+      return null;
+    }
+    return BranchModel.fromJson(jsonDecode(branchJsonString));
   }
 }

@@ -3,6 +3,7 @@ import 'package:sultanpos/model/cashier.dart';
 import 'package:sultanpos/model/listresult.dart';
 import 'package:sultanpos/model/payment.dart';
 import 'package:sultanpos/model/paymentmethod.dart';
+import 'package:sultanpos/model/pricegroup.dart';
 import 'package:sultanpos/model/product.dart';
 import 'package:sultanpos/model/purchase.dart';
 import 'package:sultanpos/model/request.dart';
@@ -29,6 +30,8 @@ abstract class ProductRepository extends BaseCRUDRepository<ProductModel> {}
 
 abstract class CashierSessionRepository extends BaseCRUDRepository<CashierSessionModel> {
   Future<CashierSessionModel> getActive();
+  Future<CashierSessionReportModel> getReport(int id);
+  Future close(int id, CashierSessionCloseModel data);
 }
 
 abstract class PaymentMethodRepository extends BaseCRUDRepository<PaymentMethodModel> {
@@ -39,4 +42,8 @@ abstract class SaleRepository extends BaseCRUDRepository<SaleModel> {
   Future<InsertSuccessModel> insertCashier(SaleCashierInsertModel data);
   Future<ListResult<SaleItemModel>> items(int saleId);
   Future<ListResult<PaymentModel>> payments(int saleId);
+}
+
+abstract class PriceGroupRepository extends BaseCRUDRepository<PriceGroupModel> {
+  Future<PriceGroupModel?> defaultPriceGroup();
 }

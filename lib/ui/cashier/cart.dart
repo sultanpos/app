@@ -3,9 +3,12 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:sultanpos/model/cart.dart';
 import 'package:sultanpos/model/product.dart';
+import 'package:sultanpos/state/app.dart';
 import 'package:sultanpos/state/cart.dart';
 import 'package:sultanpos/ui/cashier/cashiersuccess.dart';
+import 'package:sultanpos/ui/cashier/closesession.dart';
 import 'package:sultanpos/ui/cashier/payment.dart';
+import 'package:sultanpos/ui/cashier/sessionclosed.dart';
 import 'package:sultanpos/ui/theme.dart';
 import 'package:sultanpos/ui/widget/button.dart';
 import 'package:sultanpos/ui/widget/confirmation.dart';
@@ -165,37 +168,83 @@ class _CartWidgetState extends State<CartWidget> {
               ),
             ),
             const SHSpace(),
-            Container(
+            SizedBox(
               width: 350,
-              height: double.infinity,
-              padding: EdgeInsets.all(STheme().padding),
-              decoration: BoxDecoration(
-                color: Theme.of(context).secondaryHeaderColor,
-                borderRadius: const BorderRadius.all(Radius.circular(8)),
-              ),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text("Total"),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: Text(
-                      formatMoney(state.cartModel.getTotal()),
-                      style: Theme.of(context).textTheme.headlineLarge,
+                  Expanded(
+                    child: Container(
+                      padding: EdgeInsets.all(STheme().padding),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).secondaryHeaderColor,
+                        borderRadius: const BorderRadius.all(Radius.circular(8)),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text("Total"),
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: Text(
+                              formatMoney(state.cartModel.getTotal()),
+                              style: const TextStyle(fontSize: 42),
+                            ),
+                          ),
+                          const Divider(),
+                          const Spacer(),
+                          SizedBox(
+                            width: double.infinity,
+                            child: SButton(
+                              icon: const Icon(FontAwesomeIcons.moneyBill1),
+                              label: "Bayar",
+                              onPressed: () {
+                                pay(state);
+                              },
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ),
-                  const Divider(),
-                  const Spacer(),
-                  SizedBox(
+                  const SVSpace(),
+                  Container(
                     width: double.infinity,
+                    padding: EdgeInsets.all(STheme().padding),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).secondaryHeaderColor,
+                      borderRadius: const BorderRadius.all(Radius.circular(8)),
+                    ),
                     child: SButton(
-                      icon: const Icon(FontAwesomeIcons.moneyBill1),
-                      label: "Bayar",
-                      onPressed: () {
-                        pay(state);
+                      icon: const Icon(Icons.logout),
+                      color: Colors.red,
+                      label: "Tutup kasir",
+                      onPressed: () async {
+                        AppState().cashierState.loadReport();
+                        final result = await sShowDialog(
+                          context: context,
+                          builder: (c) {
+                            return ChangeNotifierProvider.value(
+                              value: AppState().cashierState,
+                              child: const CashierSessionCloseWidget(),
+                            );
+                          },
+                        );
+                        if (result != null && result) {
+                          // ignore: use_build_context_synchronously
+                          await sShowDialog(
+                            context: context,
+                            builder: (c) {
+                              return ChangeNotifierProvider.value(
+                                value: AppState().cashierState,
+                                child: const CashierSessionClosedWidget(),
+                              );
+                            },
+                          );
+                          AppState().cashierState.reset();
+                        }
                       },
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
@@ -206,6 +255,7 @@ class _CartWidgetState extends State<CartWidget> {
   }
 
   pay(CartState state) async {
+    if (state.cartModel.isEmpty()) return;
     final result = await sShowDialog<bool>(
       context: context,
       builder: (c) {
@@ -214,16 +264,12 @@ class _CartWidgetState extends State<CartWidget> {
     );
     if (result != null && result) {
       // ignore: use_build_context_synchronously
-      final shouldPrint = await sShowDialog<bool>(
+      await sShowDialog<bool>(
         context: context,
         builder: (c) {
           return ChangeNotifierProvider.value(value: state, child: const CashierSuccessWidget());
         },
       );
-      if (shouldPrint != null && shouldPrint) {
-        //TODO: re-print me
-        print("print me");
-      }
       state.reset();
     }
   }

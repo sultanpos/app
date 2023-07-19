@@ -163,7 +163,7 @@ class ProductState extends CrudState<ProductModel> {
 
   @override
   BaseModel prepareInsertModel() {
-    final defaultBranch = AppState().shareState.defaultBranch();
+    final branch = AppState().global.currentBranch!;
     final priceMap = <String, dynamic>{};
     for (int i = 0; i < 5; i++) {
       priceMap['count$i'] = i < priceCounter ? stockValue(csd[i].count.value ?? '0') : 0;
@@ -188,7 +188,7 @@ class ProductState extends CrudState<ProductModel> {
       fgCategoryId.value ?? 0,
       [],
       moneyValue(fgBuyPrice.value ?? '0'),
-      [ProductStockInsertModel(defaultBranch!.id, stockValue(fgStock.value ?? '0'))],
+      [ProductStockInsertModel(branch.id, stockValue(fgStock.value ?? '0'))],
       ProductPriceInsertModel.fromJson(priceMap),
     );
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sultanpos/model/cart.dart';
+import 'package:sultanpos/model/cashier.dart';
 import 'package:sultanpos/model/product.dart';
 import 'package:sultanpos/model/request.dart';
 import 'package:sultanpos/model/sale.dart';
@@ -83,13 +84,13 @@ class CartState extends ChangeNotifier {
 
   Future<InsertSuccessModel> paySimple(int payment) async {
     final defMethod = await paymentMethodRepo.getDefaultCashMethod();
-    final defaultBranch = AppState().shareState.defaultBranch();
+    final branch = AppState().global.currentBranch!;
     saving = true;
     notifyListeners();
     cartModel.payment = payment;
     try {
       final insert = SaleCashierInsertModel(
-          branchId: defaultBranch!.id,
+          branchId: branch.id,
           date: DateTime.now().toUtc(),
           cashierSessionId: cashierSessionId,
           deadline: null,

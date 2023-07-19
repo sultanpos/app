@@ -1,4 +1,5 @@
 import 'package:sultanpos/model/base.dart';
+import 'package:sultanpos/model/user.dart';
 
 part 'cashier.g.dart';
 
@@ -16,11 +17,12 @@ class CashierSessionModel extends BaseModel {
   final int openValue;
   @JsonKey(name: 'close_value')
   final int closeValue;
-  @JsonKey(name: 'calculatedValue')
+  @JsonKey(name: 'calculated_value')
   final int calculatedValue;
   @JsonKey(name: 'machine_id')
   final int machineId;
   final String note;
+  final UserModel? user;
   CashierSessionModel(
     this.id,
     this.number,
@@ -32,6 +34,7 @@ class CashierSessionModel extends BaseModel {
     this.calculatedValue,
     this.machineId,
     this.note,
+    this.user,
   );
   @override
   factory CashierSessionModel.fromJson(Map<String, dynamic> json) => _$CashierSessionModelFromJson(json);
@@ -54,14 +57,14 @@ class CashierSessionInsertModel extends BaseModel {
   final int machineId;
   final String note;
 
-  CashierSessionInsertModel(
-    this.branchId,
-    this.dateOpen,
-    this.userId,
-    this.openValue,
-    this.machineId,
-    this.note,
-  );
+  CashierSessionInsertModel({
+    required this.branchId,
+    required this.dateOpen,
+    required this.userId,
+    required this.openValue,
+    required this.machineId,
+    required this.note,
+  });
 
   @override
   factory CashierSessionInsertModel.fromJson(Map<String, dynamic> json) => _$CashierSessionInsertModelFromJson(json);
@@ -76,13 +79,10 @@ class CashierSessionCloseModel extends BaseModel {
   final DateTime dateClose;
   @JsonKey(name: 'close_value')
   final int closeValue;
-  @JsonKey(name: 'calculated_value')
-  final int calculatedValue;
 
   CashierSessionCloseModel(
     this.dateClose,
     this.closeValue,
-    this.calculatedValue,
   );
 
   @override
@@ -90,4 +90,35 @@ class CashierSessionCloseModel extends BaseModel {
 
   @override
   Map<String, dynamic> toJson() => _$CashierSessionCloseModelToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class CashierSessionReportModel extends BaseModel {
+  @JsonKey(name: 'sale_count')
+  final int saleCount;
+  @JsonKey(name: 'payment_in_count')
+  final int paymentInCount;
+  @JsonKey(name: 'payment_out_count')
+  final int paymentOutCount;
+  @JsonKey(name: 'payment_in_total')
+  final int paymentInTotal;
+  @JsonKey(name: 'payment_out_total')
+  final int paymentOutTotal;
+  CashierSessionReportModel(
+    this.saleCount,
+    this.paymentInCount,
+    this.paymentOutCount,
+    this.paymentInTotal,
+    this.paymentOutTotal,
+  );
+
+  @override
+  factory CashierSessionReportModel.fromJson(Map<String, dynamic> json) => _$CashierSessionReportModelFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => _$CashierSessionReportModelToJson(this);
+
+  int calculated() {
+    return paymentInTotal - paymentOutTotal;
+  }
 }

@@ -17,9 +17,12 @@ CashierSessionModel _$CashierSessionModelFromJson(Map<String, dynamic> json) =>
       json['user_id'] as int,
       json['open_value'] as int,
       json['close_value'] as int,
-      json['calculatedValue'] as int,
+      json['calculated_value'] as int,
       json['machine_id'] as int,
       json['note'] as String,
+      json['user'] == null
+          ? null
+          : UserModel.fromJson(json['user'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$CashierSessionModelToJson(
@@ -32,20 +35,21 @@ Map<String, dynamic> _$CashierSessionModelToJson(
       'user_id': instance.userId,
       'open_value': instance.openValue,
       'close_value': instance.closeValue,
-      'calculatedValue': instance.calculatedValue,
+      'calculated_value': instance.calculatedValue,
       'machine_id': instance.machineId,
       'note': instance.note,
+      'user': instance.user?.toJson(),
     };
 
 CashierSessionInsertModel _$CashierSessionInsertModelFromJson(
         Map<String, dynamic> json) =>
     CashierSessionInsertModel(
-      json['branch_id'] as int,
-      DateTime.parse(json['date_open'] as String),
-      json['user_id'] as int,
-      json['open_value'] as int,
-      json['machine_id'] as int,
-      json['note'] as String,
+      branchId: json['branch_id'] as int,
+      dateOpen: DateTime.parse(json['date_open'] as String),
+      userId: json['user_id'] as int,
+      openValue: json['open_value'] as int,
+      machineId: json['machine_id'] as int,
+      note: json['note'] as String,
     );
 
 Map<String, dynamic> _$CashierSessionInsertModelToJson(
@@ -64,7 +68,6 @@ CashierSessionCloseModel _$CashierSessionCloseModelFromJson(
     CashierSessionCloseModel(
       DateTime.parse(json['date_close'] as String),
       json['close_value'] as int,
-      json['calculated_value'] as int,
     );
 
 Map<String, dynamic> _$CashierSessionCloseModelToJson(
@@ -72,5 +75,24 @@ Map<String, dynamic> _$CashierSessionCloseModelToJson(
     <String, dynamic>{
       'date_close': instance.dateClose.toIso8601String(),
       'close_value': instance.closeValue,
-      'calculated_value': instance.calculatedValue,
+    };
+
+CashierSessionReportModel _$CashierSessionReportModelFromJson(
+        Map<String, dynamic> json) =>
+    CashierSessionReportModel(
+      json['sale_count'] as int,
+      json['payment_in_count'] as int,
+      json['payment_out_count'] as int,
+      json['payment_in_total'] as int,
+      json['payment_out_total'] as int,
+    );
+
+Map<String, dynamic> _$CashierSessionReportModelToJson(
+        CashierSessionReportModel instance) =>
+    <String, dynamic>{
+      'sale_count': instance.saleCount,
+      'payment_in_count': instance.paymentInCount,
+      'payment_out_count': instance.paymentOutCount,
+      'payment_in_total': instance.paymentInTotal,
+      'payment_out_total': instance.paymentOutTotal,
     };

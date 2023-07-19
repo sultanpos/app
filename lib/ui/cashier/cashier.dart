@@ -10,6 +10,7 @@ import 'package:sultanpos/ui/widget/button.dart';
 import 'package:sultanpos/ui/widget/confirmation.dart';
 import 'package:sultanpos/ui/widget/dialogutil.dart';
 import 'package:sultanpos/ui/widget/keyshortcut.dart';
+import 'package:sultanpos/ui/widget/showerror.dart';
 import 'package:sultanpos/ui/widget/space.dart';
 import 'package:sultanpos/ui/widget/verticalmenu.dart';
 
@@ -61,13 +62,19 @@ class CashierNoSessionWidget extends StatelessWidget {
               children: [
                 SButton(
                   child: const Text('Buat sesi kasir baru'),
-                  onPressed: () {
-                    sShowDialog(
+                  onPressed: () async {
+                    AppState().cashierState.resetForm();
+                    final result = await sShowDialog<bool>(
                       context: context,
                       builder: (c) {
-                        return const CashierAddSessionWidget();
+                        return ChangeNotifierProvider.value(
+                            value: AppState().cashierState, child: const CashierSessionAddWidget());
                       },
                     );
+                    if (result != null && result) {
+                      // ignore: use_build_context_synchronously
+                      showSuccess(context, title: "Berhasil", message: "Berhasil membuat session");
+                    }
                   },
                 ),
                 const SHSpace(),
