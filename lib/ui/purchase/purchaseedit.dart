@@ -82,7 +82,7 @@ class PurchaseEditWidget extends StatelessWidget {
               if (state.purchase.editableStock()) ...[
                 TileIconWidget(
                   lead: const Icon(Icons.inventory),
-                  body: Text(state.purchase.stockStatus.value),
+                  body: Text(state.purchase.stockStatus.text),
                   tail: const Icon(Icons.arrow_drop_down),
                   onTap: () {
                     sShowDialog(
@@ -100,7 +100,7 @@ class PurchaseEditWidget extends StatelessWidget {
               ],
               TileIconWidget(
                 lead: const Icon(Icons.check),
-                body: Text(state.purchase.status.value),
+                body: Text(state.purchase.status.text),
                 tail: const Icon(Icons.arrow_drop_down),
                 onTap: () {
                   sShowDialog(

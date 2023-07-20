@@ -50,6 +50,16 @@ class CashierSuccessWidget extends StatelessWidget {
           const Spacer(),
           SButton(
             width: double.infinity,
+            positive: false,
+            autofocus: true,
+            onPressed: () {
+              Navigator.pop(context, false);
+            },
+            label: 'Tutup',
+          ),
+          const SVSpaceSmall(),
+          SButton(
+            width: double.infinity,
             onPressed: () async {
               Navigator.pop(context, true);
               try {
@@ -58,16 +68,7 @@ class CashierSuccessWidget extends StatelessWidget {
                 showError(context, title: 'Error printer', message: e.toString());
               }
             },
-            label: 'Tutup dan Print',
-          ),
-          const SVSpaceSmall(),
-          SButton(
-            width: double.infinity,
-            positive: false,
-            onPressed: () {
-              Navigator.pop(context, false);
-            },
-            label: 'Tutup',
+            label: 'Print',
           ),
         ],
       ),

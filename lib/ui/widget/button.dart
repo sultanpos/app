@@ -10,6 +10,7 @@ class SButton extends StatelessWidget {
   final Widget? child;
   final Icon? icon;
   final Color? color;
+  final bool? autofocus;
   const SButton({
     super.key,
     this.onPressed,
@@ -20,6 +21,7 @@ class SButton extends StatelessWidget {
     this.positive = true,
     this.icon,
     this.color,
+    this.autofocus,
   });
 
   @override
@@ -43,12 +45,14 @@ class SButton extends StatelessWidget {
       child: icon != null
           ? ElevatedButton.icon(
               onPressed: onPressed,
+              autofocus: autofocus,
               icon: icon!,
               label: Text(label ?? ''),
               style: style,
             )
           : ElevatedButton(
               onPressed: onPressed,
+              autofocus: autofocus ?? false,
               style: style,
               child: label != null ? Text(label!) : child,
             ),

@@ -27,7 +27,7 @@ class _PurchaseStateEditWidgetState extends State<PurchaseStateEditWidget> {
   Widget build(BuildContext context) {
     final state = context.watch<PurchaseItemState>();
     return BaseWindowWidget(
-      title: 'Status Persediaan',
+      title: 'Status Pembelian',
       icon: Icons.inventory,
       width: 400,
       height: 500,
@@ -43,20 +43,18 @@ class _PurchaseStateEditWidgetState extends State<PurchaseStateEditWidget> {
               items: [
                 TileSelectData(
                     id: PurchaseStatus.draft,
-                    title: "Draft",
-                    description: "Status default awal, tidak mempengaruhi stock disistem"),
+                    title: PurchaseStatus.draft.text,
+                    description: "Pembelian dapat dimodifikasi tanpa mengganggu apapun"),
                 TileSelectData(
                     id: PurchaseStatus.validated,
-                    title: "Validated",
-                    description: "Stock masih dalam pengiriman, belum terhitung oleh system"),
+                    title: PurchaseStatus.validated.text,
+                    description: "Pembelian sudah tervalidasi dan pembayaran akan timbul"),
                 TileSelectData(
                     id: PurchaseStatus.inProgress,
-                    title: "Dalam Proses",
-                    description: "Stock sudah diterima dan akan dihitung oleh sistem"),
+                    title: PurchaseStatus.inProgress.text,
+                    description: "Pembelian belum lunas tapi barang sudah diterima"),
                 TileSelectData(
-                    id: PurchaseStatus.done,
-                    title: "Selesai",
-                    description: "Stock sudah diterima dan akan dihitung oleh sistem"),
+                    id: PurchaseStatus.done, title: PurchaseStatus.done.text, description: "Pembelian selesai"),
               ],
             ),
           ),
