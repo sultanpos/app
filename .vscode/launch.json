@@ -53,6 +53,27 @@
             "request": "launch",
             "type": "dart",
             "flutterMode": "release"
+        },
+        {
+            "name": "Current File (release mode)",
+            "type": "dart",
+            "request": "launch",
+            "codeLens": {
+                // Types of CodeLens to inject
+                "for": [
+                    "run-test",
+                    "run-test-file",
+                    "debug-test",
+                    "debug-test-file"
+                ],
+                // Restrict to certain folders
+                "path": "test",
+                // Text for CodeLens link (${debugType} will be replaced with "run" or "debug")
+                "title": "${debugType} (release)"
+            },
+            "env": {
+                "RUNNER_APP": "K:\\free_windows\\sultanpos.exe"
+            }
         }
     ]
 }

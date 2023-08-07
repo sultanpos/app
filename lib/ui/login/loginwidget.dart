@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:sultanpos/model/error.dart';
@@ -104,7 +107,20 @@ class _LoginWidgetState extends State<LoginWidget> {
                   label: 'Daftar',
                   width: double.infinity,
                   positive: false,
-                  onPressed: () {},
+                  onPressed: () async {
+                    // TODO: please check this test
+                    final result = await Process.start("K:\\free_windows\\sultanpos.exe", ["server"],
+                        environment: {"SERVER_PORT": "6789"},
+                        workingDirectory: "K:\\free_windows\\",
+                        runInShell: false,
+                        mode: ProcessStartMode.detachedWithStdio);
+                    print(result.pid);
+                    result.stdout.transform(utf8.decoder).listen(
+                      (event) {
+                        print(event);
+                      },
+                    );
+                  },
                 ),
               ],
             ),

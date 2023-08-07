@@ -1,11 +1,12 @@
 abstract class RunnerConfig {
-  String rootPath();
+  String appPath();
 }
 
 abstract class Runner {
   void setup(RunnerConfig config);
-  bool run();
-  bool isRunning();
-  String errorMessage();
-  bool restart();
+  Future<bool> run();
+  Future<bool> isRunning();
+  String? errorMessage();
+  Future<bool> reload();
+  Future<bool> stop();
 }
