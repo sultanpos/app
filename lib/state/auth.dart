@@ -16,16 +16,12 @@ class AuthState extends ChangeNotifier {
   bool isLoading = false;
   bool isRegistering = false;
 
-  final fgUsername =
-      FormControl<String>(validators: [Validators.required], touched: false);
-  final fgPassword =
-      FormControl<String>(validators: [Validators.required], touched: false);
+  final fgUsername = FormControl<String>(validators: [Validators.required], touched: false);
+  final fgPassword = FormControl<String>(validators: [Validators.required], touched: false);
   final fgRemember = FormControl<bool>(touched: false);
   final fgRegisterName = FormControl<String>(validators: [Validators.required]);
-  final fgRegisterEmail = FormControl<String>(
-      validators: [Validators.email, Validators.required], touched: false);
-  final fgRegisterPassword =
-      FormControl<String>(validators: [Validators.required]);
+  final fgRegisterEmail = FormControl<String>(validators: [Validators.email, Validators.required], touched: false);
+  final fgRegisterPassword = FormControl<String>(validators: [Validators.required]);
   late FormGroup loginForm;
   late FormGroup registerForm;
 
@@ -65,9 +61,7 @@ class AuthState extends ChangeNotifier {
       throw "form is not valid";
     }
     setLoading(true);
-    final result = (await repo.loginWithUsernamePassword(
-            fgUsername.value!, fgPassword.value!))
-        .normalizeDate();
+    final result = (await repo.loginWithUsernamePassword(fgUsername.value!, fgPassword.value!)).normalizeDate();
     _loadAccessToken(result);
     isLoading = false;
     if (loginForm.control('remember').value ?? false) {
@@ -76,6 +70,7 @@ class AuthState extends ChangeNotifier {
       Preference().resetLogin();
     }
     AppState().global.setupBranch(claim!);
+    AppState().afterLogin();
   }
 
   _loadAccessToken(LoginResponse token) async {
@@ -95,7 +90,7 @@ class AuthState extends ChangeNotifier {
     claim = null;
     user = null;
     await repo.logout(refreshToken!);
-    Preference().resetLogin();
+    await AppState().loggedOut();
     notifyListeners();
   }
 
@@ -107,12 +102,8 @@ class AuthState extends ChangeNotifier {
     if (!registerForm.valid) return;
     isRegistering = true;
     notifyListeners();
-    final data = RegisterRequest(
-        fgRegisterName.value!,
-        fgRegisterName.value!,
-        fgRegisterEmail.value!,
-        fgRegisterEmail.value!,
-        fgRegisterPassword.value!);
+    final data = RegisterRequest(fgRegisterName.value!, fgRegisterName.value!, fgRegisterEmail.value!,
+        fgRegisterEmail.value!, fgRegisterPassword.value!);
     fgUsername.updateValue(fgRegisterEmail.value);
     fgPassword.updateValue(fgRegisterPassword.value);
     try {

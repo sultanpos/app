@@ -4,8 +4,12 @@ import 'package:sultanpos/model/pricegroup.dart';
 part 'price.g.dart';
 
 @JsonSerializable()
-class PriceModel extends BaseModel {
+class PriceModel extends LocalSqlBase {
   final int id;
+  @JsonKey(name: 'updated_at')
+  final DateTime updatedAt;
+  @JsonKey(name: 'deleted_at')
+  final DateTime? deletedAt;
   @JsonKey(name: 'price_group_id')
   final int priceGroupId;
   final int count0;
@@ -34,9 +38,11 @@ class PriceModel extends BaseModel {
   final String discountFormula4;
   final int discount4;
   @JsonKey(name: 'price_group')
-  final PriceGroupModel priceGroup;
+  final PriceGroupModel? priceGroup;
   PriceModel(
     this.id,
+    this.updatedAt,
+    this.deletedAt,
     this.priceGroupId,
     this.count0,
     this.price0,
@@ -64,6 +70,9 @@ class PriceModel extends BaseModel {
   @override
   factory PriceModel.fromJson(Map<String, dynamic> json) => _$PriceModelFromJson(json);
 
+  factory PriceModel.empty() =>
+      PriceModel(0, DateTime.now(), null, 0, 0, 0, '', 0, 0, 0, '', 0, 0, 0, '', 0, 0, 0, '', 0, 0, 0, '', 0, null);
+
   @override
   Map<String, dynamic> toJson() => _$PriceModelToJson(this);
 
@@ -74,4 +83,20 @@ class PriceModel extends BaseModel {
 
   @override
   int getId() => id;
+
+  @override
+  String getTableName() {
+    return "price";
+  }
+
+  @override
+  DateTime getUpdatedAt() {
+    return updatedAt;
+  }
+
+  @override
+  Map<String, dynamic> toSqlite() => _$PriceModelToJson(this);
+
+  @override
+  factory PriceModel.fromSqlite(Map<String, dynamic> json) => _$PriceModelFromJson(json);
 }

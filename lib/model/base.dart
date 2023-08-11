@@ -10,3 +10,11 @@ abstract class BaseModel {
 }
 
 abstract class BaseFilterModel<T> {}
+
+abstract class LocalSqlBase extends BaseModel {
+  LocalSqlBase();
+  String getTableName();
+  DateTime getUpdatedAt();
+  Map<String, dynamic> toSqlite();
+  LocalSqlBase.fromSqlite(Map<String, dynamic> json);
+}

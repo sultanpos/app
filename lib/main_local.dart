@@ -8,6 +8,7 @@ import 'dart:io' show Platform;
 Future<void> main() async {
   Flavor.appFlavor = FlavorType.development;
   Flavor.baseUrl = "http://172.30.191.65:6789";
+  Flavor.baseUrlWs = "ws://172.30.191.65:6789";
   WidgetsFlutterBinding.ensureInitialized();
   STheme().init();
   runApp(const App());

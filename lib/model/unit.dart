@@ -3,12 +3,16 @@ import 'package:sultanpos/model/base.dart';
 part 'unit.g.dart';
 
 @JsonSerializable()
-class UnitModel extends BaseModel {
+class UnitModel extends LocalSqlBase {
   final int id;
+  @JsonKey(name: 'updated_at')
+  final DateTime updatedAt;
+  @JsonKey(name: 'deleted_at')
+  final DateTime? deletedAt;
   final String name;
   final String description;
 
-  UnitModel(this.id, this.name, this.description);
+  UnitModel(this.id, this.updatedAt, this.deletedAt, this.name, this.description);
 
   @override
   String? path() {
@@ -18,11 +22,29 @@ class UnitModel extends BaseModel {
   @override
   factory UnitModel.fromJson(Map<String, dynamic> json) => _$UnitModelFromJson(json);
 
+  factory UnitModel.empty() => UnitModel(0, DateTime.now(), null, '', '');
+
   @override
   Map<String, dynamic> toJson() => _$UnitModelToJson(this);
 
   @override
   int getId() => id;
+
+  @override
+  String getTableName() {
+    return "unit";
+  }
+
+  @override
+  DateTime getUpdatedAt() {
+    return updatedAt;
+  }
+
+  @override
+  Map<String, dynamic> toSqlite() => _$UnitModelToJson(this);
+
+  @override
+  factory UnitModel.fromSqlite(Map<String, dynamic> json) => _$UnitModelFromJson(json);
 }
 
 @JsonSerializable()

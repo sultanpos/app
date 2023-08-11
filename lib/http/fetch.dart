@@ -81,7 +81,7 @@ class Fetch {
 
   Fetch instance() {
     _def ??= Fetch(
-      Flavor.baseUrl!,
+      Flavor.baseUrl,
       Dio(
         BaseOptions(
           connectTimeout: const Duration(minutes: 1),

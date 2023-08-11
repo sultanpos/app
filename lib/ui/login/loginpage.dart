@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:sultanpos/state/app.dart';
 import 'package:sultanpos/ui/login/loginwidget.dart';
 import 'package:sultanpos/ui/login/registerwidget.dart';
+import 'package:sultanpos/ui/login/selectcachedb.dart';
 import 'package:sultanpos/ui/widget/windowbutton.dart';
 
 class LoginPage extends StatelessWidget {
@@ -32,6 +33,8 @@ class LoginPage extends StatelessWidget {
                     return _pageBuilder(settings, () => const LoginWidget());
                   case '/register':
                     return _pageBuilder(settings, () => const RegisterWidget());
+                  case '/selectcache':
+                    return _pageBuilder(settings, () => const SelectCacheDatabaseWidget());
                 }
                 return null;
               },
@@ -52,8 +55,7 @@ class LoginPage extends StatelessWidget {
         const end = Offset.zero;
         const curve = Curves.ease;
 
-        var tween =
-            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+        var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
 
         return SlideTransition(
           position: animation.drive(tween),

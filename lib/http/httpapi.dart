@@ -3,13 +3,14 @@ import 'package:jwt_decode/jwt_decode.dart';
 import 'package:sultanpos/http/authinterceptor.dart';
 import 'package:sultanpos/http/fetch.dart';
 import 'package:sultanpos/http/loginterceptor.dart' as myinterceptor;
+import 'package:sultanpos/http/tokenprovider.dart';
 import 'package:sultanpos/model/auth.dart';
 import 'package:sultanpos/model/base.dart';
 import 'package:flutter/foundation.dart';
 import 'package:sultanpos/model/claim.dart';
 import 'package:sultanpos/model/listresult.dart';
 
-class HttpAPI {
+class HttpAPI implements TokenProvider {
   final Fetch fetch;
   final AuthInterceptor interceptor;
   int? companyId;
@@ -30,16 +31,18 @@ class HttpAPI {
   }
 
   setLogin(LoginResponse login) {
-    interceptor.setAccessToken(login.accessToken, login.refreshToken,
-        DateTime.fromMillisecondsSinceEpoch(login.expiresIn));
+    interceptor.setAccessToken(
+        login.accessToken, login.refreshToken, DateTime.fromMillisecondsSinceEpoch(login.expiresIn));
     final claim = JWTClaim.fromJson(Jwt.parseJwt(login.accessToken));
     companyId = claim.companyId;
   }
 
-  Future<LoginResponse> loginWithUsernamePassword(
-      LoginUsernamePasswordRequest req) async {
-    return post<LoginResponse>(req, "/auth/login",
-        skipAuth: true, skipCompanyId: true);
+  bool isLoggedIn() {
+    return companyId != null;
+  }
+
+  Future<LoginResponse> loginWithUsernamePassword(LoginUsernamePasswordRequest req) async {
+    return post<LoginResponse>(req, "/auth/login", skipAuth: true, skipCompanyId: true);
   }
 
   Future logout(String refreshToken) async {
@@ -57,27 +60,21 @@ class HttpAPI {
     return put<T>(data, '${path ?? data.path() ?? ""}/$id');
   }
 
-  Future<T> getOne<T>(String path,
-      {required T Function(Map<String, dynamic> json) fromJsonFunc}) {
+  Future<T> getOne<T>(String path, {required T Function(Map<String, dynamic> json) fromJsonFunc}) {
     return get<T>(path, fromJsonFunc: fromJsonFunc);
   }
 
-  Future<T> post<T>(BaseModel data, String path,
-      {bool skipAuth = false, bool skipCompanyId = false}) async {
-    final ret = await fetch.post(_generateUrl(path, skipCompanyId),
-        data: data.toJson(), skipAuth: skipAuth);
+  Future<T> post<T>(BaseModel data, String path, {bool skipAuth = false, bool skipCompanyId = false}) async {
+    final ret = await fetch.post(_generateUrl(path, skipCompanyId), data: data.toJson(), skipAuth: skipAuth);
     return data.responseFromJson(ret.data) as T;
   }
 
-  Future<T> put<T>(BaseModel data, String path,
-      {bool skipAuth = false, bool skipCompanyId = false}) async {
-    final ret = await fetch.put(_generateUrl(path, skipCompanyId),
-        data: data.toJson(), skipAuth: skipAuth);
+  Future<T> put<T>(BaseModel data, String path, {bool skipAuth = false, bool skipCompanyId = false}) async {
+    final ret = await fetch.put(_generateUrl(path, skipCompanyId), data: data.toJson(), skipAuth: skipAuth);
     return data.responseFromJson(ret.data) as T;
   }
 
-  Future delete(String path,
-      {bool skipAuth = false, bool skipCompanyId = false}) {
+  Future delete(String path, {bool skipAuth = false, bool skipCompanyId = false}) {
     return fetch.delete(_generateUrl(path, skipCompanyId), skipAuth: skipAuth);
   }
 
@@ -85,9 +82,12 @@ class HttpAPI {
       {required T Function(Map<String, dynamic> json) fromJsonFunc,
       bool skipAuth = false,
       bool skipCompanyId = false}) async {
-    final ret =
-        await fetch.get(_generateUrl(path, skipCompanyId), skipAuth: skipAuth);
+    final ret = await fetch.get(_generateUrl(path, skipCompanyId), skipAuth: skipAuth);
     return fromJsonFunc(ret.data);
+  }
+
+  Future querySync(String tableName, DateTime date, int limit) {
+    return fetch.get(_generateUrl('/sync/$tableName/${date.microsecondsSinceEpoch}?limit=$limit', false));
   }
 
   Future<ListResult<T>> query<T extends BaseModel>(
@@ -102,12 +102,16 @@ class HttpAPI {
     final params = queryParameters ?? {};
     params["limit"] = limit;
     params["start"] = offset;
-    final ret = await fetch.get(_generateUrl(path, skipCompanyId),
-        skipAuth: skipAuth, queryParameters: params);
+    final ret = await fetch.get(_generateUrl(path, skipCompanyId), skipAuth: skipAuth, queryParameters: params);
     return ListResult.fromJson(ret.data, fromJsonFunc);
   }
 
   _generateUrl(String source, bool skipCompanyId) {
     return skipCompanyId ? source : '/company/$companyId$source';
+  }
+
+  @override
+  String? getToken() {
+    return interceptor.accessToken;
   }
 }

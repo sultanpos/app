@@ -79,4 +79,12 @@ class Preference {
     }
     return BranchModel.fromJson(jsonDecode(branchJsonString));
   }
+
+  bool? shouldCacheToLocal() {
+    return sharedPreferences.getBool("shouldCacheToLocal");
+  }
+
+  setShouldCacheToLocal(bool value) {
+    sharedPreferences.setBool("shouldCacheToLocal", value);
+  }
 }

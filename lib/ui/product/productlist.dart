@@ -104,7 +104,7 @@ class ProductListWidget extends StatelessWidget {
                     title: 'Harga Jual',
                     align: Alignment.centerRight,
                     get: (v) {
-                      final value = v.prices?.firstWhere((element) => element.priceGroup.isDefault);
+                      final value = v.prices?.firstWhere((element) => element.priceGroup?.isDefault ?? false);
                       return formatMoney(value?.price0 ?? 0);
                     },
                   ),

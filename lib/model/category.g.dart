@@ -9,6 +9,10 @@ part of 'category.dart';
 CategoryModel _$CategoryModelFromJson(Map<String, dynamic> json) =>
     CategoryModel(
       json['id'] as int,
+      DateTime.parse(json['updated_at'] as String),
+      json['deleted_at'] == null
+          ? null
+          : DateTime.parse(json['deleted_at'] as String),
       json['name'] as String,
       json['code'] as String,
       json['description'] as String,
@@ -19,6 +23,8 @@ CategoryModel _$CategoryModelFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$CategoryModelToJson(CategoryModel instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'updated_at': instance.updatedAt.toIso8601String(),
+      'deleted_at': instance.deletedAt?.toIso8601String(),
       'name': instance.name,
       'code': instance.code,
       'description': instance.description,

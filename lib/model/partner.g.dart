@@ -8,6 +8,10 @@ part of 'partner.dart';
 
 PartnerModel _$PartnerModelFromJson(Map<String, dynamic> json) => PartnerModel(
       json['id'] as int,
+      DateTime.parse(json['updated_at'] as String),
+      json['deleted_at'] == null
+          ? null
+          : DateTime.parse(json['deleted_at'] as String),
       json['is_supplier'] as bool,
       json['is_customer'] as bool,
       json['number'] as String,
@@ -28,6 +32,8 @@ PartnerModel _$PartnerModelFromJson(Map<String, dynamic> json) => PartnerModel(
 Map<String, dynamic> _$PartnerModelToJson(PartnerModel instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'updated_at': instance.updatedAt.toIso8601String(),
+      'deleted_at': instance.deletedAt?.toIso8601String(),
       'is_supplier': instance.isSupplier,
       'is_customer': instance.isCustomer,
       'number': instance.number,

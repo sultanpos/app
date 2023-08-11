@@ -5,6 +5,7 @@ import 'package:sultanpos/flavor.dart';
 Future<void> main() async {
   Flavor.appFlavor = FlavorType.production;
   Flavor.baseUrl = "https://sultanpos-api.lekapin.com";
+  Flavor.baseUrlWs = "wss://sultanpos-api.lekapin.com";
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const App());
 }

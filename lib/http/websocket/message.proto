@@ -1,0 +1,27 @@
+syntax = "proto3";
+package message;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "notifier/message";
+
+message Welcome {
+}
+
+message RecordUpdated {
+    string name = 1;
+    repeated int64 ids = 2;
+}
+
+message RecordDeleted {
+    repeated int64 ids = 1;
+}
+
+message Message {
+    int64 timestamp = 1;
+    oneof message {
+        Welcome welcome = 100;
+        RecordUpdated recordUpdated = 101;
+        RecordDeleted recordDeleted = 102;
+    }
+}

@@ -10,10 +10,12 @@ class GlobalState extends ChangeNotifier {
   final BaseCRUDRepository<BranchModel> branchRepo;
   BranchModel? currentBranch;
   List<BranchModel> branches = [];
+  late int companyId;
 
   GlobalState(this.branchRepo, this.preference);
 
   setupBranch(JWTClaim claim) async {
+    companyId = claim.companyId;
     final branch = preference.getBranch();
     if (branch != null && claim.hasBranch(branch.id)) {
       currentBranch = branch;
@@ -21,7 +23,7 @@ class GlobalState extends ChangeNotifier {
     }
     try {
       final result = await branchRepo.query(RestFilterModel(limit: -1, offset: 0));
-      if (result.data.length == 1) {
+      if (result.data.isNotEmpty) {
         currentBranch = result.data.first;
       }
     } catch (e) {

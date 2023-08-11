@@ -4,6 +4,7 @@ import 'package:sultanpos/flavor.dart';
 import 'package:sultanpos/http/authinterceptor.dart';
 import 'package:sultanpos/http/httpapi.dart';
 import 'package:sultanpos/http/loginterceptor.dart' as myinterceptor;
+import 'package:sultanpos/http/websocket/websocket.dart';
 import 'package:sultanpos/localfiledb/db.dart';
 import 'package:sultanpos/model/auth.dart';
 import 'package:sultanpos/model/category.dart';
@@ -33,6 +34,8 @@ import 'package:sultanpos/state/productroot.dart';
 import 'package:sultanpos/state/purchase.dart';
 import 'package:sultanpos/state/setting.dart';
 import 'package:sultanpos/state/unit.dart';
+import 'package:sultanpos/sync/local/database.dart';
+import 'package:sultanpos/sync/sync.dart';
 
 class AppState {
   static final AppState _singleton = AppState._internal();
@@ -45,6 +48,7 @@ class AppState {
 
   bool initted = false;
   late HttpAPI httpAPI;
+  late WebSocketTransport websocketTransport;
   late GlobalState global;
   late PrinterState printer;
   late AuthState authState;
@@ -59,6 +63,7 @@ class AppState {
   late PurchaseState purchaseState;
   late PaymentMethodState paymentMethodState;
   late SettingState settingState;
+  late Sync sync;
 
   init() async {
     if (initted) return;
@@ -66,12 +71,13 @@ class AppState {
     initializeDateFormatting("id_ID", null);
     await Preference().init();
     await LocalFileDb().init();
-    final dioInterceptor = Dio(BaseOptions(baseUrl: Flavor.baseUrl!));
+    final dioInterceptor = Dio(BaseOptions(baseUrl: Flavor.baseUrl));
     dioInterceptor.interceptors.add(myinterceptor.LogInterceptor());
     final interceptor = AuthInterceptor(dioInterceptor, "/auth/login/refresh", storeAccessToken: _tokenRefreshed);
 
     //repo
-    httpAPI = HttpAPI.create(Flavor.baseUrl!, interceptor);
+    httpAPI = HttpAPI.create(Flavor.baseUrl, interceptor);
+    websocketTransport = WebSocketTransport(Flavor.baseUrlWs, httpAPI);
     final branchRepo = RestBranchRepo(httpApi: httpAPI);
     final priceGroupRepo = RestPriceGroupRepo(httpApi: httpAPI);
     final productRepo = RestProductRepo(httpApi: httpAPI);
@@ -105,12 +111,18 @@ class AppState {
     );
     paymentMethodState = PaymentMethodState(repo: paymentMethodRepo);
     printer = PrinterState(
-        preference: Preference(), saleRepo: saleRepo, unitRepo: unitRepo, cashierSessionRepo: cashierSessionRepo);
+      preference: Preference(),
+      saleRepo: saleRepo,
+      unitRepo: unitRepo,
+      cashierSessionRepo: cashierSessionRepo,
+    );
     settingState = SettingState(Preference());
 
     // this loadlogin throw an error
+    // if load login failed, then all code below it never get called
     await authState.loadLogin();
-    global.setupBranch(authState.claim!);
+    await global.setupBranch(authState.claim!);
+    afterLogin();
   }
 
   _tokenRefreshed(LoginResponse token) {
@@ -119,5 +131,26 @@ class AppState {
 
   navigateTo(String path) {
     navState.navigateTo(path);
+  }
+
+  afterLogin() {
+    websocketTransport.connect();
+    startSync();
+  }
+
+  loggedOut() async {
+    await AppState().websocketTransport.close();
+    if (Preference().shouldCacheToLocal() ?? false) AppState().sync.stop();
+    Preference().resetLogin();
+  }
+
+  startSync() async {
+    if (Preference().shouldCacheToLocal() ?? false) {
+      sync = Sync();
+      final sqliteDatabase = SqliteDatabase(global.companyId);
+      await sqliteDatabase.open();
+      await sync.init(httpAPI, sqliteDatabase, websocketTransport);
+      sync.start();
+    }
   }
 }

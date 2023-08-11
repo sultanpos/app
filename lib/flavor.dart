@@ -6,7 +6,8 @@ enum FlavorType {
 
 class Flavor {
   static FlavorType appFlavor = FlavorType.development;
-  static String? baseUrl;
+  static late String baseUrl;
+  static late String baseUrlWs;
   static bool isProduction() {
     return appFlavor == FlavorType.production;
   }

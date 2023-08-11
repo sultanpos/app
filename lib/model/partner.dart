@@ -5,8 +5,12 @@ import 'package:sultanpos/model/request.dart';
 part 'partner.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-class PartnerModel extends BaseModel {
+class PartnerModel extends LocalSqlBase {
   final int id;
+  @JsonKey(name: 'updated_at')
+  final DateTime updatedAt;
+  @JsonKey(name: 'deleted_at')
+  final DateTime? deletedAt;
   @JsonKey(name: 'is_supplier')
   final bool isSupplier;
   @JsonKey(name: 'is_customer')
@@ -24,8 +28,8 @@ class PartnerModel extends BaseModel {
   @JsonKey(name: 'price_group')
   final PriceGroupModel? priceGroup;
 
-  PartnerModel(this.id, this.isSupplier, this.isCustomer, this.number, this.name, this.address, this.phone, this.npwp,
-      this.email, this.debt, this.credit, this.priceGroupId, this.priceGroup);
+  PartnerModel(this.id, this.updatedAt, this.deletedAt, this.isSupplier, this.isCustomer, this.number, this.name,
+      this.address, this.phone, this.npwp, this.email, this.debt, this.credit, this.priceGroupId, this.priceGroup);
 
   @override
   String? path() {
@@ -35,11 +39,41 @@ class PartnerModel extends BaseModel {
   @override
   factory PartnerModel.fromJson(Map<String, dynamic> json) => _$PartnerModelFromJson(json);
 
+  factory PartnerModel.empty() =>
+      PartnerModel(0, DateTime.now(), null, false, false, '', '', '', '', '', '', 0, 0, 0, null);
+
   @override
   Map<String, dynamic> toJson() => _$PartnerModelToJson(this);
 
   @override
   int getId() => id;
+
+  @override
+  String getTableName() {
+    return "partner";
+  }
+
+  @override
+  DateTime getUpdatedAt() {
+    return updatedAt;
+  }
+
+  @override
+  Map<String, dynamic> toSqlite() {
+    final ret = _$PartnerModelToJson(this);
+    ret["is_supplier"] = isSupplier ? 1 : 0;
+    ret["is_customer"] = isCustomer ? 1 : 0;
+    ret.remove("price_group");
+    return ret;
+  }
+
+  @override
+  factory PartnerModel.fromSqlite(Map<String, dynamic> json) {
+    final newJson = Map<String, dynamic>.from(json);
+    newJson["is_customer"] = json["is_customer"] != 0;
+    newJson["is_supplier"] = json["is_supplier"] != 0;
+    return _$PartnerModelFromJson(newJson);
+  }
 }
 
 @JsonSerializable()

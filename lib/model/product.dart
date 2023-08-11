@@ -29,8 +29,12 @@ enum ProductType implements Comparable<ProductType> {
 }
 
 @JsonSerializable(explicitToJson: true)
-class ProductModel extends BaseModel {
+class ProductModel extends LocalSqlBase {
   final int id;
+  @JsonKey(name: 'updated_at')
+  final DateTime updatedAt;
+  @JsonKey(name: 'deleted_at')
+  final DateTime? deletedAt;
   @JsonKey(name: 'parent_id')
   final int parentId;
   final String barcode;
@@ -62,6 +66,8 @@ class ProductModel extends BaseModel {
 
   ProductModel(
     this.id,
+    this.updatedAt,
+    this.deletedAt,
     this.parentId,
     this.barcode,
     this.name,
@@ -85,6 +91,9 @@ class ProductModel extends BaseModel {
 
   @override
   factory ProductModel.fromJson(Map<String, dynamic> json) => _$ProductModelFromJson(json);
+
+  factory ProductModel.empty() => ProductModel(0, DateTime.now(), null, 0, '', '', '', true, '', true,
+      ProductType.product, true, true, true, true, 0, null, null, null, null, null, null);
 
   @override
   String? path() => '/product';
@@ -135,6 +144,40 @@ class ProductModel extends BaseModel {
     if (price.price4 == 0) return retVal;
     retVal.add((price.count4, price.price4));
     return retVal;
+  }
+
+  @override
+  String getTableName() {
+    return "product";
+  }
+
+  @override
+  DateTime getUpdatedAt() {
+    return updatedAt;
+  }
+
+  @override
+  Map<String, dynamic> toSqlite() {
+    final ret = _$ProductModelToJson(this);
+    ret["all_branch"] = allBranch ? 1 : 0;
+    ret["calculate_stock"] = calculateStock ? 1 : 0;
+    ret["sellable"] = sellable ? 1 : 0;
+    ret["buyable"] = buyable ? 1 : 0;
+    ret["editable_price"] = editablePrice ? 1 : 0;
+    ret["use_sn"] = useSn ? 1 : 0;
+    return ret;
+  }
+
+  @override
+  factory ProductModel.fromSqlite(Map<String, dynamic> json) {
+    final newJson = Map<String, dynamic>.from(json);
+    newJson["all_branch"] = json["all_branch"] != 0;
+    newJson["calculate_stock"] = json["calculate_stock"] != 0;
+    newJson["sellable"] = json["sellable"] != 0;
+    newJson["buyable"] = json["buyable"] != 0;
+    newJson["editable_price"] = json["editable_price"] != 0;
+    newJson["use_sn"] = json["use_sn"] != 0;
+    return _$ProductModelFromJson(newJson);
   }
 }
 

@@ -8,6 +8,10 @@ part of 'product.dart';
 
 ProductModel _$ProductModelFromJson(Map<String, dynamic> json) => ProductModel(
       json['id'] as int,
+      DateTime.parse(json['updated_at'] as String),
+      json['deleted_at'] == null
+          ? null
+          : DateTime.parse(json['deleted_at'] as String),
       json['parent_id'] as int,
       json['barcode'] as String,
       json['name'] as String,
@@ -44,6 +48,8 @@ ProductModel _$ProductModelFromJson(Map<String, dynamic> json) => ProductModel(
 Map<String, dynamic> _$ProductModelToJson(ProductModel instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'updated_at': instance.updatedAt.toIso8601String(),
+      'deleted_at': instance.deletedAt?.toIso8601String(),
       'parent_id': instance.parentId,
       'barcode': instance.barcode,
       'name': instance.name,

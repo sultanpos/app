@@ -8,6 +8,10 @@ part of 'price.dart';
 
 PriceModel _$PriceModelFromJson(Map<String, dynamic> json) => PriceModel(
       json['id'] as int,
+      DateTime.parse(json['updated_at'] as String),
+      json['deleted_at'] == null
+          ? null
+          : DateTime.parse(json['deleted_at'] as String),
       json['price_group_id'] as int,
       json['count0'] as int,
       json['price0'] as int,
@@ -29,12 +33,17 @@ PriceModel _$PriceModelFromJson(Map<String, dynamic> json) => PriceModel(
       json['price4'] as int,
       json['discount_formula4'] as String,
       json['discount4'] as int,
-      PriceGroupModel.fromJson(json['price_group'] as Map<String, dynamic>),
+      json['price_group'] == null
+          ? null
+          : PriceGroupModel.fromJson(
+              json['price_group'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$PriceModelToJson(PriceModel instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'updated_at': instance.updatedAt.toIso8601String(),
+      'deleted_at': instance.deletedAt?.toIso8601String(),
       'price_group_id': instance.priceGroupId,
       'count0': instance.count0,
       'price0': instance.price0,

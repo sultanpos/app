@@ -139,7 +139,7 @@ class ProductState extends CrudState<ProductModel> {
     fgStock.markAsDisabled(emitEvent: false);
     fgBuyPrice.markAsDisabled(emitEvent: false);
     final defPrice = value.prices?.firstWhere(
-      (element) => element.priceGroup.isDefault,
+      (element) => element.priceGroup?.isDefault ?? false,
     );
     priceCounter = 0;
     final priceMap = defPrice?.toJson();
