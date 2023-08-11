@@ -55,3 +55,33 @@ Map<String, dynamic> _$LoginResponseToJson(LoginResponse instance) =>
       'refresh_token': instance.refreshToken,
       'expires_in': instance.expiresIn,
     };
+
+RegisterRequest _$RegisterRequestFromJson(Map<String, dynamic> json) =>
+    RegisterRequest(
+      json['company_name'] as String,
+      json['name'] as String,
+      json['username'] as String,
+      json['email'] as String,
+      json['password'] as String,
+    );
+
+Map<String, dynamic> _$RegisterRequestToJson(RegisterRequest instance) =>
+    <String, dynamic>{
+      'company_name': instance.companyName,
+      'name': instance.name,
+      'username': instance.username,
+      'email': instance.email,
+      'password': instance.password,
+    };
+
+RegisterResponse _$RegisterResponseFromJson(Map<String, dynamic> json) =>
+    RegisterResponse(
+      json['user_id'] as int,
+      json['company_id'] as int,
+    );
+
+Map<String, dynamic> _$RegisterResponseToJson(RegisterResponse instance) =>
+    <String, dynamic>{
+      'user_id': instance.userId,
+      'company_id': instance.companyId,
+    };

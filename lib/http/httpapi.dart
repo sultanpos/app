@@ -30,19 +30,21 @@ class HttpAPI {
   }
 
   setLogin(LoginResponse login) {
-    interceptor.setAccessToken(
-        login.accessToken, login.refreshToken, DateTime.fromMillisecondsSinceEpoch(login.expiresIn));
+    interceptor.setAccessToken(login.accessToken, login.refreshToken,
+        DateTime.fromMillisecondsSinceEpoch(login.expiresIn));
     final claim = JWTClaim.fromJson(Jwt.parseJwt(login.accessToken));
     companyId = claim.companyId;
   }
 
-  Future<LoginResponse> loginWithUsernamePassword(LoginUsernamePasswordRequest req) async {
-    return post<LoginResponse>(req, "/auth/login", skipAuth: true, skipCompanyId: true);
+  Future<LoginResponse> loginWithUsernamePassword(
+      LoginUsernamePasswordRequest req) async {
+    return post<LoginResponse>(req, "/auth/login",
+        skipAuth: true, skipCompanyId: true);
   }
 
   Future logout(String refreshToken) async {
-    await delete('/auth/login/$refreshToken', skipCompanyId: true);
-    await delete('/auth/login', skipCompanyId: true);
+    await delete('/auth/logout/$refreshToken', skipCompanyId: true);
+    await delete('/auth/logout', skipCompanyId: true);
     interceptor.setAccessToken(null, null, null);
     companyId = null;
   }
@@ -55,21 +57,27 @@ class HttpAPI {
     return put<T>(data, '${path ?? data.path() ?? ""}/$id');
   }
 
-  Future<T> getOne<T>(String path, {required T Function(Map<String, dynamic> json) fromJsonFunc}) {
+  Future<T> getOne<T>(String path,
+      {required T Function(Map<String, dynamic> json) fromJsonFunc}) {
     return get<T>(path, fromJsonFunc: fromJsonFunc);
   }
 
-  Future<T> post<T>(BaseModel data, String path, {bool skipAuth = false, bool skipCompanyId = false}) async {
-    final ret = await fetch.post(_generateUrl(path, skipCompanyId), data: data.toJson(), skipAuth: skipAuth);
+  Future<T> post<T>(BaseModel data, String path,
+      {bool skipAuth = false, bool skipCompanyId = false}) async {
+    final ret = await fetch.post(_generateUrl(path, skipCompanyId),
+        data: data.toJson(), skipAuth: skipAuth);
     return data.responseFromJson(ret.data) as T;
   }
 
-  Future<T> put<T>(BaseModel data, String path, {bool skipAuth = false, bool skipCompanyId = false}) async {
-    final ret = await fetch.put(_generateUrl(path, skipCompanyId), data: data.toJson(), skipAuth: skipAuth);
+  Future<T> put<T>(BaseModel data, String path,
+      {bool skipAuth = false, bool skipCompanyId = false}) async {
+    final ret = await fetch.put(_generateUrl(path, skipCompanyId),
+        data: data.toJson(), skipAuth: skipAuth);
     return data.responseFromJson(ret.data) as T;
   }
 
-  Future delete(String path, {bool skipAuth = false, bool skipCompanyId = false}) {
+  Future delete(String path,
+      {bool skipAuth = false, bool skipCompanyId = false}) {
     return fetch.delete(_generateUrl(path, skipCompanyId), skipAuth: skipAuth);
   }
 
@@ -77,7 +85,8 @@ class HttpAPI {
       {required T Function(Map<String, dynamic> json) fromJsonFunc,
       bool skipAuth = false,
       bool skipCompanyId = false}) async {
-    final ret = await fetch.get(_generateUrl(path, skipCompanyId), skipAuth: skipAuth);
+    final ret =
+        await fetch.get(_generateUrl(path, skipCompanyId), skipAuth: skipAuth);
     return fromJsonFunc(ret.data);
   }
 
@@ -93,7 +102,8 @@ class HttpAPI {
     final params = queryParameters ?? {};
     params["limit"] = limit;
     params["start"] = offset;
-    final ret = await fetch.get(_generateUrl(path, skipCompanyId), skipAuth: skipAuth, queryParameters: params);
+    final ret = await fetch.get(_generateUrl(path, skipCompanyId),
+        skipAuth: skipAuth, queryParameters: params);
     return ListResult.fromJson(ret.data, fromJsonFunc);
   }
 

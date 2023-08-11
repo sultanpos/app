@@ -10,7 +10,8 @@ class LoginUsernamePasswordRequest extends BaseModel {
   LoginUsernamePasswordRequest(this.username, this.password);
 
   @override
-  factory LoginUsernamePasswordRequest.fromJson(Map<String, dynamic> json) => _$LoginUsernamePasswordRequestFromJson(json);
+  factory LoginUsernamePasswordRequest.fromJson(Map<String, dynamic> json) =>
+      _$LoginUsernamePasswordRequestFromJson(json);
 
   @override
   Map<String, dynamic> toJson() => _$LoginUsernamePasswordRequestToJson(this);
@@ -95,4 +96,38 @@ class LoginResponse extends BaseModel {
     final value = DateTime.now().millisecondsSinceEpoch + (expiresIn * 1000);
     return LoginResponse(accessToken, refreshToken, value);
   }
+}
+
+@JsonSerializable()
+class RegisterRequest extends BaseModel {
+  @JsonKey(name: 'company_name')
+  final String companyName;
+  final String name;
+  final String username;
+  final String email;
+  final String password;
+
+  RegisterRequest(this.companyName, this.name, this.username, this.email, this.password);
+
+  @override
+  factory RegisterRequest.fromJson(Map<String, dynamic> json) => _$RegisterRequestFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => _$RegisterRequestToJson(this);
+}
+
+@JsonSerializable()
+class RegisterResponse extends BaseModel {
+  @JsonKey(name: 'user_id')
+  final int userId;
+  @JsonKey(name: 'company_id')
+  final int companyId;
+
+  RegisterResponse(this.userId, this.companyId);
+
+  @override
+  factory RegisterResponse.fromJson(Map<String, dynamic> json) => _$RegisterResponseFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => _$RegisterResponseToJson(this);
 }

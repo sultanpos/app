@@ -21,96 +21,114 @@ class _LoginWidgetState extends State<LoginWidget> {
   bool passwordVisible = false;
   @override
   Widget build(BuildContext context) {
-    final isLoading = context.select<AuthState, bool>((value) => value.isLoading);
-    return Center(
-      child: ReactiveForm(
-        formGroup: AppState().authState.loginForm,
-        child: Padding(
-          padding: const EdgeInsets.all(32.0),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Center(
-                  child: Text(
-                    "Sultan POS 2",
-                    style: TextStyle(fontSize: 32),
-                  ),
-                ),
-                /*const Center(
-                    child: SizedBox(
-                        height: 80, width: 200, child: Image(image: AssetImage("resources/images/icon_1024.png")))),*/
-                const SizedBox(
-                  height: 48,
-                ),
-                Text("Masuk ke Akun", style: Theme.of(context).textTheme.titleLarge),
-                const SizedBox(
-                  height: 32,
-                ),
-                const LabelField('Username'),
-                ReactiveTextField(
-                  formControlName: 'username',
-                  decoration: const InputDecoration(
-                    hintText: "Username / email",
-                  ),
-                  textInputAction: TextInputAction.next,
-                ),
-                const SizedBox(
-                  height: 16,
-                ),
-                const LabelField('Password'),
-                ReactiveTextField(
-                  formControlName: 'password',
-                  obscureText: !passwordVisible,
-                  decoration: InputDecoration(
-                    hintText: "Password",
-                    suffixIcon: IconButton(
-                      icon: Icon(!passwordVisible ? Icons.visibility : Icons.visibility_off),
+    final isLoading =
+        context.select<AuthState, bool>((value) => value.isLoading);
+    return Column(
+      children: [
+        const Spacer(),
+        Container(
+          width: 400,
+          decoration: BoxDecoration(
+            color: Theme.of(context).secondaryHeaderColor,
+            borderRadius: const BorderRadius.all(Radius.circular(16)),
+          ),
+          child: ReactiveForm(
+            formGroup: AppState().authState.loginForm,
+            child: Padding(
+              padding: const EdgeInsets.all(32.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Center(
+                      child: Text(
+                        "Sultan POS 2",
+                        style: TextStyle(fontSize: 32),
+                      ),
+                    ),
+                    /*const Center(
+                        child: SizedBox(
+                            height: 80, width: 200, child: Image(image: AssetImage("resources/images/icon_1024.png")))),*/
+                    const SizedBox(
+                      height: 48,
+                    ),
+                    Text("Masuk ke Akun",
+                        style: Theme.of(context).textTheme.titleLarge),
+                    const SizedBox(
+                      height: 32,
+                    ),
+                    const LabelField('Username'),
+                    ReactiveTextField(
+                      formControlName: 'username',
+                      decoration: const InputDecoration(
+                        hintText: "Username / email",
+                      ),
+                      textInputAction: TextInputAction.next,
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    const LabelField('Password'),
+                    ReactiveTextField(
+                      formControlName: 'password',
+                      obscureText: !passwordVisible,
+                      decoration: InputDecoration(
+                        hintText: "Password",
+                        suffixIcon: IconButton(
+                          icon: Icon(!passwordVisible
+                              ? Icons.visibility
+                              : Icons.visibility_off),
+                          onPressed: () {
+                            setState(() {
+                              passwordVisible = !passwordVisible;
+                            });
+                          },
+                        ),
+                      ),
+                      textInputAction: TextInputAction.go,
+                      onSubmitted: (c) => _doLogin(context),
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    Row(
+                      children: [
+                        SReactiveCheckbox(
+                          title: 'Remember me',
+                          formControlName: 'remember',
+                        ),
+                        const Spacer(),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    SButton(
+                      width: double.infinity,
+                      onPressed: isLoading ? null : () => _doLogin(context),
+                      label: isLoading ? "Loading..." : "Masuk",
+                    ),
+                    const SizedBox(
+                      height: 32,
+                    ),
+                    const LabelField('Belum punya akun?'),
+                    SButton(
+                      label: 'Daftar',
+                      width: double.infinity,
+                      positive: false,
                       onPressed: () {
-                        setState(() {
-                          passwordVisible = !passwordVisible;
-                        });
+                        Navigator.of(context, rootNavigator: false)
+                            .pushNamed('/register');
                       },
                     ),
-                  ),
-                  textInputAction: TextInputAction.go,
-                  onSubmitted: (c) => _doLogin(context),
-                ),
-                const SizedBox(
-                  height: 16,
-                ),
-                Row(
-                  children: [
-                    SReactiveCheckbox(
-                      title: 'Remember me',
-                      formControlName: 'remember',
-                    ),
-                    const Spacer(),
                   ],
                 ),
-                const SizedBox(
-                  height: 16,
-                ),
-                SButton(
-                  width: double.infinity,
-                  onPressed: isLoading ? null : () => _doLogin(context),
-                  label: isLoading ? "Loading..." : "Masuk",
-                ),
-                const SizedBox(
-                  height: 32,
-                ),
-                const LabelField('Belum punya akun?'),
-                SButton(
-                  label: 'Daftar',
-                  width: double.infinity,
-                  positive: false,
-                  onPressed: () {},
-                ),
-              ],
+              ),
             ),
           ),
         ),
-      ),
+        const Spacer(),
+      ],
     );
   }
 
@@ -119,8 +137,7 @@ class _LoginWidgetState extends State<LoginWidget> {
     try {
       await auth.login();
       // ignore: use_build_context_synchronously
-      Navigator.pushReplacement(
-        context,
+      Navigator.of(context, rootNavigator: true).pushReplacement(
         MaterialPageRoute(
           builder: (context) => const RootWidget(),
         ),

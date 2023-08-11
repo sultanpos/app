@@ -14,17 +14,31 @@ class AuthState extends ChangeNotifier {
   String? refreshToken;
   UserModel? user;
   bool isLoading = false;
+  bool isRegistering = false;
 
-  final fgUsername = FormControl<String>(validators: [Validators.required], touched: false);
-  final fgPassword = FormControl<String>(validators: [Validators.required], touched: false);
+  final fgUsername =
+      FormControl<String>(validators: [Validators.required], touched: false);
+  final fgPassword =
+      FormControl<String>(validators: [Validators.required], touched: false);
   final fgRemember = FormControl<bool>(touched: false);
+  final fgRegisterName = FormControl<String>(validators: [Validators.required]);
+  final fgRegisterEmail = FormControl<String>(
+      validators: [Validators.email, Validators.required], touched: false);
+  final fgRegisterPassword =
+      FormControl<String>(validators: [Validators.required]);
   late FormGroup loginForm;
+  late FormGroup registerForm;
 
   AuthState({required this.repo}) {
     loginForm = FormGroup({
       'username': fgUsername,
       'password': fgPassword,
       'remember': fgRemember,
+    });
+    registerForm = FormGroup({
+      'name': fgRegisterName,
+      'email': fgRegisterEmail,
+      'password': fgRegisterPassword,
     });
   }
 
@@ -51,7 +65,9 @@ class AuthState extends ChangeNotifier {
       throw "form is not valid";
     }
     setLoading(true);
-    final result = (await repo.loginWithUsernamePassword(fgUsername.value!, fgPassword.value!)).normalizeDate();
+    final result = (await repo.loginWithUsernamePassword(
+            fgUsername.value!, fgPassword.value!))
+        .normalizeDate();
     _loadAccessToken(result);
     isLoading = false;
     if (loginForm.control('remember').value ?? false) {
@@ -81,5 +97,32 @@ class AuthState extends ChangeNotifier {
     await repo.logout(refreshToken!);
     Preference().resetLogin();
     notifyListeners();
+  }
+
+  resetRegister() {
+    registerForm.reset();
+  }
+
+  processRegister() async {
+    if (!registerForm.valid) return;
+    isRegistering = true;
+    notifyListeners();
+    final data = RegisterRequest(
+        fgRegisterName.value!,
+        fgRegisterName.value!,
+        fgRegisterEmail.value!,
+        fgRegisterEmail.value!,
+        fgRegisterPassword.value!);
+    fgUsername.updateValue(fgRegisterEmail.value);
+    fgPassword.updateValue(fgRegisterPassword.value);
+    try {
+      await repo.registerNewUser(data);
+      isRegistering = false;
+      notifyListeners();
+    } catch (e) {
+      isRegistering = false;
+      notifyListeners();
+      rethrow;
+    }
   }
 }

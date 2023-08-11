@@ -21,4 +21,8 @@ class RestAuthRepo {
   Future logout(String refreshToken) {
     return httpApi.logout(refreshToken);
   }
+
+  Future registerNewUser(RegisterRequest registerRequest) {
+    return httpApi.post(registerRequest, '/auth/register', skipAuth: true, skipCompanyId: true);
+  }
 }

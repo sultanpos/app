@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:sultanpos/model/cart.dart';
-import 'package:sultanpos/model/cashier.dart';
 import 'package:sultanpos/model/product.dart';
 import 'package:sultanpos/model/request.dart';
 import 'package:sultanpos/model/sale.dart';
