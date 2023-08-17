@@ -3,7 +3,7 @@ import 'package:sultanpos/model/auth.dart';
 import 'package:sultanpos/model/user.dart';
 
 class RestAuthRepo {
-  final HttpAPI httpApi;
+  final IHttpAPI httpApi;
   RestAuthRepo(this.httpApi);
 
   loginWithUsernamePassword(String username, String password) {

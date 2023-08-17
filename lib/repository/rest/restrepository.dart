@@ -4,7 +4,7 @@ import 'package:sultanpos/repository/repository.dart';
 
 class BaseRestCRUDRepository<T extends BaseModel> implements BaseCRUDRepository<T> {
   final T Function(Map<String, dynamic> json) creator;
-  final HttpAPI httpApi;
+  final IHttpAPI httpApi;
   final String path;
   BaseRestCRUDRepository({required this.httpApi, required this.path, required this.creator});
 

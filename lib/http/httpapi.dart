@@ -10,7 +10,30 @@ import 'package:flutter/foundation.dart';
 import 'package:sultanpos/model/claim.dart';
 import 'package:sultanpos/model/listresult.dart';
 
-class HttpAPI implements TokenProvider {
+abstract class IHttpAPI {
+  setLogin(LoginResponse login);
+  bool isLoggedIn();
+  Future<LoginResponse> loginWithUsernamePassword(LoginUsernamePasswordRequest req);
+  Future logout(String refreshToken);
+  Future<T> insert<T>(BaseModel data, {String? path});
+  Future<T> update<T>(BaseModel data, int id, {String? path});
+  Future<T> getOne<T>(String path, {required T Function(Map<String, dynamic> json) fromJsonFunc});
+  Future<T> post<T>(BaseModel data, String path, {bool skipAuth = false, bool skipCompanyId = false});
+  Future<T> put<T>(BaseModel data, String path, {bool skipAuth = false, bool skipCompanyId = false});
+  Future delete(String path, {bool skipAuth = false, bool skipCompanyId = false});
+  Future<T> get<T>(String path,
+      {required T Function(Map<String, dynamic> json) fromJsonFunc, bool skipAuth = false, bool skipCompanyId = false});
+  Future<ListResult<T>> query<T extends BaseModel>(String path,
+      {required T Function(Map<String, dynamic> json) fromJsonFunc,
+      required limit,
+      required offset,
+      bool skipAuth = false,
+      bool skipCompanyId = false,
+      Map<String, dynamic>? queryParameters});
+  Future querySync(String tableName, DateTime date, int limit);
+}
+
+class HttpAPI implements IHttpAPI, TokenProvider {
   final Fetch fetch;
   final AuthInterceptor interceptor;
   int? companyId;
@@ -30,6 +53,7 @@ class HttpAPI implements TokenProvider {
     return HttpAPI._internal(fetch: fetch, interceptor: interceptor);
   }
 
+  @override
   setLogin(LoginResponse login) {
     interceptor.setAccessToken(
         login.accessToken, login.refreshToken, DateTime.fromMillisecondsSinceEpoch(login.expiresIn));
@@ -37,6 +61,7 @@ class HttpAPI implements TokenProvider {
     companyId = claim.companyId;
   }
 
+  @override
   bool isLoggedIn() {
     return companyId != null;
   }
@@ -45,6 +70,7 @@ class HttpAPI implements TokenProvider {
     return post<LoginResponse>(req, "/auth/login", skipAuth: true, skipCompanyId: true);
   }
 
+  @override
   Future logout(String refreshToken) async {
     await delete('/auth/logout/$refreshToken', skipCompanyId: true);
     await delete('/auth/logout', skipCompanyId: true);
@@ -52,32 +78,39 @@ class HttpAPI implements TokenProvider {
     companyId = null;
   }
 
+  @override
   Future<T> insert<T>(BaseModel data, {String? path}) {
     return post<T>(data, path ?? data.path() ?? "");
   }
 
+  @override
   Future<T> update<T>(BaseModel data, int id, {String? path}) {
     return put<T>(data, '${path ?? data.path() ?? ""}/$id');
   }
 
+  @override
   Future<T> getOne<T>(String path, {required T Function(Map<String, dynamic> json) fromJsonFunc}) {
     return get<T>(path, fromJsonFunc: fromJsonFunc);
   }
 
+  @override
   Future<T> post<T>(BaseModel data, String path, {bool skipAuth = false, bool skipCompanyId = false}) async {
     final ret = await fetch.post(_generateUrl(path, skipCompanyId), data: data.toJson(), skipAuth: skipAuth);
     return data.responseFromJson(ret.data) as T;
   }
 
+  @override
   Future<T> put<T>(BaseModel data, String path, {bool skipAuth = false, bool skipCompanyId = false}) async {
     final ret = await fetch.put(_generateUrl(path, skipCompanyId), data: data.toJson(), skipAuth: skipAuth);
     return data.responseFromJson(ret.data) as T;
   }
 
+  @override
   Future delete(String path, {bool skipAuth = false, bool skipCompanyId = false}) {
     return fetch.delete(_generateUrl(path, skipCompanyId), skipAuth: skipAuth);
   }
 
+  @override
   Future<T> get<T>(String path,
       {required T Function(Map<String, dynamic> json) fromJsonFunc,
       bool skipAuth = false,
@@ -86,6 +119,7 @@ class HttpAPI implements TokenProvider {
     return fromJsonFunc(ret.data);
   }
 
+  @override
   Future querySync(String tableName, DateTime date, int limit) {
     return fetch.get(_generateUrl('/sync/$tableName/${date.microsecondsSinceEpoch}?limit=$limit', false));
   }

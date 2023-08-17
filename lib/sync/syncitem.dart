@@ -5,8 +5,8 @@ import 'package:sultanpos/sync/local/database.dart';
 
 class SyncItem<T extends LocalSqlBase> {
   final int limit = 500;
-  HttpAPI httpAPI;
-  SqliteDatabase db;
+  IHttpAPI httpAPI;
+  ISqliteDatabase db;
   T base;
   int? lastId;
   DateTime? lastDate;
@@ -42,7 +42,7 @@ class SyncItem<T extends LocalSqlBase> {
       }
       Future.delayed(const Duration(milliseconds: 1), _doRun);
     } catch (e) {
-      debugPrint("############## ERROR");
+      debugPrint("############## ERROR SYNC");
       debugPrint(e.toString());
     }
   }

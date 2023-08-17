@@ -14,8 +14,8 @@ import 'package:sultanpos/sync/local/database.dart';
 import 'package:sultanpos/sync/syncitem.dart';
 
 class Sync {
-  HttpAPI? httpAPI;
-  late SqliteDatabase db;
+  late IHttpAPI httpAPI;
+  late ISqliteDatabase db;
   bool _running = false;
   late List<SyncItem> syncItems;
   StreamSubscription? _subscription;
@@ -28,7 +28,7 @@ class Sync {
 
   Sync._internal();
 
-  init(HttpAPI httpAPI, SqliteDatabase db, WebSocketTransport wsTransport) {
+  init(IHttpAPI httpAPI, ISqliteDatabase db, IWebSocketTransport wsTransport) {
     this.httpAPI = httpAPI;
     this.db = db;
     syncItems = [
@@ -43,7 +43,7 @@ class Sync {
       SyncItem(httpAPI, ProductModel.empty(), db,
           sqliteCreator: ProductModel.fromSqlite, jsonCreator: ProductModel.fromJson),
     ];
-    _subscription = wsTransport.stream.listen((Message message) {
+    _subscription = wsTransport.listen((Message message) {
       if (message.hasRecordUpdated()) {
         notifySync(message.recordUpdated.name);
       }

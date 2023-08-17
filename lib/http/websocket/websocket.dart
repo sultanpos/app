@@ -5,7 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:sultanpos/http/tokenprovider.dart';
 import 'package:sultanpos/http/websocket/message.pb.dart';
 
-class WebSocketTransport {
+abstract class IWebSocketTransport {
+  StreamSubscription<Message> listen(Function(Message msg)? onData,
+      {Function? onError, void Function()? onDone, bool? cancelOnError});
+  send(Message msg);
+}
+
+class WebSocketTransport implements IWebSocketTransport {
   String baseUrl;
   bool _shouldConnect = false;
   TokenProvider tokenProvider;
@@ -85,4 +91,17 @@ class WebSocketTransport {
   }
 
   Stream<Message> get stream => streamController.stream;
+
+  @override
+  StreamSubscription<Message> listen(Function(Message msg)? onData,
+      {Function? onError, void Function()? onDone, bool? cancelOnError}) {
+    return stream.listen(onData, onDone: onDone, onError: onError, cancelOnError: cancelOnError);
+  }
+
+  @override
+  send(Message msg) {
+    if (wsConn != null && wsConn!.readyState == WebSocket.open) {
+      wsConn!.add(msg.writeToBuffer());
+    }
+  }
 }
