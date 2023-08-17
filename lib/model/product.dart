@@ -165,6 +165,11 @@ class ProductModel extends LocalSqlBase {
     ret["buyable"] = buyable ? 1 : 0;
     ret["editable_price"] = editablePrice ? 1 : 0;
     ret["use_sn"] = useSn ? 1 : 0;
+    ret.remove('unit');
+    ret.remove('category');
+    ret.remove('partner');
+    ret.remove('buy_prices');
+    ret.remove('stocks');
     return ret;
   }
 
