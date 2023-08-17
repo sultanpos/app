@@ -12,6 +12,8 @@ class PriceModel extends LocalSqlBase {
   final DateTime? deletedAt;
   @JsonKey(name: 'price_group_id')
   final int priceGroupId;
+  @JsonKey(name: 'product_id')
+  final int productId;
   final int count0;
   final int price0;
   @JsonKey(name: 'discount_formula0')
@@ -44,6 +46,7 @@ class PriceModel extends LocalSqlBase {
     this.updatedAt,
     this.deletedAt,
     this.priceGroupId,
+    this.productId,
     this.count0,
     this.price0,
     this.discountFormula0,
@@ -71,7 +74,7 @@ class PriceModel extends LocalSqlBase {
   factory PriceModel.fromJson(Map<String, dynamic> json) => _$PriceModelFromJson(json);
 
   factory PriceModel.empty() =>
-      PriceModel(0, DateTime.now(), null, 0, 0, 0, '', 0, 0, 0, '', 0, 0, 0, '', 0, 0, 0, '', 0, 0, 0, '', 0, null);
+      PriceModel(0, DateTime.now(), null, 0, 0, 0, 0, '', 0, 0, 0, '', 0, 0, 0, '', 0, 0, 0, '', 0, 0, 0, '', 0, null);
 
   @override
   Map<String, dynamic> toJson() => _$PriceModelToJson(this);
@@ -95,7 +98,11 @@ class PriceModel extends LocalSqlBase {
   }
 
   @override
-  Map<String, dynamic> toSqlite() => _$PriceModelToJson(this);
+  Map<String, dynamic> toSqlite() {
+    final ret = _$PriceModelToJson(this);
+    ret.remove('price_group');
+    return ret;
+  }
 
   @override
   factory PriceModel.fromSqlite(Map<String, dynamic> json) => _$PriceModelFromJson(json);

@@ -13,6 +13,7 @@ PriceModel _$PriceModelFromJson(Map<String, dynamic> json) => PriceModel(
           ? null
           : DateTime.parse(json['deleted_at'] as String),
       json['price_group_id'] as int,
+      json['product_id'] as int,
       json['count0'] as int,
       json['price0'] as int,
       json['discount_formula0'] as String,
@@ -45,6 +46,7 @@ Map<String, dynamic> _$PriceModelToJson(PriceModel instance) =>
       'updated_at': instance.updatedAt.toIso8601String(),
       'deleted_at': instance.deletedAt?.toIso8601String(),
       'price_group_id': instance.priceGroupId,
+      'product_id': instance.productId,
       'count0': instance.count0,
       'price0': instance.price0,
       'discount_formula0': instance.discountFormula0,

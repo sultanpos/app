@@ -54,6 +54,7 @@ class ProductModel extends LocalSqlBase {
   final bool editablePrice;
   @JsonKey(name: 'use_sn')
   final bool useSn;
+  final bool serial;
   @JsonKey(name: 'unit_id')
   final int unitId;
   final UnitModel? unit;
@@ -80,6 +81,7 @@ class ProductModel extends LocalSqlBase {
     this.buyable,
     this.editablePrice,
     this.useSn,
+    this.serial,
     this.unitId,
     this.unit,
     this.category,
@@ -93,7 +95,7 @@ class ProductModel extends LocalSqlBase {
   factory ProductModel.fromJson(Map<String, dynamic> json) => _$ProductModelFromJson(json);
 
   factory ProductModel.empty() => ProductModel(0, DateTime.now(), null, 0, '', '', '', true, '', true,
-      ProductType.product, true, true, true, true, 0, null, null, null, null, null, null);
+      ProductType.product, true, true, true, false, false, 0, null, null, null, null, null, null);
 
   @override
   String? path() => '/product';
@@ -165,11 +167,13 @@ class ProductModel extends LocalSqlBase {
     ret["buyable"] = buyable ? 1 : 0;
     ret["editable_price"] = editablePrice ? 1 : 0;
     ret["use_sn"] = useSn ? 1 : 0;
+    ret["serial"] = serial ? 1 : 0;
     ret.remove('unit');
     ret.remove('category');
     ret.remove('partner');
     ret.remove('buy_prices');
     ret.remove('stocks');
+    ret.remove('prices');
     return ret;
   }
 
@@ -182,6 +186,7 @@ class ProductModel extends LocalSqlBase {
     newJson["buyable"] = json["buyable"] != 0;
     newJson["editable_price"] = json["editable_price"] != 0;
     newJson["use_sn"] = json["use_sn"] != 0;
+    newJson["serial"] = json["serial"] != 0;
     return _$ProductModelFromJson(newJson);
   }
 }
