@@ -18,7 +18,7 @@ enum PaymentMethodType implements Comparable<PaymentMethodType> {
 
   @override
   int compareTo(PaymentMethodType other) {
-    return 0;
+    return index - other.index;
   }
 }
 

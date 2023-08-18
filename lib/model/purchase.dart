@@ -17,7 +17,7 @@ enum PurchaseType implements Comparable<PurchaseType> {
 
   @override
   int compareTo(PurchaseType other) {
-    return 0;
+    return index - other.index;
   }
 }
 
@@ -37,7 +37,7 @@ enum PurchaseStatus implements Comparable<PurchaseStatus> {
 
   @override
   int compareTo(PurchaseStatus other) {
-    return 0;
+    return index - other.index;
   }
 }
 
@@ -55,7 +55,7 @@ enum PurchaseStockStatus implements Comparable<PurchaseStockStatus> {
 
   @override
   int compareTo(PurchaseStockStatus other) {
-    return 0;
+    return index - other.index;
   }
 }
 

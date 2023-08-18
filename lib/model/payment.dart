@@ -15,7 +15,7 @@ enum PaymentType implements Comparable<PaymentType> {
 
   @override
   int compareTo(PaymentType other) {
-    return 0;
+    return index - other.index;
   }
 }
 
@@ -33,7 +33,7 @@ enum PaymentRefer implements Comparable<PaymentRefer> {
 
   @override
   int compareTo(PaymentRefer other) {
-    return 0;
+    return index - other.index;
   }
 }
 

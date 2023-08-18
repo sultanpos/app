@@ -24,7 +24,7 @@ enum ProductType implements Comparable<ProductType> {
 
   @override
   int compareTo(ProductType other) {
-    return 0;
+    return index - other.index;
   }
 }
 

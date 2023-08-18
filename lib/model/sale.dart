@@ -20,7 +20,7 @@ enum SaleType implements Comparable<SaleType> {
 
   @override
   int compareTo(SaleType other) {
-    return 0;
+    return index - other.index;
   }
 }
 
@@ -40,7 +40,7 @@ enum SaleStatus implements Comparable<SaleStatus> {
 
   @override
   int compareTo(SaleStatus other) {
-    return 0;
+    return index - other.index;
   }
 }
 
@@ -58,7 +58,7 @@ enum SaleStockStatus implements Comparable<SaleStockStatus> {
 
   @override
   int compareTo(SaleStockStatus other) {
-    return 0;
+    return index - other.index;
   }
 }
 

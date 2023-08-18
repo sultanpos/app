@@ -15,7 +15,7 @@ enum AppConfigPrinterType implements Comparable<AppConfigPrinterType> {
   const AppConfigPrinterType(this.value, this.text);
   @override
   int compareTo(AppConfigPrinterType other) {
-    return 0;
+    return index - other.index;
   }
 }
 
@@ -30,7 +30,7 @@ enum AppConfigPrinterPaperSize implements Comparable<AppConfigPrinterPaperSize> 
   const AppConfigPrinterPaperSize(this.value, this.text);
   @override
   int compareTo(AppConfigPrinterPaperSize other) {
-    return 0;
+    return index - other.index;
   }
 }
 

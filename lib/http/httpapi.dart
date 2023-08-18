@@ -66,6 +66,7 @@ class HttpAPI implements IHttpAPI, TokenProvider {
     return companyId != null;
   }
 
+  @override
   Future<LoginResponse> loginWithUsernamePassword(LoginUsernamePasswordRequest req) async {
     return post<LoginResponse>(req, "/auth/login", skipAuth: true, skipCompanyId: true);
   }
@@ -124,6 +125,7 @@ class HttpAPI implements IHttpAPI, TokenProvider {
     return fetch.get(_generateUrl('/sync/$tableName/${date.microsecondsSinceEpoch}?limit=$limit', false));
   }
 
+  @override
   Future<ListResult<T>> query<T extends BaseModel>(
     String path, {
     required T Function(Map<String, dynamic> json) fromJsonFunc,
