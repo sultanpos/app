@@ -318,6 +318,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_esc_pos_utils:
+    dependency: "direct main"
+    description:
+      name: flutter_esc_pos_utils
+      sha256: b203559ca02a70d7a3e478c704bfdf4cf95ebb58e42dbba8ba4139adc40a6d19
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   flutter_lints:
     dependency: "direct dev"
     description:

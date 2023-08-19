@@ -5,7 +5,7 @@ import 'package:flutter_pos_printer_platform/flutter_pos_printer_platform.dart';
 import 'package:sultanpos/model/appconfig.dart';
 import 'package:sultanpos/preference.dart';
 import 'package:sultanpos/repository/repository.dart';
-import 'package:flutter_pos_printer_platform/esc_pos_utils_platform/esc_pos_utils_platform.dart';
+import 'package:flutter_esc_pos_utils/flutter_esc_pos_utils.dart';
 import 'package:sultanpos/util/escp.dart';
 import 'package:sultanpos/util/format.dart';
 

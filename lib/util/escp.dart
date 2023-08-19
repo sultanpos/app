@@ -1,4 +1,4 @@
-import 'package:flutter_pos_printer_platform/esc_pos_utils_platform/esc_pos_utils_platform.dart';
+import 'package:flutter_esc_pos_utils/flutter_esc_pos_utils.dart';
 
 class Escp {
   final Generator _generator;
