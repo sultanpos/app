@@ -146,7 +146,7 @@ class _LoginWidgetState extends State<LoginWidget> {
       }
     } on ErrorResponse catch (e) {
       auth.setLoading(false);
-      showError(context, title: 'Login gagal', message: e.message);
+      showError(context, message: e.message);
       // ignore: empty_catches
     } catch (e) {}
   }

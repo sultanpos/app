@@ -100,7 +100,7 @@ class UnitAddWidget extends StatelessWidget {
       await AppState().unitState.save();
       nav.pop();
     } catch (e) {
-      showError(context, title: 'Error menyimpan', message: e.toString());
+      showError(context, message: e.toString());
     }
   }
 }

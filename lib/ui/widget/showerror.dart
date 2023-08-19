@@ -1,29 +1,48 @@
 import 'package:flutter/material.dart';
-import 'package:motion_toast/motion_toast.dart';
-import 'package:motion_toast/resources/arrays.dart';
+import 'package:oktoast/oktoast.dart';
 
-showError(BuildContext ctx, {required String title, required String message}) async {
-  return MotionToast.error(
-    dismissable: true,
-    title: Text(title),
-    description: Text(message),
-    position: MotionToastPosition.top,
-    animationType: AnimationType.fromTop,
-    animationCurve: Curves.ease,
-    animationDuration: const Duration(milliseconds: 200),
-    toastDuration: const Duration(seconds: 2),
-  ).show(ctx);
+showError(BuildContext ctx, {required String message}) {
+  showToastWidget(
+      Container(
+        width: 300,
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: Colors.red.withAlpha(200),
+          borderRadius: const BorderRadius.all(Radius.circular(16)),
+        ),
+        child: Row(children: [
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 8),
+            child: Icon(
+              Icons.warning,
+              color: Colors.white,
+            ),
+          ),
+          Expanded(child: Text(message)),
+        ]),
+      ),
+      position: ToastPosition.top);
 }
 
-showSuccess(BuildContext ctx, {required String title, required String message}) async {
-  return MotionToast.success(
-    dismissable: true,
-    title: Text(title),
-    description: Text(message),
-    position: MotionToastPosition.top,
-    animationType: AnimationType.fromTop,
-    animationCurve: Curves.ease,
-    animationDuration: const Duration(milliseconds: 200),
-    toastDuration: const Duration(seconds: 2),
-  ).show(ctx);
+showSuccess(BuildContext ctx, {required String message}) {
+  showToastWidget(
+      Container(
+        width: 300,
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: Colors.green.withAlpha(200),
+          borderRadius: const BorderRadius.all(Radius.circular(16)),
+        ),
+        child: Row(children: [
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 8),
+            child: Icon(
+              Icons.check,
+              color: Colors.white,
+            ),
+          ),
+          Expanded(child: Text(message)),
+        ]),
+      ),
+      position: ToastPosition.top);
 }

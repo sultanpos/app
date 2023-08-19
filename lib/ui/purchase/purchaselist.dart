@@ -89,10 +89,10 @@ class PurchaseListWidget extends StatelessWidget {
                           try {
                             await AppState().purchaseState.remove(v.id);
                             // ignore: use_build_context_synchronously
-                            showSuccess(context, title: 'Berhasil', message: 'Pembelian telah dihapus');
+                            showSuccess(context, message: 'Pembelian telah dihapus');
                           } catch (e) {
                             // ignore: use_build_context_synchronously
-                            showError(context, title: 'Error menghapus', message: e.toString());
+                            showError(context, message: e.toString());
                           }
                         }
                       }, iconColor: Colors.red),

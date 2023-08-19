@@ -104,14 +104,14 @@ class _AddPaymentWidgetState extends State<AddPaymentWidget> {
       // ignore: use_build_context_synchronously
       Navigator.pop(context, true);
     } catch (e) {
-      showError(context, title: "Error pembayaran", message: e.toString());
+      showError(context, message: e.toString());
     }
     if (print && saleId > 0) {
       try {
         await AppState().printer.printSale(saleId);
       } catch (e) {
         // ignore: use_build_context_synchronously
-        showError(context, title: "Error printer", message: e.toString());
+        showError(context, message: e.toString());
       }
     }
   }

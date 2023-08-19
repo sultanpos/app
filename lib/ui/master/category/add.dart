@@ -132,7 +132,7 @@ class CategoryAddWidget extends StatelessWidget {
       await AppState().categoryState.save();
       nav.pop();
     } catch (e) {
-      showError(ctx, title: 'Error menyimpan', message: e.toString());
+      showError(ctx, message: e.toString());
     }
   }
 }

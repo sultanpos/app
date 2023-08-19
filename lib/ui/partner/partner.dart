@@ -84,7 +84,7 @@ class PartnerWidget extends StatelessWidget {
                             await AppState().partnerState.remove(v.id);
                           } catch (e) {
                             // ignore: use_build_context_synchronously
-                            showError(context, title: 'Error menghapus', message: e.toString());
+                            showError(context, message: e.toString());
                           }
                         }
                       }, iconColor: Colors.red),

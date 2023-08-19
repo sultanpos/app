@@ -147,9 +147,9 @@ class PurchaseEditWidget extends StatelessWidget {
                           try {
                             await state.remove(v.id);
                             state.refreshPurchase();
-                            if (context.mounted) showSuccess(context, title: 'Berhasil', message: 'Item telah dihapus');
+                            if (context.mounted) showSuccess(context, message: 'Item telah dihapus');
                           } catch (e) {
-                            if (context.mounted) showError(context, title: 'Error menghapus', message: e.toString());
+                            if (context.mounted) showError(context, message: e.toString());
                           }
                         }
                       }, iconColor: Colors.red),

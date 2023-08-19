@@ -75,9 +75,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                       decoration: InputDecoration(
                         hintText: "Masukkan password",
                         suffixIcon: IconButton(
-                          icon: Icon(!passwordVisible
-                              ? Icons.visibility
-                              : Icons.visibility_off),
+                          icon: Icon(!passwordVisible ? Icons.visibility : Icons.visibility_off),
                           onPressed: () {
                             setState(() {
                               passwordVisible = !passwordVisible;
@@ -99,8 +97,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                             onPressed: isRegistering
                                 ? null
                                 : () {
-                                    Navigator.of(context, rootNavigator: false)
-                                        .pop();
+                                    Navigator.of(context, rootNavigator: false).pop();
                                   },
                           ),
                         ),
@@ -134,11 +131,9 @@ class _RegisterWidgetState extends State<RegisterWidget> {
       // ignore: use_build_context_synchronously
       Navigator.of(context, rootNavigator: false).pop();
       // ignore: use_build_context_synchronously
-      showSuccess(context,
-          title: "Berhasil",
-          message: "Berhasil daftar user baru. Silakan login!");
+      showSuccess(context, message: "Berhasil daftar user baru. Silakan login!");
     } catch (e) {
-      showError(context, title: "Gagal daftar", message: e.toString());
+      showError(context, message: e.toString());
     }
   }
 }

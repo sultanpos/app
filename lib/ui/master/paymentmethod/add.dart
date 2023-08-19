@@ -104,7 +104,7 @@ class AddPaymentMethodWidget extends StatelessWidget {
       await AppState().paymentMethodState.save();
       nav.pop();
     } catch (e) {
-      showError(context, title: 'Error menyimpan', message: e.toString());
+      showError(context, message: e.toString());
     }
   }
 }

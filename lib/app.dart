@@ -1,5 +1,6 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:oktoast/oktoast.dart';
 import 'package:sultanpos/ui/splashscreen.dart';
 import 'package:sultanpos/util/color.dart';
 
@@ -36,12 +37,14 @@ class _AppState extends State<App> {
         ),
       ),
       initial: AdaptiveThemeMode.dark,
-      builder: (theme, darkTheme) => MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: const SplashScreen(),
-        theme: theme,
-        darkTheme: darkTheme,
-        title: "Sultan POS 2",
+      builder: (theme, darkTheme) => OKToast(
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          home: const SplashScreen(),
+          theme: theme,
+          darkTheme: darkTheme,
+          title: "Sultan POS 2",
+        ),
       ),
     );
   }

@@ -401,10 +401,10 @@ class _AddProductWidgetState extends State<AddProductWidget> {
         }
       } else {
         // ignore: use_build_context_synchronously
-        showSuccess(context, title: "Berhasil menyimpan", message: "Barang telah diubah");
+        showSuccess(context, message: "Barang berhasil diubah");
       }
     } catch (e) {
-      showError(context, title: 'Error menyimpan', message: e.toString());
+      showError(context, message: e.toString());
     }
   }
 }

@@ -73,7 +73,7 @@ class CashierNoSessionWidget extends StatelessWidget {
                     );
                     if (result != null && result) {
                       // ignore: use_build_context_synchronously
-                      showSuccess(context, title: "Berhasil", message: "Berhasil membuat session");
+                      showSuccess(context, message: "Berhasil membuat session");
                     }
                   },
                 ),

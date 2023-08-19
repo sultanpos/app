@@ -146,9 +146,9 @@ class _PurchaseAddWidgetState extends State<PurchaseAddWidget> {
       await AppState().purchaseState.save();
       nav.pop();
       // ignore: use_build_context_synchronously
-      showSuccess(context, title: 'Berhasil', message: 'Pembelian telah disimpan');
+      showSuccess(context, message: 'Pembelian berhasil disimpan');
     } catch (e) {
-      showError(context, title: 'Error menyimpan', message: e.toString());
+      showError(context, message: e.toString());
     }
   }
 }

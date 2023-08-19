@@ -65,7 +65,7 @@ class CashierSuccessWidget extends StatelessWidget {
               try {
                 await AppState().printer.printSale(state.lastSale);
               } catch (e) {
-                showError(context, title: 'Error printer', message: e.toString());
+                showError(context, message: e.toString());
               }
             },
             label: 'Print',

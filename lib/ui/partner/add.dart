@@ -178,7 +178,7 @@ class AddPartnerWidget extends StatelessWidget {
       await AppState().partnerState.save();
       nav.pop();
     } catch (e) {
-      showError(context, title: 'Error menyimpan', message: e.toString());
+      showError(context, message: e.toString());
     }
   }
 }

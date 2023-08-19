@@ -43,7 +43,7 @@ class _PrinterSettingWidgetState extends State<PrinterSettingWidget> {
               SButton(
                 onPressed: () {
                   state.saveChasierPrinter(_config);
-                  showSuccess(context, title: "Berhasil", message: "Setting berhasil disimpan");
+                  showSuccess(context, message: "Setting berhasil disimpan");
                 },
                 child: const Text('Simpan'),
               ),

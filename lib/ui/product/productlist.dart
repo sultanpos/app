@@ -70,10 +70,10 @@ class ProductListWidget extends StatelessWidget {
                             try {
                               await AppState().productRootState.deleteProduct(v.id);
                               // ignore: use_build_context_synchronously
-                              showSuccess(ctx, title: 'Berhasil', message: 'Barang telah dihapus');
+                              showSuccess(ctx, message: 'Barang berhasil dihapus');
                             } catch (e) {
                               // ignore: use_build_context_synchronously
-                              showError(ctx, title: 'Error menghapus', message: e.toString());
+                              showError(ctx, message: e.toString());
                             }
                           }
                         }, iconColor: Colors.red),

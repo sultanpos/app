@@ -107,7 +107,7 @@ class PriceGroupAddWidget extends StatelessWidget {
       await AppState().priceGroupState.save();
       nav.pop();
     } catch (e) {
-      showError(ctx, title: 'Error menyimpan', message: e.toString());
+      showError(ctx, message: e.toString());
     }
   }
 }

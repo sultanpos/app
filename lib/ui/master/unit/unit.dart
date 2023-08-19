@@ -91,7 +91,7 @@ class UnitWidget extends StatelessWidget {
                                 await AppState().unitState.remove(v.id);
                               } catch (e) {
                                 // ignore: use_build_context_synchronously
-                                showError(ctx, title: 'Error menghapus', message: e.toString());
+                                showError(ctx, message: e.toString());
                               }
                             }
                           }, iconColor: Colors.red),

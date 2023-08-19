@@ -110,7 +110,7 @@ class CashierSessionCloseWidget extends StatelessWidget {
                                     // ignore: use_build_context_synchronously
                                     Navigator.pop(context, true);
                                   } catch (e) {
-                                    showError(context, title: "error", message: e.toString());
+                                    showError(context, message: e.toString());
                                   }
                                 },
                         ),

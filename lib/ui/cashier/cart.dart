@@ -99,10 +99,10 @@ class _CartWidgetState extends State<CartWidget> {
                               if (!result.found) {
                                 if (result.error != null) {
                                   // ignore: use_build_context_synchronously
-                                  showError(context, title: 'Tidak ditemukan', message: result.error!);
+                                  showError(context, message: result.error!);
                                 } else {
                                   // ignore: use_build_context_synchronously
-                                  showError(context, title: 'Tidak ditemukan', message: "Barang tidak diketemukan");
+                                  showError(context, message: "Barang tidak diketemukan");
                                 }
                               }
                               _barcodeCtrl.selection = TextSelection(
