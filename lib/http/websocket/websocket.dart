@@ -11,13 +11,20 @@ abstract class IWebSocketTransport {
   send(Message msg);
 }
 
-class WebSocketTransport implements IWebSocketTransport {
+abstract class IOnline {
+  StreamSubscription<bool> listenOnline(Function(bool msg)? onData,
+      {Function? onError, void Function()? onDone, bool? cancelOnError});
+  Stream<bool> getOnlineStream();
+}
+
+class WebSocketTransport implements IWebSocketTransport, IOnline {
   String baseUrl;
   bool _shouldConnect = false;
   TokenProvider tokenProvider;
   WebSocket? wsConn;
   WebSocketTransport(this.baseUrl, this.tokenProvider);
   StreamController<Message> streamController = StreamController<Message>.broadcast();
+  StreamController<bool> streamControllerOnline = StreamController<bool>();
 
   connect() async {
     if (wsConn != null) return;
@@ -78,11 +85,13 @@ class WebSocketTransport implements IWebSocketTransport {
             if (wsConn!.closeCode != null) {
               debugPrint("ws connection closed: ${wsConn!.closeCode}");
               _checkReconnect();
+              streamControllerOnline.add(false);
             }
           }
         },
         cancelOnError: false,
       );
+      streamControllerOnline.add(true);
       debugPrint("ws connected");
     } catch (e) {
       debugPrint("connection failed: ${e.toString()}");
@@ -103,5 +112,16 @@ class WebSocketTransport implements IWebSocketTransport {
     if (wsConn != null && wsConn!.readyState == WebSocket.open) {
       wsConn!.add(msg.writeToBuffer());
     }
+  }
+
+  @override
+  StreamSubscription<bool> listenOnline(Function(bool msg)? onData,
+      {Function? onError, void Function()? onDone, bool? cancelOnError}) {
+    return streamControllerOnline.stream.listen(onData, onError: onError, cancelOnError: cancelOnError, onDone: onDone);
+  }
+
+  @override
+  Stream<bool> getOnlineStream() {
+    return streamControllerOnline.stream;
   }
 }

@@ -2,6 +2,7 @@ import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:sultanpos/ui/layout/navigator.dart';
 import 'package:sultanpos/ui/layout/drawer.dart';
+import 'package:sultanpos/ui/layout/onlineoffline.dart';
 import 'package:sultanpos/ui/layout/profile.dart';
 import 'package:sultanpos/ui/widget/windowbutton.dart';
 
@@ -34,17 +35,9 @@ class MainLayoutWidget extends StatelessWidget {
                   child: DrawerWidget(),
                 ),
                 Expanded(child: MoveWindow()),
-                Align(
+                const Align(
                   alignment: Alignment.center,
-                  child: Container(
-                    decoration:
-                        const BoxDecoration(color: Colors.red, borderRadius: BorderRadius.all(Radius.circular(8))),
-                    padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 8),
-                    child: const Text(
-                      'OFFLINE',
-                      style: TextStyle(fontSize: 10),
-                    ),
-                  ),
+                  child: OnlineOfflieWidget(),
                 ),
                 const SizedBox(
                   width: 8,
