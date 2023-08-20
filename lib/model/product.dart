@@ -189,6 +189,39 @@ class ProductModel extends LocalSqlBase {
     newJson["serial"] = json["serial"] != 0;
     return _$ProductModelFromJson(newJson);
   }
+
+  copyWith({
+    UnitModel? unit,
+    CategoryModel? category,
+    PartnerModel? partner,
+    List<PriceModel>? prices,
+  }) {
+    return ProductModel(
+      id,
+      updatedAt,
+      deletedAt,
+      parentId,
+      barcode,
+      name,
+      description,
+      allBranch,
+      mainImage,
+      calculateStock,
+      productType,
+      sellable,
+      buyable,
+      editablePrice,
+      useSn,
+      serial,
+      unitId,
+      unit ?? this.unit,
+      category ?? this.category,
+      partner ?? this.partner,
+      prices ?? this.prices,
+      buyPrices,
+      stocks,
+    );
+  }
 }
 
 @JsonSerializable(explicitToJson: true)

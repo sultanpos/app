@@ -28,13 +28,13 @@ class RestUnitRepo extends BaseRestCRUDRepository<UnitModel> implements UnitRepo
   }
 
   @override
-  query(covariant RestFilterModel filter) async {
+  query(BaseFilterModel filter) async {
     final result = await httpApi.query(
       getPath(),
       fromJsonFunc: creator,
       limit: filter.limit,
       offset: filter.offset,
-      queryParameters: filter.queryParameters,
+      queryParameters: filter.where,
     );
     cachedUnits = result.data;
     return result;

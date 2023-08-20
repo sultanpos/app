@@ -122,7 +122,7 @@ class PaymentMethodWidget extends StatelessWidget {
                       SDataColumn(
                         id: 'additional',
                         title: 'Biaya tambahan',
-                        get: (v) => formatStock(v.additional),
+                        get: (v) => v.additional,
                       ),
                       SDataColumn(
                         id: 'description',

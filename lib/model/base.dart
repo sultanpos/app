@@ -9,7 +9,18 @@ abstract class BaseModel {
   String? path() => null;
 }
 
-abstract class BaseFilterModel<T> {}
+class BaseWhereModel {
+  final String key;
+  final Object? value;
+  BaseWhereModel({required this.key, this.value});
+}
+
+class BaseFilterModel {
+  final int limit;
+  final int offset;
+  final Map<String, dynamic>? where;
+  BaseFilterModel({this.where, this.limit = 100, this.offset = 0});
+}
 
 abstract class LocalSqlBase extends BaseModel {
   LocalSqlBase();

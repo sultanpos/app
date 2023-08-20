@@ -23,26 +23,58 @@ enum PaymentMethodType implements Comparable<PaymentMethodType> {
 }
 
 @JsonSerializable()
-class PaymentMethodModel extends BaseModel {
+class PaymentMethodModel extends LocalSqlBase {
   final int id;
+  @JsonKey(name: 'updated_at')
+  final DateTime updatedAt;
+  @JsonKey(name: 'deleted_at')
+  final DateTime? deletedAt;
   @JsonKey(name: 'branch_id')
   final int branchId;
   final String name;
   final String description;
-  final int additional;
+  final String additional;
   final PaymentMethodType method;
   @JsonKey(name: 'is_default')
   final bool isDefault;
-  PaymentMethodModel(this.id, this.branchId, this.name, this.description, this.additional, this.method, this.isDefault);
+  PaymentMethodModel(this.id, this.updatedAt, this.deletedAt, this.branchId, this.name, this.description,
+      this.additional, this.method, this.isDefault);
 
   @override
   factory PaymentMethodModel.fromJson(Map<String, dynamic> json) => _$PaymentMethodModelFromJson(json);
+
+  factory PaymentMethodModel.empty() =>
+      PaymentMethodModel(0, DateTime.now(), null, 0, '', '', '', PaymentMethodType.cash, false);
+
+  @override
+  factory PaymentMethodModel.fromSqlite(Map<String, dynamic> json) {
+    final newJson = Map<String, dynamic>.from(json);
+    newJson["is_default"] = json["is_default"] != 0;
+    return _$PaymentMethodModelFromJson(newJson);
+  }
 
   @override
   Map<String, dynamic> toJson() => _$PaymentMethodModelToJson(this);
 
   @override
   int getId() => id;
+
+  @override
+  String getTableName() {
+    return "paymentmethod";
+  }
+
+  @override
+  DateTime getUpdatedAt() {
+    return updatedAt;
+  }
+
+  @override
+  Map<String, dynamic> toSqlite() {
+    final ret = _$PaymentMethodModelToJson(this);
+    ret['is_default'] = isDefault ? 1 : 0;
+    return ret;
+  }
 }
 
 @JsonSerializable()

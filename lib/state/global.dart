@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sultanpos/model/base.dart';
 import 'package:sultanpos/model/branch.dart';
 import 'package:sultanpos/model/claim.dart';
 import 'package:sultanpos/preference.dart';
@@ -22,7 +23,7 @@ class GlobalState extends ChangeNotifier {
       return;
     }
     try {
-      final result = await branchRepo.query(RestFilterModel(limit: -1, offset: 0));
+      final result = await branchRepo.query(BaseFilterModel(limit: -1, offset: 0));
       if (result.data.isNotEmpty) {
         currentBranch = result.data.first;
       }

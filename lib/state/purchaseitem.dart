@@ -61,7 +61,7 @@ class PurchaseItemState extends CrudStateWithList<PurchaseItemModel> {
     product = null;
     notifyListeners();
     try {
-      final products = await productRepo.query(RestFilterModel(limit: 10, offset: 0, queryParameters: {
+      final products = await productRepo.query(BaseFilterModel(limit: 10, offset: 0, where: {
         'barcode': fgBarcode.value ?? '',
         'buyable': true,
       }));
@@ -114,7 +114,11 @@ class PurchaseItemState extends CrudStateWithList<PurchaseItemModel> {
 
   refreshPurchase() async {
     try {
-      purchase = await purchaseRepo.get(purchase.id);
+      final p = await purchaseRepo.get(purchase.id);
+      if (p == null) {
+        throw 'purchase not found';
+      }
+      purchase = p;
       notifyListeners();
     } catch (e) {
       debugPrint(e.toString());

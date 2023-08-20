@@ -46,6 +46,9 @@ class PrinterState extends ChangeNotifier {
     }
     try {
       final sale = await saleRepo.get(id);
+      if (sale == null) {
+        throw 'sale not found';
+      }
       final items = await saleRepo.items(id);
       final payments = await saleRepo.payments(id);
       final profile = await CapabilityProfile.load();
@@ -73,7 +76,7 @@ class PrinterState extends ChangeNotifier {
         final data = items.data[i];
         final unit = await unitRepo.get(data.product!.unitId);
         escp.text("${data.product!.barcode} ${data.product!.name}").leftRight(
-            "${formatStock(data.amount)} ${unit.name} x ${formatMoney(data.price)}", formatMoney(data.total));
+            "${formatStock(data.amount)} ${unit?.name ?? ''} x ${formatMoney(data.price)}", formatMoney(data.total));
       }
       escp.hr().leftRight("Total", formatMoney(sale.total));
       if (payments.data.length == 1) {
@@ -120,6 +123,9 @@ class PrinterState extends ChangeNotifier {
     }
     try {
       final session = await cashierSessionRepo.get(id);
+      if (session == null) {
+        throw 'session not found';
+      }
       final report = await cashierSessionRepo.getReport(id);
       final profile = await CapabilityProfile.load();
       final Escp escp = Escp(PaperSize.mm58, profile);

@@ -9,10 +9,14 @@ part of 'paymentmethod.dart';
 PaymentMethodModel _$PaymentMethodModelFromJson(Map<String, dynamic> json) =>
     PaymentMethodModel(
       json['id'] as int,
+      DateTime.parse(json['updated_at'] as String),
+      json['deleted_at'] == null
+          ? null
+          : DateTime.parse(json['deleted_at'] as String),
       json['branch_id'] as int,
       json['name'] as String,
       json['description'] as String,
-      json['additional'] as int,
+      json['additional'] as String,
       $enumDecode(_$PaymentMethodTypeEnumMap, json['method']),
       json['is_default'] as bool,
     );
@@ -20,6 +24,8 @@ PaymentMethodModel _$PaymentMethodModelFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$PaymentMethodModelToJson(PaymentMethodModel instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'updated_at': instance.updatedAt.toIso8601String(),
+      'deleted_at': instance.deletedAt?.toIso8601String(),
       'branch_id': instance.branchId,
       'name': instance.name,
       'description': instance.description,

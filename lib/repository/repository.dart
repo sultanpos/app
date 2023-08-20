@@ -14,7 +14,7 @@ abstract mixin class BaseCRUDRepository<T extends BaseModel> {
   Future insert(BaseModel data);
   Future update(int id, BaseModel data);
   Future delete(int id);
-  Future<T> get(int id);
+  Future<T?> get(int id);
   Future<ListResult<T>> query(BaseFilterModel filter);
 }
 

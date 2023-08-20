@@ -5,6 +5,7 @@ import 'package:sultanpos/http/websocket/message.pbserver.dart';
 import 'package:sultanpos/http/websocket/websocket.dart';
 import 'package:sultanpos/model/category.dart';
 import 'package:sultanpos/model/partner.dart';
+import 'package:sultanpos/model/paymentmethod.dart';
 import 'package:sultanpos/model/price.dart';
 import 'package:sultanpos/model/pricegroup.dart';
 import 'package:sultanpos/model/product.dart';
@@ -42,6 +43,8 @@ class Sync {
       SyncItem(httpAPI, PriceModel.empty(), db, sqliteCreator: PriceModel.fromSqlite, jsonCreator: PriceModel.fromJson),
       SyncItem(httpAPI, ProductModel.empty(), db,
           sqliteCreator: ProductModel.fromSqlite, jsonCreator: ProductModel.fromJson),
+      SyncItem(httpAPI, PaymentMethodModel.empty(), db,
+          sqliteCreator: PaymentMethodModel.fromSqlite, jsonCreator: PaymentMethodModel.fromJson),
     ];
     _subscription = wsTransport.listen((Message message) {
       if (message.hasRecordUpdated()) {

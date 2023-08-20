@@ -42,7 +42,7 @@ class SyncItem<T extends LocalSqlBase> {
       }
       Future.delayed(const Duration(milliseconds: 1), _doRun);
     } catch (e) {
-      debugPrint("############## ERROR SYNC");
+      debugPrint("############## ERROR SYNC: ${name()}");
       debugPrint(e.toString());
     }
   }

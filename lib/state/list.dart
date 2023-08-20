@@ -64,7 +64,7 @@ class HttpListState<T extends BaseModel> extends ListBaseState<T> {
   doLoad() async {
     try {
       //state = await httpAPI.query(path, fromJsonFunc: creator, limit: rowPerPage, offset: page * rowPerPage);
-      state = await repo.query(RestFilterModel(limit: rowPerPage, offset: page * rowPerPage));
+      state = await repo.query(BaseFilterModel(limit: rowPerPage, offset: page * rowPerPage));
     } on ErrorResponse catch (e) {
       debugPrint(e.toJson().toString());
       state = ListError(e.message);

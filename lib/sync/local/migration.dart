@@ -99,6 +99,18 @@ class SqliteMigration {
   editable_price INTEGER not null default 0,
   use_sn INTEGER not null default 0
 )
+''',
+      '''CREATE TABLE paymentmethod (
+	id INTEGER PRIMARY KEY,
+	updated_at DATETIME DEFAULT (datetime('now', 'localtime')),
+	deleted_at DATETIME,
+  branch_id INTEGER NOT NULL default 0,
+  is_default BOOLEAN not null default 'f',
+  method TEXT NOT NULL DEFAULT 'cash',
+  name TEXT not null,
+  additional TEXT NOT NULL default '',
+  description TEXT NOT NULL DEFAULT ''
+)
 '''
     ]
   ];

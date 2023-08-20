@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:sultanpos/model/base.dart';
 import 'package:sultanpos/model/cart.dart';
 import 'package:sultanpos/model/product.dart';
 import 'package:sultanpos/model/request.dart';
 import 'package:sultanpos/model/sale.dart';
 import 'package:sultanpos/repository/repository.dart';
-import 'package:sultanpos/repository/rest/restrepository.dart';
 import 'package:sultanpos/state/app.dart';
 
 class ScanResult {
@@ -56,10 +56,10 @@ class CartState extends ChangeNotifier {
     notifyListeners();
     try {
       final productResult = await productRepo.query(
-        RestFilterModel(
+        BaseFilterModel(
           limit: 10,
           offset: 0,
-          queryParameters: {'barcode': barcode},
+          where: {'barcode': barcode},
         ),
       );
       currentListProduct = productResult.data;
@@ -76,6 +76,7 @@ class CartState extends ChangeNotifier {
     } catch (e) {
       result.error = e.toString();
       loadingProduct = false;
+      debugPrint(result.error);
       notifyListeners();
     }
     return result;

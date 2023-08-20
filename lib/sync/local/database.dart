@@ -10,6 +10,12 @@ abstract class ISqliteDatabase {
   Future insertOrUpdate<T extends LocalSqlBase>(T data);
   Future<T?> getLastData<T extends LocalSqlBase>(T data, T Function(Map<String, dynamic> json) creator);
   Future<T?> getById<T extends LocalSqlBase>(String table, int id, T Function(Map<String, dynamic> json) creator);
+  Future<List<T>> query<T extends LocalSqlBase>(String table,
+      {String? where,
+      List<Object?>? whereArgs,
+      int offset = 0,
+      int limit = 100,
+      required T Function(Map<String, dynamic> json) creator});
 }
 
 class SqliteDatabase implements ISqliteDatabase {
@@ -82,5 +88,20 @@ class SqliteDatabase implements ISqliteDatabase {
     final result = await db.query(table, where: "id = ?", whereArgs: [id]);
     if (result.isNotEmpty) return creator(result.first);
     return null;
+  }
+
+  @override
+  Future<List<T>> query<T extends LocalSqlBase>(String table,
+      {String? where,
+      List<Object?>? whereArgs,
+      int offset = 0,
+      int limit = 100,
+      required T Function(Map<String, dynamic> json) creator}) async {
+    final items = await db.query(table, where: where, whereArgs: whereArgs, offset: offset, limit: limit);
+    List<T> lists = [];
+    for (final item in items) {
+      lists.add(creator(item));
+    }
+    return lists;
   }
 }

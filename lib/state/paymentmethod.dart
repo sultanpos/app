@@ -23,7 +23,7 @@ class PaymentMethodState extends CrudStateWithList<PaymentMethodModel> {
   prepareEditForm(PaymentMethodModel value) {
     fgName.updateValue(value.name, emitEvent: false);
     fgDescription.updateValue(value.description, emitEvent: false);
-    fgAdditional.updateValue(formatStock(value.additional), emitEvent: false);
+    fgAdditional.updateValue(value.additional, emitEvent: false);
   }
 
   @override

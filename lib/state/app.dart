@@ -10,6 +10,7 @@ import 'package:sultanpos/model/auth.dart';
 import 'package:sultanpos/model/category.dart';
 import 'package:sultanpos/model/partner.dart';
 import 'package:sultanpos/preference.dart';
+import 'package:sultanpos/repository/local/sqliteproductrepository.dart';
 import 'package:sultanpos/repository/rest/authrepo.dart';
 import 'package:sultanpos/repository/rest/branchrepo.dart';
 import 'package:sultanpos/repository/rest/cashiersession.dart';
@@ -64,6 +65,7 @@ class AppState {
   late PaymentMethodState paymentMethodState;
   late SettingState settingState;
   late Sync sync;
+  late SqliteDatabase sqliteDatabase;
 
   init() async {
     if (initted) return;
@@ -95,12 +97,7 @@ class AppState {
     authState = AuthState(repo: RestAuthRepo(httpAPI));
     productRootState = ProductRootState(repo: productRepo);
     masterState = MasterState();
-    cashierState = CashierRootState(
-      productRepo: productRepo,
-      cashierSessionRepo: cashierSessionRepo,
-      paymetnMethodRepo: paymentMethodRepo,
-      saleRepo: saleRepo,
-    );
+
     unitState = UnitState(repo: unitRepo);
     priceGroupState = PriceGroupState(repo: priceGroupRepo);
     partnerState = PartnerState(repo: partnerRepo, priceGroupRepo: priceGroupRepo);
@@ -118,6 +115,12 @@ class AppState {
     );
     settingState = SettingState(Preference());
 
+    Preference().listen((msg) {
+      if (msg == Preference.keyShouldCheckLocal) {
+        setupCashier();
+      }
+    });
+
     // this loadlogin throw an error
     // if load login failed, then all code below it never get called
     await authState.loadLogin();
@@ -129,11 +132,40 @@ class AppState {
     Preference().storeAuth(token.normalizeDate());
   }
 
+  setupCashier() {
+    bool localCache = Preference().shouldCacheToLocal() ?? false;
+    if (localCache) {
+      final productRepo = SqliteProductRepository(db: sqliteDatabase);
+      final paymentMethodRepo = RestPaymentMethodRepo(httpApi: httpAPI);
+      final saleRepo = RestSaleRepo(httpApi: httpAPI);
+      final cashierSessionRepo = RestCashierSessionRepo(httpApi: httpAPI);
+      cashierState = CashierRootState(
+        productRepo: productRepo,
+        cashierSessionRepo: cashierSessionRepo,
+        paymentMethodRepo: paymentMethodRepo,
+        saleRepo: saleRepo,
+      );
+    } else {
+      final productRepo = RestProductRepo(httpApi: httpAPI);
+      final paymentMethodRepo = RestPaymentMethodRepo(httpApi: httpAPI);
+      final saleRepo = RestSaleRepo(httpApi: httpAPI);
+      final cashierSessionRepo = RestCashierSessionRepo(httpApi: httpAPI);
+      cashierState = CashierRootState(
+        productRepo: productRepo,
+        cashierSessionRepo: cashierSessionRepo,
+        paymentMethodRepo: paymentMethodRepo,
+        saleRepo: saleRepo,
+      );
+    }
+  }
+
   navigateTo(String path) {
     navState.navigateTo(path);
   }
 
   afterLogin() {
+    sqliteDatabase = SqliteDatabase(global.companyId);
+    setupCashier();
     websocketTransport.connect();
     startSync();
   }
@@ -147,7 +179,6 @@ class AppState {
   startSync() async {
     if (Preference().shouldCacheToLocal() ?? false) {
       sync = Sync();
-      final sqliteDatabase = SqliteDatabase(global.companyId);
       await sqliteDatabase.open();
       await sync.init(httpAPI, sqliteDatabase, websocketTransport);
       sync.start();

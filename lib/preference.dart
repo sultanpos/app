@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -10,6 +11,10 @@ import 'package:sultanpos/model/branch.dart';
 class Preference {
   static final Preference _singleton = Preference._internal();
 
+  static const String keyShouldCheckLocal = "shouldCacheToLocal";
+  static const String keyBranch = "branch";
+  static const String keyDefaultPrinter = "defaultPrinter";
+
   factory Preference() {
     return _singleton;
   }
@@ -17,6 +22,7 @@ class Preference {
   Preference._internal();
 
   late SharedPreferences sharedPreferences;
+  final StreamController<String> _streamController = StreamController<String>.broadcast();
 
   init() async {
     sharedPreferences = await SharedPreferences.getInstance();
@@ -53,27 +59,31 @@ class Preference {
   }
 
   AppConfigPrinter? getDefaultPrinter() {
-    final jsonString = sharedPreferences.getString("defaultPrinter");
+    final jsonString = sharedPreferences.getString(keyDefaultPrinter);
     if (jsonString == null || jsonString.isEmpty) {
       return null;
     }
     return AppConfigPrinter.fromJsonString(jsonString);
   }
 
-  setDefaultPrinter(AppConfigPrinter model) {
-    return sharedPreferences.setString("defaultPrinter", model.toJsonString());
+  setDefaultPrinter(AppConfigPrinter model) async {
+    await sharedPreferences
+        .setString(keyDefaultPrinter, model.toJsonString())
+        .then((value) => _streamController.add(keyDefaultPrinter));
   }
 
-  saveBranch(BranchModel? branch) {
+  saveBranch(BranchModel? branch) async {
     if (branch == null) {
-      sharedPreferences.remove("branch");
+      await sharedPreferences.remove(keyBranch).then((value) => _streamController.add(keyBranch));
     } else {
-      sharedPreferences.setString("branch", jsonEncode(branch.toJson()));
+      await sharedPreferences
+          .setString(keyBranch, jsonEncode(branch.toJson()))
+          .then((value) => _streamController.add(keyBranch));
     }
   }
 
   BranchModel? getBranch() {
-    final branchJsonString = sharedPreferences.getString("branch");
+    final branchJsonString = sharedPreferences.getString(keyBranch);
     if (branchJsonString == null || branchJsonString == "") {
       return null;
     }
@@ -81,10 +91,16 @@ class Preference {
   }
 
   bool? shouldCacheToLocal() {
-    return sharedPreferences.getBool("shouldCacheToLocal");
+    return sharedPreferences.getBool(keyShouldCheckLocal);
   }
 
-  setShouldCacheToLocal(bool value) {
-    sharedPreferences.setBool("shouldCacheToLocal", value);
+  setShouldCacheToLocal(bool value) async {
+    await sharedPreferences
+        .setBool(keyShouldCheckLocal, value)
+        .then((value) => _streamController.add(keyShouldCheckLocal));
+  }
+
+  listen(Function(String msg)? onData, {Function? onError, void Function()? onDone, bool? cancelOnError}) {
+    return _streamController.stream.listen(onData, onError: onError, onDone: onDone, cancelOnError: cancelOnError);
   }
 }

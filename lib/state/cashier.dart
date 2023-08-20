@@ -9,7 +9,7 @@ import 'package:sultanpos/util/format.dart';
 class CashierRootState extends ChangeNotifier {
   final ProductRepository productRepo;
   final CashierSessionRepository cashierSessionRepo;
-  final PaymentMethodRepository paymetnMethodRepo;
+  final PaymentMethodRepository paymentMethodRepo;
   final SaleRepository saleRepo;
 
   final fgOpenValue = FormControl<String>(validators: [Validators.required]);
@@ -31,7 +31,7 @@ class CashierRootState extends ChangeNotifier {
   CashierRootState({
     required this.productRepo,
     required this.cashierSessionRepo,
-    required this.paymetnMethodRepo,
+    required this.paymentMethodRepo,
     required this.saleRepo,
   }) {
     formGroup = FormGroup({
@@ -68,7 +68,7 @@ class CashierRootState extends ChangeNotifier {
       CartState(
         cashierId++,
         productRepo: productRepo,
-        paymentMethodRepo: paymetnMethodRepo,
+        paymentMethodRepo: paymentMethodRepo,
         saleRepository: saleRepo,
         cashierSessionId: currentSession?.id ?? 0,
       )
@@ -80,7 +80,7 @@ class CashierRootState extends ChangeNotifier {
     cashierItems.add(CartState(
       cashierId++,
       productRepo: productRepo,
-      paymentMethodRepo: paymetnMethodRepo,
+      paymentMethodRepo: paymentMethodRepo,
       saleRepository: saleRepo,
       cashierSessionId: currentSession?.id ?? 0,
     ));

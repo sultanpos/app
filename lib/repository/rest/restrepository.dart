@@ -24,13 +24,13 @@ class BaseRestCRUDRepository<T extends BaseModel> implements BaseCRUDRepository<
   }
 
   @override
-  query(covariant RestFilterModel filter) {
+  query(BaseFilterModel filter) {
     return httpApi.query(
       getPath(),
       fromJsonFunc: creator,
       limit: filter.limit,
       offset: filter.offset,
-      queryParameters: filter.queryParameters,
+      queryParameters: filter.where,
     );
   }
 
@@ -42,11 +42,4 @@ class BaseRestCRUDRepository<T extends BaseModel> implements BaseCRUDRepository<
   String getPath() {
     return path;
   }
-}
-
-class RestFilterModel extends BaseFilterModel {
-  final int limit;
-  final int offset;
-  final Map<String, dynamic>? queryParameters;
-  RestFilterModel({required this.limit, required this.offset, this.queryParameters});
 }
