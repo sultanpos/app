@@ -4,7 +4,6 @@ import 'package:sultanpos/model/branch.dart';
 import 'package:sultanpos/model/claim.dart';
 import 'package:sultanpos/preference.dart';
 import 'package:sultanpos/repository/repository.dart';
-import 'package:sultanpos/repository/rest/restrepository.dart';
 
 class GlobalState extends ChangeNotifier {
   final Preference preference;

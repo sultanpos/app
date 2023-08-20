@@ -10,7 +10,6 @@ import 'package:sultanpos/ui/widget/confirmation.dart';
 import 'package:sultanpos/ui/widget/datatable.dart';
 import 'package:sultanpos/ui/widget/dialogutil.dart';
 import 'package:sultanpos/ui/widget/showerror.dart';
-import 'package:sultanpos/util/format.dart';
 
 class PaymentMethodWidget extends StatelessWidget {
   const PaymentMethodWidget({super.key});

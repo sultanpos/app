@@ -4,7 +4,6 @@ import 'package:sultanpos/model/base.dart';
 import 'package:sultanpos/model/product.dart';
 import 'package:sultanpos/model/purchase.dart';
 import 'package:sultanpos/repository/repository.dart';
-import 'package:sultanpos/repository/rest/restrepository.dart';
 import 'package:sultanpos/state/crud.dart';
 import 'package:sultanpos/util/calculate.dart';
 import 'package:sultanpos/util/format.dart';

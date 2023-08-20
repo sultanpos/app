@@ -3,7 +3,6 @@ import 'package:sultanpos/model/base.dart';
 import 'package:sultanpos/model/error.dart';
 import 'package:sultanpos/model/listresult.dart';
 import 'package:sultanpos/repository/repository.dart';
-import 'package:sultanpos/repository/rest/restrepository.dart';
 
 abstract class ListBaseState<T extends BaseModel> extends ChangeNotifier {
   final BaseCRUDRepository<T> repo;
