@@ -4,8 +4,12 @@ import 'package:sultanpos/model/user.dart';
 part 'cashier.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-class CashierSessionModel extends BaseModel {
+class CashierSessionModel extends LocalSqlBase {
   final int id;
+  @JsonKey(name: 'updated_at')
+  final DateTime updatedAt;
+  @JsonKey(name: 'deleted_at')
+  final DateTime? deletedAt;
   final String number;
   @JsonKey(name: 'date_open')
   final DateTime dateOpen;
@@ -22,9 +26,15 @@ class CashierSessionModel extends BaseModel {
   @JsonKey(name: 'machine_id')
   final int machineId;
   final String note;
+  @JsonKey(name: 'sync_at')
+  final DateTime? syncAt;
+  @JsonKey(name: 'local_reference')
+  final String? localReference;
   final UserModel? user;
   CashierSessionModel(
     this.id,
+    this.updatedAt,
+    this.deletedAt,
     this.number,
     this.dateOpen,
     this.dateClose,
@@ -34,13 +44,37 @@ class CashierSessionModel extends BaseModel {
     this.calculatedValue,
     this.machineId,
     this.note,
+    this.syncAt,
+    this.localReference,
     this.user,
   );
   @override
   factory CashierSessionModel.fromJson(Map<String, dynamic> json) => _$CashierSessionModelFromJson(json);
+  factory CashierSessionModel.empty() =>
+      CashierSessionModel(0, DateTime.now(), null, '', DateTime.now(), null, 0, 0, 0, 0, 0, '', null, '', null);
+
+  @override
+  factory CashierSessionModel.fromSqlite(Map<String, dynamic> json) => _$CashierSessionModelFromJson(json);
 
   @override
   Map<String, dynamic> toJson() => _$CashierSessionModelToJson(this);
+
+  @override
+  String getTableName() {
+    return 'cashiersession';
+  }
+
+  @override
+  DateTime getUpdatedAt() {
+    return updatedAt;
+  }
+
+  @override
+  Map<String, dynamic> toSqlite() {
+    final json = _$CashierSessionModelToJson(this);
+    json.remove('user');
+    return json;
+  }
 }
 
 @JsonSerializable(explicitToJson: true)

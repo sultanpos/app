@@ -31,6 +31,7 @@ abstract class IHttpAPI {
       bool skipCompanyId = false,
       Map<String, dynamic>? queryParameters});
   Future querySync(String tableName, DateTime date, int limit);
+  Future syncUp(String tableName, Map<String, dynamic> json);
 }
 
 class HttpAPI implements IHttpAPI, TokenProvider {
@@ -149,5 +150,10 @@ class HttpAPI implements IHttpAPI, TokenProvider {
   @override
   String? getToken() {
     return interceptor.accessToken;
+  }
+
+  @override
+  Future syncUp(String tableName, Map<String, dynamic> json) {
+    return fetch.post(_generateUrl('/sync/$tableName', false), data: json);
   }
 }

@@ -436,6 +436,21 @@ class MockIHttpAPI extends _i1.Mock implements _i6.IHttpAPI {
         ),
         returnValue: _i3.Future<dynamic>.value(),
       ) as _i3.Future<dynamic>);
+  @override
+  _i3.Future<dynamic> syncUp(
+    String? tableName,
+    Map<String, dynamic>? json,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #syncUp,
+          [
+            tableName,
+            json,
+          ],
+        ),
+        returnValue: _i3.Future<dynamic>.value(),
+      ) as _i3.Future<dynamic>);
 }
 
 /// A class which mocks [IWebSocketTransport].

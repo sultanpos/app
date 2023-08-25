@@ -15,7 +15,9 @@ abstract class ISqliteDatabase {
       List<Object?>? whereArgs,
       int offset = 0,
       int limit = 100,
+      String? orderBy,
       required T Function(Map<String, dynamic> json) creator});
+  Future updateById(String table, int id, Map<String, Object?> data);
 }
 
 class SqliteDatabase implements ISqliteDatabase {
@@ -96,12 +98,30 @@ class SqliteDatabase implements ISqliteDatabase {
       List<Object?>? whereArgs,
       int offset = 0,
       int limit = 100,
+      String? orderBy,
       required T Function(Map<String, dynamic> json) creator}) async {
-    final items = await db.query(table, where: where, whereArgs: whereArgs, offset: offset, limit: limit);
+    final items = await db.query(
+      table,
+      where: where,
+      whereArgs: whereArgs,
+      offset: offset,
+      limit: limit,
+      orderBy: orderBy,
+    );
     List<T> lists = [];
     for (final item in items) {
       lists.add(creator(item));
     }
     return lists;
+  }
+
+  @override
+  Future updateById(String table, int id, Map<String, Object?> data) {
+    return db.update(
+      table,
+      data,
+      where: "id = ?",
+      whereArgs: [id],
+    );
   }
 }

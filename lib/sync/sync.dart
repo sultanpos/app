@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:sultanpos/http/httpapi.dart';
 import 'package:sultanpos/http/websocket/message.pbserver.dart';
 import 'package:sultanpos/http/websocket/websocket.dart';
+import 'package:sultanpos/model/cashier.dart';
 import 'package:sultanpos/model/category.dart';
 import 'package:sultanpos/model/partner.dart';
 import 'package:sultanpos/model/paymentmethod.dart';
@@ -13,12 +14,14 @@ import 'package:sultanpos/model/unit.dart';
 import 'package:sultanpos/sync/local/database.dart';
 
 import 'package:sultanpos/sync/syncitem.dart';
+import 'package:sultanpos/sync/syncupitem.dart';
 
 class Sync {
   late IHttpAPI httpAPI;
   late ISqliteDatabase db;
   bool _running = false;
   late List<SyncItem> syncItems;
+  late List<SyncUpItem> syncUpItems;
   StreamSubscription? _subscription;
 
   static final Sync _singleton = Sync._internal();
@@ -46,6 +49,9 @@ class Sync {
       SyncItem(httpAPI, PaymentMethodModel.empty(), db,
           sqliteCreator: PaymentMethodModel.fromSqlite, jsonCreator: PaymentMethodModel.fromJson),
     ];
+    syncUpItems = [
+      SyncUpItem(httpAPI, db, CashierSessionModel.empty(), CashierSessionModel.fromSqlite),
+    ];
     _subscription = wsTransport.listen((Message message) {
       if (message.hasRecordUpdated()) {
         notifySync(message.recordUpdated.name);
@@ -70,6 +76,15 @@ class Sync {
 
   notifySync(String name) {
     for (final item in syncItems) {
+      if (item.name() == name) {
+        item.start();
+        break;
+      }
+    }
+  }
+
+  syncUp(String name) {
+    for (final item in syncUpItems) {
       if (item.name() == name) {
         item.start();
         break;
