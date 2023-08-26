@@ -3,19 +3,15 @@ import 'package:sultanpos/model/request.dart';
 
 part 'category.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(fieldRename: FieldRename.snake)
 class CategoryModel extends LocalSqlBase {
   final int id;
-  @JsonKey(name: 'updated_at')
   final DateTime updatedAt;
-  @JsonKey(name: 'deleted_at')
   final DateTime? deletedAt;
   final String name;
   final String code;
   final String description;
-  @JsonKey(name: 'parent_id')
   final int? parentId;
-  @JsonKey(name: 'is_default')
   final bool isDefault;
   CategoryModel(
       this.id, this.updatedAt, this.deletedAt, this.name, this.code, this.description, this.parentId, this.isDefault);
@@ -61,12 +57,11 @@ class CategoryModel extends LocalSqlBase {
   }
 }
 
-@JsonSerializable()
+@JsonSerializable(fieldRename: FieldRename.snake)
 class CategoryInsertModel extends BaseModel {
   final String name;
   final String code;
   final String description;
-  @JsonKey(name: 'parent_id')
   final int parentId;
   CategoryInsertModel(this.name, this.code, this.description, this.parentId);
 
@@ -85,12 +80,11 @@ class CategoryInsertModel extends BaseModel {
   Map<String, dynamic> toJson() => _$CategoryInsertModelToJson(this);
 }
 
-@JsonSerializable()
+@JsonSerializable(fieldRename: FieldRename.snake)
 class CategoryUpdateModel extends BaseModel {
   final String name;
   final String code;
   final String description;
-  @JsonKey(name: 'parent_id')
   final int parentId;
   CategoryUpdateModel(this.name, this.code, this.description, this.parentId);
 

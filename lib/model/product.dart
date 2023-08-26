@@ -28,40 +28,29 @@ enum ProductType implements Comparable<ProductType> {
   }
 }
 
-@JsonSerializable(explicitToJson: true)
+@JsonSerializable(explicitToJson: true, fieldRename: FieldRename.snake)
 class ProductModel extends LocalSqlBase {
   final int id;
-  @JsonKey(name: 'updated_at')
   final DateTime updatedAt;
-  @JsonKey(name: 'deleted_at')
   final DateTime? deletedAt;
-  @JsonKey(name: 'parent_id')
   final int parentId;
   final String barcode;
   final String name;
   final String description;
-  @JsonKey(name: 'all_branch')
   final bool allBranch;
-  @JsonKey(name: 'main_image')
   final String mainImage;
-  @JsonKey(name: 'calculate_stock')
   final bool calculateStock;
-  @JsonKey(name: 'product_type')
   final ProductType productType;
   final bool sellable;
   final bool buyable;
-  @JsonKey(name: 'editable_price')
   final bool editablePrice;
-  @JsonKey(name: 'use_sn')
   final bool useSn;
   final bool serial;
-  @JsonKey(name: 'unit_id')
   final int unitId;
   final UnitModel? unit;
   final CategoryModel? category;
   final PartnerModel? partner;
   final List<PriceModel>? prices;
-  @JsonKey(name: 'buy_prices')
   final List<BuyPriceModel>? buyPrices;
   final List<StockModel>? stocks;
 
@@ -224,33 +213,23 @@ class ProductModel extends LocalSqlBase {
   }
 }
 
-@JsonSerializable(explicitToJson: true)
+@JsonSerializable(explicitToJson: true, fieldRename: FieldRename.snake)
 class ProductInsertModel extends BaseModel {
   final String barcode;
   final String name;
   final String description;
-  @JsonKey(name: 'all_branch')
   final bool allBranch;
-  @JsonKey(name: 'main_image')
   final String mainImage;
-  @JsonKey(name: 'calculate_stock')
   final bool calculateStock;
-  @JsonKey(name: 'product_type')
   final String productType;
-  @JsonKey(name: 'unit_id')
   final int unitId;
-  @JsonKey(name: 'category_id')
   final int categoryId;
-  @JsonKey(name: 'partner_id')
   final int partnerId;
   final List<String> branches;
-  @JsonKey(name: 'buy_price')
   final int buyPrice;
   final bool sellable;
   final bool buyable;
-  @JsonKey(name: 'editable_price')
   final bool editablePrice;
-  @JsonKey(name: 'use_sn')
   final bool useSn;
   final List<ProductStockInsertModel> stocks;
   final ProductPriceInsertModel price;
@@ -300,31 +279,26 @@ class ProductStockInsertModel extends BaseModel {
   Map<String, dynamic> toJson() => _$ProductStockInsertModelToJson(this);
 }
 
-@JsonSerializable()
+@JsonSerializable(fieldRename: FieldRename.snake)
 class ProductPriceInsertModel extends BaseModel {
   final int price0;
   final int count0;
-  @JsonKey(name: 'discount_formula0')
   final String discountFormula0;
   final int discount0;
   final int price1;
   final int count1;
-  @JsonKey(name: 'discount_formula1')
   final String discountFormula1;
   final int discount1;
   final int price2;
   final int count2;
-  @JsonKey(name: 'discount_formula2')
   final String discountFormula2;
   final int discount2;
   final int price3;
   final int count3;
-  @JsonKey(name: 'discount_formula3')
   final String discountFormula3;
   final int discount3;
   final int price4;
   final int count4;
-  @JsonKey(name: 'discount_formula4')
   final String discountFormula4;
   final int discount4;
 
@@ -357,30 +331,21 @@ class ProductPriceInsertModel extends BaseModel {
   Map<String, dynamic> toJson() => _$ProductPriceInsertModelToJson(this);
 }
 
-@JsonSerializable(explicitToJson: true)
+@JsonSerializable(explicitToJson: true, fieldRename: FieldRename.snake)
 class ProductUpdateModel extends BaseModel {
   final String barcode;
   final String name;
   final String description;
-  @JsonKey(name: 'all_branch')
   final bool allBranch;
-  @JsonKey(name: 'main_image')
   final String mainImage;
-  @JsonKey(name: 'calculate_stock')
   final bool calculateStock;
-  @JsonKey(name: 'product_type')
   final String productType;
-  @JsonKey(name: 'unit_id')
   final int unitId;
-  @JsonKey(name: 'category_id')
   final int categoryId;
-  @JsonKey(name: 'partner_id')
   final int partnerId;
   final bool sellable;
   final bool buyable;
-  @JsonKey(name: 'editable_price')
   final bool editablePrice;
-  @JsonKey(name: 'use_sn')
   final bool useSn;
   final ProductPriceInsertModel price;
 

@@ -4,7 +4,7 @@ import 'package:sultanpos/model/product.dart';
 
 part 'stock.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(fieldRename: FieldRename.snake)
 class StockModel extends BaseModel {
   final int id;
   final int stock;
@@ -27,16 +27,13 @@ class StockModel extends BaseModel {
   int getId() => id;
 }
 
-@JsonSerializable()
+@JsonSerializable(fieldRename: FieldRename.snake)
 class SerialStockModel extends BaseModel {
   final int id;
   final BranchModel branch;
   final ProductModel? product;
-  @JsonKey(name: 'serial_number')
   final String serialNumber;
-  @JsonKey(name: 'buy_price')
   final int buyPrice;
-  @JsonKey(name: 'sell_price')
   final int sellPrice;
   final String status;
 

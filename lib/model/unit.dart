@@ -2,12 +2,10 @@ import 'package:sultanpos/model/base.dart';
 
 part 'unit.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(fieldRename: FieldRename.snake)
 class UnitModel extends LocalSqlBase {
   final int id;
-  @JsonKey(name: 'updated_at')
   final DateTime updatedAt;
-  @JsonKey(name: 'deleted_at')
   final DateTime? deletedAt;
   final String name;
   final String description;
@@ -47,7 +45,7 @@ class UnitModel extends LocalSqlBase {
   factory UnitModel.fromSqlite(Map<String, dynamic> json) => _$UnitModelFromJson(json);
 }
 
-@JsonSerializable()
+@JsonSerializable(fieldRename: FieldRename.snake)
 class UnitAddRequestModel extends BaseModel {
   final String name;
   final String description;
@@ -69,7 +67,7 @@ class UnitAddRequestModel extends BaseModel {
   Map<String, dynamic> toJson() => _$UnitAddRequestModelToJson(this);
 }
 
-@JsonSerializable()
+@JsonSerializable(fieldRename: FieldRename.snake)
 class UnitUpdateRequestModel extends BaseModel {
   final String name;
   final String description;

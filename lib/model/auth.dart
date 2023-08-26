@@ -51,9 +51,8 @@ class LoginFirebaseTokenRequest extends BaseModel {
   }
 }
 
-@JsonSerializable()
+@JsonSerializable(fieldRename: FieldRename.snake)
 class LoginRefreshToken extends BaseModel {
-  @JsonKey(name: 'refresh_token')
   final String refreshToken;
 
   LoginRefreshToken(this.refreshToken);
@@ -75,13 +74,10 @@ class LoginRefreshToken extends BaseModel {
   }
 }
 
-@JsonSerializable()
+@JsonSerializable(fieldRename: FieldRename.snake)
 class LoginResponse extends BaseModel {
-  @JsonKey(name: 'access_token')
   final String accessToken;
-  @JsonKey(name: 'refresh_token')
   final String refreshToken;
-  @JsonKey(name: 'expires_in')
   final int expiresIn;
 
   LoginResponse(this.accessToken, this.refreshToken, this.expiresIn);
@@ -98,9 +94,8 @@ class LoginResponse extends BaseModel {
   }
 }
 
-@JsonSerializable()
+@JsonSerializable(fieldRename: FieldRename.snake)
 class RegisterRequest extends BaseModel {
-  @JsonKey(name: 'company_name')
   final String companyName;
   final String name;
   final String username;
@@ -116,11 +111,9 @@ class RegisterRequest extends BaseModel {
   Map<String, dynamic> toJson() => _$RegisterRequestToJson(this);
 }
 
-@JsonSerializable()
+@JsonSerializable(fieldRename: FieldRename.snake)
 class RegisterResponse extends BaseModel {
-  @JsonKey(name: 'user_id')
   final int userId;
-  @JsonKey(name: 'company_id')
   final int companyId;
 
   RegisterResponse(this.userId, this.companyId);

@@ -107,7 +107,7 @@ class CartState extends ChangeNotifier {
               amount: cartModel.getTotal(),
               payment: payment,
               changes: cartModel.getTotal() - payment,
-              paymentMethodID: defMethod.id,
+              paymentMethodId: defMethod.id,
               reference: '',
               note: '',
             ),

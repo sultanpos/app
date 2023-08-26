@@ -2,18 +2,14 @@ import 'package:sultanpos/model/base.dart';
 
 part 'pricegroup.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(fieldRename: FieldRename.snake)
 class PriceGroupModel extends LocalSqlBase {
   final int id;
-  @JsonKey(name: 'updated_at')
   final DateTime updatedAt;
-  @JsonKey(name: 'deleted_at')
   final DateTime? deletedAt;
   final String name;
   final String description;
-  @JsonKey(name: 'public_description')
   final String publicDescription;
-  @JsonKey(name: 'is_default')
   final bool isDefault;
 
   PriceGroupModel(
@@ -84,11 +80,10 @@ class PriceGroupAddRequestModel extends BaseModel {
   Map<String, dynamic> toJson() => _$PriceGroupAddRequestModelToJson(this);
 }
 
-@JsonSerializable()
+@JsonSerializable(fieldRename: FieldRename.snake)
 class PriceGroupUpdateRequestModel extends BaseModel {
   final String name;
   final String description;
-  @JsonKey(name: 'public_description')
   final String publicDescription;
 
   PriceGroupUpdateRequestModel(this.name, this.description, this.publicDescription);

@@ -2,7 +2,7 @@ import 'package:sultanpos/model/base.dart';
 
 part 'branch.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(fieldRename: FieldRename.snake)
 class BranchModel extends BaseModel {
   final int id;
   final String name;
@@ -12,7 +12,6 @@ class BranchModel extends BaseModel {
   final String phone;
   final String npwp;
   final String image;
-  @JsonKey(name: 'is_default')
   final bool isDefault;
   BranchModel(
       this.id, this.name, this.code, this.fullname, this.address, this.phone, this.npwp, this.image, this.isDefault);

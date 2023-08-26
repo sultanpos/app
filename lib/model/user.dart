@@ -2,7 +2,7 @@ import 'package:sultanpos/model/base.dart';
 
 part 'user.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(fieldRename: FieldRename.snake)
 class UserModel extends BaseModel {
   final int id;
   final String username;

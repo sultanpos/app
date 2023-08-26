@@ -4,16 +4,12 @@ import 'package:sultanpos/model/request.dart';
 
 part 'partner.g.dart';
 
-@JsonSerializable(explicitToJson: true)
+@JsonSerializable(explicitToJson: true, fieldRename: FieldRename.snake)
 class PartnerModel extends LocalSqlBase {
   final int id;
-  @JsonKey(name: 'updated_at')
   final DateTime updatedAt;
-  @JsonKey(name: 'deleted_at')
   final DateTime? deletedAt;
-  @JsonKey(name: 'is_supplier')
   final bool isSupplier;
-  @JsonKey(name: 'is_customer')
   final bool isCustomer;
   final String number;
   final String name;
@@ -23,9 +19,7 @@ class PartnerModel extends LocalSqlBase {
   final String email;
   final int debt;
   final int credit;
-  @JsonKey(name: 'price_group_id')
   final int priceGroupId;
-  @JsonKey(name: 'price_group')
   final PriceGroupModel? priceGroup;
 
   PartnerModel(this.id, this.updatedAt, this.deletedAt, this.isSupplier, this.isCustomer, this.number, this.name,

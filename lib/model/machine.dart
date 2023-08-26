@@ -2,7 +2,7 @@ import 'package:sultanpos/model/base.dart';
 
 part 'machine.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(fieldRename: FieldRename.snake)
 class MachineModel extends BaseModel {
   final int id;
   MachineModel(this.id);

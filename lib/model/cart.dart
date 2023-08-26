@@ -113,7 +113,7 @@ class CartModel implements ICart {
   }
 }
 
-@JsonSerializable(explicitToJson: true)
+@JsonSerializable(explicitToJson: true, fieldRename: FieldRename.snake)
 class CartItemModel implements ICartItem {
   final ProductModel product;
   final int itemAmount;

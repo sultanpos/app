@@ -3,43 +3,33 @@ import 'package:sultanpos/model/pricegroup.dart';
 
 part 'price.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(fieldRename: FieldRename.snake)
 class PriceModel extends LocalSqlBase {
   final int id;
-  @JsonKey(name: 'updated_at')
   final DateTime updatedAt;
-  @JsonKey(name: 'deleted_at')
   final DateTime? deletedAt;
-  @JsonKey(name: 'price_group_id')
   final int priceGroupId;
-  @JsonKey(name: 'product_id')
   final int productId;
   final int count0;
   final int price0;
-  @JsonKey(name: 'discount_formula0')
   final String discountFormula0;
   final int discount0;
   final int count1;
   final int price1;
-  @JsonKey(name: 'discount_formula1')
   final String discountFormula1;
   final int discount1;
   final int count2;
   final int price2;
-  @JsonKey(name: 'discount_formula2')
   final String discountFormula2;
   final int discount2;
   final int count3;
   final int price3;
-  @JsonKey(name: 'discount_formula3')
   final String discountFormula3;
   final int discount3;
   final int count4;
   final int price4;
-  @JsonKey(name: 'discount_formula4')
   final String discountFormula4;
   final int discount4;
-  @JsonKey(name: 'price_group')
   final PriceGroupModel? priceGroup;
   PriceModel(
     this.id,

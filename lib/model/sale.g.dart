@@ -121,7 +121,7 @@ PaymentCashierInsertModel _$PaymentCashierInsertModelFromJson(
       amount: json['amount'] as int,
       payment: json['payment'] as int,
       changes: json['changes'] as int,
-      paymentMethodID: json['payment_method_id'] as int,
+      paymentMethodId: json['payment_method_id'] as int,
       reference: json['reference'] as String,
       note: json['note'] as String,
     );
@@ -132,7 +132,7 @@ Map<String, dynamic> _$PaymentCashierInsertModelToJson(
       'amount': instance.amount,
       'payment': instance.payment,
       'changes': instance.changes,
-      'payment_method_id': instance.paymentMethodID,
+      'payment_method_id': instance.paymentMethodId,
       'reference': instance.reference,
       'note': instance.note,
     };

@@ -59,32 +59,25 @@ enum PurchaseStockStatus implements Comparable<PurchaseStockStatus> {
   }
 }
 
-@JsonSerializable(explicitToJson: true)
+@JsonSerializable(explicitToJson: true, fieldRename: FieldRename.snake)
 class PurchaseModel extends BaseModel {
   final int id;
   final DateTime date;
-  @JsonKey(name: 'ref_number')
   final String refNumber;
   final String number;
   final PurchaseType type;
   final PurchaseStatus status;
-  @JsonKey(name: 'stock_status')
   final PurchaseStockStatus stockStatus;
-  @JsonKey(name: 'cashier_session_id')
   final int cashierSessionId;
   @JsonKey(name: 'subtotal')
   final int subTotal;
-  @JsonKey(name: 'discount_formula')
   final String discountFormula;
   final int discount;
-  @JsonKey(name: 'payment_paid')
   final int paymentPaid;
-  @JsonKey(name: 'payment_residual')
   final int paymentResidual;
   final int total;
   final DateTime deadline;
   final int version;
-  @JsonKey(name: 'partner_id')
   final int partnerId;
   final BranchModel? branch;
   final PartnerModel? partner;
@@ -136,14 +129,11 @@ class PurchaseModel extends BaseModel {
   }
 }
 
-@JsonSerializable()
+@JsonSerializable(fieldRename: FieldRename.snake)
 class PurchaseInsertModel extends BaseModel {
   final DateTime date;
-  @JsonKey(name: 'branch_id')
   final int branchId;
-  @JsonKey(name: 'partner_id')
   final int partnerId;
-  @JsonKey(name: 'ref_number')
   final String refNumber;
   final String type;
   final DateTime deadline;
@@ -169,14 +159,11 @@ class PurchaseInsertModel extends BaseModel {
   Map<String, dynamic> toJson() => _$PurchaseInsertModelToJson(this);
 }
 
-@JsonSerializable()
+@JsonSerializable(fieldRename: FieldRename.snake)
 class PurchaseUpdateModel extends BaseModel {
   final DateTime date;
-  @JsonKey(name: 'branch_id')
   final int branchId;
-  @JsonKey(name: 'partner_id')
   final int partnerId;
-  @JsonKey(name: 'ref_number')
   final String refNumber;
   final DateTime deadline;
 
@@ -200,22 +187,19 @@ class PurchaseUpdateModel extends BaseModel {
   Map<String, dynamic> toJson() => _$PurchaseUpdateModelToJson(this);
 }
 
-@JsonSerializable()
+@JsonSerializable(fieldRename: FieldRename.snake)
 class PurchaseItemModel extends BaseModel {
   @JsonKey(includeFromJson: false, includeToJson: false)
   final int? purchaseId;
   final int id;
   final int amount;
-  @JsonKey(name: 'buy_price')
   final int buyPrice;
   final int price;
   final int subtotal;
-  @JsonKey(name: 'discount_formula')
   final String discountFormula;
   final int discount;
   final int total;
   final String note;
-  @JsonKey(name: 'serial_stock_id')
   final int serialStockId;
   final ProductModel? product;
 
@@ -260,17 +244,14 @@ class PurchaseUpdateStatusModel extends BaseModel {
   Map<String, dynamic> toJson() => _$PurchaseUpdateStatusModelToJson(this);
 }
 
-@JsonSerializable()
+@JsonSerializable(fieldRename: FieldRename.snake)
 class PurchaseItemInsertModel extends BaseModel {
   @JsonKey(includeFromJson: false, includeToJson: false)
   final int? purchaseId;
-  @JsonKey(name: "serial_stock_id")
   final int serialStockId;
-  @JsonKey(name: "product_id")
   final int productId;
   final int amount;
   final int price;
-  @JsonKey(name: 'discount_formula')
   final String discountFormula;
   final String note;
 
@@ -289,15 +270,13 @@ class PurchaseItemInsertModel extends BaseModel {
   Map<String, dynamic> toJson() => _$PurchaseItemInsertModelToJson(this);
 }
 
-@JsonSerializable()
+@JsonSerializable(fieldRename: FieldRename.snake)
 class PurchaseItemUpdateModel extends BaseModel {
   @JsonKey(includeFromJson: false, includeToJson: false)
   final int? purchaseId;
-  @JsonKey(name: "product_id")
   final int productId;
   final int amount;
   final int price;
-  @JsonKey(name: 'discount_formula')
   final String discountFormula;
   final String note;
 

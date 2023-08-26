@@ -62,35 +62,26 @@ enum SaleStockStatus implements Comparable<SaleStockStatus> {
   }
 }
 
-@JsonSerializable(explicitToJson: true)
+@JsonSerializable(explicitToJson: true, fieldRename: FieldRename.snake)
 class SaleModel extends BaseModel {
   final int id;
   final String number;
   final DateTime date;
-  @JsonKey(name: "branch_id")
   final int branchId;
-  @JsonKey(name: "user_id")
   final int userId;
-  @JsonKey(name: 'ref_number')
   final String refNumber;
   final SaleType type;
   final SaleStatus status;
-  @JsonKey(name: 'stock_status')
   final SaleStockStatus stockStatus;
-  @JsonKey(name: 'cashier_session_id')
   final int cashierSessionId;
   final int subtotal;
-  @JsonKey(name: 'discount_formula')
   final String discountFormula;
   final int discount;
-  @JsonKey(name: 'payment_paid')
   final int paymentPaid;
-  @JsonKey(name: 'payment_residual')
   final int paymentResidual;
   final int total;
   final DateTime? deadline;
   final int version;
-  @JsonKey(name: 'partner_id')
   final int partnerId;
   final PartnerModel? partner;
   final UserModel? user;
@@ -125,20 +116,16 @@ class SaleModel extends BaseModel {
   Map<String, dynamic> toJson() => _$SaleModelToJson(this);
 }
 
-@JsonSerializable(explicitToJson: true)
+@JsonSerializable(explicitToJson: true, fieldRename: FieldRename.snake)
 class SaleItemModel extends BaseModel {
   final int id;
-  @JsonKey(name: 'sale_id')
   final int saleId;
-  @JsonKey(name: 'product_id')
   final int productId;
   final int batch;
   final int amount;
-  @JsonKey(name: 'buy_price')
   final int buyPrice;
   final int price;
   final int subtotal;
-  @JsonKey(name: 'discount_formula')
   final String discountFormula;
   final int discount;
   final int total;
@@ -155,13 +142,12 @@ class SaleItemModel extends BaseModel {
   Map<String, dynamic> toJson() => _$SaleItemModelToJson(this);
 }
 
-@JsonSerializable(explicitToJson: true)
+@JsonSerializable(explicitToJson: true, fieldRename: FieldRename.snake)
 class PaymentCashierInsertModel extends BaseModel {
   final int amount;
   final int payment;
   final int changes;
-  @JsonKey(name: 'payment_method_id')
-  final int paymentMethodID;
+  final int paymentMethodId;
   final String reference;
   final String note;
 
@@ -169,7 +155,7 @@ class PaymentCashierInsertModel extends BaseModel {
     required this.amount,
     required this.payment,
     required this.changes,
-    required this.paymentMethodID,
+    required this.paymentMethodId,
     required this.reference,
     required this.note,
   });
@@ -181,15 +167,13 @@ class PaymentCashierInsertModel extends BaseModel {
   Map<String, dynamic> toJson() => _$PaymentCashierInsertModelToJson(this);
 }
 
-@JsonSerializable(explicitToJson: true)
+@JsonSerializable(explicitToJson: true, fieldRename: FieldRename.snake)
 class SaleItemInsertModel extends BaseModel {
   final int batch;
-  @JsonKey(name: 'product_id')
   final int productId;
   final int amount;
   final int price;
   final int subtotal;
-  @JsonKey(name: 'discount_formula')
   final String discountFormula;
   final int discount;
   final int total;
@@ -214,21 +198,16 @@ class SaleItemInsertModel extends BaseModel {
   Map<String, dynamic> toJson() => _$SaleItemInsertModelToJson(this);
 }
 
-@JsonSerializable(explicitToJson: true)
+@JsonSerializable(explicitToJson: true, fieldRename: FieldRename.snake)
 class SaleCashierInsertModel extends BaseModel {
-  @JsonKey(name: 'branch_id')
   final int branchId;
   final int version;
   final String number;
-  @JsonKey(name: 'user_id')
   final int userId;
-  @JsonKey(name: 'cashier_session_id')
   final int cashierSessionId;
   final DateTime date;
-  @JsonKey(name: 'partner_id')
   final int partnerId;
   final DateTime? deadline;
-  @JsonKey(name: 'discount_formula')
   final String discountFormula;
   final int subtotal;
   final int discount;

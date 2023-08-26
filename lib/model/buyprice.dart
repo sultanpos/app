@@ -3,12 +3,10 @@ import 'package:sultanpos/model/branch.dart';
 
 part 'buyprice.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(fieldRename: FieldRename.snake)
 class BuyPriceModel extends BaseModel {
   final int id;
-  @JsonKey(name: 'buy_price')
   final int buyPrice;
-  @JsonKey(name: 'last_buy_price')
   final int lastBuyPrice;
   final BranchModel branch;
   BuyPriceModel(this.id, this.buyPrice, this.lastBuyPrice, this.branch);

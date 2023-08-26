@@ -22,20 +22,16 @@ enum PaymentMethodType implements Comparable<PaymentMethodType> {
   }
 }
 
-@JsonSerializable()
+@JsonSerializable(fieldRename: FieldRename.snake)
 class PaymentMethodModel extends LocalSqlBase {
   final int id;
-  @JsonKey(name: 'updated_at')
   final DateTime updatedAt;
-  @JsonKey(name: 'deleted_at')
   final DateTime? deletedAt;
-  @JsonKey(name: 'branch_id')
   final int branchId;
   final String name;
   final String description;
   final String additional;
   final PaymentMethodType method;
-  @JsonKey(name: 'is_default')
   final bool isDefault;
   PaymentMethodModel(this.id, this.updatedAt, this.deletedAt, this.branchId, this.name, this.description,
       this.additional, this.method, this.isDefault);
@@ -77,9 +73,8 @@ class PaymentMethodModel extends LocalSqlBase {
   }
 }
 
-@JsonSerializable()
+@JsonSerializable(fieldRename: FieldRename.snake)
 class PaymentMethodInsertModel extends BaseModel {
-  @JsonKey(name: 'branch_id')
   final int branchId;
   final String name;
   final String description;
@@ -94,9 +89,8 @@ class PaymentMethodInsertModel extends BaseModel {
   Map<String, dynamic> toJson() => _$PaymentMethodInsertModelToJson(this);
 }
 
-@JsonSerializable()
+@JsonSerializable(fieldRename: FieldRename.snake)
 class PaymentMethodUpdateModel extends BaseModel {
-  @JsonKey(name: 'branch_id')
   final int branchId;
   final String name;
   final String description;

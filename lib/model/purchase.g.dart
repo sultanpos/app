@@ -31,7 +31,7 @@ PurchaseModel _$PurchaseModelFromJson(Map<String, dynamic> json) =>
       json['partner'] == null
           ? null
           : PartnerModel.fromJson(json['partner'] as Map<String, dynamic>),
-      (json['purchaseItems'] as List<dynamic>?)
+      (json['purchase_items'] as List<dynamic>?)
           ?.map((e) => PurchaseItemModel.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
@@ -57,7 +57,7 @@ Map<String, dynamic> _$PurchaseModelToJson(PurchaseModel instance) =>
       'partner_id': instance.partnerId,
       'branch': instance.branch?.toJson(),
       'partner': instance.partner?.toJson(),
-      'purchaseItems': instance.purchaseItems?.map((e) => e.toJson()).toList(),
+      'purchase_items': instance.purchaseItems?.map((e) => e.toJson()).toList(),
     };
 
 const _$PurchaseTypeEnumMap = {

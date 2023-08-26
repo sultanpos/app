@@ -37,23 +37,19 @@ enum PaymentRefer implements Comparable<PaymentRefer> {
   }
 }
 
-@JsonSerializable()
+@JsonSerializable(fieldRename: FieldRename.snake)
 class PaymentModel extends BaseModel {
   final int id;
   final DateTime date;
   final String number;
-  @JsonKey(name: 'ref_number')
   final String refNumber;
-  @JsonKey(name: 'user_id')
   final int userId;
   final PaymentType type;
   final PaymentRefer refer;
   final int amount;
   final int payment;
   final String note;
-  @JsonKey(name: 'cashier_session_id')
   final int cashierSessionId;
-  @JsonKey(name: 'payment_method')
   final PaymentMethodModel paymentMethod;
 
   PaymentModel(
