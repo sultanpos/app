@@ -7,42 +7,45 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:sultanpos/http/httpapi.dart';
 import 'package:sultanpos/http/websocket/message.pb.dart';
 import 'package:sultanpos/http/websocket/websocket.dart';
+import 'package:sultanpos/model/cashier.dart';
 import 'package:sultanpos/model/category.dart';
 import 'package:sultanpos/sync/local/database.dart';
 import 'package:sultanpos/sync/sync.dart';
 import 'package:test/test.dart';
+import 'package:uuid/uuid.dart';
 
 import 'sync_test.mocks.dart';
 
 @GenerateMocks([IHttpAPI, IWebSocketTransport])
 void main() async {
   sqfliteFfiInit();
-  final sync = Sync();
-  final httpApi = MockIHttpAPI();
-  final wsTransport = MockIWebSocketTransport();
-  final db = SqliteDatabase(123, inMemory: true);
-  final Map<String, List<CategoryModel>> datas = {};
-  StreamController<Message> streamController = StreamController<Message>.broadcast();
-
-  when(wsTransport.listen(any,
-          onDone: anyNamed('onDone'), onError: anyNamed('onError'), cancelOnError: anyNamed('cancelOnError')))
-      .thenAnswer(
-    (invoke) {
-      return streamController.stream.listen(invoke.positionalArguments[0], onDone: invoke.namedArguments["onDone"]);
-    },
-  );
-
-  when(httpApi.querySync(any, any, any)).thenAnswer((invoke) async {
-    final table = invoke.positionalArguments[0];
-    if (datas.containsKey(table)) {
-      return Response(requestOptions: RequestOptions(), data: {"data": datas[table]!.map((e) => e.toJson()).toList()});
-    }
-    return Response(requestOptions: RequestOptions(), data: {"data": []});
-  });
 
   test(
     'sync_category',
     () async {
+      final sync = Sync();
+      final httpApi = MockIHttpAPI();
+      final wsTransport = MockIWebSocketTransport();
+      final db = SqliteDatabase(123, inMemory: true);
+      final Map<String, List<CategoryModel>> datas = {};
+      StreamController<Message> streamController = StreamController<Message>.broadcast();
+
+      when(wsTransport.listen(any,
+              onDone: anyNamed('onDone'), onError: anyNamed('onError'), cancelOnError: anyNamed('cancelOnError')))
+          .thenAnswer(
+        (invoke) {
+          return streamController.stream.listen(invoke.positionalArguments[0], onDone: invoke.namedArguments["onDone"]);
+        },
+      );
+
+      when(httpApi.querySync(any, any, any)).thenAnswer((invoke) async {
+        final table = invoke.positionalArguments[0];
+        if (datas.containsKey(table)) {
+          return Response(
+              requestOptions: RequestOptions(), data: {"data": datas[table]!.map((e) => e.toJson()).toList()});
+        }
+        return Response(requestOptions: RequestOptions(), data: {"data": []});
+      });
       //await expectLater(await db.open(), returnsNormally);
       await db.open();
       sync.init(httpApi, db, wsTransport);
@@ -78,4 +81,46 @@ void main() async {
       expect(id50.name, updated50.name);
     },
   );
+
+  test('sync up', () async {
+    final sync = Sync();
+    final httpApi = MockIHttpAPI();
+    final wsTransport = MockIWebSocketTransport();
+    final db = SqliteDatabase(456, inMemory: true);
+    Map<String, dynamic>? data;
+    StreamController<Message> streamController = StreamController<Message>.broadcast();
+
+    when(wsTransport.listen(any,
+            onDone: anyNamed('onDone'), onError: anyNamed('onError'), cancelOnError: anyNamed('cancelOnError')))
+        .thenAnswer(
+      (invoke) {
+        return streamController.stream.listen(invoke.positionalArguments[0], onDone: invoke.namedArguments["onDone"]);
+      },
+    );
+
+    when(httpApi.querySync(any, any, any)).thenAnswer((invoke) async {
+      return Response(requestOptions: RequestOptions(), data: {"data": []});
+    });
+
+    when(httpApi.syncUp(any, any)).thenAnswer((invoke) async {
+      if (invoke.positionalArguments[0] == "cashiersession") {
+        data = invoke.positionalArguments[1];
+        return {'status': true};
+      }
+      throw 'error happens';
+    });
+
+    expect(await db.open(), null);
+    sync.init(httpApi, db, wsTransport);
+    sync.start();
+
+    final cashierSess = CashierSessionModel(null, DateTime.now(), null, 1, const Uuid().v4().toString(), DateTime.now(),
+        null, 1, 150000, 0, 0, 0, '', null, null);
+    expect(await db.insert(cashierSess), greaterThan(0));
+    sync.syncUp("cashiersession");
+    await Future.delayed(const Duration(milliseconds: 200));
+    expect(data?.length, greaterThan(0));
+    final res = await db.getById('cashiersession', 1, CashierSessionModel.fromSqlite);
+    expect(res?.updatedAt, isNotNull);
+  });
 }

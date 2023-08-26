@@ -154,6 +154,7 @@ class HttpAPI implements IHttpAPI, TokenProvider {
 
   @override
   Future syncUp(String tableName, Map<String, dynamic> json) {
-    return fetch.post(_generateUrl('/sync/$tableName', false), data: json);
+    final response = fetch.post(_generateUrl('/sync/$tableName', false), data: json);
+    return response.data;
   }
 }

@@ -137,7 +137,7 @@ class CashierRootState extends ChangeNotifier {
     fgCloseValue.reset();
     notifyListeners();
     try {
-      report = await cashierSessionRepo.getReport(currentSession!.id);
+      report = await cashierSessionRepo.getReport(currentSession!.id!);
       reportLoading = false;
       notifyListeners();
     } catch (e) {
@@ -152,8 +152,8 @@ class CashierRootState extends ChangeNotifier {
     notifyListeners();
     try {
       await cashierSessionRepo.close(
-          currentSession!.id, CashierSessionCloseModel(DateTime.now().toUtc(), moneyValue(fgCloseValue.value!)));
-      currentSession = await cashierSessionRepo.get(currentSession!.id);
+          currentSession!.id!, CashierSessionCloseModel(DateTime.now().toUtc(), moneyValue(fgCloseValue.value!)));
+      currentSession = await cashierSessionRepo.get(currentSession!.id!);
       reportLoading = true;
       saving = false;
       notifyListeners();

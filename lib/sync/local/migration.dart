@@ -27,6 +27,7 @@ class SqliteMigration {
   credit INTEGER not null default 0
 )
 ''',
+      'CREATE INDEX partner_updated_at ON partner (updated_at)',
       '''CREATE TABLE category (
 	id INTEGER PRIMARY KEY,
   updated_at DATETIME not null,
@@ -68,6 +69,8 @@ class SqliteMigration {
   discount4 INTEGER not null default 0
 )
 ''',
+      'CREATE INDEX price_updated_at ON price (updated_at)',
+      'CREATE INDEX price_product_id ON price (product_id)',
       '''CREATE TABLE pricegroup (
 	id INTEGER PRIMARY KEY,
 	updated_at DATETIME not null,
@@ -100,6 +103,8 @@ class SqliteMigration {
   use_sn INTEGER not null default 0
 )
 ''',
+      'CREATE INDEX product_updated_at ON product (updated_at)',
+      'CREATE INDEX product_barcode ON product (barcode)',
       '''CREATE TABLE paymentmethod (
 	id INTEGER PRIMARY KEY,
 	updated_at DATETIME DEFAULT (datetime('now', 'localtime')),
@@ -110,6 +115,25 @@ class SqliteMigration {
   name TEXT not null,
   additional TEXT NOT NULL default '',
   description TEXT NOT NULL DEFAULT ''
+)
+''',
+      '''CREATE TABLE cashiersession (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+	  updated_at DATETIME DEFAULT (datetime('now', 'localtime')),
+	  deleted_at DATETIME,
+    sync_at DATETIME,
+    branch_id INTEGER NOT NULL,
+    user_id INTEGER NOT NULL,
+    number TEXT NOT NULL,
+    date_open DATETIME NOT NULL,
+    date_close DATETIME,
+    open_value INTEGER not null,
+    close_value INTEGER not null default 0,
+    calculated_value INTEGER not null default 0,
+    difference INTEGER not null default 0,
+    machine_id INTEGER,
+    note TEXT not null default '',
+    close_note TEXT not null default ''
 )
 '''
     ]

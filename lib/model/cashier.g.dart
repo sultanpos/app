@@ -8,11 +8,12 @@ part of 'cashier.dart';
 
 CashierSessionModel _$CashierSessionModelFromJson(Map<String, dynamic> json) =>
     CashierSessionModel(
-      json['id'] as int,
+      json['id'] as int?,
       DateTime.parse(json['updated_at'] as String),
       json['deleted_at'] == null
           ? null
           : DateTime.parse(json['deleted_at'] as String),
+      json['branch_id'] as int,
       json['number'] as String,
       DateTime.parse(json['date_open'] as String),
       json['date_close'] == null
@@ -27,7 +28,6 @@ CashierSessionModel _$CashierSessionModelFromJson(Map<String, dynamic> json) =>
       json['sync_at'] == null
           ? null
           : DateTime.parse(json['sync_at'] as String),
-      json['local_reference'] as String?,
       json['user'] == null
           ? null
           : UserModel.fromJson(json['user'] as Map<String, dynamic>),
@@ -39,6 +39,7 @@ Map<String, dynamic> _$CashierSessionModelToJson(
       'id': instance.id,
       'updated_at': instance.updatedAt.toIso8601String(),
       'deleted_at': instance.deletedAt?.toIso8601String(),
+      'branch_id': instance.branchId,
       'number': instance.number,
       'date_open': instance.dateOpen.toIso8601String(),
       'date_close': instance.dateClose?.toIso8601String(),
@@ -49,7 +50,6 @@ Map<String, dynamic> _$CashierSessionModelToJson(
       'machine_id': instance.machineId,
       'note': instance.note,
       'sync_at': instance.syncAt?.toIso8601String(),
-      'local_reference': instance.localReference,
       'user': instance.user?.toJson(),
     };
 

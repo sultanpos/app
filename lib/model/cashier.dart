@@ -3,38 +3,30 @@ import 'package:sultanpos/model/user.dart';
 
 part 'cashier.g.dart';
 
-@JsonSerializable(explicitToJson: true)
+typedef JsonReadValueFn = Object? Function(Map, String)?;
+
+@JsonSerializable(explicitToJson: true, fieldRename: FieldRename.snake)
 class CashierSessionModel extends LocalSqlBase {
-  final int id;
-  @JsonKey(name: 'updated_at')
+  final int? id;
   final DateTime updatedAt;
-  @JsonKey(name: 'deleted_at')
   final DateTime? deletedAt;
+  final int branchId;
   final String number;
-  @JsonKey(name: 'date_open')
   final DateTime dateOpen;
-  @JsonKey(name: 'date_close')
   final DateTime? dateClose;
-  @JsonKey(name: 'user_id')
   final int userId;
-  @JsonKey(name: 'open_value')
   final int openValue;
-  @JsonKey(name: 'close_value')
   final int closeValue;
-  @JsonKey(name: 'calculated_value')
   final int calculatedValue;
-  @JsonKey(name: 'machine_id')
   final int machineId;
   final String note;
-  @JsonKey(name: 'sync_at')
   final DateTime? syncAt;
-  @JsonKey(name: 'local_reference')
-  final String? localReference;
   final UserModel? user;
   CashierSessionModel(
     this.id,
     this.updatedAt,
     this.deletedAt,
+    this.branchId,
     this.number,
     this.dateOpen,
     this.dateClose,
@@ -45,13 +37,12 @@ class CashierSessionModel extends LocalSqlBase {
     this.machineId,
     this.note,
     this.syncAt,
-    this.localReference,
     this.user,
   );
   @override
   factory CashierSessionModel.fromJson(Map<String, dynamic> json) => _$CashierSessionModelFromJson(json);
   factory CashierSessionModel.empty() =>
-      CashierSessionModel(0, DateTime.now(), null, '', DateTime.now(), null, 0, 0, 0, 0, 0, '', null, '', null);
+      CashierSessionModel(0, DateTime.now(), null, 0, '', DateTime.now(), null, 0, 0, 0, 0, 0, '', null, null);
 
   @override
   factory CashierSessionModel.fromSqlite(Map<String, dynamic> json) => _$CashierSessionModelFromJson(json);
@@ -77,17 +68,12 @@ class CashierSessionModel extends LocalSqlBase {
   }
 }
 
-@JsonSerializable(explicitToJson: true)
+@JsonSerializable(explicitToJson: true, fieldRename: FieldRename.snake)
 class CashierSessionInsertModel extends BaseModel {
-  @JsonKey(name: 'branch_id')
   final int branchId;
-  @JsonKey(name: 'date_open')
   final DateTime dateOpen;
-  @JsonKey(name: 'user_id')
   final int userId;
-  @JsonKey(name: 'open_value')
   final int openValue;
-  @JsonKey(name: 'machine_id')
   final int machineId;
   final String note;
 
@@ -107,11 +93,9 @@ class CashierSessionInsertModel extends BaseModel {
   Map<String, dynamic> toJson() => _$CashierSessionInsertModelToJson(this);
 }
 
-@JsonSerializable(explicitToJson: true)
+@JsonSerializable(explicitToJson: true, fieldRename: FieldRename.snake)
 class CashierSessionCloseModel extends BaseModel {
-  @JsonKey(name: 'date_close')
   final DateTime dateClose;
-  @JsonKey(name: 'close_value')
   final int closeValue;
 
   CashierSessionCloseModel(
@@ -126,17 +110,12 @@ class CashierSessionCloseModel extends BaseModel {
   Map<String, dynamic> toJson() => _$CashierSessionCloseModelToJson(this);
 }
 
-@JsonSerializable(explicitToJson: true)
+@JsonSerializable(explicitToJson: true, fieldRename: FieldRename.snake)
 class CashierSessionReportModel extends BaseModel {
-  @JsonKey(name: 'sale_count')
   final int saleCount;
-  @JsonKey(name: 'payment_in_count')
   final int paymentInCount;
-  @JsonKey(name: 'payment_out_count')
   final int paymentOutCount;
-  @JsonKey(name: 'payment_in_total')
   final int paymentInTotal;
-  @JsonKey(name: 'payment_out_total')
   final int paymentOutTotal;
   CashierSessionReportModel(
     this.saleCount,

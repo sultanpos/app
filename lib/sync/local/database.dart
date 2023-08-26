@@ -8,6 +8,7 @@ import 'package:sultanpos/sync/local/migration.dart';
 abstract class ISqliteDatabase {
   Future open();
   Future insertOrUpdate<T extends LocalSqlBase>(T data);
+  Future insert<T extends LocalSqlBase>(T data);
   Future<T?> getLastData<T extends LocalSqlBase>(T data, T Function(Map<String, dynamic> json) creator);
   Future<T?> getById<T extends LocalSqlBase>(String table, int id, T Function(Map<String, dynamic> json) creator);
   Future<List<T>> query<T extends LocalSqlBase>(String table,
@@ -64,8 +65,13 @@ class SqliteDatabase implements ISqliteDatabase {
   }
 
   @override
-  insertOrUpdate<T extends LocalSqlBase>(T data) async {
+  insertOrUpdate<T extends LocalSqlBase>(T data) {
     return db.insert(data.getTableName(), data.toSqlite(), conflictAlgorithm: ConflictAlgorithm.replace);
+  }
+
+  @override
+  Future insert<T extends LocalSqlBase>(T data) {
+    return db.insert(data.getTableName(), data.toSqlite(), conflictAlgorithm: ConflictAlgorithm.fail);
   }
 
   @override
