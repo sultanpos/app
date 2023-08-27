@@ -8,10 +8,11 @@ class SyncUpItemSale extends SyncUpItem<SaleModel> {
     super.db,
     super.base,
     super.sqliteCreator,
+    super.listener,
   );
 
   @override
-  Future<Map<String, dynamic>> buildData(SaleModel item) async {
+  Future<Map<String, dynamic>?> buildData(SaleModel item) async {
     final items = await db.query<SaleItemModel>('saleitem',
         creator: SaleItemModel.fromSqlite, where: "sale_id = ?", whereArgs: [item.id]);
     final payments = await db.query<PaymentModel>('payment',

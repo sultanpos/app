@@ -3,6 +3,10 @@ import 'package:sultanpos/http/httpapi.dart';
 import 'package:sultanpos/model/base.dart';
 import 'package:sultanpos/sync/local/database.dart';
 
+abstract class SyncUpItemDoneListener {
+  void syncDone(String tableName);
+}
+
 class SyncUpItem<T extends LocalSqlBase> {
   IHttpAPI httpAPI;
   ISqliteDatabase db;
@@ -12,7 +16,8 @@ class SyncUpItem<T extends LocalSqlBase> {
   bool _running = false;
   T? lastData;
   final T Function(Map<String, dynamic> json) sqliteCreator;
-  SyncUpItem(this.httpAPI, this.db, this.base, this.sqliteCreator);
+  final SyncUpItemDoneListener? listener;
+  SyncUpItem(this.httpAPI, this.db, this.base, this.sqliteCreator, this.listener);
 
   String name() {
     return base.getTableName();
@@ -38,15 +43,21 @@ class SyncUpItem<T extends LocalSqlBase> {
     for (final item in data) {
       try {
         final jsonData = await buildData(item);
-        await httpAPI.syncUp(item.getTableName(), jsonData);
-        await db.updateById(item.getTableName(), item.getId(), {"sync_at": DateTime.now().toIso8601String()});
+        if (jsonData == null) continue;
+        final data = await httpAPI.syncUp(item.getTableName(), jsonData);
+        afterSync(item, data);
       } catch (e) {
         debugPrint(e.toString());
       }
     }
+    listener?.syncDone(name());
   }
 
-  Future<Map<String, dynamic>> buildData(T item) async {
+  Future<Map<String, dynamic>?> buildData(T item) async {
     return item.toJson();
+  }
+
+  afterSync(T item, Map<String, dynamic> data) async {
+    await db.updateById(item.getTableName(), item.getId(), {"sync_at": DateTime.now().toIso8601String()});
   }
 }

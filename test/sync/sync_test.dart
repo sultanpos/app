@@ -15,7 +15,7 @@ import 'package:sultanpos/model/sale.dart';
 import 'package:sultanpos/sync/local/database.dart';
 import 'package:sultanpos/sync/sync.dart';
 import 'package:test/test.dart';
-import 'package:uuid/uuid.dart';
+import 'package:ulid/ulid.dart';
 
 import 'sync_test.mocks.dart';
 
@@ -92,6 +92,7 @@ void main() async {
     final db = SqliteDatabase(456, inMemory: true);
     Map<String, dynamic>? data;
     StreamController<Message> streamController = StreamController<Message>.broadcast();
+    int idToReturn = 1001;
 
     when(wsTransport.listen(any,
             onDone: anyNamed('onDone'), onError: anyNamed('onError'), cancelOnError: anyNamed('cancelOnError')))
@@ -107,9 +108,16 @@ void main() async {
 
     when(httpApi.syncUp(any, any)).thenAnswer((invoke) async {
       final tableName = invoke.positionalArguments[0];
-      if (tableName == "cashiersession" || tableName == "payment" || tableName == "sale") {
+      if (tableName == "payment" ||
+          tableName == "sale" ||
+          tableName == "cashiersession" ||
+          tableName == "cashiersessionclose") {
         data = invoke.positionalArguments[1];
-        return {'status': true};
+        if (tableName == "cashiersessionclose") {
+          final postData = invoke.positionalArguments[1] as Map;
+          expect(postData['cashier_session_id'], equals(idToReturn));
+        }
+        return {'status': true, "id": idToReturn};
       }
       throw 'error happens';
     });
@@ -118,19 +126,24 @@ void main() async {
     sync.init(httpApi, db, wsTransport);
     sync.start();
 
-    final cashierSess = CashierSessionModel(0, DateTime.now(), null, 1, const Uuid().v4().toString(), DateTime.now(),
-        null, 1, 150000, 0, 0, 0, '', null, null);
+    final cashierSess = CashierSessionModel(
+        0, DateTime.now(), null, 1, Ulid().toCanonical(), DateTime.now(), null, 1, 150000, 0, 0, 0, '', 0, null, null);
     expect(await db.insert(cashierSess), greaterThan(0));
+    final cashierClose = CashierSessionCloseModel(0, DateTime.now(), 150000, '', 1, null);
+    expect(await db.insert(cashierClose), greaterThan(0));
     sync.syncUp("cashiersession");
     await Future.delayed(const Duration(milliseconds: 100));
     expect(data, isNotNull);
     expect(data?.length, greaterThan(0));
     final res = await db.getById('cashiersession', 1, CashierSessionModel.fromSqlite);
     expect(res?.syncAt, isNotNull);
+    expect(res?.serverId, equals(idToReturn));
+    final resClose = await db.getById('cashiersessionclose', 1, CashierSessionCloseModel.fromSqlite);
+    expect(resClose?.syncAt, isNotNull);
 
     // payment test
     data = null;
-    final payment = PaymentModel(0, DateTime.now(), 'payment001', const Uuid().v4().toString(), 1, PaymentType.typeIn,
+    final payment = PaymentModel(0, DateTime.now(), 'payment001', Ulid().toCanonical(), 1, PaymentType.typeIn,
         PaymentRefer.other, 0, 10000, 10000, 'note', 0, 1, null, null);
     expect(await db.insert(payment), greaterThan(0));
     sync.syncUp("payment");
@@ -141,32 +154,11 @@ void main() async {
     expect(resPayment?.syncAt, isNotNull);
 
     // sale test
-    final sale = SaleModel(
-        0,
-        const Uuid().v4().toString(),
-        DateTime.now(),
-        1,
-        1,
-        const Uuid().v4().toString(),
-        SaleType.cashier,
-        SaleStatus.done,
-        SaleStockStatus.received,
-        1,
-        10000,
-        '',
-        0,
-        10000,
-        0,
-        10000,
-        null,
-        1,
-        1,
-        null,
-        null,
-        null);
+    final sale = SaleModel(0, Ulid().toCanonical(), DateTime.now(), 1, 1, Ulid().toCanonical(), SaleType.cashier,
+        SaleStatus.done, SaleStockStatus.received, 1, 10000, '', 0, 10000, 0, 10000, null, 1, 1, null, null, null);
     expect(await db.insert(sale), greaterThan(0));
-    final payment2 = PaymentModel(0, DateTime.now(), const Uuid().v4().toString(), const Uuid().v4().toString(), 1,
-        PaymentType.typeIn, PaymentRefer.sale, 1, 10000, 10000, 'note', 0, 1, null, DateTime.now());
+    final payment2 = PaymentModel(0, DateTime.now(), Ulid().toCanonical(), Ulid().toCanonical(), 1, PaymentType.typeIn,
+        PaymentRefer.sale, 1, 10000, 10000, 'note', 0, 1, null, DateTime.now());
     expect(await db.insert(payment2), greaterThan(0));
     final items = [
       SaleItemModel(0, 1, 1, 1, 5, 500, 1000, 5000, '', 0, 5000, '', null),

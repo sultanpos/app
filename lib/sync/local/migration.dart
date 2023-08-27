@@ -133,6 +133,16 @@ class SqliteMigration {
     difference INTEGER not null default 0,
     machine_id INTEGER,
     note TEXT not null default '',
+    close_note TEXT not null default '',
+    server_id INTEGER
+)
+''',
+      '''CREATE TABLE cashiersessionclose (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    sync_at DATETIME,
+    cashier_session_id INTEGER NOT NULL,
+    date_close DATETIME,
+    close_value INTEGER not null default 0,
     close_note TEXT not null default ''
 )
 ''',
@@ -157,7 +167,8 @@ class SqliteMigration {
     deadline DATETIME,
     user_id INTEGER not null,
     cashier_session_id INTEGER,
-    sync_at DATETIME
+    sync_at DATETIME,
+    server_id INTEGER
 )
 ''',
       '''CREATE TABLE saleitem (
@@ -193,7 +204,8 @@ class SqliteMigration {
     payment INTEGER not null default 0,
     cashier_session_id INTEGER,
     note text not null,
-    sync_at DATETIME
+    sync_at DATETIME,
+    server_id INTEGER
 )
 '''
     ]

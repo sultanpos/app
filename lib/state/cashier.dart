@@ -152,7 +152,9 @@ class CashierRootState extends ChangeNotifier {
     notifyListeners();
     try {
       await cashierSessionRepo.close(
-          currentSession!.id!, CashierSessionCloseModel(DateTime.now().toUtc(), moneyValue(fgCloseValue.value!)));
+          currentSession!.id,
+          CashierSessionCloseModel(
+              0, DateTime.now().toUtc(), moneyValue(fgCloseValue.value!), '', currentSession!.id, null));
       currentSession = await cashierSessionRepo.get(currentSession!.id);
       reportLoading = true;
       saving = false;

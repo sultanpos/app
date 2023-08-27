@@ -21,6 +21,7 @@ class CashierSessionModel extends LocalSqlBase {
   final int machineId;
   final String note;
   final DateTime? syncAt;
+  final int? serverId;
   final UserModel? user;
   CashierSessionModel(
     this.id,
@@ -36,13 +37,14 @@ class CashierSessionModel extends LocalSqlBase {
     this.calculatedValue,
     this.machineId,
     this.note,
+    this.serverId,
     this.syncAt,
     this.user,
   );
   @override
   factory CashierSessionModel.fromJson(Map<String, dynamic> json) => _$CashierSessionModelFromJson(json);
   factory CashierSessionModel.empty() =>
-      CashierSessionModel(0, DateTime.now(), null, 0, '', DateTime.now(), null, 0, 0, 0, 0, 0, '', null, null);
+      CashierSessionModel(0, DateTime.now(), null, 0, '', DateTime.now(), null, 0, 0, 0, 0, 0, '', null, null, null);
 
   @override
   factory CashierSessionModel.fromSqlite(Map<String, dynamic> json) => _$CashierSessionModelFromJson(json);
@@ -98,20 +100,53 @@ class CashierSessionInsertModel extends BaseModel {
 }
 
 @JsonSerializable(explicitToJson: true, fieldRename: FieldRename.snake)
-class CashierSessionCloseModel extends BaseModel {
+class CashierSessionCloseModel extends LocalSqlBase {
+  final int id;
   final DateTime dateClose;
   final int closeValue;
+  final String closeNote;
+  final DateTime? syncAt;
+  final int cashierSessionId;
 
   CashierSessionCloseModel(
+    this.id,
     this.dateClose,
     this.closeValue,
+    this.closeNote,
+    this.cashierSessionId,
+    this.syncAt,
   );
 
   @override
   factory CashierSessionCloseModel.fromJson(Map<String, dynamic> json) => _$CashierSessionCloseModelFromJson(json);
 
   @override
+  factory CashierSessionCloseModel.fromSqlite(Map<String, dynamic> json) => _$CashierSessionCloseModelFromJson(json);
+
+  factory CashierSessionCloseModel.empty() => CashierSessionCloseModel(0, DateTime.now(), 0, '', 0, null);
+
+  @override
   Map<String, dynamic> toJson() => _$CashierSessionCloseModelToJson(this);
+
+  @override
+  int getId() => id;
+
+  @override
+  String getTableName() {
+    return 'cashiersessionclose';
+  }
+
+  @override
+  DateTime getUpdatedAt() {
+    return DateTime.now();
+  }
+
+  @override
+  Map<String, dynamic> toSqlite() {
+    final json = _$CashierSessionCloseModelToJson(this);
+    if (id == 0) json['id'] = null;
+    return json;
+  }
 }
 
 @JsonSerializable(explicitToJson: true, fieldRename: FieldRename.snake)

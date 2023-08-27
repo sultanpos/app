@@ -437,7 +437,7 @@ class MockIHttpAPI extends _i1.Mock implements _i6.IHttpAPI {
         returnValue: _i3.Future<dynamic>.value(),
       ) as _i3.Future<dynamic>);
   @override
-  _i3.Future<dynamic> syncUp(
+  _i3.Future<Map<String, dynamic>> syncUp(
     String? tableName,
     Map<String, dynamic>? json,
   ) =>
@@ -449,8 +449,9 @@ class MockIHttpAPI extends _i1.Mock implements _i6.IHttpAPI {
             json,
           ],
         ),
-        returnValue: _i3.Future<dynamic>.value(),
-      ) as _i3.Future<dynamic>);
+        returnValue:
+            _i3.Future<Map<String, dynamic>>.value(<String, dynamic>{}),
+      ) as _i3.Future<Map<String, dynamic>>);
 }
 
 /// A class which mocks [IWebSocketTransport].

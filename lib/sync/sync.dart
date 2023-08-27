@@ -17,9 +17,10 @@ import 'package:sultanpos/sync/local/database.dart';
 
 import 'package:sultanpos/sync/syncitem.dart';
 import 'package:sultanpos/sync/syncupitem.dart';
+import 'package:sultanpos/sync/syncupitem_cashiersession.dart';
 import 'package:sultanpos/sync/syncupitem_sale.dart';
 
-class Sync {
+class Sync implements SyncUpItemDoneListener {
   late IHttpAPI httpAPI;
   late ISqliteDatabase db;
   bool _running = false;
@@ -53,9 +54,11 @@ class Sync {
           sqliteCreator: PaymentMethodModel.fromSqlite, jsonCreator: PaymentMethodModel.fromJson),
     ];
     syncUpItems = [
-      SyncUpItem(httpAPI, db, CashierSessionModel.empty(), CashierSessionModel.fromSqlite),
-      SyncUpItem(httpAPI, db, PaymentModel.empty(), PaymentModel.fromSqlite),
-      SyncUpItemSale(httpAPI, db, SaleModel.empty(), SaleModel.fromSqlite),
+      SyncUpItemCashierSession(httpAPI, db, CashierSessionModel.empty(), CashierSessionModel.fromSqlite, this),
+      SyncUpItemCashierSessionClose(
+          httpAPI, db, CashierSessionCloseModel.empty(), CashierSessionCloseModel.fromSqlite, this),
+      SyncUpItem(httpAPI, db, PaymentModel.empty(), PaymentModel.fromSqlite, this),
+      SyncUpItemSale(httpAPI, db, SaleModel.empty(), SaleModel.fromSqlite, this),
     ];
     _subscription = wsTransport.listen((Message message) {
       if (message.hasRecordUpdated()) {
@@ -94,6 +97,13 @@ class Sync {
         item.start();
         break;
       }
+    }
+  }
+
+  @override
+  void syncDone(String tableName) {
+    if (tableName == "cashiersession") {
+      syncUp('cashiersessionclose');
     }
   }
 }
