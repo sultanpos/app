@@ -38,7 +38,7 @@ enum PaymentRefer implements Comparable<PaymentRefer> {
 }
 
 @JsonSerializable(fieldRename: FieldRename.snake)
-class PaymentModel extends BaseModel {
+class PaymentModel extends LocalSqlBase {
   final int id;
   final DateTime date;
   final String number;
@@ -46,11 +46,14 @@ class PaymentModel extends BaseModel {
   final int userId;
   final PaymentType type;
   final PaymentRefer refer;
+  final int referId;
   final int amount;
   final int payment;
   final String note;
   final int cashierSessionId;
-  final PaymentMethodModel paymentMethod;
+  final int paymentMethodId;
+  final PaymentMethodModel? paymentMethod;
+  final DateTime? syncAt;
 
   PaymentModel(
     this.id,
@@ -60,19 +63,46 @@ class PaymentModel extends BaseModel {
     this.userId,
     this.type,
     this.refer,
+    this.referId,
     this.amount,
     this.payment,
     this.note,
     this.cashierSessionId,
+    this.paymentMethodId,
     this.paymentMethod,
+    this.syncAt,
   );
 
   @override
   factory PaymentModel.fromJson(Map<String, dynamic> json) => _$PaymentModelFromJson(json);
 
   @override
+  factory PaymentModel.fromSqlite(Map<String, dynamic> json) => _$PaymentModelFromJson(json);
+
+  factory PaymentModel.empty() =>
+      PaymentModel(0, DateTime.now(), '', '', 0, PaymentType.typeIn, PaymentRefer.sale, 0, 0, 0, '', 0, 0, null, null);
+
+  @override
   Map<String, dynamic> toJson() => _$PaymentModelToJson(this);
 
   @override
   int getId() => id;
+
+  @override
+  String getTableName() {
+    return "payment";
+  }
+
+  @override
+  DateTime getUpdatedAt() {
+    return DateTime.now();
+  }
+
+  @override
+  Map<String, dynamic> toSqlite() {
+    final obj = _$PaymentModelToJson(this);
+    if (id == 0) obj['id'] = null;
+    obj.remove('payment_method');
+    return obj;
+  }
 }

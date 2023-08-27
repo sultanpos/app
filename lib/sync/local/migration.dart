@@ -135,6 +135,66 @@ class SqliteMigration {
     note TEXT not null default '',
     close_note TEXT not null default ''
 )
+''',
+      '''CREATE TABLE sale (
+	  id INTEGER PRIMARY KEY AUTOINCREMENT,
+    updated_at DATETIME DEFAULT (datetime('now', 'localtime')),
+    deleted_at DATETIME,
+    branch_id INTEGER NOT NULL,
+    partner_id INTEGER not null,
+    date DATETIME NOT NULL,
+    ref_number TEXT not null default '',
+    number TEXT not null,
+    type TEXT not null default 'normal',
+    status TEXT not null default 'draft',
+    stock_status TEXT not null default 'none',
+    subtotal INTEGER not null default 0,
+    discount_formula TEXT not null default '',
+    discount INTEGER not null default 0,
+    payment_paid INTEGER not null default 0,
+    payment_residual INTEGER not null default 0,
+    total INTEGER not null default 0,
+    deadline DATETIME,
+    user_id INTEGER not null,
+    cashier_session_id INTEGER,
+    sync_at DATETIME
+)
+''',
+      '''CREATE TABLE saleitem (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    sale_id INTEGER not null,
+    batch INTEGER not null default 1,
+    serial_stock_id INTEGER not null default 0,
+    product_id INTEGER not null default 0,
+    amount INTEGER not null default 0,
+    buy_price INTEGER not null default 0,
+    price INTEGER not null default 0,
+    subtotal INTEGER not null default 0,
+    discount_formula TEXT not null default '',
+    discount INTEGER not null default 0,
+    total INTEGER not null default 0,
+    note TEXT not null default ''
+)
+''',
+      '''CREATE TABLE payment (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    updated_at DATETIME DEFAULT (datetime('now', 'localtime')),
+    deleted_at DATETIME,
+    date DATETIME NOT NULL,
+    branch_id INTEGER NOT NULL default 0,
+    payment_method_id bigint not null,
+    number TEXT not null,
+    ref_number TEXT not null default '',
+    user_id INTEGER not null,
+    type TEXT not null,
+    refer TEXT not null,
+    refer_id INTEGER not null default 0,
+    amount INTEGER not null,
+    payment INTEGER not null default 0,
+    cashier_session_id INTEGER,
+    note text not null,
+    sync_at DATETIME
+)
 '''
     ]
   ];

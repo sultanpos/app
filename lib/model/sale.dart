@@ -63,7 +63,7 @@ enum SaleStockStatus implements Comparable<SaleStockStatus> {
 }
 
 @JsonSerializable(explicitToJson: true, fieldRename: FieldRename.snake)
-class SaleModel extends BaseModel {
+class SaleModel extends LocalSqlBase {
   final int id;
   final String number;
   final DateTime date;
@@ -84,6 +84,7 @@ class SaleModel extends BaseModel {
   final int version;
   final int partnerId;
   final PartnerModel? partner;
+  final DateTime? syncAt;
   final UserModel? user;
   SaleModel(
     this.id,
@@ -107,17 +108,51 @@ class SaleModel extends BaseModel {
     this.partnerId,
     this.partner,
     this.user,
+    this.syncAt,
   );
 
   @override
   factory SaleModel.fromJson(Map<String, dynamic> json) => _$SaleModelFromJson(json);
 
   @override
+  factory SaleModel.fromSqlite(Map<String, dynamic> json) {
+    final res = Map<String, dynamic>.from(json);
+    res['version'] = 0;
+    return _$SaleModelFromJson(res);
+  }
+
+  factory SaleModel.empty() => SaleModel(0, '', DateTime.now(), 1, 0, '', SaleType.normal, SaleStatus.draft,
+      SaleStockStatus.none, 0, 0, '', 0, 0, 0, 0, null, 0, 0, null, null, null);
+
+  @override
   Map<String, dynamic> toJson() => _$SaleModelToJson(this);
+
+  @override
+  int getId() => id;
+
+  @override
+  String getTableName() {
+    return "sale";
+  }
+
+  @override
+  DateTime getUpdatedAt() {
+    return DateTime.now();
+  }
+
+  @override
+  Map<String, dynamic> toSqlite() {
+    final obj = _$SaleModelToJson(this);
+    if (id == 0) obj['id'] = null;
+    obj.remove('user');
+    obj.remove('partner');
+    obj.remove('version');
+    return obj;
+  }
 }
 
 @JsonSerializable(explicitToJson: true, fieldRename: FieldRename.snake)
-class SaleItemModel extends BaseModel {
+class SaleItemModel extends LocalSqlBase {
   final int id;
   final int saleId;
   final int productId;
@@ -139,7 +174,33 @@ class SaleItemModel extends BaseModel {
   factory SaleItemModel.fromJson(Map<String, dynamic> json) => _$SaleItemModelFromJson(json);
 
   @override
+  factory SaleItemModel.fromSqlite(Map<String, dynamic> json) => _$SaleItemModelFromJson(json);
+
+  factory SaleItemModel.empty() => SaleItemModel(0, 0, 0, 0, 0, 0, 0, 0, '', 0, 0, '', null);
+
+  @override
   Map<String, dynamic> toJson() => _$SaleItemModelToJson(this);
+
+  @override
+  int getId() => id;
+
+  @override
+  String getTableName() {
+    return "saleitem";
+  }
+
+  @override
+  DateTime getUpdatedAt() {
+    return DateTime.now();
+  }
+
+  @override
+  Map<String, dynamic> toSqlite() {
+    final obj = _$SaleItemModelToJson(this);
+    if (id == 0) obj['id'] = null;
+    obj.remove('product');
+    return obj;
+  }
 }
 
 @JsonSerializable(explicitToJson: true, fieldRename: FieldRename.snake)

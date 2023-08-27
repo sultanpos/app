@@ -7,7 +7,7 @@ typedef JsonReadValueFn = Object? Function(Map, String)?;
 
 @JsonSerializable(explicitToJson: true, fieldRename: FieldRename.snake)
 class CashierSessionModel extends LocalSqlBase {
-  final int? id;
+  final int id;
   final DateTime updatedAt;
   final DateTime? deletedAt;
   final int branchId;
@@ -61,8 +61,12 @@ class CashierSessionModel extends LocalSqlBase {
   }
 
   @override
+  int getId() => id;
+
+  @override
   Map<String, dynamic> toSqlite() {
     final json = _$CashierSessionModelToJson(this);
+    if (id == 0) json.remove('id');
     json.remove('user');
     return json;
   }

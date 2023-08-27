@@ -6,15 +6,18 @@ import 'package:sultanpos/http/websocket/websocket.dart';
 import 'package:sultanpos/model/cashier.dart';
 import 'package:sultanpos/model/category.dart';
 import 'package:sultanpos/model/partner.dart';
+import 'package:sultanpos/model/payment.dart';
 import 'package:sultanpos/model/paymentmethod.dart';
 import 'package:sultanpos/model/price.dart';
 import 'package:sultanpos/model/pricegroup.dart';
 import 'package:sultanpos/model/product.dart';
+import 'package:sultanpos/model/sale.dart';
 import 'package:sultanpos/model/unit.dart';
 import 'package:sultanpos/sync/local/database.dart';
 
 import 'package:sultanpos/sync/syncitem.dart';
 import 'package:sultanpos/sync/syncupitem.dart';
+import 'package:sultanpos/sync/syncupitem_sale.dart';
 
 class Sync {
   late IHttpAPI httpAPI;
@@ -51,6 +54,8 @@ class Sync {
     ];
     syncUpItems = [
       SyncUpItem(httpAPI, db, CashierSessionModel.empty(), CashierSessionModel.fromSqlite),
+      SyncUpItem(httpAPI, db, PaymentModel.empty(), PaymentModel.fromSqlite),
+      SyncUpItemSale(httpAPI, db, SaleModel.empty(), SaleModel.fromSqlite),
     ];
     _subscription = wsTransport.listen((Message message) {
       if (message.hasRecordUpdated()) {

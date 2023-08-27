@@ -89,7 +89,7 @@ class PrinterState extends ChangeNotifier {
           final payment = payments.data[i];
           escp
               .hr()
-              .leftRight("Metode", payment.paymentMethod.name)
+              .leftRight("Metode", payment.paymentMethod?.name ?? '-')
               .leftRight("Pembayaran", formatMoney(payment.amount));
         }
       }

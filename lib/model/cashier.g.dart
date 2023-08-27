@@ -8,7 +8,7 @@ part of 'cashier.dart';
 
 CashierSessionModel _$CashierSessionModelFromJson(Map<String, dynamic> json) =>
     CashierSessionModel(
-      json['id'] as int?,
+      json['id'] as int,
       DateTime.parse(json['updated_at'] as String),
       json['deleted_at'] == null
           ? null

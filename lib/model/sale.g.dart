@@ -34,6 +34,9 @@ SaleModel _$SaleModelFromJson(Map<String, dynamic> json) => SaleModel(
       json['user'] == null
           ? null
           : UserModel.fromJson(json['user'] as Map<String, dynamic>),
+      json['sync_at'] == null
+          ? null
+          : DateTime.parse(json['sync_at'] as String),
     );
 
 Map<String, dynamic> _$SaleModelToJson(SaleModel instance) => <String, dynamic>{
@@ -57,6 +60,7 @@ Map<String, dynamic> _$SaleModelToJson(SaleModel instance) => <String, dynamic>{
       'version': instance.version,
       'partner_id': instance.partnerId,
       'partner': instance.partner?.toJson(),
+      'sync_at': instance.syncAt?.toIso8601String(),
       'user': instance.user?.toJson(),
     };
 

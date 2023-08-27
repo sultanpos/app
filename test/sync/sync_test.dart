@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:dio/dio.dart';
 import 'package:mockito/annotations.dart';
@@ -9,6 +10,8 @@ import 'package:sultanpos/http/websocket/message.pb.dart';
 import 'package:sultanpos/http/websocket/websocket.dart';
 import 'package:sultanpos/model/cashier.dart';
 import 'package:sultanpos/model/category.dart';
+import 'package:sultanpos/model/payment.dart';
+import 'package:sultanpos/model/sale.dart';
 import 'package:sultanpos/sync/local/database.dart';
 import 'package:sultanpos/sync/sync.dart';
 import 'package:test/test.dart';
@@ -103,7 +106,8 @@ void main() async {
     });
 
     when(httpApi.syncUp(any, any)).thenAnswer((invoke) async {
-      if (invoke.positionalArguments[0] == "cashiersession") {
+      final tableName = invoke.positionalArguments[0];
+      if (tableName == "cashiersession" || tableName == "payment" || tableName == "sale") {
         data = invoke.positionalArguments[1];
         return {'status': true};
       }
@@ -114,13 +118,75 @@ void main() async {
     sync.init(httpApi, db, wsTransport);
     sync.start();
 
-    final cashierSess = CashierSessionModel(null, DateTime.now(), null, 1, const Uuid().v4().toString(), DateTime.now(),
+    final cashierSess = CashierSessionModel(0, DateTime.now(), null, 1, const Uuid().v4().toString(), DateTime.now(),
         null, 1, 150000, 0, 0, 0, '', null, null);
     expect(await db.insert(cashierSess), greaterThan(0));
     sync.syncUp("cashiersession");
-    await Future.delayed(const Duration(milliseconds: 200));
+    await Future.delayed(const Duration(milliseconds: 100));
+    expect(data, isNotNull);
     expect(data?.length, greaterThan(0));
     final res = await db.getById('cashiersession', 1, CashierSessionModel.fromSqlite);
-    expect(res?.updatedAt, isNotNull);
+    expect(res?.syncAt, isNotNull);
+
+    // payment test
+    data = null;
+    final payment = PaymentModel(0, DateTime.now(), 'payment001', const Uuid().v4().toString(), 1, PaymentType.typeIn,
+        PaymentRefer.other, 0, 10000, 10000, 'note', 0, 1, null, null);
+    expect(await db.insert(payment), greaterThan(0));
+    sync.syncUp("payment");
+    await Future.delayed(const Duration(milliseconds: 100));
+    expect(data, isNotNull);
+    expect(data?.length, greaterThan(0));
+    final resPayment = await db.getById('payment', 1, PaymentModel.fromSqlite);
+    expect(resPayment?.syncAt, isNotNull);
+
+    // sale test
+    final sale = SaleModel(
+        0,
+        const Uuid().v4().toString(),
+        DateTime.now(),
+        1,
+        1,
+        const Uuid().v4().toString(),
+        SaleType.cashier,
+        SaleStatus.done,
+        SaleStockStatus.received,
+        1,
+        10000,
+        '',
+        0,
+        10000,
+        0,
+        10000,
+        null,
+        1,
+        1,
+        null,
+        null,
+        null);
+    expect(await db.insert(sale), greaterThan(0));
+    final payment2 = PaymentModel(0, DateTime.now(), const Uuid().v4().toString(), const Uuid().v4().toString(), 1,
+        PaymentType.typeIn, PaymentRefer.sale, 1, 10000, 10000, 'note', 0, 1, null, DateTime.now());
+    expect(await db.insert(payment2), greaterThan(0));
+    final items = [
+      SaleItemModel(0, 1, 1, 1, 5, 500, 1000, 5000, '', 0, 5000, '', null),
+      SaleItemModel(0, 1, 2, 1, 5, 500, 1000, 5000, '', 0, 5000, '', null),
+      // this is another items
+      SaleItemModel(0, 100, 1, 1, 5, 500, 1000, 5000, '', 0, 5000, '', null),
+      SaleItemModel(0, 100, 2, 1, 5, 500, 1000, 5000, '', 0, 5000, '', null),
+    ];
+    for (final item in items) {
+      expect(await db.insert(item), greaterThan(0));
+    }
+    data = null;
+    sync.syncUp("sale");
+    await Future.delayed(const Duration(milliseconds: 100));
+    final resSale = await db.getById('sale', 1, SaleModel.fromSqlite);
+    expect(resSale?.syncAt, isNotNull);
+    expect(data, isNotNull);
+    final paymentArr = data!['payments'] as List;
+    expect(paymentArr.length, equals(1));
+    final itemArr = data!['items'] as List;
+    expect(itemArr.length, equals(2));
   });
 }

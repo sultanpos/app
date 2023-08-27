@@ -61,7 +61,7 @@ class CashierSessionClosedWidget extends StatelessWidget {
               child: SButton(
                 label: "Print",
                 onPressed: () async {
-                  AppState().printer.printCashierClose(state.currentSession!.id!);
+                  AppState().printer.printCashierClose(state.currentSession!.id);
                 },
               ),
             ),

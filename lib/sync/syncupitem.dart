@@ -37,11 +37,16 @@ class SyncUpItem<T extends LocalSqlBase> {
     }
     for (final item in data) {
       try {
-        await httpAPI.syncUp(item.getTableName(), item.toJson());
-        await db.updateById(item.getTableName(), item.getId(), {"sync_at": DateTime.now().microsecondsSinceEpoch});
+        final jsonData = await buildData(item);
+        await httpAPI.syncUp(item.getTableName(), jsonData);
+        await db.updateById(item.getTableName(), item.getId(), {"sync_at": DateTime.now().toIso8601String()});
       } catch (e) {
         debugPrint(e.toString());
       }
     }
+  }
+
+  Future<Map<String, dynamic>> buildData(T item) async {
+    return item.toJson();
   }
 }
