@@ -12,7 +12,9 @@ import 'package:sultanpos/model/price.dart';
 import 'package:sultanpos/model/pricegroup.dart';
 import 'package:sultanpos/model/product.dart';
 import 'package:sultanpos/model/sale.dart';
+import 'package:sultanpos/model/stock.dart';
 import 'package:sultanpos/model/unit.dart';
+import 'package:sultanpos/state/global.dart';
 import 'package:sultanpos/sync/local/database.dart';
 
 import 'package:sultanpos/sync/syncitem.dart';
@@ -27,6 +29,7 @@ class Sync implements SyncUpItemDoneListener {
   late List<SyncItem> syncItems;
   late List<SyncUpItem> syncUpItems;
   StreamSubscription? _subscription;
+  ICurrentApp? currentApp;
 
   static final Sync _singleton = Sync._internal();
 
@@ -36,7 +39,7 @@ class Sync implements SyncUpItemDoneListener {
 
   Sync._internal();
 
-  init(IHttpAPI httpAPI, ISqliteDatabase db, IWebSocketTransport wsTransport) {
+  init(IHttpAPI httpAPI, ISqliteDatabase db, IWebSocketTransport wsTransport, ICurrentApp? currentApp) {
     this.httpAPI = httpAPI;
     this.db = db;
     syncItems = [
@@ -52,6 +55,8 @@ class Sync implements SyncUpItemDoneListener {
           sqliteCreator: ProductModel.fromSqlite, jsonCreator: ProductModel.fromJson),
       SyncItem(httpAPI, PaymentMethodModel.empty(), db,
           sqliteCreator: PaymentMethodModel.fromSqlite, jsonCreator: PaymentMethodModel.fromJson),
+      SyncItem(httpAPI, StockModel.empty(), db,
+          jsonCreator: StockModel.fromJson, sqliteCreator: StockModel.fromSqlite, currentApp: currentApp),
     ];
     syncUpItems = [
       SyncUpItemCashierSession(httpAPI, db, CashierSessionModel.empty(), CashierSessionModel.fromSqlite, this),

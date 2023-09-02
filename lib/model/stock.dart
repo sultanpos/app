@@ -5,12 +5,17 @@ import 'package:sultanpos/model/product.dart';
 part 'stock.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake)
-class StockModel extends BaseModel {
+class StockModel extends LocalSqlBase {
   final int id;
+  final DateTime updatedAt;
+  final DateTime? deletedAt;
   final int stock;
-  final BranchModel branch;
+  final int productId;
+  final int branchId;
+  final BranchModel? branch;
   final ProductModel? product;
-  StockModel(this.id, this.stock, this.branch, this.product);
+  StockModel(
+      this.id, this.updatedAt, this.deletedAt, this.stock, this.productId, this.branchId, this.branch, this.product);
 
   @override
   String? path() {
@@ -21,10 +26,38 @@ class StockModel extends BaseModel {
   factory StockModel.fromJson(Map<String, dynamic> json) => _$StockModelFromJson(json);
 
   @override
+  factory StockModel.fromSqlite(Map<String, dynamic> json) => _$StockModelFromJson(json);
+
+  factory StockModel.empty() => StockModel(0, DateTime.now(), null, 0, 0, 0, null, null);
+
+  @override
   Map<String, dynamic> toJson() => _$StockModelToJson(this);
 
   @override
   int getId() => id;
+
+  @override
+  String getTableName() {
+    return "stock";
+  }
+
+  @override
+  DateTime getUpdatedAt() {
+    return updatedAt;
+  }
+
+  @override
+  Map<String, dynamic> toSqlite() {
+    final json = _$StockModelToJson(this);
+    json.remove('branch');
+    json.remove('product');
+    return json;
+  }
+
+  @override
+  bool syncUseBranch() {
+    return true;
+  }
 }
 
 @JsonSerializable(fieldRename: FieldRename.snake)

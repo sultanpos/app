@@ -10,6 +10,11 @@ abstract class ISqliteDatabase {
   Future insertOrUpdate<T extends LocalSqlBase>(T data);
   Future insert<T extends LocalSqlBase>(T data);
   Future<T?> getLastData<T extends LocalSqlBase>(T data, T Function(Map<String, dynamic> json) creator);
+  Future<T?> first<T extends LocalSqlBase>(String table,
+      {String? where,
+      List<Object?>? whereArgs,
+      String? orderBy,
+      required T Function(Map<String, dynamic> json) creator});
   Future<T?> getById<T extends LocalSqlBase>(String table, int id, T Function(Map<String, dynamic> json) creator);
   Future<List<T>> query<T extends LocalSqlBase>(String table,
       {String? where,
@@ -81,6 +86,24 @@ class SqliteDatabase implements ISqliteDatabase {
       return creator(result.first);
     }
     return null;
+  }
+
+  @override
+  Future<T?> first<T extends LocalSqlBase>(String table,
+      {String? where,
+      List<Object?>? whereArgs,
+      String? orderBy,
+      required T Function(Map<String, dynamic> json) creator}) async {
+    final records = await db.query(
+      table,
+      where: where,
+      whereArgs: whereArgs,
+      limit: 1,
+      orderBy: orderBy,
+    );
+    final sqlRecord = records.firstOrNull;
+    if (sqlRecord == null) return null;
+    return creator(sqlRecord);
   }
 
   Future<String> _getPath() async {

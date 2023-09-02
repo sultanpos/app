@@ -5,7 +5,11 @@ import 'package:sultanpos/model/claim.dart';
 import 'package:sultanpos/preference.dart';
 import 'package:sultanpos/repository/repository.dart';
 
-class GlobalState extends ChangeNotifier {
+abstract class ICurrentApp {
+  int currentBranchId();
+}
+
+class GlobalState extends ChangeNotifier implements ICurrentApp {
   final Preference preference;
   final BaseCRUDRepository<BranchModel> branchRepo;
   BranchModel? currentBranch;
@@ -34,5 +38,10 @@ class GlobalState extends ChangeNotifier {
   selectBranch(int index) {
     currentBranch = branches[index];
     notifyListeners();
+  }
+
+  @override
+  int currentBranchId() {
+    return currentBranch?.id ?? 0;
   }
 }

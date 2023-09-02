@@ -117,6 +117,17 @@ class SqliteMigration {
   description TEXT NOT NULL DEFAULT ''
 )
 ''',
+      '''CREATE TABLE stock (
+	id INTEGER PRIMARY KEY,
+	updated_at DATETIME DEFAULT (datetime('now', 'localtime')),
+	deleted_at DATETIME,
+  product_id INTEGER NOT NULL,
+  branch_id INTEGER NOT NULL,
+  stock INTEGER NOT NULL default 0
+)
+''',
+      'CREATE INDEX stock_updated_at ON stock (updated_at)',
+      'CREATE INDEX product_id ON stock (product_id)',
       '''CREATE TABLE cashiersession (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
 	  updated_at DATETIME DEFAULT (datetime('now', 'localtime')),

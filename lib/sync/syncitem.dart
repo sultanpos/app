@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sultanpos/http/httpapi.dart';
 import 'package:sultanpos/model/base.dart';
+import 'package:sultanpos/state/global.dart';
 import 'package:sultanpos/sync/local/database.dart';
 
 class SyncItem<T extends LocalSqlBase> {
@@ -12,9 +13,10 @@ class SyncItem<T extends LocalSqlBase> {
   DateTime? lastDate;
   bool _running = false;
   T? lastData;
+  ICurrentApp? currentApp;
   final T Function(Map<String, dynamic> json) jsonCreator;
   final T Function(Map<String, dynamic> json) sqliteCreator;
-  SyncItem(this.httpAPI, this.base, this.db, {required this.jsonCreator, required this.sqliteCreator});
+  SyncItem(this.httpAPI, this.base, this.db, {required this.jsonCreator, required this.sqliteCreator, this.currentApp});
 
   String name() {
     return base.getTableName();
@@ -23,8 +25,29 @@ class SyncItem<T extends LocalSqlBase> {
   Future start() async {
     if (_running) return;
     _running = true;
-    lastData = await db.getLastData(base, sqliteCreator);
+    lastData = await getLastData();
     _doRun();
+  }
+
+  Future<T?> getLastData() async {
+    if (base.syncUseBranch()) {
+      if (currentApp == null) {
+        debugPrint('error current app is null');
+        throw 'current app is null';
+      }
+      return db.first(
+        base.getTableName(),
+        creator: sqliteCreator,
+        orderBy: "updated_at DESC, id DESC",
+        where: "branch_id = ?",
+        whereArgs: [currentApp!.currentBranchId()],
+      );
+    }
+    return db.first(
+      base.getTableName(),
+      creator: sqliteCreator,
+      orderBy: "updated_at DESC, id DESC",
+    );
   }
 
   _doRun() async {

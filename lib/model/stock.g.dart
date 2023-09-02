@@ -8,8 +8,16 @@ part of 'stock.dart';
 
 StockModel _$StockModelFromJson(Map<String, dynamic> json) => StockModel(
       json['id'] as int,
+      DateTime.parse(json['updated_at'] as String),
+      json['deleted_at'] == null
+          ? null
+          : DateTime.parse(json['deleted_at'] as String),
       json['stock'] as int,
-      BranchModel.fromJson(json['branch'] as Map<String, dynamic>),
+      json['product_id'] as int,
+      json['branch_id'] as int,
+      json['branch'] == null
+          ? null
+          : BranchModel.fromJson(json['branch'] as Map<String, dynamic>),
       json['product'] == null
           ? null
           : ProductModel.fromJson(json['product'] as Map<String, dynamic>),
@@ -18,7 +26,11 @@ StockModel _$StockModelFromJson(Map<String, dynamic> json) => StockModel(
 Map<String, dynamic> _$StockModelToJson(StockModel instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'updated_at': instance.updatedAt.toIso8601String(),
+      'deleted_at': instance.deletedAt?.toIso8601String(),
       'stock': instance.stock,
+      'product_id': instance.productId,
+      'branch_id': instance.branchId,
       'branch': instance.branch,
       'product': instance.product,
     };

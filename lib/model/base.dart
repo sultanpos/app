@@ -28,4 +28,7 @@ abstract class LocalSqlBase extends BaseModel {
   DateTime getUpdatedAt();
   Map<String, dynamic> toSqlite();
   LocalSqlBase.fromSqlite(Map<String, dynamic> json);
+  bool syncUseBranch() {
+    return false;
+  }
 }

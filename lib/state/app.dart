@@ -180,7 +180,7 @@ class AppState {
     if (Preference().shouldCacheToLocal() ?? false) {
       sync = Sync();
       await sqliteDatabase.open();
-      await sync.init(httpAPI, sqliteDatabase, websocketTransport);
+      await sync.init(httpAPI, sqliteDatabase, websocketTransport, global);
       sync.start();
     }
   }
