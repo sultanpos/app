@@ -50,7 +50,7 @@ void main() async {
       });
       //await expectLater(await db.open(), returnsNormally);
       await db.open();
-      sync.init(httpApi, db, wsTransport);
+      sync.init(httpApi, db, wsTransport, null);
       final dt = DateTime(2020);
       datas["category"] = [];
       for (int i = 0; i < 100; i++) {
@@ -122,7 +122,7 @@ void main() async {
     });
 
     expect(await db.open(), null);
-    sync.init(httpApi, db, wsTransport);
+    sync.init(httpApi, db, wsTransport, null);
     sync.start();
 
     final cashierSess = CashierSessionModel(
