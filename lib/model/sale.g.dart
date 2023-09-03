@@ -37,6 +37,7 @@ SaleModel _$SaleModelFromJson(Map<String, dynamic> json) => SaleModel(
       json['sync_at'] == null
           ? null
           : DateTime.parse(json['sync_at'] as String),
+      json['remote_id'] as String,
     );
 
 Map<String, dynamic> _$SaleModelToJson(SaleModel instance) => <String, dynamic>{
@@ -59,8 +60,9 @@ Map<String, dynamic> _$SaleModelToJson(SaleModel instance) => <String, dynamic>{
       'deadline': instance.deadline?.toIso8601String(),
       'version': instance.version,
       'partner_id': instance.partnerId,
-      'partner': instance.partner?.toJson(),
       'sync_at': instance.syncAt?.toIso8601String(),
+      'remote_id': instance.remoteId,
+      'partner': instance.partner?.toJson(),
       'user': instance.user?.toJson(),
     };
 

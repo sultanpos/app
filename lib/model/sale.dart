@@ -83,8 +83,9 @@ class SaleModel extends LocalSqlBase {
   final DateTime? deadline;
   final int version;
   final int partnerId;
-  final PartnerModel? partner;
   final DateTime? syncAt;
+  final String remoteId;
+  final PartnerModel? partner;
   final UserModel? user;
   SaleModel(
     this.id,
@@ -109,6 +110,7 @@ class SaleModel extends LocalSqlBase {
     this.partner,
     this.user,
     this.syncAt,
+    this.remoteId,
   );
 
   @override
@@ -122,7 +124,7 @@ class SaleModel extends LocalSqlBase {
   }
 
   factory SaleModel.empty() => SaleModel(0, '', DateTime.now(), 1, 0, '', SaleType.normal, SaleStatus.draft,
-      SaleStockStatus.none, 0, 0, '', 0, 0, 0, 0, null, 0, 0, null, null, null);
+      SaleStockStatus.none, 0, 0, '', 0, 0, 0, 0, null, 0, 0, null, null, null, '');
 
   @override
   Map<String, dynamic> toJson() => _$SaleModelToJson(this);

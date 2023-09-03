@@ -27,6 +27,7 @@ PaymentModel _$PaymentModelFromJson(Map<String, dynamic> json) => PaymentModel(
       json['sync_at'] == null
           ? null
           : DateTime.parse(json['sync_at'] as String),
+      json['remote_id'] as String,
     );
 
 Map<String, dynamic> _$PaymentModelToJson(PaymentModel instance) =>
@@ -46,6 +47,7 @@ Map<String, dynamic> _$PaymentModelToJson(PaymentModel instance) =>
       'payment_method_id': instance.paymentMethodId,
       'payment_method': instance.paymentMethod,
       'sync_at': instance.syncAt?.toIso8601String(),
+      'remote_id': instance.remoteId,
     };
 
 const _$PaymentTypeEnumMap = {

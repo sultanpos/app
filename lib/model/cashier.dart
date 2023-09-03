@@ -21,6 +21,7 @@ class CashierSessionModel extends LocalSqlBase {
   final int machineId;
   final String note;
   final DateTime? syncAt;
+  final String remoteId;
   final int? serverId;
   final UserModel? user;
   CashierSessionModel(
@@ -39,12 +40,30 @@ class CashierSessionModel extends LocalSqlBase {
     this.note,
     this.serverId,
     this.syncAt,
+    this.remoteId,
     this.user,
   );
   @override
   factory CashierSessionModel.fromJson(Map<String, dynamic> json) => _$CashierSessionModelFromJson(json);
-  factory CashierSessionModel.empty() =>
-      CashierSessionModel(0, DateTime.now(), null, 0, '', DateTime.now(), null, 0, 0, 0, 0, 0, '', null, null, null);
+  factory CashierSessionModel.empty() => CashierSessionModel(
+        0,
+        DateTime.now(),
+        null,
+        0,
+        '',
+        DateTime.now(),
+        null,
+        0,
+        0,
+        0,
+        0,
+        0,
+        '',
+        null,
+        null,
+        '',
+        null,
+      );
 
   @override
   factory CashierSessionModel.fromSqlite(Map<String, dynamic> json) => _$CashierSessionModelFromJson(json);
@@ -105,6 +124,7 @@ class CashierSessionCloseModel extends LocalSqlBase {
   final DateTime dateClose;
   final int closeValue;
   final String closeNote;
+  // this is for sync only
   final DateTime? syncAt;
   final int cashierSessionId;
 

@@ -53,7 +53,13 @@ class SyncItem<T extends LocalSqlBase> {
   _doRun() async {
     if (!_running) return;
     try {
-      final resp = await httpAPI.querySync(base.getTableName(), lastData?.getUpdatedAt() ?? DateTime(2020), limit);
+      final params = <String, dynamic>{'limit': limit};
+      if (base.syncUseBranch() && currentApp != null) params['branch_id'] = currentApp!.currentBranchId();
+      final resp = await httpAPI.querySync(
+        base.getTableName(),
+        lastData?.getUpdatedAt() ?? DateTime(2020),
+        params,
+      );
       final arr = (resp.data as Map)["data"] as List;
       for (final item in arr) {
         lastData = jsonCreator(item as Map<String, dynamic>);

@@ -30,7 +30,7 @@ abstract class IHttpAPI {
       bool skipAuth = false,
       bool skipCompanyId = false,
       Map<String, dynamic>? queryParameters});
-  Future querySync(String tableName, DateTime date, int limit);
+  Future querySync(String tableName, DateTime date, Map<String, dynamic>? queryParameters);
   Future<Map<String, dynamic>> syncUp(String tableName, Map<String, dynamic> json);
 }
 
@@ -122,8 +122,9 @@ class HttpAPI implements IHttpAPI, TokenProvider {
   }
 
   @override
-  Future querySync(String tableName, DateTime date, int limit) {
-    return fetch.get(_generateUrl('/sync/$tableName/${date.microsecondsSinceEpoch}?limit=$limit', false));
+  Future querySync(String tableName, DateTime date, Map<String, dynamic>? queryParameters) {
+    return fetch.get(_generateUrl('/sync/$tableName/${date.microsecondsSinceEpoch}', false),
+        queryParameters: queryParameters);
   }
 
   @override

@@ -54,6 +54,7 @@ class PaymentModel extends LocalSqlBase {
   final int paymentMethodId;
   final PaymentMethodModel? paymentMethod;
   final DateTime? syncAt;
+  final String remoteId;
 
   PaymentModel(
     this.id,
@@ -71,6 +72,7 @@ class PaymentModel extends LocalSqlBase {
     this.paymentMethodId,
     this.paymentMethod,
     this.syncAt,
+    this.remoteId,
   );
 
   @override
@@ -79,8 +81,8 @@ class PaymentModel extends LocalSqlBase {
   @override
   factory PaymentModel.fromSqlite(Map<String, dynamic> json) => _$PaymentModelFromJson(json);
 
-  factory PaymentModel.empty() =>
-      PaymentModel(0, DateTime.now(), '', '', 0, PaymentType.typeIn, PaymentRefer.sale, 0, 0, 0, '', 0, 0, null, null);
+  factory PaymentModel.empty() => PaymentModel(
+      0, DateTime.now(), '', '', 0, PaymentType.typeIn, PaymentRefer.sale, 0, 0, 0, '', 0, 0, null, null, '');
 
   @override
   Map<String, dynamic> toJson() => _$PaymentModelToJson(this);

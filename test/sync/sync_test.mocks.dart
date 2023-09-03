@@ -423,7 +423,7 @@ class MockIHttpAPI extends _i1.Mock implements _i6.IHttpAPI {
   _i3.Future<dynamic> querySync(
     String? tableName,
     DateTime? date,
-    int? limit,
+    Map<String, dynamic>? queryParameters,
   ) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -431,7 +431,7 @@ class MockIHttpAPI extends _i1.Mock implements _i6.IHttpAPI {
           [
             tableName,
             date,
-            limit,
+            queryParameters,
           ],
         ),
         returnValue: _i3.Future<dynamic>.value(),

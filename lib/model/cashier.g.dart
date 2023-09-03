@@ -29,6 +29,7 @@ CashierSessionModel _$CashierSessionModelFromJson(Map<String, dynamic> json) =>
       json['sync_at'] == null
           ? null
           : DateTime.parse(json['sync_at'] as String),
+      json['remote_id'] as String,
       json['user'] == null
           ? null
           : UserModel.fromJson(json['user'] as Map<String, dynamic>),
@@ -51,6 +52,7 @@ Map<String, dynamic> _$CashierSessionModelToJson(
       'machine_id': instance.machineId,
       'note': instance.note,
       'sync_at': instance.syncAt?.toIso8601String(),
+      'remote_id': instance.remoteId,
       'server_id': instance.serverId,
       'user': instance.user?.toJson(),
     };
