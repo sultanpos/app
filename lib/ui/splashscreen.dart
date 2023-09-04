@@ -51,9 +51,9 @@ class _SplashScreenState extends State<SplashScreen> {
     if (_step >= 2) {
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (c) => _gotoHome ? const RootWidget() : const LoginPage()));
+      final scale = Preference().scale();
+      if (scale > 1 || scale < 1) ScaledWidgetsFlutterBinding.instance.scaleFactor = (deviceSize) => scale;
     }
-    final scale = Preference().scale();
-    if (scale > 1 || scale < 1) ScaledWidgetsFlutterBinding.instance.scaleFactor = (deviceSize) => scale;
   }
 
   @override

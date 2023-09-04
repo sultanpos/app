@@ -172,6 +172,13 @@ class PrinterState extends ChangeNotifier {
   }
 
   saveChasierPrinter(AppConfigPrinter config) {
+    final selectedPrinter = printers.firstWhere((element) => element.name == config.name);
+    if (selectedPrinter.vendorId != null) {
+      config = config.copyWith(
+        vendorId: selectedPrinter.vendorId,
+        productId: selectedPrinter.productId,
+      );
+    }
     preference.setDefaultPrinter(config);
   }
 }
