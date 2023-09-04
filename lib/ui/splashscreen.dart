@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:scaled_app/scaled_app.dart';
 import 'package:sultanpos/format.dart';
+import 'package:sultanpos/preference.dart';
 import 'package:sultanpos/state/app.dart';
 import 'package:sultanpos/ui/login/loginpage.dart';
 import 'package:sultanpos/ui/root.dart';
@@ -50,6 +52,8 @@ class _SplashScreenState extends State<SplashScreen> {
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (c) => _gotoHome ? const RootWidget() : const LoginPage()));
     }
+    final scale = Preference().scale();
+    if (scale > 1 || scale < 1) ScaledWidgetsFlutterBinding.instance.scaleFactor = (deviceSize) => scale;
   }
 
   @override

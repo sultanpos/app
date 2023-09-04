@@ -771,6 +771,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.27.7"
+  scaled_app:
+    dependency: "direct main"
+    description:
+      name: scaled_app
+      sha256: "69f0c18d18e65df259b554ada8cdc48ad53e9f9d408921a60e7987eeb5248ba8"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.0"
   shared_preferences:
     dependency: "direct main"
     description:
@@ -1146,4 +1154,4 @@ packages:
     version: "3.1.2"
 sdks:
   dart: ">=3.1.0-185.0.dev <3.3.10"
-  flutter: ">=3.10.0"
+  flutter: ">=3.13.0"

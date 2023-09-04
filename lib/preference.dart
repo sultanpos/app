@@ -14,6 +14,7 @@ class Preference {
   static const String keyShouldCheckLocal = "shouldCacheToLocal";
   static const String keyBranch = "branch";
   static const String keyDefaultPrinter = "defaultPrinter";
+  static const String keyScale = "scale";
 
   factory Preference() {
     return _singleton;
@@ -98,6 +99,14 @@ class Preference {
     await sharedPreferences
         .setBool(keyShouldCheckLocal, value)
         .then((value) => _streamController.add(keyShouldCheckLocal));
+  }
+
+  setScale(double scale) {
+    return sharedPreferences.setDouble(keyScale, scale);
+  }
+
+  double scale() {
+    return sharedPreferences.getDouble(keyScale) ?? 1;
   }
 
   listen(Function(String msg)? onData, {Function? onError, void Function()? onDone, bool? cancelOnError}) {

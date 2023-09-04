@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sultanpos/state/app.dart';
+import 'package:sultanpos/ui/setting/app.dart';
 import 'package:sultanpos/ui/setting/printer.dart';
 import 'package:sultanpos/ui/widget/verticalmenu.dart';
 
@@ -25,7 +26,7 @@ class _SettingWidgetState extends State<SettingWidget> {
       width: 80,
       menus: [
         VerticalMenuItem<String>(
-            title: 'Aplikasi', id: 'app', icon: Icons.app_settings_alt, widget: (ctx) => const Text("app")),
+            title: 'Aplikasi', id: 'app', icon: Icons.app_settings_alt, widget: (ctx) => const AppSettingWidget()),
         VerticalMenuItem<String>(
           title: 'Printer',
           id: 'printer',
