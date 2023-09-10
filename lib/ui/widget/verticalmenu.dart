@@ -26,8 +26,7 @@ class VerticalMenuItemWidget<T> extends StatefulWidget {
   final bool selected;
   final VoidCallback? onClick;
   final double? width;
-  const VerticalMenuItemWidget(this.item, {required this.selected, required this.onClick, this.width, Key? key})
-      : super(key: key);
+  const VerticalMenuItemWidget(this.item, {required this.selected, required this.onClick, this.width, super.key});
 
   @override
   State<VerticalMenuItemWidget> createState() => _VerticalMenuItemWidgetState();
@@ -89,8 +88,7 @@ class VerticalMenu<T> extends StatelessWidget {
   final double? width;
   final T currentId;
   final Function(T) onChanged;
-  const VerticalMenu({required this.menus, this.width, required this.currentId, required this.onChanged, Key? key})
-      : super(key: key);
+  const VerticalMenu({required this.menus, this.width, required this.currentId, required this.onChanged, super.key});
 
   @override
   Widget build(BuildContext context) {

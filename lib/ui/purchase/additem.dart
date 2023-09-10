@@ -171,6 +171,7 @@ class PurchaseItemAddWidget extends StatelessWidget {
       // ignore: use_build_context_synchronously
       showSuccess(context, message: 'Item berhasil disimpan');
     } catch (e) {
+      // ignore: use_build_context_synchronously
       showError(context, message: e.toString());
     }
   }

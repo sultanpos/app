@@ -65,8 +65,7 @@ class SDataTable<T extends BaseModel> extends StatefulWidget {
   final HttpListState<T> state;
   final List<SDataColumn<T>> columns;
   final void Function(T value)? onDoubleClicked;
-  const SDataTable({required this.name, required this.state, required this.columns, this.onDoubleClicked, Key? key})
-      : super(key: key);
+  const SDataTable({required this.name, required this.state, required this.columns, this.onDoubleClicked, super.key});
 
   @override
   State<SDataTable<T>> createState() => _SDataTableState<T>();

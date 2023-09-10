@@ -98,6 +98,7 @@ class _PurchaseStockEditWidgetState extends State<PurchaseStockEditWidget> {
         showSuccess(context, message: 'Item berhasil disimpan');
       }
     } catch (e) {
+      // ignore: use_build_context_synchronously
       showError(context, message: e.toString());
     }
   }

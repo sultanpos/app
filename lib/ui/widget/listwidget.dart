@@ -7,7 +7,7 @@ import 'package:sultanpos/state/list.dart';
 class ListWidget<T extends BaseModel> extends StatelessWidget {
   final HttpListState<T> listState;
   final Widget Function(BuildContext context, T value) builder;
-  const ListWidget(this.listState, {required this.builder, Key? key}) : super(key: key);
+  const ListWidget(this.listState, {required this.builder, super.key});
 
   @override
   Widget build(BuildContext context) {

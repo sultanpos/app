@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sultanpos/preference.dart';
 import 'package:sultanpos/state/app.dart';
-import 'package:sultanpos/ui/root.dart';
+import 'package:sultanpos/ui/root.dart' as root;
 import 'package:sultanpos/ui/widget/button.dart';
 import 'package:sultanpos/ui/widget/tileselect.dart';
 
@@ -71,7 +71,7 @@ class _SelectCacheDatabaseWidgetState extends State<SelectCacheDatabaseWidget> {
                       }
                       Navigator.of(context, rootNavigator: true).pushReplacement(
                         MaterialPageRoute(
-                          builder: (context) => const RootWidget(),
+                          builder: (context) => const root.RootWidget(),
                         ),
                       );
                     },

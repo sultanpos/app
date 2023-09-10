@@ -10,7 +10,7 @@ import 'dart:math';
 import 'dart:convert';
 
 class PurchaseWidget extends StatelessWidget {
-  const PurchaseWidget({Key? key}) : super(key: key);
+  const PurchaseWidget({super.key});
 
   String getRandString(int len) {
     var random = Random.secure();
@@ -48,7 +48,7 @@ class PurchaseWidget extends StatelessWidget {
                 },
               ),
             )
-            .toList(),
+            ,
       ],
     );
   }

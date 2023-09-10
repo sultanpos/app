@@ -7,7 +7,7 @@ import 'package:sultanpos/ui/layout/profile.dart';
 import 'package:sultanpos/ui/widget/windowbutton.dart';
 
 class MainLayoutWidget extends StatelessWidget {
-  const MainLayoutWidget({Key? key}) : super(key: key);
+  const MainLayoutWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

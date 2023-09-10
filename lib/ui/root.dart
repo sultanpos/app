@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:sultanpos/extension/rawkeyevent.dart';
 import 'package:sultanpos/state/app.dart';
 import 'package:sultanpos/ui/layout/mainlayout.dart';
 import 'package:sultanpos/ui/widget/keyshortcut.dart';
 
 class RootWidget extends StatelessWidget {
-  const RootWidget({Key? key}) : super(key: key);
+  const RootWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +16,7 @@ class RootWidget extends StatelessWidget {
           builder: (ctx) {
             return KeyboardShortcut(
                 keyEvent: (event) {
-                  if (event.isControlPressed && event.isKeyPressed(LogicalKeyboardKey.keyD)) {
+                  if (event.isPressed(LogicalKeyboardKey.keyD, isCtrl: true)) {
                     AppState().navigateTo('/cashier');
                     return KeyEventResult.handled;
                   }

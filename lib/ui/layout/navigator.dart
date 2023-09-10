@@ -15,7 +15,7 @@ import 'package:sultanpos/ui/report/report.dart';
 import 'package:sultanpos/ui/setting/setting.dart';
 
 class NavigatorWidget extends StatelessWidget {
-  const NavigatorWidget({Key? key}) : super(key: key);
+  const NavigatorWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

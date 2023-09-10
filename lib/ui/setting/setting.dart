@@ -6,7 +6,7 @@ import 'package:sultanpos/ui/setting/printer.dart';
 import 'package:sultanpos/ui/widget/verticalmenu.dart';
 
 class SettingWidget extends StatefulWidget {
-  const SettingWidget({Key? key}) : super(key: key);
+  const SettingWidget({super.key});
 
   @override
   State<SettingWidget> createState() => _SettingWidgetState();

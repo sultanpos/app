@@ -12,7 +12,7 @@ import 'package:sultanpos/ui/widget/showerror.dart';
 
 class UnitAddWidget extends StatelessWidget {
   final String title;
-  const UnitAddWidget({Key? key, required this.title}) : super(key: key);
+  const UnitAddWidget({super.key, required this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -100,6 +100,7 @@ class UnitAddWidget extends StatelessWidget {
       await AppState().unitState.save();
       nav.pop();
     } catch (e) {
+      // ignore: use_build_context_synchronously
       showError(context, message: e.toString());
     }
   }

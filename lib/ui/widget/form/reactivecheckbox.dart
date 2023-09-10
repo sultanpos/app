@@ -3,17 +3,13 @@ import 'package:reactive_forms/reactive_forms.dart';
 
 class SReactiveCheckbox extends ReactiveFocusableFormField<bool, bool> {
   SReactiveCheckbox({
-    Key? key,
+    super.key,
     required String title,
-    String? formControlName,
-    FormControl<bool>? formControl,
-    FocusNode? focusNode,
+    super.formControlName,
+    super.formControl,
+    super.focusNode,
     ReactiveFormFieldCallback<bool>? onChanged,
   }) : super(
-          key: key,
-          formControl: formControl,
-          formControlName: formControlName,
-          focusNode: focusNode,
           builder: (field) {
             return Container(
               decoration: const BoxDecoration(

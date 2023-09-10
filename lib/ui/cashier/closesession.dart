@@ -10,8 +10,21 @@ import 'package:sultanpos/ui/widget/labelfield.dart';
 import 'package:sultanpos/ui/widget/showerror.dart';
 import 'package:sultanpos/util/format.dart';
 
-class CashierSessionCloseWidget extends StatelessWidget {
+class CashierSessionCloseWidget extends StatefulWidget {
   const CashierSessionCloseWidget({super.key});
+
+  @override
+  State<CashierSessionCloseWidget> createState() => _CashierSessionCloseWidgetState();
+}
+
+class _CashierSessionCloseWidgetState extends State<CashierSessionCloseWidget> {
+  final FocusNode _focusNode = FocusNode();
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,11 +89,15 @@ class CashierSessionCloseWidget extends StatelessWidget {
                   const LabelField("Uang akhir fisik"),
                   ReactiveTextField(
                     autofocus: true,
+                    focusNode: _focusNode,
                     formControlName: "closeValue",
                     inputFormatters: [MoneyTextFormatter()],
                     textAlign: TextAlign.right,
                     decoration: const InputDecoration(
                         hintText: "Jumlah uang", helperText: "Total semua uang termasuk modal awal"),
+                    onSubmitted: (control) async {
+                      await closeSession(context, state);
+                    },
                   ),
                   const Spacer(),
                   Row(
@@ -105,13 +122,7 @@ class CashierSessionCloseWidget extends StatelessWidget {
                           onPressed: state.saving
                               ? null
                               : () async {
-                                  try {
-                                    await state.closeSession();
-                                    // ignore: use_build_context_synchronously
-                                    Navigator.pop(context, true);
-                                  } catch (e) {
-                                    showError(context, message: e.toString());
-                                  }
+                                  await closeSession(context, state);
                                 },
                         ),
                       ),
@@ -121,5 +132,17 @@ class CashierSessionCloseWidget extends StatelessWidget {
               ),
             ),
     );
+  }
+
+  closeSession(BuildContext context, CashierRootState state) async {
+    try {
+      await state.closeSession();
+      // ignore: use_build_context_synchronously
+      Navigator.pop(context, true);
+    } catch (e) {
+      // ignore: use_build_context_synchronously
+      showError(context, message: e.toString());
+      _focusNode.requestFocus();
+    }
   }
 }

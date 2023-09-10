@@ -9,7 +9,7 @@ import 'package:sultanpos/ui/master/unit/unit.dart';
 import 'package:sultanpos/ui/widget/verticalmenu.dart';
 
 class MasterRootWidget extends StatelessWidget {
-  const MasterRootWidget({Key? key}) : super(key: key);
+  const MasterRootWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

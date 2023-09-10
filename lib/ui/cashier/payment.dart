@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:sultanpos/state/app.dart';
@@ -20,6 +21,7 @@ class AddPaymentWidget extends StatefulWidget {
 
 class _AddPaymentWidgetState extends State<AddPaymentWidget> {
   final TextEditingController _controller = TextEditingController();
+  final FocusNode _focusNode = FocusNode();
   bool _saveEnabled = true;
 
   @override
@@ -34,6 +36,12 @@ class _AddPaymentWidgetState extends State<AddPaymentWidget> {
       });
     });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
   }
 
   @override
@@ -58,13 +66,18 @@ class _AddPaymentWidgetState extends State<AddPaymentWidget> {
           const LabelField("Pembayaran"),
           TextField(
             autofocus: true,
+            focusNode: _focusNode,
             inputFormatters: [MoneyTextFormatter()],
             controller: _controller,
             textAlign: TextAlign.right,
+            onSubmitted: (value) {
+              save(state, true);
+            },
           ),
           const Spacer(),
           SButton(
             width: double.infinity,
+            shortCut: const [LogicalKeyboardKey.f5],
             onPressed: _saveEnabled
                 ? () {
                     save(state, true);
@@ -74,6 +87,7 @@ class _AddPaymentWidgetState extends State<AddPaymentWidget> {
           ),
           const SVSpaceSmall(),
           SButton(
+            shortCut: const [LogicalKeyboardKey.f6],
             width: double.infinity,
             onPressed: _saveEnabled
                 ? () {
@@ -86,6 +100,7 @@ class _AddPaymentWidgetState extends State<AddPaymentWidget> {
           SButton(
             width: double.infinity,
             positive: false,
+            shortCut: const [LogicalKeyboardKey.escape],
             onPressed: () {
               Navigator.pop(context, false);
             },
@@ -98,12 +113,17 @@ class _AddPaymentWidgetState extends State<AddPaymentWidget> {
 
   save(CartState state, bool print) async {
     int saleId = 0;
+    if (!_saveEnabled) {
+      _focusNode.requestFocus();
+      return;
+    }
     try {
       final result = await state.paySimple(moneyValue(_controller.text));
       saleId = result.id;
       // ignore: use_build_context_synchronously
       Navigator.pop(context, true);
     } catch (e) {
+      // ignore: use_build_context_synchronously
       showError(context, message: e.toString());
     }
     if (print && saleId > 0) {

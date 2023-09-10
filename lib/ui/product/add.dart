@@ -17,7 +17,7 @@ import 'package:sultanpos/ui/widget/space.dart';
 
 class AddProductWidget extends StatefulWidget {
   final String title;
-  const AddProductWidget({Key? key, required this.title}) : super(key: key);
+  const AddProductWidget({super.key, required this.title});
 
   @override
   State<AddProductWidget> createState() => _AddProductWidgetState();
@@ -404,6 +404,7 @@ class _AddProductWidgetState extends State<AddProductWidget> {
         showSuccess(context, message: "Barang berhasil diubah");
       }
     } catch (e) {
+      // ignore: use_build_context_synchronously
       showError(context, message: e.toString());
     }
   }

@@ -12,7 +12,7 @@ import 'package:sultanpos/ui/widget/showerror.dart';
 
 class PriceGroupAddWidget extends StatelessWidget {
   final String title;
-  const PriceGroupAddWidget({Key? key, required this.title}) : super(key: key);
+  const PriceGroupAddWidget({super.key, required this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -107,6 +107,7 @@ class PriceGroupAddWidget extends StatelessWidget {
       await AppState().priceGroupState.save();
       nav.pop();
     } catch (e) {
+      // ignore: use_build_context_synchronously
       showError(ctx, message: e.toString());
     }
   }

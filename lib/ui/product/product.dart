@@ -8,7 +8,7 @@ import 'package:sultanpos/ui/product/productlist.dart';
 import 'package:sultanpos/ui/widget/verticalmenu.dart';
 
 class ProductRootWidget extends StatelessWidget {
-  const ProductRootWidget({Key? key}) : super(key: key);
+  const ProductRootWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +39,7 @@ class ProductRootWidget extends StatelessWidget {
                     state.closeTab(e.getId());
                   }),
             )
-            .toList(),
+            ,
       ],
     );
   }

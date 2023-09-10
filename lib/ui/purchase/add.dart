@@ -148,6 +148,7 @@ class _PurchaseAddWidgetState extends State<PurchaseAddWidget> {
       // ignore: use_build_context_synchronously
       showSuccess(context, message: 'Pembelian berhasil disimpan');
     } catch (e) {
+      // ignore: use_build_context_synchronously
       showError(context, message: e.toString());
     }
   }

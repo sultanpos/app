@@ -36,6 +36,7 @@ void main() async {
               onDone: anyNamed('onDone'), onError: anyNamed('onError'), cancelOnError: anyNamed('cancelOnError')))
           .thenAnswer(
         (invoke) {
+          // ignore: collection_methods_unrelated_type
           return streamController.stream.listen(invoke.positionalArguments[0], onDone: invoke.namedArguments["onDone"]);
         },
       );
@@ -97,6 +98,7 @@ void main() async {
             onDone: anyNamed('onDone'), onError: anyNamed('onError'), cancelOnError: anyNamed('cancelOnError')))
         .thenAnswer(
       (invoke) {
+        // ignore: collection_methods_unrelated_type
         return streamController.stream.listen(invoke.positionalArguments[0], onDone: invoke.namedArguments["onDone"]);
       },
     );

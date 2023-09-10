@@ -11,7 +11,7 @@ import 'package:sultanpos/ui/widget/dialogutil.dart';
 import 'package:sultanpos/ui/widget/showerror.dart';
 
 class PartnerWidget extends StatelessWidget {
-  const PartnerWidget({Key? key}) : super(key: key);
+  const PartnerWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

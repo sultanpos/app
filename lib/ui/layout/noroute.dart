@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class NoRouteWidget extends StatelessWidget {
-  const NoRouteWidget({Key? key}) : super(key: key);
+  const NoRouteWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

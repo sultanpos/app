@@ -16,7 +16,7 @@ final closeButtonColors = WindowButtonColors(
     iconMouseOver: Colors.white);
 
 class WindowButtons extends StatefulWidget {
-  const WindowButtons({Key? key}) : super(key: key);
+  const WindowButtons({super.key});
 
   @override
   State<WindowButtons> createState() => _WindowButtonsState();

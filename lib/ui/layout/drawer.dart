@@ -15,7 +15,7 @@ class MainMenuItem extends StatefulWidget {
   final IconData icon;
   final bool selected;
   final VoidCallback? onClick;
-  const MainMenuItem(this.title, this.icon, this.selected, {Key? key, this.onClick}) : super(key: key);
+  const MainMenuItem(this.title, this.icon, this.selected, {super.key, this.onClick});
 
   @override
   State<MainMenuItem> createState() => _MainMenuItemState();
@@ -56,7 +56,7 @@ class _MainMenuItemState extends State<MainMenuItem> {
 }
 
 class DrawerWidget extends StatelessWidget {
-  DrawerWidget({Key? key}) : super(key: key);
+  DrawerWidget({super.key});
 
   final items = <MenuItem>[
     MenuItem(title: 'Dashboard', icon: Icons.dashboard, route: "/"),
@@ -90,7 +90,7 @@ class DrawerWidget extends StatelessWidget {
                     },
                   ),
                 );
-              }).toList(),
+              }),
             ],
           );
         },

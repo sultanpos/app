@@ -4,10 +4,10 @@ import 'package:sultanpos/format.dart';
 import 'package:sultanpos/preference.dart';
 import 'package:sultanpos/state/app.dart';
 import 'package:sultanpos/ui/login/loginpage.dart';
-import 'package:sultanpos/ui/root.dart';
+import 'package:sultanpos/ui/root.dart' as root;
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({Key? key}) : super(key: key);
+  const SplashScreen({super.key});
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
@@ -50,7 +50,7 @@ class _SplashScreenState extends State<SplashScreen> {
     _step++;
     if (_step >= 2) {
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (c) => _gotoHome ? const RootWidget() : const LoginPage()));
+          context, MaterialPageRoute(builder: (c) => _gotoHome ? const root.RootWidget() : const LoginPage()));
       final scale = Preference().scale();
       if (scale > 1 || scale < 1) ScaledWidgetsFlutterBinding.instance.scaleFactor = (deviceSize) => scale;
     }

@@ -4,7 +4,7 @@ class SChip extends StatelessWidget {
   final Color color;
   final String label;
   final double? fontSize;
-  const SChip({Key? key, required this.color, required this.label, this.fontSize}) : super(key: key);
+  const SChip({super.key, required this.color, required this.label, this.fontSize});
 
   @override
   Widget build(BuildContext context) {

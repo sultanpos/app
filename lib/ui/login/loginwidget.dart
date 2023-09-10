@@ -5,14 +5,14 @@ import 'package:sultanpos/preference.dart';
 import 'package:sultanpos/state/app.dart';
 import 'package:sultanpos/state/auth.dart';
 import 'package:provider/provider.dart';
-import 'package:sultanpos/ui/root.dart';
+import 'package:sultanpos/ui/root.dart' as root;
 import 'package:sultanpos/ui/widget/button.dart';
 import 'package:sultanpos/ui/widget/form/reactivecheckbox.dart';
 import 'package:sultanpos/ui/widget/labelfield.dart';
 import 'package:sultanpos/ui/widget/showerror.dart';
 
 class LoginWidget extends StatefulWidget {
-  const LoginWidget({Key? key}) : super(key: key);
+  const LoginWidget({super.key});
 
   @override
   State<LoginWidget> createState() => _LoginWidgetState();
@@ -140,12 +140,13 @@ class _LoginWidgetState extends State<LoginWidget> {
         // ignore: use_build_context_synchronously
         Navigator.of(context, rootNavigator: true).pushReplacement(
           MaterialPageRoute(
-            builder: (context) => const RootWidget(),
+            builder: (context) => const root.RootWidget(),
           ),
         );
       }
     } on ErrorResponse catch (e) {
       auth.setLoading(false);
+      // ignore: use_build_context_synchronously
       showError(context, message: e.message);
       // ignore: empty_catches
     } catch (e) {}

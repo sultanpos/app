@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:sultanpos/extension/rawkeyevent.dart';
 import 'package:sultanpos/ui/widget/space.dart';
 import 'package:tinycolor2/tinycolor2.dart';
 
@@ -68,8 +69,8 @@ class _TileSelectItemState extends State<TileSelectItem> {
     return Focus(
       autofocus: widget.autoFocus ?? false,
       focusNode: _node,
-      onKey: (node, event) {
-        if (node == _node && event.logicalKey == LogicalKeyboardKey.space) {
+      onKeyEvent: (node, event) {
+        if (node == _node && event.isPressed(LogicalKeyboardKey.space)) {
           widget.onTap();
           return KeyEventResult.handled;
         }

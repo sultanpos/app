@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:sultanpos/extension/rawkeyevent.dart';
 import 'package:sultanpos/ui/widget/keyshortcut.dart';
 import 'package:sultanpos/ui/widget/space.dart';
 
@@ -9,8 +10,7 @@ class BaseWindowWidget extends StatefulWidget {
   final double? width;
   final double? height;
   final IconData? icon;
-  const BaseWindowWidget({Key? key, required this.title, this.width, this.height, required this.child, this.icon})
-      : super(key: key);
+  const BaseWindowWidget({super.key, required this.title, this.width, this.height, required this.child, this.icon});
 
   @override
   State<BaseWindowWidget> createState() => _BaseWindowWidgetState();
@@ -32,7 +32,7 @@ class _BaseWindowWidgetState extends State<BaseWindowWidget> {
       child: Builder(builder: (ctx) {
         return KeyboardShortcut(
           keyEvent: (event) {
-            if (event.isKeyPressed(LogicalKeyboardKey.escape)) {
+            if (event.isPressed(LogicalKeyboardKey.escape)) {
               Navigator.pop(context, false);
               return KeyEventResult.handled;
             }

@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_pos_printer_platform/flutter_pos_printer_platform.dart';
+import 'package:flutter_pos_printer_platform_image_3/flutter_pos_printer_platform_image_3.dart';
 import 'package:sultanpos/model/appconfig.dart';
 import 'package:sultanpos/preference.dart';
 import 'package:sultanpos/repository/repository.dart';

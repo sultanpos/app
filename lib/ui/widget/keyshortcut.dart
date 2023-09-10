@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-typedef KeyboardKeyEvent = KeyEventResult Function(RawKeyEvent event);
+typedef KeyboardKeyEvent = KeyEventResult Function(KeyEvent event);
 typedef KeyboardKeyAddRemoveChildren = Function(KeyboardShortcutState);
 
 class KeyboardManager extends InheritedWidget {
@@ -45,8 +45,8 @@ class _KeyboardShortcutManagerState extends State<KeyboardShortcutManager> {
       removeChildren: removeChildren,
       child: Focus(
         canRequestFocus: false,
-        onKey: (node, event) {
-          if (!event.repeat && event is RawKeyDownEvent) {
+        onKeyEvent: (node, event) {
+          if (event is KeyDownEvent) {
             for (var i = children.length - 1; i >= 0; i--) {
               if (children[i].onKey(event) == KeyEventResult.handled) {
                 return KeyEventResult.handled;
@@ -88,7 +88,7 @@ class KeyboardShortcutState extends State<KeyboardShortcut> {
     super.dispose();
   }
 
-  KeyEventResult onKey(RawKeyEvent event) {
+  KeyEventResult onKey(KeyEvent event) {
     return widget.keyEvent(event);
   }
 

@@ -104,6 +104,7 @@ class AddPaymentMethodWidget extends StatelessWidget {
       await AppState().paymentMethodState.save();
       nav.pop();
     } catch (e) {
+      // ignore: use_build_context_synchronously
       showError(context, message: e.toString());
     }
   }

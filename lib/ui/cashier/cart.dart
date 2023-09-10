@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:sultanpos/extension/rawkeyevent.dart';
 import 'package:sultanpos/model/cart.dart';
 import 'package:sultanpos/model/product.dart';
 import 'package:sultanpos/state/app.dart';
@@ -44,27 +45,24 @@ class _CartWidgetState extends State<CartWidget> {
     final state = context.watch<CartState>();
     return KeyboardShortcut(
       keyEvent: (event) {
-        if (event.isKeyPressed(LogicalKeyboardKey.f1)) {
+        if (event.isPressed(LogicalKeyboardKey.f1)) {
           _barcodeFN.requestFocus();
           return KeyEventResult.handled;
-        } else if (event.isKeyPressed(LogicalKeyboardKey.f4)) {
+        } else if (event.isPressed(LogicalKeyboardKey.f4)) {
           _cartFN.requestFocus();
           return KeyEventResult.handled;
-        } else if (event.isKeyPressed(LogicalKeyboardKey.f5)) {
-          pay(state);
-          return KeyEventResult.handled;
-        } else if (event.isKeyPressed(LogicalKeyboardKey.delete) && event.isControlPressed) {
+        } else if (event.isPressed(LogicalKeyboardKey.delete, isCtrl: true)) {
           resetCart();
           return KeyEventResult.handled;
         } else {
           if (_cartFN.hasFocus) {
-            if (event.isKeyPressed(LogicalKeyboardKey.arrowDown)) {
+            if (event.isPressed(LogicalKeyboardKey.arrowDown)) {
               state.nextItem();
               return KeyEventResult.handled;
-            } else if (event.isKeyPressed(LogicalKeyboardKey.arrowUp)) {
+            } else if (event.isPressed(LogicalKeyboardKey.arrowUp)) {
               state.prevItem();
               return KeyEventResult.handled;
-            } else if (event.isKeyPressed(LogicalKeyboardKey.delete)) {
+            } else if (event.isPressed(LogicalKeyboardKey.delete)) {
               removeItem();
               return KeyEventResult.handled;
             }
@@ -195,6 +193,7 @@ class _CartWidgetState extends State<CartWidget> {
                           SizedBox(
                             width: double.infinity,
                             child: SButton(
+                              shortCut: const [LogicalKeyboardKey.f5],
                               icon: const Icon(FontAwesomeIcons.moneyBill1),
                               label: "Bayar",
                               onPressed: () {
@@ -217,6 +216,7 @@ class _CartWidgetState extends State<CartWidget> {
                     child: SButton(
                       icon: const Icon(Icons.logout),
                       color: Colors.red,
+                      shortCut: const [LogicalKeyboardKey.f9],
                       label: "Tutup kasir",
                       onPressed: () async {
                         AppState().cashierState.loadReport();
@@ -230,8 +230,8 @@ class _CartWidgetState extends State<CartWidget> {
                           },
                         );
                         if (result != null && result) {
-                          // ignore: use_build_context_synchronously
                           await sShowDialog(
+                            // ignore: use_build_context_synchronously
                             context: context,
                             builder: (c) {
                               return ChangeNotifierProvider.value(
@@ -263,8 +263,8 @@ class _CartWidgetState extends State<CartWidget> {
       },
     );
     if (result != null && result) {
-      // ignore: use_build_context_synchronously
       await sShowDialog<bool>(
+        // ignore: use_build_context_synchronously
         context: context,
         builder: (c) {
           return ChangeNotifierProvider.value(value: state, child: const CashierSuccessWidget());

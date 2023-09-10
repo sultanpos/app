@@ -15,7 +15,7 @@ import 'package:sultanpos/ui/widget/showerror.dart';
 
 class AddPartnerWidget extends StatelessWidget {
   final String title;
-  const AddPartnerWidget({Key? key, required this.title}) : super(key: key);
+  const AddPartnerWidget({super.key, required this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -178,6 +178,7 @@ class AddPartnerWidget extends StatelessWidget {
       await AppState().partnerState.save();
       nav.pop();
     } catch (e) {
+      // ignore: use_build_context_synchronously
       showError(context, message: e.toString());
     }
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:sultanpos/extension/rawkeyevent.dart';
 import 'package:sultanpos/ui/theme.dart';
 import 'package:sultanpos/ui/widget/basewindow.dart';
 import 'package:sultanpos/ui/widget/button.dart';
@@ -24,7 +25,7 @@ Future<bool?> showBaseConfirmation(
         width: 350,
         child: KeyboardShortcut(
           keyEvent: (event) {
-            if (event.isKeyPressed(LogicalKeyboardKey.enter)) {
+            if (event.isPressed(LogicalKeyboardKey.enter)) {
               Navigator.pop(context, true);
               return KeyEventResult.handled;
             }
@@ -52,12 +53,12 @@ Future<bool?> showBaseConfirmation(
                   Expanded(
                     child: SizedBox(
                       height: STheme().buttonHeight,
-                      child: ElevatedButton(
+                      child: SButton(
                         autofocus: true,
                         onPressed: () async {
                           Navigator.pop(context, true);
                         },
-                        style: ElevatedButton.styleFrom(backgroundColor: positiveColor),
+                        //style: ElevatedButton.styleFrom(backgroundColor: positiveColor),
                         child: Text(positiveLabel ?? "Lanjutkan"),
                       ),
                     ),

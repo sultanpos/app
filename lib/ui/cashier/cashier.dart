@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:sultanpos/extension/rawkeyevent.dart';
 import 'package:sultanpos/state/app.dart';
 import 'package:sultanpos/state/cashier.dart';
 import 'package:sultanpos/state/cart.dart';
@@ -15,7 +16,7 @@ import 'package:sultanpos/ui/widget/space.dart';
 import 'package:sultanpos/ui/widget/verticalmenu.dart';
 
 class CashierWidget extends StatelessWidget {
-  const CashierWidget({Key? key}) : super(key: key);
+  const CashierWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -61,6 +62,7 @@ class CashierNoSessionWidget extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 SButton(
+                  shortCut: const [LogicalKeyboardKey.f4],
                   child: const Text('Buat sesi kasir baru'),
                   onPressed: () async {
                     AppState().cashierState.resetForm();
@@ -79,6 +81,7 @@ class CashierNoSessionWidget extends StatelessWidget {
                 ),
                 const SHSpace(),
                 SButton(
+                  shortCut: const [LogicalKeyboardKey.f5],
                   positive: false,
                   child: const Text('Mulai kasir tanpa sesi'),
                   onPressed: () async {
@@ -107,7 +110,7 @@ class CashierRootWidget extends StatelessWidget {
     final state = context.watch<CashierRootState>();
     return KeyboardShortcut(
       keyEvent: (event) {
-        if (event.isControlPressed && event.logicalKey == LogicalKeyboardKey.keyN) {
+        if (event.isPressed(LogicalKeyboardKey.keyN, isCtrl: true)) {
           AppState().cashierState.newTabCashier();
           return KeyEventResult.handled;
         }

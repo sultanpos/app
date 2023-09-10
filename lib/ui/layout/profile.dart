@@ -5,7 +5,7 @@ import 'package:sultanpos/state/auth.dart';
 import 'package:sultanpos/ui/login/loginpage.dart';
 
 class ProfileMenuWidget extends StatelessWidget {
-  const ProfileMenuWidget({Key? key}) : super(key: key);
+  const ProfileMenuWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

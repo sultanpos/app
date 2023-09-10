@@ -12,7 +12,7 @@ import 'package:sultanpos/ui/widget/dialogutil.dart';
 import 'package:sultanpos/ui/widget/showerror.dart';
 
 class PriceGroupWidget extends StatelessWidget {
-  const PriceGroupWidget({Key? key}) : super(key: key);
+  const PriceGroupWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

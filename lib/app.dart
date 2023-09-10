@@ -5,7 +5,7 @@ import 'package:sultanpos/ui/splashscreen.dart';
 import 'package:sultanpos/util/color.dart';
 
 class App extends StatefulWidget {
-  const App({Key? key}) : super(key: key);
+  const App({super.key});
 
   @override
   State<App> createState() => _AppState();
@@ -22,6 +22,7 @@ class _AppState extends State<App> {
         fontFamily: 'Ubuntu',
       ),
       dark: ThemeData(
+        useMaterial3: false,
         brightness: Brightness.dark,
         scaffoldBackgroundColor: const Color(0xff111827),
         secondaryHeaderColor: const Color(0xff1F2937),

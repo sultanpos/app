@@ -51,8 +51,8 @@ class LocalFileDbSimpleOperation<T extends BaseModel?> {
   }
 
   Future<void> deleteById(int id) async {
-    if (allDatas.containsKey(id)) {
-      allDatas.remove(id);
+    if (allDatas.containsKey('$id')) {
+      allDatas.remove('$id');
       await _storeToFile();
     }
   }

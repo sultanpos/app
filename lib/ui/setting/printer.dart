@@ -69,7 +69,7 @@ class _PrinterSettingWidgetState extends State<PrinterSettingWidget> {
                                 .map(
                                   (e) => DropdownMenuItem<String>(
                                     value: e.name,
-                                    child: Text(e.name ?? "-"),
+                                    child: Text(e.name),
                                   ),
                                 )
                                 .toList(),

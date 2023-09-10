@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:sultanpos/state/app.dart';
@@ -52,6 +53,7 @@ class CashierSuccessWidget extends StatelessWidget {
             width: double.infinity,
             positive: false,
             autofocus: true,
+            shortCut: const [LogicalKeyboardKey.enter],
             onPressed: () {
               Navigator.pop(context, false);
             },
@@ -60,11 +62,12 @@ class CashierSuccessWidget extends StatelessWidget {
           const SVSpaceSmall(),
           SButton(
             width: double.infinity,
+            shortCut: const [LogicalKeyboardKey.f5],
             onPressed: () async {
-              Navigator.pop(context, true);
               try {
                 await AppState().printer.printSale(state.lastSale);
               } catch (e) {
+                // ignore: use_build_context_synchronously
                 showError(context, message: e.toString());
               }
             },

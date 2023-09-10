@@ -133,6 +133,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
       // ignore: use_build_context_synchronously
       showSuccess(context, message: "Berhasil daftar user baru. Silakan login!");
     } catch (e) {
+      // ignore: use_build_context_synchronously
       showError(context, message: e.toString());
     }
   }

@@ -25,8 +25,8 @@ class DropdownRepo<T extends BaseModel, R> extends StatefulWidget {
     required this.valueFn,
     required this.textFn,
     this.decoration = const InputDecoration(),
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<DropdownRepo<T, R>> createState() => _DropdownRepoState<T, R>();
@@ -108,8 +108,7 @@ class DropdownProductType extends StatelessWidget {
   final bool? autoFocus;
   final String formControlName;
   final InputDecoration? inputDecoration;
-  const DropdownProductType({required this.formControlName, this.autoFocus, this.inputDecoration, Key? key})
-      : super(key: key);
+  const DropdownProductType({required this.formControlName, this.autoFocus, this.inputDecoration, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -135,8 +134,7 @@ class DropdownPaymentMethodType extends StatelessWidget {
   final bool? autoFocus;
   final String formControlName;
   final InputDecoration? inputDecoration;
-  const DropdownPaymentMethodType({required this.formControlName, this.autoFocus, this.inputDecoration, Key? key})
-      : super(key: key);
+  const DropdownPaymentMethodType({required this.formControlName, this.autoFocus, this.inputDecoration, super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:sultanpos/state/app.dart';
@@ -33,6 +34,9 @@ class CashierSessionAddWidget extends StatelessWidget {
               autofocus: true,
               inputFormatters: [MoneyTextFormatter()],
               textAlign: TextAlign.right,
+              onSubmitted: (control) async {
+                save(context, state);
+              },
               decoration: const InputDecoration(
                 hintText: "Masukan modal awal",
               ),
@@ -59,17 +63,12 @@ class CashierSessionAddWidget extends StatelessWidget {
                 ),
                 Expanded(
                   child: SButton(
+                    shortCut: const [LogicalKeyboardKey.f5],
                     label: "Simpan",
                     onPressed: state.saving
                         ? null
                         : () async {
-                            try {
-                              await state.saveCashierSession();
-                              // ignore: use_build_context_synchronously
-                              Navigator.of(context).pop(true);
-                            } catch (e) {
-                              showError(context, message: e.toString());
-                            }
+                            save(context, state);
                           },
                   ),
                 ),
@@ -79,5 +78,16 @@ class CashierSessionAddWidget extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  save(BuildContext context, CashierRootState state) async {
+    try {
+      await state.saveCashierSession();
+      // ignore: use_build_context_synchronously
+      Navigator.of(context).pop(true);
+    } catch (e) {
+      // ignore: use_build_context_synchronously
+      showError(context, message: e.toString());
+    }
   }
 }

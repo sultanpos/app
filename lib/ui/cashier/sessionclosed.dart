@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:sultanpos/state/app.dart';
 import 'package:sultanpos/state/cashier.dart';
@@ -16,7 +17,7 @@ class CashierSessionClosedWidget extends StatelessWidget {
     final state = context.watch<CashierRootState>();
     return BaseWindowWidget(
       title: 'Kasir tertutup',
-      width: 300,
+      width: 350,
       height: 450,
       icon: Icons.check,
       child: Column(children: [
@@ -46,6 +47,7 @@ class CashierSessionClosedWidget extends StatelessWidget {
             Expanded(
               child: SButton(
                 positive: false,
+                shortCut: const [LogicalKeyboardKey.escape],
                 label: "Tutup",
                 onPressed: state.saving
                     ? null
@@ -59,6 +61,8 @@ class CashierSessionClosedWidget extends StatelessWidget {
             ),
             Expanded(
               child: SButton(
+                autofocus: true,
+                shortCut: const [LogicalKeyboardKey.enter],
                 label: "Print",
                 onPressed: () async {
                   AppState().printer.printCashierClose(state.currentSession!.id);
